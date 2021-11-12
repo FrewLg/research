@@ -239,7 +239,10 @@ Test file
 				</h3>
 				<fieldset>
 					<div class="row">
+						<div class="p-3 mt-10 ">
+						
 						{{ call.guidelines | raw }}
+						</div>
 						<div class="p-3">
 							<div class="form-check">
 								{{ form_widget(submissionform.agree_to_the_terms) }}
@@ -251,7 +254,7 @@ Test file
 						{# ? #}
 
 
-						<div class="accordion" id="accordionExample">
+						{# <div class="accordion" id="accordionExample">
 							<div class="accordion-item">
 								<h5 class="accordion-header m-0" id="headingOne">
 									<button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -263,11 +266,11 @@ Test file
 								</div>
 							</div>
 
-							{#  #}
-						</div>
+							 
+						</div> #}
 
 					</fieldset>
-					<h3>Metadata</h3>
+					<h3>Research details</h3>
 					<fieldset>
 						<div class="row">
 							{% if form_errors(submissionform) %}
@@ -513,7 +516,7 @@ Test file
 											<b>Subtitle:</b>
 											{{ submission.subtitle ? submission.subtitle : "no subtitle"  }}</span>
 										
-										
+
 										<h5 class="font-20 fw-bold d-block mt-2">General objective:</h5>
 										<p>
 											{{ submission.GeneralObjective }}

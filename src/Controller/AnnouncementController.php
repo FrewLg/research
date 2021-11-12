@@ -89,8 +89,9 @@ dd($theFirstName);
 }
 $theEmail=$theEmails[$i];
  $email = (new TemplatedEmail())
-   ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research Directorate Office'))
-//    ->cc($theEmails)
+   ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research  Office'))
+//    ->to($theEmails)
+    ->to(new Address($theEmails[$i], $theFirstNames[$i]))
     ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
     ->subject($subject) 
     ->htmlTemplate('emails/news.html.twig')

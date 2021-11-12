@@ -97,8 +97,8 @@ class SubmissionType extends AbstractType
             ->add('keywords',null,["attr"=>["data-role"=>"tagsinput"]])
             ->add('agree_to_the_terms',
             ChoiceType::class, [
-                "label"=>" ",
-                "choices" =>  ["I agree with the Terms and Conditions"=>"1"],
+                "label"=>"I have read guidelines and agree",
+                "choices" =>  ["I have read guidelines and agree"=>"1"],
              'mapped' => false, "multiple" => true, 'expanded'=>true,
                ])
 

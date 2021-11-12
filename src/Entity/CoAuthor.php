@@ -157,8 +157,7 @@ public function addSubmission(Submission $submission): void
 
         return $this;
     }
-
-
+ 
     public function getConfirmed(): ?bool
     {
         return $this->confirmed;
