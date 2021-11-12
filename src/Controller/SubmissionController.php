@@ -292,7 +292,7 @@ class SubmissionController extends AbstractController {
                     }
                     $theEmail = $theEmails[$i];
                     $email = (new TemplatedEmail())
-                        ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research Portal'))
+                        ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
 //    ->to($theEmails)
                         ->to(new Address($theEmails[$i], $theFirstNames[$i]))
                         ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
@@ -318,7 +318,7 @@ class SubmissionController extends AbstractController {
                 $applicant = $submission->getAuthor()->getEmail();
                 $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
                 $emailtwo = (new TemplatedEmail())
-                    ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research Portal '))
+                    ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
                     ->to($applicant)
                     ->subject($applicantsubject)
                     ->htmlTemplate('emails/application_ack.html.twig')
@@ -343,8 +343,9 @@ class SubmissionController extends AbstractController {
                 // $sendEmail = new SendEmailMessage($emails, Constants::EMAIL_KEY_SUBMISSION_ACKNOWLEDGEMENT, "emails/application_ack.html.twig", [
                 // ]);
                 // $this->dispatchMessage($sendEmail);
+                return $this->redirectToRoute('submission_status', array('id' => $submission->getId()));
 
-                return $this->redirectToRoute('myreviews');
+                // return $this->redirectToRoute('myreviews');
             }
             $entityManager->flush();
 
@@ -1423,9 +1424,9 @@ class SubmissionController extends AbstractController {
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
 
-        $myemail = $this->getUser()->getEmail();
+        $myemail = $this->getUser();
         // $membership = $entityManager->getRepository(CoAuthor::class)->findBy(['email' => $this_is_me]);
-        $myresearches = array_reverse($entityManager->getRepository(CoAuthor::class)->findBy(['email' => $myemail]));
+        $myresearches = array_reverse($entityManager->getRepository(CoAuthor::class)->findBy(['researcher' => $myemail]));
         ////// if no throw exception
         $Allmyresearches = $paginator->paginate(
             // Doctrine Query, not results

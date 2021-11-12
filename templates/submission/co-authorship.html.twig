@@ -22,69 +22,82 @@
 				<div class="tab-content" id="pills-tabContent">
 					<div class="tab-pane fade active show" id="Profile_Project" role="tabpanel" aria-labelledby="Profile_Project_tab">
 						<div class="row">
-							{% for collaboration in collaborations %}
+
+							{% if collaborations|length>0%}
+								{% for collaboration in collaborations %}
 
 
-								<div class="card">
-									<div class="card-body">
+									<div class="card">
+										<div class="card-body">
 
-										{% if collaboration.confirmed ==0 or collaboration.confirmed =='' %}
+											{% if collaboration.confirmed ==0 or collaboration.confirmed =='' %}
+												{# <div class="container">
+												
+																									<div class="ribbon4 rib4-primary">
+																										<span class="ribbon4-band ribbon4-band-primary text-white text-center">New
+																										</span>
+																									</div>
+																								</div> #}
 
-											<div class="ribbon4 rib4-primary">
-												<span class="ribbon4-band ribbon4-band-primary text-white text-center">New
-												</span>
-											</div>
-											{# {% elseif collaboration.confirmed ==1%}
-																							<div class="ribbon2 rib2-primary">
-																					<span class="ribbon4-band ribbon4-band-primary text-white text-center">Seen </span>
-																				</div> #}
-
-										{% endif %}
+											{% endif %}
 
 
-										<!--end ribbon-->
-										<div class="row">
-											<div
-												class="col-auto">{# <img src="profile_files/dastyle.jpg" alt="user" class="align-self-center mb-3 mb-lg-0" height="150"> #}
-											</div>
-											<!--end col-->
-											<div class="col align-self-center">
+											<!--end ribbon-->
+											<div class="row">
+												<div
+													class="col-auto">{# <img src="profile_files/dastyle.jpg" alt="user" class="align-self-center mb-3 mb-lg-0" height="150"> #}
+												</div>
+												<!--end col-->
+												<div class="col align-self-center">
 
-												<a href="{{ path('submission_status', {'id': collaboration.submission.id}) }}" class="font-18 fw-semibold mb-2">
-													{{ collaboration.submission.title }}:
-													{{ collaboration.submission.subTitle }}</a>
-
-												<p class="text-muted">Sent at :
-													{% if collaboration.submission.sentAt %}
-														{{
+													<a href="{{ path('submission_status', {'id': collaboration.submission.id}) }}" class="font-18 fw-semibold mb-2">
+														{{ collaboration.submission.title }}:
+														{{ collaboration.submission.subTitle }}</a>
+													<br>
+													<br>
+													<p class="text-muted">Principal Investigator :
+														{{ collaboration.submission.author }}
+													</p>
+													<p class="text-muted">Sent at :
+														{% if collaboration.submission.sentAt %}
+															{{
                                                 collaboration.submission.sentAt|date() }}
-													{% endif %}
+														{% endif %}
+													</p>
+
+													<small class="float-right">
+														<strong>
+															 
+															Thematic area:
+															{{ collaboration.submission.thematicArea |raw}}
+															Princiapal Investigator:
+															{{ collaboration.submission.author}}
+														</strong>
+
+														<span class='text-success'>{{ collaboration.submission.submissionType |raw }}</span>
+
+
+													</small>
 												</p>
-												features to help build web applications fast and easy.
-												<small class="float-right">
-													<strong>
-														<br>
-														[Thematic area]:
-														{{ collaboration.submission.thematicArea |raw}}
-														Princiapal Investigator:
-														{{ collaboration.submission.author}}
-													</strong>
 
-													<span class='text-success'>{{ collaboration.submission.submissionType |raw }}</span>
+												{% if collaboration.confirmed ==0 or collaboration.confirmed =='' %}
+													<a href="{{ path('accept_involvemet', {'id': collaboration.id, 'sub': collaboration.submission.id}) }}" class="btn btn-soft-primary btn-sm">Confirm Research Membership</a>
 
+												{% elseif collaboration.confirmed ==1%}
 
-												</small>
+													<a href="" class="btn btn-soft-primary btn-sm">Confirmed</a>
+
+												{% endif %}
+
+												{# <a href="#" class="btn btn-soft-primary btn-sm">Appproval</a> #}
+
+												{# <a class="btn btn-sm  btn-primary" data-bs-toggle="collapse" href="#expand{{ collaboration.submission.id }}" role="button" aria-expanded="false" aria-controls="expand{{ collaboration.submission.id }}">
+																																																																						<i class="fa fa-chevron-right"></i>
+																																																																					</a> #}
 											</p>
-									<a href="#" class="btn btn-soft-primary btn-sm">Show details</a>
-											{# <a href="#" class="btn btn-soft-primary btn-sm">Appproval</a> #}
-										
-										<a class="btn btn-sm  btn-primary" data-bs-toggle="collapse" href="#expand{{ collaboration.submission.id }}" role="button" aria-expanded="false" aria-controls="expand{{ collaboration.submission.id }}">
-											<i class="fa fa-chevron-right"></i>
-										</a>
-									</p>
 											<div class="collapse" id="expand{{ collaboration.submission.id }}">
 												<div class="card card-body">
- 
+
 													{% if collaboration.confirmed ==0 or collaboration.confirmed =='' %}Not confirmed
 													{% elseif collaboration.confirmed ==1%}
 														Confirmed{%endif%}
@@ -93,9 +106,7 @@
 															<a class="btn btn-xs btn-primary" href="{{ path('accept_involvemet', {'id': collaboration.id, 'sub': collaboration.submission.id}) }}">
 																<i class="fa fa-check"></i>
 															</a>
-															<a class="btn btn-xs btn-success" href="{{ path('research_sumary', {'uid': collaboration.submission.uidentifier }) }}">
-																<i class="fa fa-adobe"></i>
-															</a>
+
 
 														</div>
 													</div>
@@ -113,25 +124,24 @@
 									<!--end row-->
 								</div>
 								<!--end card-body-->
-						
 
 
-					{% else %}
+							{% else %}
 
-						<span class='text-danger'>Not involved as CO-PI yet
-																																																																																																																		                                                yet!</span>
-						<br>
+								<span class='text-danger'>Not involved as CO-PI yet
+																																																																																																																																																																													                                                yet!</span>
+								<br>
 
-					{% endfor %}
-	</div>
-						</div>
+							{% endfor %}
+						{% endif %}
+
+					</div>
 				</div>
 			</div>
-
-			<!--end row-->
-
-
 		</div>
 
+		<!--end row-->
+
+
 	</div>
-{% endblock %}
+</div>{% endblock %}

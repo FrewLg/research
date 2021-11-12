@@ -311,26 +311,19 @@
 										</tr>
 										<tr>
 											<td class="content-block">
-
-
-												Your submission entitled "
-												{{ title }}
-												"	has been confirmed by:
-												{{ confirmed_by }}
 												{{ body|raw }}<br>
-
-
+												Your submission:
 												<a href="{{app_url}}/{{submission_url}}" target="_blank">
-													Check your submission here
+													{{ title}}
 												</a>
+												<br>
+												Confirmed by:
+												{{ confirmed_by }}
+
 											</td>
 										</tr>
 										<tr></tr>
-										<tr>
-											<td class="content-block">
-												Signature
-											</td>
-										</tr>
+										<tr></tr>
 									</table>
 								</td>
 							</tr>
@@ -403,7 +396,7 @@
 															<tr>
 																<td style="padding:0;color:#6a6c6d;text-align:center" align="center">
 																	<p style="margin:0;word-wrap:break-word;color:#6a6c6d;word-break:break-word;font-weight:400;font-size:12px;line-height:1.333">This email was intended for
-																		{{ Authoremail | raw }}
+																		{{ Authoremail }}
 																		If you are not happy this notification reaches you, you can manage your subscription
 																		<a href="{{app_url}}/subscription/setting" style="text-decoration:none" target="_blank">here</a>
 																	</p>
@@ -452,7 +445,7 @@
 												<td style="padding:0;color:#6a6c6d;text-align:center" align="center">
 													<p style="margin:0;color:#6a6c6d;font-weight:400;font-size:12px;line-height:1.333">© 2021
 														{{app_name}}, All rights researved.<br>
-														Jimma, Oromia, Ethiopia,
+														Jimma,  Ethiopia,
 
 
 													</p>
@@ -496,4 +489,4 @@
 			</tr>
 		</tbody>
 	</body>
-</html>
+</html></table></td></tr></table></div></td><td></td></tr></table></body> </html>

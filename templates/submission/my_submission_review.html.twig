@@ -46,7 +46,7 @@
 										<!--end col-->
 										<div class="col align-self-center">
 										
-										<a href="{{ path('submission_status', {'id': submission.id}) }} " class="font-18 fw-semibold mb-2">
+										<a href="{{ path('submission_status', {'id': submission.id}) }}" class="font-18 fw-semibold mb-2">
 										{{ submission.title }}:
 										{{ submission.subTitle }}</a>
 											<p class="font-13 fw-semibold mb-2">[Thematic area]:
@@ -60,12 +60,12 @@
 										{% endif %}
 									</small> 		
 										<p>
-										<a href="#" class="btn btn-soft-primary btn-sm">Show details</a>
+										<a href="{{ path('submission_status', {'id': submission.id}) }}" class="btn btn-soft-primary btn-sm">Show details</a>
 											{# <a href="#" class="btn btn-soft-primary btn-sm">Appproval</a> #}
 										
-										<a class="btn btn-xs btn-primary" data-bs-toggle="collapse" href="#expand{{ submission.id }}" role="button" aria-expanded="false" aria-controls="expand{{ submission.id }}">
+										{# <a class="btn btn-xs btn-primary" data-bs-toggle="collapse" href="#expand{{ submission.id }}" role="button" aria-expanded="false" aria-controls="expand{{ submission.id }}">
 											<i class="fa fa-chevron-right"></i>
-										</a>
+										</a> #}
 									</p>
 									<div class="collapse" id="expand{{ submission.id }}">
 										<div class="card card-body">

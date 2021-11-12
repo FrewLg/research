@@ -84,7 +84,7 @@ class CoAuthorController extends AbstractController {
         ##########################
                $userdetails = $this->getUser()->getUserInfo();
                if($userdetails->getFirstName()=='' ||$userdetails->getMidleName()=='' || 
-               $userdetails ->getLastName() =='' || $userdetails->getAffiliation() =='' ||
+               $userdetails ->getLastName() =='' ||  
                 $userdetails-> getCollege() =='' || $userdetails-> getDepartment() =='' ||
                  $userdetails-> getEducationLevel() =='' || $userdetails-> getAcademicRank()==''  )
                 
@@ -103,7 +103,7 @@ class CoAuthorController extends AbstractController {
         $entityManager->getRepository(CoAuthor::class)->find($sub);
         $this->getDoctrine()->getManager()->flush();
         $flashbag = $this->get('session')->getFlashBag();
-        $flashbag->add("success", "You have accepted the invlovement invitation to this submission  !");
+        $flashbag->add("success", "You have accepted the membership invitation to this submission. Thank you  !");
         $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'INVOLVEMENT_ACCEPTED_SUCCESS']);
         $recepient =  $pi->getEmail(); 
         $name =  $pi->getUserInfo()->getSuffix() . " " . $pi ->getUserInfo()->getFirstName();
@@ -115,11 +115,11 @@ class CoAuthorController extends AbstractController {
     
         try {
             $email = (new TemplatedEmail())
-                ->from(new Address('no-reply@ju.edu.et', $this->getParameter('app_name')))
+                ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
                 ->to($recepient)
                 ->cc($recepient)
                 ->subject($subject)
-                ->htmlTemplate('emails/involvement-accepted.html.twig')
+                ->htmlTemplate('emails/membership_accepted.html.twig')
                 ->context([
                     'subject' => $subject,
                     'body' => $body,
