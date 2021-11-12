@@ -7,11 +7,12 @@
 <meta name="description" content="Research Management Systems &amp; Jimma University, Institutional Research Management System">
 <meta name="author" content="">
 <meta name="viewport" content=" width=device-width, initial-scale=1, maximum-scale=1">
-<title>{{ app_name}} | {%block title%}{%endblock%}
+{# <title>{{ app_name}} #}
+ | {%block title%}{%endblock%}
 
  </title>
 
-    <link rel="shortcut icon" href="{{ asset('files/site_setting/'~site_logo ) }}">
+    {# <link rel="shortcut icon" href="{{ asset('files/site_setting/'~site_logo ) }}"> #}
 
 
     <link rel="stylesheet" href="{{ asset('verify/assets/css/style.css') }}">
@@ -86,9 +87,9 @@ Working Hours - Mon - Fri: 2:30 - 18:30</div>
                                     <!-- site-branding -->
                                     <div class="site-branding mr-auto">
  
-                                        <a class="home-link" style="color:white" href="" title="{{app_name}} " rel="home">
-                                            <img id="logo-img" class="img-center" style='width:30px;height:40px; color:white;' src="{{ asset('files/site_setting/'~site_logo ) }}" alt="{{app_name}} ">
-<b>{{app_name}}                                        </b>
+                                        {# <a class="home-link" style="color:white" href="" title="{{app_name}} " rel="home"> #}
+                                            {# <img id="logo-img" class="img-center" style='width:30px;height:40px; color:white;' src="{{ asset('files/site_setting/'~site_logo ) }}" alt="{{app_name}} "> #}
+{# <b>{{app_name}}                                        </b> #}
 </a> 
                                     </div><!-- site-branding end -->
                                     <div class="btn-show-menu-mobile menubar menubar--squeeze">
@@ -385,7 +386,8 @@ Working Hours - Mon - Fri: 2:30 - 18:30</div>
      
     <div class="container">
       <div class="copyright">
-       2021 &copy; Copyright <strong><span>{{app_name}}</span></strong>. All Rights Reserved
+       2021 &copy; Copyright <strong>
+       {# <span>{{app_name}}</span></strong>. All Rights Reserved #}
        
         
       </div>

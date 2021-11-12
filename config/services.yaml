@@ -15,8 +15,8 @@ parameters:
     grant_winners_award: '%kernel.project_dir%/public/files/grant_winners_award' 
     datasets: '%kernel.project_dir%/public/files/proposals/datasets'
     env(DATABASE_URL): "mysql://root:r00tme@127.0.0.1:3306/juresearch?serverVersion=5.7"
-    env(MAILER_DSN): "gmail://firewlegese74@gmail.com:PassMaDick1212@localhost?encryption=tls&auth_mode=oauth"
-    env(MAILER_URL): "gmail://firewlegese74@gmail.com:PassMaDick1212@localhost?encryption=tls&auth_mode=oauth"
+    # env(MAILER_DSN): "gmail://firewlegese74@gmail.com:PassMaDick1212@localhost?encryption=tls&auth_mode=oauth"
+    # env(MAILER_URL): "gmail://firewlegese74@gmail.com:PassMaDick1212@localhost?encryption=tls&auth_mode=oauth"
     ldap_dc_value : '%env(resolve:LDAP_DC_VALUE)%'
  
     app_name  : 'Jimma University Research'
