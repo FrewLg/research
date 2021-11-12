@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+{% block title %}Calls
+{% endblock %}
+{% block container_title %}Calls
+{% endblock %}
+
+{% block header_contenttwo %}
+
+	<a href="{{ path('call_for_proposal_new') }}" class='btn btn-primary btn-sm'>
+		Make a new call for proposal</a>
+{% endblock %}
+
+ 
+{% block body %}
+	<!-- testFilter.html.twig -->
+
+
+	<div class="row">
+		<div class="col-lg-10">
+
+
+			<h5 class='text-info'>
+				All call for papers
+			</h5>
+			<div classs='float-right'>
+				<a href="{{ path('call_for_proposal_new') }}" class='btn btn-primary btn-sm'>
+					Make a new call for proposal</a>
+			</div>
+			<div class="table-responsive">
+
+				<table class="table table-striped table-responsive">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Subject</th> 
+							<th>Post date</th>
+							<th>Deadline</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for call_for_proposal in call_for_proposals %}
+							<tr>
+								<td>{{ loop.index  }}</td>
+								<td>{{ call_for_proposal.subject |raw }}</td>
+								<td>
+									{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('Y-m-d H:i') : '' }}
+								</td>
+								<td class='text-center'>
+									{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d H:i') : '' }}
+								</td>
+
+								<td nowrap="nowrap">
+									<a href="{{ path('call__details', {'id': call_for_proposal.id }) }}" class='btn btn-success btn-xs'>
+										Details
+									</a>
+									<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-xs btn-primary">edit</a>
+									{% if call_for_proposal.approved=='1'%}
+										<a href="{{ path('call_approve_undo', {'id': call_for_proposal.id }) }} " class='btn btn-success btn-xs'>
+											Unpublish
+										</a>
+
+
+									{% else %}
+										<a href="{{ path('call__approve', {'id': call_for_proposal.id }) }}" class='btn btn-warning btn-xs'>
+											Approve and publish</a>
+									{% endif %}
+
+										<a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" class='btn btn-info btn-xs'>
+
+											Responses</a>
+
+								</td>
+                                
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="8">no records found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="col-lg-2">
+			<div class="ibox">
+				<h4 class='text-success'>Quick Filter<h4>
+						<div class="ibox-content ibox-heading">
+							<a href="{{ path('submission_filter', {'filter': 'al'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>All
+							</a>
+							<a href="{{ path('submission_filter', {'filter': 'cp'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>Complete
+							</a>
+							<a href="{{ path('submission_filter', {'filter': 'mg'}) }}" class='btn btn-warning btn-xs btn-outline btn-block'>Mega</a>
+							<a href="{{ path('submission_filter', {'filter': 'cs'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>Community
+							</a>
+
+							<a href="{{ path('submission_filter', {'filter': 'gr'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>Grant
+							</a>
+							<a href="{{ path('submission_filter', {'filter': 'tt'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>TT
+							</a>
+							<a href="{{ path('submission_filter', {'filter': 'ps'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>Published
+							</a>
+							<a href="{{ path('submission_filter', {'filter': 'ap'}) }}" class='btn btn-info btn-xs btn-outline btn-block'>Approved
+							</a>
+							<a href="{{ path('submission_filter', {'filter': 'ap'}) }}" class='btn btn-danger btn-xs btn-outline btn-block'>Rejected
+							</a>
+							<a href="{{ path('submission_filter', {'filter': 'rv'}) }}" class='btn btn-warning btn-xs btn-outline btn-block'>Review assigned</a>
+
+							<p>
+
+								<div class="text-center  "></div>
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="navigation">
+					{{ knp_pagination_render(call_for_proposals) }}
+				</div>
+			</div>
+
+		{% endblock %}

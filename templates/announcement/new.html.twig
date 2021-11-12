@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="col-lg-12"> 
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Announcements</h4>
+                                    <!-- <p class="text-muted mb-0">The tabs plugin also works with pills.</p> -->
+                                </div><!--end card-header-->
+                                <div class="card-body">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-pills nav-justified" role="tablist">
+                                        <li class="nav-item waves-effect waves-light">
+                                            <a class="nav-link active" data-bs-toggle="tab" href="#home-1" role="tab" aria-selected="false">All Announcements</a>
+                                        </li>
+                                        <li class="nav-item waves-effect waves-light">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#profile-1" role="tab" aria-selected="false">Create New</a>
+                                        </li>
+                                       <!--  <li class="nav-item waves-effect waves-light">
+                                            <a class="nav-link active" data-bs-toggle="tab" href="#settings-1" role="tab" aria-selected="true">Settings</a>
+                                        </li> -->
+                                    </ul>
+    
+                                    <!-- Tab panes -->
+                                    <div class="tab-content">
+                                        <div class="tab-pane p-3 active" id="home-1" role="tabpanel">
+                                    
+ <table class="footable table table-stripped toggle-arrow-tiny">
+                                <thead>
+                                <tr>
+                                <th data-toggle="true">Subject</th>
+ 
+                                    <th>Announcement type</th>
+                                    <th data-hide="all">Date</th>
+                                    <th data-hide="all">Updataed at</th>
+                                    <th data-hide="all">College</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+{% for announcement in announcements %}
+<tr>
+                                    <td>{{ announcement.subject |raw}}</td>
+                                    <td>{{ announcement.image }}</td>
+                                    <td>{{ announcement.body |raw}}</td>
+ 
+                                    <td><span class="pie">0.52/1.561</span></td>
+                                    <td>            <a href="{{ path('announcement_edit', {'id': announcement.id}) }}" class="btn btn-primary">Edit</a>
+</td>
+ 
+                                    <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
+                                </tr></tbody>
+ {% else %}
+ <td colspan="5">no records found</td>
+        {% endfor %}
+<tfoot>
+  <tr>
+                                    <td colspan="5">
+                                        <ul class="pagination float-right"></ul>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                                       
+ </div>
+                                        <div class="tab-pane p-3" id="profile-1" role="tabpanel">
+                                     
+    {{ include('announcement/_form.html.twig') }}
+                                        </div>
+                                       <!--  <div class="tab-pane p-3 active" id="settings-1" role="tabpanel">
+                                         3 preview
+                                        </div> -->
+                                    </div>    
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                  </div>       
+{% endblock %}

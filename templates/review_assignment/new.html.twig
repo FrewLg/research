@@ -1,0 +1,238 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Review Assignment
+{% endblock %}
+{% block container_title %}Review Assignment
+{% endblock %}
+{% block body %}
+
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+	<div class='row'>
+		<div class="col-lg-4">
+			<section class="panel" id="formside_permission">
+				{% block side_body %}
+					<h4 class='text-'>New Reviewer Assignment</h4>
+
+					<div class="panel blank-panel">
+						<div class="panel-heading">
+							<div class="panel-options">
+								<ul class="nav nav-tabs">
+									<li>
+										<a class="nav-link active" href="#tab-1" data-bs-toggle="tab">
+											Internal Reviewer
+										</a>
+									</li>
+									<li>
+										<a class="nav-link" href="#tab-2" data-bs-toggle="tab">External Reviewer</a>
+									</li>
+
+								</ul>
+							</div>
+						</div>
+
+						<div class="panel-body">
+
+							<div class="tab-content">
+								<div class="tab-pane active" id="tab-1">
+									<h4 class='text-'>Internal reviewer from system</h4>
+
+									{{ form_start(form) }}
+									{{ form_widget(form) }}
+									<button type="submit" class="btn btn-outline-primary btn-sm">
+										Assign Reviewer
+									</button>
+									{{ form_end(form) }}
+								</div>
+								<div class="tab-pane" id="tab-2">
+									<h4 class='text-'>External reviewer from outside the system</h4>
+
+									{{ form_start(externalreviewerform) }}
+									{{ form_widget(externalreviewerform) }}
+									<button type="submit" class="btn btn-outline-primary btn-sm">
+										Assign external reviewer
+									</button>
+									{{ form_end(externalreviewerform) }}
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</section>
+				<br>
+
+
+			{% endblock side_body %}
+		</div>
+
+		<div class="col-lg-8">
+			<h4 class="text-d">
+				Assigned reviewers
+			</h4>
+			{% set selected = 0 %}
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Reviewer</th>
+						<th>Invited at</th>
+						<th>Due date</th>
+						<th>Status</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for review_assignment in review_assignments %}
+						<tr>
+							<td>{{ loop.index }}</td>
+							{% if review_assignment.status == 1 %}
+								{% set selected = selected + 1 %}
+							{% endif %}
+
+							<td>{{ review_assignment.reviewer }}
+								{{ review_assignment.ExternalreviewerName }}
+								{% if review_assignment.ExternalreviewerEmail  %}
+									<span class="badge bg-primary">External</span>
+								{% else %}
+									<span class="badge bg-success">Internal</span>
+								{% endif %}
+
+							</td>
+							<td>{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}</td>
+							<td>{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}</td>
+							<td>
+								{# <span class="badge  bg-success ">active</span> #}
+
+								{% if review_assignment.status == 1 %}
+									<span class="badge bg-info" title="Invitation not sent">Selected</span>
+								{% elseif  review_assignment.status == 2 %}
+									<span class="badge bg-primary">Invitation Sent</span>
+								{% elseif  review_assignment.status == 3 %}
+									<span class="badge bg-primary">Reviewing</span>
+
+								{% endif %}
+
+
+								{% if review_assignment.IsRejected == 1 %}
+									<span class="badge bg-info" title="Invitation not sent">Rejected</span>
+								{% elseif  review_assignment.Closed == 1 %}
+									<span class="badge bg-primary">Closed</span>
+								{% elseif  review_assignment.InactiveAssignment == 1 %}
+									<span class="badge bg-primary">InactiveAssignment</span>
+									{% elseif  review_assignment.Declined == 1 %}
+									<span class="badge bg-primary">Declined</span>
+
+
+								{% endif %}
+
+
+ 
+							</td>
+							<td nowrap="nowrap">
+								{{ include('review_assignment/_delete_form.html.twig') }}
+ 
+
+
+								<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
+
+								<script>
+
+									$(document).ready(function () {
+$("#editList                {{ review_assignment.id }}").click(function () {
+$.ajax({
+url: "{{ path('review_assignment_edit', {'id':review_assignment.id}) }}",
+success: function (result) {
+$("#formside_permission").html(result);
+
+},
+error: function (xhr, status, error) {
+$("#formside_permission").html("Problem");
+
+}
+});
+});
+});
+								</script>
+
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="3">no records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% if selected  %}
+				{% if selected < app.request.server.get('MIN_REVIEWER') %}
+					<div class="badge badge-danger">To send invitation you need to select at least
+						{{ app.request.server.get('MIN_REVIEWER') }}
+						Reviewer</div>
+					{% else %}
+
+					{# <form method="POST">
+																																																																									<input type="hidden" name="_token" value="{{ csrf_token('assign-selected') }}">
+																																																																										<div class="float-right"><input type="submit" class="btn btn-success" name="assign-selected" value="Assign Selected"></div>
+																																																																									</form> #}
+				{% endif %}
+			{% endif %}
+		</div>
+
+		{% include "review_assignment/modal.html.twig" %}
+		<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
+	{% endblock %}
+	{% block javascript  %}
+		<script>
+			$(document).ready(function () {
+
+$('#review_assignment_reviewer').select2({
+ajax: {
+url: "{{ path('user_ajax') }}",
+dataType: 'json',
+delay: 250,
+data: function (params) {
+return {
+q: params.term, // search term
+page: params.page
+};
+},
+processResults: function (data, params) {
+
+params.page = params.page || 1;
+
+return {
+results: data.items,
+pagination: {
+more: (params.page * 30) < data.total_count
+}
+};
+},
+cache: true
+},
+placeholder: 'Search for a Reviewer',
+minimumInputLength: 1,
+templateResult: formatRepo,
+templateSelection: formatRepoSelection
+});
+
+function formatRepo(repo) {
+if (repo.loading) {
+return repo.name;
+}
+
+var $container = $("<div class='select2-result-user clearfix'>" + "<div class='select2-result-user__meta'>" + "<div class='select2-result-user__title'></div>" + "<div class='select2-result-user__description'></div>" + "<div class='select2-result-user__statistics'>" + "<div class='select2-result-user__email'><i class='fa fa-envelope'></i> </div>" + "</div>" + "</div>" + "</div>");
+
+$container.find(".select2-result-user__title").text(repo.name);
+$container.find(".select2-result-user__email").append(repo.email);
+
+
+return $container;
+}
+
+function formatRepoSelection(repo) {
+return repo.name;
+}
+});
+		</script>
+	{% endblock %}

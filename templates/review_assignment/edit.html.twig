@@ -1,0 +1,13 @@
+{% block side_body %}
+<h4 class='text-success'>Edit assignment</h4>
+ 
+ <form method="post" action="{{ path('review_assignment_edit', {'id': review_assignment.id}) }}" >
+
+    {{ form_widget(form) }}
+    <br>
+    <button  class='btn btn-success btn-sm btn-outline form-control' >{{ button_label|default('Save changes') }}</button>
+{{ form_end(form) }}
+
+    </section>
+<br>
+ {% endblock side_body %}

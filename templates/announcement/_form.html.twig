@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+{{ form_label(form.subject) }}
+
+    {{ form_widget(form.subject) }} 
+{{ form_label(form.body) }}
+{{ form_widget(form.body ) }}
+
+<p> 
+
+   <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

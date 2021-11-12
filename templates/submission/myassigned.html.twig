@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Submission
+{% endblock %}
+{% block container_title %}Researches
+{% endblock %}
+{% block body %}
+	<div class="row">
+		<div class="pb-4">
+			<ul class="nav-border nav nav-pills mb-0" id="pills-tab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="Profile_Project_tab" data-bs-toggle="pill" href="pages-profile.html#Profile_Project">Researches I am assigned to</a>
+				</li> 
+
+			</ul>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<div class="tab-content" id="pills-tabContent">
+					<div class="tab-pane fade active show" id="Profile_Project" role="tabpanel" aria-labelledby="Profile_Project_tab">
+				 
+							<div class="row">
+							
+							<table class="table table-striped">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Title</th>
+
+
+															<th>Invitation sent date</th>
+															<th>Review due date</th>
+															<th>Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														{% for myreview in myreviews %}
+															<tr>
+																<td>{{ loop.index }}</td>
+																<td>{{ myreview.submission.title }}</td>
+
+																<td>
+																	{% if myreview.submission.sentAt %}
+																		{{
+                                                myreview.submission.sentAt|date() }}
+																	{% endif %}
+																</td>
+																<td>
+																	{% if myreview.dueDate %}
+																		{{ myreview.dueDate|date() }}
+																	{% endif %}
+																</td>
+																<td>
+
+																	<a href="{{ path('accept_invitation', {'id': myreview.id}) }} " class='btn btn-success btn-xs btn-outline'>
+																		Show invitation
+																	</a>
+																</td>
+															</tr>
+														{% else %}
+															<tr>
+																<td colspan="8">You have not been  assigned to any subbmission yet!</td>
+															</tr>
+														{% endfor %}
+													</tbody>
+												</table>
+												 
+											</div>
+
+			</div>
+			<!--end row-->
+
+
+		</div>
+	 
+
+	</div>
+</div>
+<!--end col--></div></div><!--   -->{% endblock %}

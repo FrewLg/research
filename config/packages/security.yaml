@@ -1,0 +1,76 @@
+
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    enable_authenticator_manager: true
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+        backend_users:
+            memory:
+                users:
+                    firra_admin: { password: '$2y$13$jxGxc ... IuqDju', roles: ['ROLE_ADMIN'] }
+  
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+    #            request_matcher: app.firewall.secured_area.request_matcher
+            custom_authenticator: App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
+        main:
+            # anonymous: true
+            lazy: true
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+            # login_throttling: null
+
+            # configure the maximum login attempts (per minute)
+        #    login_throttling:
+            #    max_attempts: 3
+
+            # use a custom rate limiter via its service ID
+        #    login_throttling:
+            #    limiter: app.my_login_rate_limiter
+            #register:
+             #   path: app_register
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    role_hierarchy:
+        ROLE_REVIEWER: ROLE_USER
+        ROLE_COLLEGECOORDINATOR: ROLE_USER
+        ROLE_DIRECTORATE: ROLE_COLLEGECOORDINATOR
+        ROLE_VICEPRESIDENT: ROLE_DIRECTORATE
+        ROLE_PRESIDENT: ROLE_VICEPRESIDENT
+
+
+    access_control:
+         - { path: ^/$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY } 
+         - { path: ^/logout, role: IS_AUTHENTICATED_ANONYMOUSLY } 
+         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/call-for-proposal, role: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/resetting/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/call-for-proposal, role: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/reset-password, role: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/*, role: ROLE_USER }
+ 

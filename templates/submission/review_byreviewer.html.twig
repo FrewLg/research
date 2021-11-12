@@ -1,0 +1,361 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Submission
+{% endblock %}
+{% block container_title %}Submission review
+{% endblock %}
+{% block body %}
+	<div class="row">
+		<div class="col-lg-9">
+
+			<div class="row">
+				<div class="col-lg-12">
+					<dl class="row mb-0">
+						<div class="col-sm-2 text-sm-right float-right pull-right">
+							<dt>
+							{% if submission.sentAt %}
+									{{ submission.sentAt|date() }}
+								{% endif %}
+							</dt>
+						</div>
+						<div class="col-sm-9 text-sm-left">
+							<dd>
+								<div class="nowrap">
+									<div style="width: 100%;" class="font-16 m-0 fw-bold">
+										<strong>
+											{{ submission.Title }}:{{ submission.subTitle }}
+										</strong>
+									</div>
+								</div>
+							</dd>
+						</div>
+						<div class="col-sm-1 text-sm-left">
+							<dd>
+								<div class="nowrap">
+									<div style="width: 100%;" class="text-success strong">
+
+										<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
+											PDF
+											<i class="fa fa-download"></i>
+										</a>
+									</div>
+								</div>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+			<div class="row m-t-sm">
+
+				<div
+					class="card-body">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-bs-toggle="tab" href="#evaluation" role="tab" aria-selected="false">Evaluation</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div class="tab-pane p-3 active" id="home" role="tabpanel">
+							<div class="table-responsive">
+								<table class="table shoping-cart-table">
+
+									<tbody>
+										<tr>
+
+											<td class="desc">
+												<h3>
+													<a href="#" class="text-navy">
+														Abstract
+													</a>
+												</h3>
+												<p class="medium">
+
+													{{ submission.abstract | raw }}
+												</p>
+												<h3>
+													Background
+												</h3>
+												<p class="medium">
+
+													{{ submission.BackgroundAndRationale |raw}}
+												</p>
+
+												<h3>
+													Methodology
+												</h3>
+												<p class="medium">
+
+													{{ submission.methodology |raw}}
+												</p>
+												<h3>
+													Research Outcome
+												</h3>
+												<p class="medium">
+
+													{{ submission.ResearchOutcome |raw}}
+												</p>
+
+												<h3>
+													Reference
+												</h3>
+												<p class="medium">
+
+													{{ submission.Reference |raw}}
+												</p>
+
+												{% for submissionattachment in submission.submissionAttachements %}
+													<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
+														{{submissionattachment.name}}
+														-
+														{# {{ submission.componentType }} #}
+														<i class="fa fa-download material-icons warning"></i>
+													</a>
+												{% else %}
+													<span class="label label-danger">
+														{% trans %}No attachement found{% endtrans %}
+													</span>
+												{% endfor %}
+
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane p-3" id="evaluation" role="tabpanel">
+							<form method="post" action="{{ path('evaluation_form_option_new', {'id': submission.id}) }}" >
+								<ol type="I" class="list">
+									{% for evaluationForm in evaluationForms %}
+										<li class="parent">
+											<div class="col-12">
+												<p class="mb-2">
+													{{ evaluationForm.name }}({{ evaluationForm.percent }}%)</p>
+												<ol type="a">
+													{% for item in evaluationForm.childs %}
+														<li class="parent">
+															<p class="mb-2">
+																{{ item.name }}({{ item.percent }}%)</p>
+															<div class="col-md-9 mb-1">
+																{% for i in item.evaluationFormOptions %}
+
+
+																	<div class="form-check">
+																		<input class="form-check-input" data-max="{{ i.max }}" data-min="{{ i.min }}" name="p{{ item.id }}" type="radio" value="" id="flexCheckDefault">
+																		<label class="form-check-label" for="flexCheckDefault">
+																			{{ i.name }}
+																			({{ i.value }})
+																		</label>
+																	</div>
+
+
+																{% endfor %}
+
+															</div>
+															<div
+																class="mb-3 row">
+																{# <label for="example-text-input" class="col-sm-2 form-label align-self-center mb-lg-0 text-end">Score</label> #}
+																<div class="col-sm-10 col-md-6">
+																	<input class="form-control col-6 score" type="text" placeholder="Score">
+																</div>
+															</div>
+
+														</li>
+
+													{% endfor %}
+													{% if evaluationForm.childs | length == 0 %}
+														<div class="col-md-9">
+															{% for item in evaluationForm.evaluationFormOptions %}
+
+
+																<div class="form-check">
+																	<input class="form-check-input" data-max="{{ item.max }}" data-min="{{ item.min }}" name="c{{ evaluationForm.id }}" type="radio" value="" id="flexCheckDefault">
+																	<label class="form-check-label" for="flexCheckDefault">
+																		{{ item.name }}
+																		({{ item.value }})
+																	</label>
+																</div>
+
+															{% endfor %}
+
+														</div>
+														<div
+															class="mb-3 row">
+															{# <label for="example-text-input" class="col-sm-2 form-label align-self-center mb-lg-0 text-end">Score</label> #}
+															<div class="col-sm-10 col-md-6">
+																<input class="form-control col-6 score" type="text" placeholder="Score">
+															</div>
+														</div>
+													{% endif %}
+
+												</ol>
+											</div>
+
+
+										</li>
+
+									{% endfor %}
+								</ol>
+								<button class="btn btn-primary">{{ button_label|default('Submit evaluation') }}</button>
+
+							</form>
+						</div>
+						<div class="tab-pane p-3" id="profile" role="tabpanel">
+							<h3>
+								<a href="#" class="text-navy">
+									Comment from reviewer
+								</a>
+							</h3>
+							{% for review in review_assignments %}
+
+								<table class="table shoping-cart-table">
+
+									<tbody>
+										<tr>
+											<td class="desc">
+
+												<p class="small">
+
+													{{ review.comment |raw}}
+												</p>
+												<dl class="small m-b-none">
+													<dt>Revised at
+														{{ review.CreatedAt ?
+                                                        review.CreatedAt|date('Y-m-d H') : '' }}
+													</dt>
+												</dl>
+
+												<div class="m-t-sm">
+
+													{% if review.attachment %}
+														<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="btn btn-info btn-xs float-right">
+															Download attachment
+															<i class="fa fa-download material-icons warning"></i>
+														</a>
+													{% else %}
+														<span class="label label-danger">
+															{% trans %}No attachement found{% endtrans %}
+														</span>
+													{% endif %}
+												</div>
+											</td>
+											<td width="65" nowrap="nowrap">
+												<h4 class='text-primary'>
+													Review Round:
+													{{ loop.index }}
+												</h4>
+												{{ review.remark |raw}}
+
+												<hr>
+												{# {{editorialDecisions.decision}} #}
+											</td>
+										</tr>
+									</tbody>
+								{% else %}
+									<tr>
+										<td colspan="5">Revision not initiated</td>
+									</tr>
+								{% endfor %}
+							</table>
+							<hr>
+
+							{{ form_start(form) }}
+							{{ form_widget(form) }}
+							<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
+							{{ form_end(form) }}
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3">
+
+
+			<div class="card">
+				<div class="card-body ">
+					<div class="text-">
+						<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
+							Thematic area:
+							{{submission.thematicArea}}
+						</h4>
+						<p class="text-muted  mb-0 font-13">
+							<span class="text-dark">
+
+								Invitation Sent At:
+								{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+
+								Review duedate:
+								{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+
+							</span>
+
+							<span class="text-dark">
+								<h5>Keywords:</h5>
+								<ul class="tag-list" style="padding: 0">
+									{{submission.keywords}}
+								</ul>
+							</span>
+
+						</p>
+					</div>
+					<div class="row mt-4 d-flex align-items-center">
+						<div
+							class="col">
+							{# <h5 class="font-16 m-0 fw-bold">1</h5> #}
+							<p class="mb-0 text-muted">
+
+								<h5>Attachment files</h5>
+								<ul class="list-unstyled project-files">
+									{% for submissionattachment in submission.submissionAttachements %}
+										<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
+											{{submissionattachment.name}}
+
+											<i class="fa fa-download material-icons warning"></i>
+										</a>
+									{% else %}
+										<span class="label label-danger">
+											{% trans %}No attachement found{% endtrans %}
+										</span>
+									{% endfor %}
+								</ul>
+							</p><hr>
+							{# <a class="btn btn-primary btn-xs float-right" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
+																						<span>Download PDF
+																							<i class="fa fa-download material-icons  "></i>
+														
+																						</span>
+																					</a> #}
+
+
+							<script src="/ui/js/jquery.min.js"></script>
+							<p></p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+	{% include "submission/modal.html.twig" %}
+{% endblock %}
+
+{% block javascript  %}
+	<script>
+		$('.form-check-input').change(function () {
+var min = $(this).attr('data-min');
+var max = $(this).attr('data-max');
+$(this).closest('.parent').find('.score').attr({"max": max, "min": min});
+});
+	</script>
+{% endblock javascript  %}

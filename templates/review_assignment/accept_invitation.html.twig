@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% block container_title %}Review Invitation
+{% endblock %}
+{% block title %}Review Invitation
+{% endblock %}
+{% block body %}
+	<div class="row">
+		<div class="col-lg-9">
+			<h5>Review Invitation:<h5> 
+
+
+					<h4 class="m-0 fw-semibold text-dark font-16 mt-3 m-1 text-justify" style='text-align:justify;'>
+						{{ guideline.name }}
+					</h4>
+					<p>{{ guideline.theGuidelline }}
+					</p>
+				</h4>
+
+			</div>
+			<div class="col-lg-3">
+
+				<div class="card">
+					<div class="card-body ">
+						<div class="ibox ">
+							<div class="ibox-title">
+								<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
+
+									Thematic area of proposal</h4>
+								{{ review_assignment.submission.thematicArea }}
+							</div>
+							<div class="ibox-content ibox-heading">
+								<h4 class='text-danger'>
+									Duedate:
+									{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d ') : '' }}
+								</h3>
+								<small>
+									Invitation sent at:
+									{{ review_assignment.invitationSentAt ? review_assignment.invitationSentAt|date('Y-m-d H:i:s') : '' }}
+								</small>
+							</div>
+
+							<div class="col ">
+								<form method="POST" class='form-control mt-4 col-12 m-auto'>
+									<input type="hidden" name="_token" value="{{ csrf_token('accept-invitation') }}">
+
+									<input type="submit" class="btn  btn-success btn-block col-12 " name="accept-invitation" value="Accept invitation">
+									<hr>
+									<a href="{{ path('decline_invitation', {'id': review_assignment.id}) }}" class="btn  btn-danger btn-block col-12 ">Decline invitation</a>
+								</form>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
