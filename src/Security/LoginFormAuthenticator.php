@@ -55,46 +55,53 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public function getCredentials(Request $request)
     {
 
-//        return [
-  //          'email' => $request->request->get('email'),
-    //        'password' => $request->request->get('password'),
-      //  ];
 
         $credentials = [
-          'email' => $request->request->get('email'),
+          'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
           'csrf_token' => $request->request->get('_csrf_token'),
         ];
       $request->getSession()->set(
         Security::LAST_USERNAME,
-      $credentials['email']
+      $credentials['username']
         );
+        // dd($credentials);
 
  return $credentials;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        return $this->userRepository->getUser(['email' => $credentials['email']]);
+      $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+      if (!$this->csrfTokenManager->isTokenValid($token)) {
+          throw new InvalidCsrfTokenException();
+      }
+           // from local database or ldap
+        // $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
+    $user = $userProvider->getUserEntityCheckedFromLdap($credentials['username'], $credentials['password']);
+        //  dd($user);
 
-      // $token = new CsrfToken('authenticate', $credentials['csrf_token']);
-        // if (!$this->csrfTokenManager->isTokenValid($token)) {
-        //    throw new InvalidCsrfTokenException();
-       // }
+      $this->user = $user;
+      if (!$user) {
+        
 
-      //  $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
+          throw new CustomUserMessageAuthenticationException('Invalid Credentials.');
+          // throw new CustomUserMessageAuthenticationException('Username could not be found.');
+      } else {
 
-//        if (!$user) {
-//            throw new CustomUserMessageAuthenticationException('Email could not be found.');
-  //      }
+          $this->is_ldap_user = true;
+      }
 
-    //    return $user;
-    }
+      return $user;
+  }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
-        //dd($user);
+      if ($this->is_ldap_user) {
+        return true;
+    }
+
+    return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
     /**
@@ -110,7 +117,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
    
 
-      $user = $token->getUser();
+      $user = $this->user;
+      // dd($user);
 
 
       /**
@@ -179,3 +187,5 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 }
+
+

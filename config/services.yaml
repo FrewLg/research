@@ -54,4 +54,21 @@ services:
         tags: ['controller.service_arguments']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    Symfony\Component\Ldap\Ldap:
+        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
+    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+        arguments:
+            -   host: 10.140.5.15
+                port: 389
+                #          encryption: tls
+                options:
+                    protocol_version: 3
+                    referrals: false
+
+    App\Security\LdapUserProvider:
+        arguments:
+            $ldapBaseDn: '%env(LDAP_BASE_DN)%'
+            $ldapSearchDn: '%env(LDAP_SEARCH_DN)%'
+            $ldapSearchPassword: '%env(LDAP_SEARCH_PASSWORD)%'
+            $ldapSearchDnString:  '%env(LDAP_SEARCH_DN_STRING)%'
 
