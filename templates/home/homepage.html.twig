@@ -119,7 +119,7 @@
 	{% else  %}
 
 		{# <div class="card    fadeInLeft animated    " style="visibility: visible; animation-name: fadeInLeft;"> #}
-		<div class="card-body  ">
+		{# <div class="card-body  ">
 			<div class="  ">
 
 				<h4 class="">Sign in</h4>
@@ -132,7 +132,7 @@
 			<div class="tab-content">
 				<div
 					class="tab-pane p-3 active" id="LogIn_Tab" role="tabpanel">
-					{# <div class="wow fadeInLeft animated p-3 active" style="visibility: visible; animation-name: fadeInLeft;"> #}
+					{# <div class="wow fadeInLeft animated p-3 active" style="visibility: visible; animation-name: fadeInLeft;"> 
 
 					<form method="post" class="form-group" action={{ path('app_login') }}>
 						{% if error is defined and error %}
@@ -159,15 +159,15 @@
 
 						<div class="form-group row my-3">
 							<div class="col-sm-12">
-								<div class="custom-control custom-switch switch-success">{# <input type="checkbox" class="custom-control-input" name='_remember_me' id="customSwitchSuccess"> #}
-									{# <label class="form-label text-muted" for="customSwitchSuccess">Remember me</label> #}
+								<div class="custom-control custom-switch switch-success">{# <input type="checkbox" class="custom-control-input" name='_remember_me' id="customSwitchSuccess"> 
+									{# <label class="form-label text-muted" for="customSwitchSuccess">Remember me</label> 
 								</div>
 							</div>
 							<!--end col-->
 							<div class="col-sm-12 ">
 								<a
 									href="{{ path('app_forgot_password_request')}}" class="text-muted font-13">
-									{# <i class="fa fa-lock"></i> #}
+									{# <i class="fa fa-lock"></i> 
 									Forgot password?</a>
 							</div>
 							<div class="col-12">
@@ -191,6 +191,6 @@
 
 				</div>
 			</div>
-		</div>
+		</div> #}
 	</div>
 {% endif  %}{% endblock %}
