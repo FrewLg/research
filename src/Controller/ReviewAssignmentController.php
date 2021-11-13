@@ -47,6 +47,18 @@ class ReviewAssignmentController extends AbstractController
      */
     public function assign(Request $request, Submission $submission ,ReviewHelper $reviewHelper, InstitutionalReviewersBoardRepository $institutionalReviewersBoardRepository, ReviewAssignmentRepository $reviewAssignmentRepository): Response
     {
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        if($submission->getComplete()==''){
+         
+            $this->addFlash(
+                'danger',
+                'Sorry! You incomplete submissions cannot be sent to the reviewer!'
+            ); 
+        return $this->redirectToRoute('submission_index');
+        }
+
         $entityManager = $this->getDoctrine()->getManager();  
         if($request->request->get('assign-selected')){
             $this->checkCsrf('assign-selected');
@@ -199,6 +211,8 @@ class ReviewAssignmentController extends AbstractController
      */
     public function acceptinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
     $entityManager = $this->getDoctrine()->getManager();
     // if($this->getUser() != $reviewAssignment->getReviewer()){
     //     throw new AccessDeniedException(); 
@@ -244,6 +258,8 @@ class ReviewAssignmentController extends AbstractController
      */
     public function edit(Request $request, ReviewAssignment $reviewAssignment): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $entityManager = $this->getDoctrine()->getManager();
 #        $subs = $entityManager->getRepository(Submission::class)->findBy(['submission' => $workunit ] );
         $form = $this->createForm(ReviewAssignmentType::class, $reviewAssignment);     

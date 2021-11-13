@@ -12,7 +12,7 @@
 {% macro displayContent(researches) %}
 	<div class="row">
  
-	<div class="col-md-12">
+	<div class="col-md-6">
 		<div class="form-group select-wizard"  >
 			<label class="bmd-label-floating"  >Title</label>
 			{{form_widget(researches.title, {'attr':{'class':'select2 col-lg-2 col-md-2'}}) }}
@@ -38,19 +38,12 @@
 		</div>
 	</div> 
 
-	<div class="col-md-2">
+	<div class="col-md-3">
 		<div class="form-group select-wizard">
  			{{form_widget(researches.successfully_completed )}} 
 		</div>
 	</div>  
- 
-<div class="col-md-1">
-		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">irb clearance</label>
-			{{form_widget(researches.irb_clearance )}} 
-		</div>
-	</div> 
- 	
+  
 	
 	<div class="col-md-1">
 		<div class="form-group"> 
@@ -573,6 +566,12 @@ counter++;
 list.data('widget-counter', counter);
 var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
 newElem.appendTo(list);
+
+$("#user_profile_researches_0_title").select2();
+$("#user_profile_researches_1_title").select2(); 
+$("#user_profile_researches_2_title").select2(); 
+$("#user_profile_researches_3_title").select2(); 
+$("#user_profile_researches_4_title").select2(); 
  });
 });
 var form = $("#form-horizontal");  
@@ -580,7 +579,9 @@ $input.appendTo($('ul[aria-label=Pagination]'));
 	</script>
 	<script>
 	$(function () {
-$(".select2").select2();
+$(".select2").select2(); 
+
+
 })
 	</script>
 {% endblock %}

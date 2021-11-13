@@ -160,7 +160,7 @@ class User implements UserInterface
         $this->registeredAt=new \DateTime('now');
         $this->userGroup = new ArrayCollection();
         $this->proposals = new ArrayCollection();
-        $this->submissions = new ArrayCollection();
+        // $this->submissions = new ArrayCollection();
         // $this->reviews = new ArrayCollection();
         $this->institutionalReviewersBoards = new ArrayCollection();
         $this->reviewAssignments = new ArrayCollection();
@@ -400,35 +400,35 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Submission[]
-     */
-    public function getSubmissions(): Collection
-    {
-        return $this->submissions;
-    }
+    // /**
+    //  * @return Collection|Submission[]
+    //  */
+    // public function getSubmissions(): Collection
+    // {
+    //     return $this->submissions;
+    // }
 
-    public function addSubmission(Submission $submission): self
-    {
-        if (!$this->submissions->contains($submission)) {
-            $this->submissions[] = $submission;
-            $submission->setCoAuthor($this);
-        }
+    // public function addSubmission(Submission $submission): self
+    // {
+    //     if (!$this->submissions->contains($submission)) {
+    //         $this->submissions[] = $submission;
+    //         $submission->setCoAuthor($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeSubmission(Submission $submission): self
-    {
-        if ($this->submissions->removeElement($submission)) {
-            // set the owning side to null (unless already changed)
-            if ($submission->getCoAuthor() === $this) {
-                $submission->setCoAuthor(null);
-            }
-        }
+    // public function removeSubmission(Submission $submission): self
+    // {
+    //     if ($this->submissions->removeElement($submission)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($submission->getCoAuthor() === $this) {
+    //             $submission->setCoAuthor(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
    
 

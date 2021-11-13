@@ -386,7 +386,7 @@
  
 <a href="{{ path('allocomment', {'id': review.id}) }}"  class="btn btn-primary"
 onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
-Send review comment to PI</a>
+Send   comment to PI</a>
 												
 
 {% elseif review.AllowToView=='1'  %}
@@ -445,12 +445,35 @@ Comment sent to PI</a>
 				</div> 
 
 
+<div class="card">
+			<div class="card-body ">
+ 
+					<h4 class="font-18 m-0 fw-bold">Co-PI confirmation: </h4>
+			<br>
+
+			{% for member in submission.coAuthors %}
+				{{loop.index}}
+				 {{member.researcher}}
+				{% if member.confirmed=='1' %} <i class="fa fa-check text-success"></i> 
+				<br>
+
+			{% elseif member.confirmed==''  %}  <i class="fa fa-trash text-danger"></i>    
+				<br>
+				 {% endif %}
+				
+				  
+			{% else %}
+				 No Co-PI has been involved
+			{% endfor %}
+				</div>
+				</div> 
+	<div class="card">
+			<div class="card-body ">
 	<h5 class="font-18 m-0 fw-bold">Reviewers</h5>
+			 <hr>
 	{% for review_assignment in review_assignments %}
 
-		<div class="card">
-			<div class="card-body ">
-			 
+		
  					<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
 						{{ review_assignment.reviewer }}
 						{{ review_assignment.ExternalreviewerName }}</h4>
@@ -502,8 +525,7 @@ Comment sent to PI</a>
 						</p>
 					</div>
 				</div>
-			</div>
-		</div>
+			
 
 	{% else %}
 		No reviewers has been assigned yet
@@ -511,7 +533,8 @@ Comment sent to PI</a>
 
 
 	{% endfor %}
-
+</div>
+		</div>
 
 
 </div>{% endblock %}

@@ -10,7 +10,7 @@
 {% endblock %}
 {% block body %}
 
-<div class='col col-10'>
+<div class='col col-12'>
 	<div class="card-body content-area    " style="font-family:arial; text-align:justify;">
 		<div class="widget-area sidebar-right">
 			<div class="float-right ">
@@ -19,6 +19,16 @@
 				Date: 
 					{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('Y-M-d h:i:s') : '' }}
 				<br>
+				{# <small class='text-mued'>
+			  Deadline :
+			</small>
+
+
+			<small class='text-danger'>
+
+				{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d h:i A') : '' }}
+
+			</small> #}
 			</div>
 			<p>
 				<div class="text-center  ">

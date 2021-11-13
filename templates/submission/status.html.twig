@@ -501,22 +501,45 @@ $("#showEditRequestContent").html("Problem");
 				</div> 
 		<div class="card">
 			<div class="card-body ">
-	<h5 class="font-18 m-0 fw-bold">Submission Status</h5>
+	            <h5 class="font-18 m-0 fw-bold">Submission Status</h5>
  				<div class="row mt-4 d-flex align-items-center">
  								{% if review_assignments|length >0 %}
 					 
-	<p class="btn btn-info btn-xs float-right"> Sent to review</p>
-	{% else %}
+					<p class="btn btn-info btn-xs float-right"> Sent to review</p>
+							{% else %}
 
-	{% endif %}
+								{% endif %}
 
-<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
-											PDF
-											<i class="fa fa-download"></i>
-										</a>
+								<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
+											PDF <i class="fa fa-download"></i> </a>
  				</div>
 			</div>
 		</div>
+
+
+<div class="card">
+			<div class="card-body ">
+ 
+					<h4 class="font-18 m-0 fw-bold">Co-PI confirmation: </h4>
+			<br>
+
+			{% for member in submission.coAuthors %}
+				{{loop.index}}
+				 {{member.researcher}}
+				{% if member.confirmed=='1' %} <i class="fa fa-check text-success"></i> 
+				<br>
+
+			{% elseif member.confirmed==''  %}  <i class="fa fa-close text-danger"></i>    
+				<br>
+				 {% endif %}
+				
+				  
+			{% else %}
+				 No Co-PI has been involved
+			{% endfor %}
+				</div>
+				</div> 
+
   
  </div>
 		</div>
