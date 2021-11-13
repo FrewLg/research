@@ -47,4 +47,22 @@ class DepartmentRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function filterDepartments($college)
+    {
+
+        //dd($productNmae);
+        return $this->createQueryBuilder('s')
+
+
+            ->Select('s.name')
+
+            ->addSelect('s.id')
+            ->andWhere('s.college = :college')
+            ->setParameter('college', $college)
+            ->orderBy('s.id', 'ASC')
+
+            ->getQuery()
+
+            ->getResult();
+    }
 }

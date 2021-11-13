@@ -15,8 +15,8 @@ parameters:
     grant_winners_award: '%kernel.project_dir%/public/files/grant_winners_award' 
     datasets: '%kernel.project_dir%/public/files/proposals/datasets'
     env(DATABASE_URL): "mysql://root:r00tme@127.0.0.1:3306/juresearch?serverVersion=5.7"
-    env(MAILER_DSN): "gmail://firewlegese74@gmail.com:PassMaDick1212@localhost?encryption=tls&auth_mode=oauth"
-    env(MAILER_URL): "gmail://firewlegese74@gmail.com:PassMaDick1212@localhost?encryption=tls&auth_mode=oauth"
+    # env(MAILER_DSN): "gmail://firewlegese74@gmail.com:PassMaDick1212@localhost?encryption=tls&auth_mode=oauth"
+    # env(MAILER_URL): "gmail://firewlegese74@gmail.com:PassMaDick1212@localhost?encryption=tls&auth_mode=oauth"
     ldap_dc_value : '%env(resolve:LDAP_DC_VALUE)%'
  
     app_name  : 'Jimma University Research'
@@ -54,4 +54,21 @@ services:
         tags: ['controller.service_arguments']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    Symfony\Component\Ldap\Ldap:
+        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
+    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+        arguments:
+            -   host: 10.140.5.15
+                port: 389
+                #          encryption: tls
+                options:
+                    protocol_version: 3
+                    referrals: false
+
+    App\Security\LdapUserProvider:
+        arguments:
+            $ldapBaseDn: '%env(LDAP_BASE_DN)%'
+            $ldapSearchDn: '%env(LDAP_SEARCH_DN)%'
+            $ldapSearchPassword: '%env(LDAP_SEARCH_PASSWORD)%'
+            $ldapSearchDnString:  '%env(LDAP_SEARCH_DN_STRING)%'
 

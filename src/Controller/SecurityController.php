@@ -18,6 +18,8 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        // dd(1);
+       
         //  if ($this->getUser()) {
         //      return $this->redirectToRoute('target_path');
         // }

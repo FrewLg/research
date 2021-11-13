@@ -19,6 +19,7 @@ use App\Repository\UserRepository;
 use App\Repository\SubmissionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\AnnouncementRepository;
+use App\Repository\DepartmentRepository;
 use App\Repository\PublishedResearchRepository;
 use App\Utils\Constants;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -533,7 +534,19 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
 
         ]);
     }
- 
+ /**
+     * @Route("/department_fetch", name="department_fetch")
+     */
+    public function departmentFetch(Request $request, DepartmentRepository $departmentRepository)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $college = $request->request->get("college");
+        //  dd($principal);
+        $departments = $departmentRepository->filterDepartments($college);
+        // dd($principals);
+
+        return new JsonResponse($departments);
+    }
     #[Route('/update-profile', name: 'researchworks', methods: ['GET','POST'])]
     public function researchworks(Request $request): Response
     {

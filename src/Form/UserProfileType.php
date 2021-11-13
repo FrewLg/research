@@ -30,22 +30,22 @@ class UserProfileType extends AbstractType
        
 
             $builder
-            ->add('first_name' ,TextType::class,[
-                'label'                 =>'Given name',
-                                'attr'=>[]
-                                ]
-                            )
-            ->add('midle_name' ,TextType::class,[
-'label'                 =>'Middle name',
-                'attr'=>[]
-                ]
-            )
+//             ->add('first_name' ,TextType::class,[
+//                 'label'                 =>'Given name',
+//                                 'attr'=>[]
+//                                 ]
+//                             )
+//             ->add('midle_name' ,TextType::class,[
+// 'label'                 =>'Middle name',
+//                 'attr'=>[]
+//                 ]
+//             )
             
-            ->add('last_name' ,TextType::class,[
-                'label'                 =>'Sur name',
-                                'attr'=>[]
-                                ]
-                            )
+//             ->add('last_name' ,TextType::class,[
+//                 'label'                 =>'Sur name',
+//                                 'attr'=>[]
+//                                 ]
+//                             )
             
             // ->add('birth_date' 
             // , DateType::class, array(
@@ -60,16 +60,16 @@ class UserProfileType extends AbstractType
             //     'class'=>'form-group col-md-4',
             //        )
             //           ))
-            ->add('bio' ,TextareaType::class,
-            [
-                'required'=>false,
+//             ->add('bio' ,TextareaType::class,
+//             [
+//                 'required'=>false,
 
-'attr'=>[
-                    'class' => 'form-control col col-md-3',
-                    'required'=>false,
-]
-            ])
-            ->add('affiliation')
+// 'attr'=>[
+//                     'class' => 'form-control col col-md-3',
+//                     'required'=>false,
+// ]
+//             ])
+            // ->add('affiliation')
             ->add('phone_number') 
             ->add('alternative_email')
                    ->add('gender',  ChoiceType::class, [
@@ -79,7 +79,7 @@ class UserProfileType extends AbstractType
              ],
             'expanded'=>true,
             'attr' => [
-                    'class' => 'form-control col col-md-3',
+                    'class' => 'form-control  col-md-3',
                   'required' => true,
                 'multiple'=>false,
                    ] ,            
@@ -116,17 +116,17 @@ class UserProfileType extends AbstractType
                 'placeholder' => '---Select College---',
                 "class"=>College::class,
                 "attr"=>[
-                    "class"=>"select2 ",
+                    "class"=>"select2 college",
                 ]
             ])
             
-            ->add('department',EntityType::class,[
-                'placeholder' => '---Select Department---',
-                "class"=>Department::class,
-                "attr"=>[
-                    "class"=>"select2 ",
-                ]
-            ])
+            // ->add('department',EntityType::class,[
+            //     'placeholder' => '---Select Department---',
+            //     "class"=>Department::class,
+            //     "attr"=>[
+            //         "class"=>"select2 ",
+            //     ]
+            // ])
             // 
             ->add('image', FileType::class, [
                 'label' => 'Upload profile picture... ',
