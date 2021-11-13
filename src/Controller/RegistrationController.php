@@ -56,9 +56,7 @@ class RegistrationController extends AbstractController
        
             $is_external=false;
         }
-
-
-       
+ 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
 
@@ -69,6 +67,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            // dd();
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -90,14 +89,16 @@ class RegistrationController extends AbstractController
             // $mailHelper->sendEmail($to, $subject, $template, $content);
             // do anything else you need here, like send an email
 
-            return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $authenticator,
-                'main' // firewall name in security.yaml
-            );
+            // return $guardHandler->authenticateUserAndHandleSuccess(
+            //     $user,
+            //     $request,
+            //     $authenticator,
+            //     'main' // firewall name in security.yaml
+            // );
             $this->addFlash("success","Registered Successfully!!");
-            return $this->redirectToRoute("myprofile");
+            // dd();
+           
+            return $this->redirectToRoute("app_login");
         }
         if ($uas_form->isSubmitted() && $uas_form->isValid()) {
             $username = $uas_form->get('username')->getData();
