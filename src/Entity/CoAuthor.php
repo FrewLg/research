@@ -88,19 +88,19 @@ class CoAuthor
     private $confirmed;
     /**
      * @ORM\ManyToOne(targetEntity=Title::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $title;
 
     /**
      * @ORM\ManyToOne(targetEntity=Department::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $department;
 
     /**
      * @ORM\ManyToOne(targetEntity=MemberRole::class, inversedBy="coAuthors")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $role;
 
