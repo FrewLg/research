@@ -60,10 +60,10 @@ class CollegeController extends AbstractController
     }
 
         /**
-     * @Route("/{prefix}/", name="college_show", methods={"GET","POST"})
+     * @Route("/{id}/", name="college_show", methods={"GET","POST"})
      */
 
-     public function show(College $college, Request $request,     InstitutionalReviewersBoardRepository $institutionalReviewersBoardRepository, GuidelinesRepository $guidelinesRepository): Response
+     public function show(College $college, Request $request,        ): Response
     {
     $this->denyAccessUnlessGranted('ROLE_USER');
     $entityManager = $this->getDoctrine()->getManager();

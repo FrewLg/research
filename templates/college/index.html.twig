@@ -19,7 +19,7 @@
                 <td>{{ college.id }}</td>
                 <td>{{ college.name }}</td>
                 <td>
-                    <a href="{{ path('college_show', {'prefix': college.prefix}) }}"class='btn btn-success btn-xs' >show</a>
+                    <a href="{{ path('college_show', {'id': college.id}) }}"class='btn btn-success btn-xs' >show</a>
                     <a href="{{ path('college_edit', {'id': college.id}) }}"class='btn btn-warning btn-xs' >edit</a>
                 </td>
             </tr>
