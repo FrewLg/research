@@ -17,7 +17,7 @@
 
 	<div class="col-md-2">
 		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">Category</label>
+			<label class="bmd-label-floating">Expense type</label>
 			{{form_widget(budget.category)}}
 
 		</div>
@@ -33,7 +33,7 @@
 
 	<div class="col-md-2">
 		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">Unit Price</label>
+			<label class="bmd-label-floating">Cost</label>
 			{{form_widget(budget.cost)}}
 
 		</div>
@@ -61,7 +61,7 @@
 {% macro researchTime(researchTimeTable) %}
 	<div class="col-md-4">
 		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">Task</label>
+			<label class="bmd-label-floating">Task in milestones </label>
 			{{form_widget(researchTimeTable.task)}}
 		</div>
 	</div>
@@ -88,7 +88,7 @@
 {% endmacro %}
 
 {% macro displayAttachement(attachement) %}
-	<div class="col-md-1">
+	<div class="col-md-2">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">Type</label>
 			{{form_widget(attachement.name)}}
@@ -103,8 +103,13 @@
 		</div>
 	</div>
 
+<div class="col-md-1">
+		<div class="form-group">
 
-	<div class="col-md-1">
+			 
+		</div>
+	</div>
+	<div class="col-md-2">
 		<div class="form-group">
 
 			<button type="button" class=" btn btn-danger btn-sm close  remove-collection-widget mt-4   bgc-h-danger-l2 radius-round ">
@@ -137,7 +142,7 @@
 	</div> #}
 
 {% if attachement.vars.value.file %}
-Test file
+ =
 
 {% endif %}
 
@@ -150,11 +155,8 @@ Test file
 
 			</button>
 		</div>
-	</div>
-
-
-{% endmacro %}
-
+	</div> 
+{% endmacro %} 
 
 {% macro displayObjective(objective) %}
 	<div class="col-md-11">
@@ -189,7 +191,7 @@ Test file
 	</div>
 	<div class="col-md-3">
 		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">Name</label>
+			<label class="bmd-label-floating">Name of CO-PI</label>
 			{{form_widget(coAuthor.researcher)}}
 
 		</div>
@@ -212,7 +214,7 @@ Test file
 		</div>
 	</div>
 
-	<div class="col-md-1">
+	<div class="col-md-2">
 		<div class="form-group">
 
 			<button type="button" class=" btn btn-danger btn-sm close  remove-collection-widget mt-4   bgc-h-danger-l2 radius-round ">
@@ -322,7 +324,7 @@ Test file
 
 
 									{# <div class="form-group row col-12"> #}
-									<label for="txtLastNameBilling" class="form-label mt-3 mb-1">Executive Summary</label>
+									<label for="txtLastNameBilling" class="form-label mt-3 mb-1"> Executive Summary / Abstract</label>
 
 									{{ form_widget(submissionform.abstract,{'attr':{'class':'form-control'}}) }}
 
@@ -347,12 +349,12 @@ Test file
 
 									{{ form_widget(submissionform.methodology,{'attr':{'class':'form-control'}}) }}
 
-									<label class="form-label mt-3 mb-1">Research outcome:
+									<label class="form-label mt-3 mb-1">Research outcome/ Output:
 									</label>
 
 									{{ form_widget(submissionform.research_outcome,{'attr':{'class':'form-control'}}) }}
 
-									<label class="form-label mt-3 mb-1">Reference:
+									<label class="form-label mt-3 mb-1">References:
 									</label>
 
 									{{ form_widget(submissionform.reference,{'attr':{'class':'form-control'}}) }}
@@ -406,7 +408,7 @@ Test file
 							<div class="col-md-12">
 								
 										<h4 class="font-20 fw-bold d-block mt-2"> 
-								Add Budget Expense and Time schedules</h4>
+								Add Budget Expense and Time schedules </h4>
 								
 								{{form_widget(submissionform.budget_and_time_schedule)}}
 							</div>
@@ -471,7 +473,7 @@ Test file
 							<div class="col-12">
 								<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#attachement-fields-list">
 									<span aria-hidden="true">+</span>
-									Add Attachements
+									Add Attachement 
 								</button>
 								<ul id="attachement-fields-list" class="m-t-5" data-prototype="{{_self.displayAttachement(submissionform.submissionAttachements.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ submissionform.submissionAttachements|length }}">
 									{% for attachement in submissionform.submissionAttachements %}
@@ -536,7 +538,7 @@ Test file
 										</ul>
 
 
-									<h3>Executive summary:</h3>
+									<h3>Executive summary/ Abstract:</h3>
 										<p class="font-15 mt-4">
 											{{ submission.abstract ? submission.abstract |raw: "no executive summary" }}
 
@@ -620,7 +622,7 @@ Test file
 														<!--end media body-->
 													</div>
 													<div class="align-self-center">
-														<span class="text-muted mb-n2">4.3k</span>
+														<span class="text-muted mb-n2"> </span>
 														<div class="apexchart-wrapper w-30 align-self-center">
 															<div id="dash_spark_1" class="chart-gutters"></div>
 														</div>
@@ -776,11 +778,10 @@ Test file
 									<thead>
 										<tr class="bg-gray-dark">
 											<th>Description</th>
-											<th>Category</th>
-											<th>Unit Price</th>
+											<th>Expense cost </th>
+											<th>Total cost</th>
 											<th>Quantity</th>
-											<th>Total</th>
-
+											<th>Total</th> 
 										</tr>
 									</thead>
 									<tbody>

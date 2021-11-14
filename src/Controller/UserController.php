@@ -534,6 +534,7 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
 
         ]);
     }
+    
  /**
      * @Route("/department_fetch", name="department_fetch")
      */

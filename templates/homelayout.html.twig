@@ -104,10 +104,11 @@
 								  
 							</ul>
 						</li>
+						{% if is_granted("ROLE_USER")%}
+
 						<li>
 							<a class="nav-link scrollto" href="{{ path('myreviews') }}">My research</a>
 						</li>
-						{% if is_granted("ROLE_USER")%}
 
 						
 							<li class="dropdown">
@@ -185,7 +186,7 @@ id="main">
 
 		<ol>
 			<li>
-				<a href="index.html">Home</a>
+				<a href="{{path('homepage')}}">Home</a>
 			</li>
 		</ol>
 		<h2>

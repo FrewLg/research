@@ -30,10 +30,10 @@ class  PublishedResearch
      */
     private $allotted_budget;
  
-  /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $year;
+//   /**
+//      * @ORM\Column(type="datetime", nullable=true)
+//      */
+//     private $year;
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -71,6 +71,11 @@ class  PublishedResearch
      */
     private $title;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=AcademicYear::class, inversedBy="publishedResearch")
+     */
+    private $year;
+
     // /**
     //  * @ORM\ManyToOne(targetEntity=PublishedTopic::class, inversedBy="publishedResearch" , cascade={"persist", "remove"}  )
     //  */
@@ -89,17 +94,17 @@ class  PublishedResearch
     }
  
 
-    public function getYear(): ?\DateTimeInterface
-    {
-        return $this->year;
-    }
+    // public function getYear(): ?\DateTimeInterface
+    // {
+    //     return $this->year;
+    // }
 
-    public function setYear(?\DateTimeInterface $year): self
-    {
-        $this->year = $year;
+    // public function setYear(?\DateTimeInterface $year): self
+    // {
+    //     $this->year = $year;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getFinalReport(): ?string
     {
@@ -232,6 +237,18 @@ class  PublishedResearch
     public function setTitle(?PublishedTopic $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getYear(): ?AcademicYear
+    {
+        return $this->year;
+    }
+
+    public function setYear(?AcademicYear $year): self
+    {
+        $this->year = $year;
 
         return $this;
     }

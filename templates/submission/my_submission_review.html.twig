@@ -49,7 +49,7 @@
 										<a href="{{ path('submission_status', {'id': submission.id}) }}" class="font-18 fw-semibold mb-2">
 										{{ submission.title }}:
 										{{ submission.subTitle }}</a>
-											<p class="font-13 fw-semibold mb-2">[Thematic area]:
+											<p class="font-13 fw-semibold mb-2"> Thematic area :
 												{{
                                                     submission.thematicArea |raw}}</p>
 										
@@ -98,8 +98,8 @@
 						{% else %}
 							<tr>
 								<td colspan="8">
-									<span class='text-danger'>Not submitted any research proposal with PI role
-																																                                                yet!</span>
+									<span class='text-danger'>You have not made a submission with PI role
+									  yet!</span>
 									<br> 
 
 								</td>
