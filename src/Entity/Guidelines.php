@@ -39,8 +39,10 @@ class Guidelines
      */
     private $attachment;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Guidelines::class, cascade={"persist", "remove"})
+
+ /**
+     * @ORM\OneToOne(targetEntity=College::class, inversedBy="guidelines", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $college;
 
@@ -101,18 +103,17 @@ class Guidelines
         return $this;
     }
 
-    public function getCollege(): ?self
+         public function getCollege(): ?College
     {
         return $this->college;
     }
 
-    public function setCollege(?self $college): self
+    public function setCollege(?College $college): self
     {
         $this->college = $college;
 
         return $this;
     }
-
    
    
 }
