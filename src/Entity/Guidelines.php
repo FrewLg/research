@@ -39,12 +39,24 @@ class Guidelines
      */
     private $attachment;
 
+<<<<<<< HEAD
 
  /**
      * @ORM\OneToOne(targetEntityCollege::class, inversedBy="guidelines", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+=======
+    /**
+     * @ORM\ManyToOne(targetEntity=College::class, inversedBy="guidelines")
+>>>>>>> 83a29d817d57065e0c7f615182563330d3c4c91b
      */
     private $college;
+
+
+//  /**
+//      * @ORM\OneToOne(targetEntity=College::class, inversedBy="guidelines", cascade={"persist", "remove"})
+//      * @ORM\JoinColumn(nullable=false)
+//      */
+//     private $college;
 
   
 
@@ -103,7 +115,19 @@ class Guidelines
         return $this;
     }
 
-         public function getCollege(): ?College
+    //      public function getCollege(): ?College
+    // {
+    //     return $this->college;
+    // }
+
+    // public function setCollege(?College $college): self
+    // {
+    //     $this->college = $college;
+
+    //     return $this;
+    // }
+
+    public function getCollege(): ?College
     {
         return $this->college;
     }

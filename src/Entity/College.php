@@ -85,6 +85,11 @@ class College
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Guidelines::class, mappedBy="college")
+     */
+    private $guidelines;
+
     public function __construct()
     {
         $this->collegeCoordinators = new ArrayCollection();
@@ -93,6 +98,7 @@ class College
         $this->thematicAreas = new ArrayCollection();
         $this->guidelineForReviewers = new ArrayCollection();
         $this->institutionalReviewersBoards = new ArrayCollection();
+        $this->guidelines = new ArrayCollection();
     }
     public function __toString()
     {
@@ -366,6 +372,36 @@ class College
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Guidelines[]
+     */
+    public function getGuidelines(): Collection
+    {
+        return $this->guidelines;
+    }
+
+    public function addGuideline(Guidelines $guideline): self
+    {
+        if (!$this->guidelines->contains($guideline)) {
+            $this->guidelines[] = $guideline;
+            $guideline->setCollege($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGuideline(Guidelines $guideline): self
+    {
+        if ($this->guidelines->removeElement($guideline)) {
+            // set the owning side to null (unless already changed)
+            if ($guideline->getCollege() === $this) {
+                $guideline->setCollege(null);
+            }
+        }
 
         return $this;
     }
