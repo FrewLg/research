@@ -74,10 +74,6 @@ class College
      */
     private $guidelineForReviewers;
 
-    // /**
-    //  * @ORM\OneToOne(targetEntity=Guidelines::class, inversedBy="college", cascade={"persist", "remove"})
-    //  */
-    // private $guideline;
 
     /**
      * @ORM\OneToMany(targetEntity=InstitutionalReviewersBoard::class, mappedBy="college")

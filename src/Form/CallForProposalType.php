@@ -65,9 +65,7 @@ class CallForProposalType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ))
-              
-               
-                 ->add('funding_source' , TextType:: class, [
+                   ->add('funding_source' , TextType:: class, [
             'attr'=>['class'=>'form-control col col-md-12 col-sm-12 col-lg-9 '],
             ])
             
