@@ -333,10 +333,11 @@
 
 	<!--end col-->
 	<div class="col-12">
-					{% if submission.submissionBudgets|length>0 %}
 
 		<div class="table-responsive">
 			<table style="border: 1px solid grey; width:100%;">
+					{% if submission.submissionBudgets|length>0 %}
+				
 				<thead>
 					<tr class="bg-gray-dark">
 						<th>Expense</th>
@@ -347,7 +348,9 @@
 
 					</tr>
 				</thead>
+				{% endif %}
 				<tbody>
+
 					{% set total = 0 %}
 					{% for budget in submission.submissionBudgets %}
 
@@ -386,19 +389,18 @@
 				</tbody>
 			</table>
 		</div>
-				{% endif %}
 
 					 
 
 		<div class="col-12">
 			<div class="table-responsive">
-				{% if submission.researchTimeTables|length >0 %}
 
 					<h5>Time table :
 					</h5>
 
 					<table style="border: 1px solid grey; width:100%;">
 						<thead>
+				{% if submission.researchTimeTables|length >0 %}
 							<tr class="bg-gray-dark">
 								<th>Task</th>
 
@@ -409,6 +411,7 @@
 
 							</tr>
 						</thead>
+				{% endif %}
 						<tbody>
 							{% for schedule in submission.researchTimeTables %}
 
@@ -436,14 +439,13 @@
 
 						</tbody>
 					</table>
-					{% else %}
-				{% endif %}
+			 
 
 			</div>
 			<div class="card-header">
 				<div class="row align-items-center">
 					<div class="col">
-						<h4 class="card-title">Reference</h4>
+						<h4 class="card-title">References</h4>
 					</div>
 
 					<p>{{ submission.Reference ? submission.Reference |raw: "No Reference found" }}</p>
