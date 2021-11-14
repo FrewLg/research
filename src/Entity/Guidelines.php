@@ -39,15 +39,8 @@ class Guidelines
      */
     private $attachment;
 
-<<<<<<< HEAD
-
- /**
-     * @ORM\OneToOne(targetEntityCollege::class, inversedBy="guidelines", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-=======
     /**
      * @ORM\ManyToOne(targetEntity=College::class, inversedBy="guidelines")
->>>>>>> 83a29d817d57065e0c7f615182563330d3c4c91b
      */
     private $college;
 
