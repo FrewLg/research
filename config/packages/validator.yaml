@@ -16,3 +16,10 @@ vich_uploader:
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             delete_on_remove: true  # determine whether to delete file upon removal of entity
             delete_on_update: true  # determine wheter to delete the file upon update of entity
+
+        irb_clearance:
+            uri_prefix:         /uploads/submission/
+            upload_destination: '%kernel.project_dir%/public/uploads/submission'
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
