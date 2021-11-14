@@ -65,7 +65,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         Security::LAST_USERNAME,
       $credentials['username']
         );
-        // dd($credentials);
+#         dd($credentials);
 
  return $credentials;
     }
@@ -77,8 +77,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
           throw new InvalidCsrfTokenException();
       }
            // from local database or ldap
-       $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
-  //  $user = $userProvider->getUserEntityCheckedFromLdap($credentials['username'], $credentials['password']);
+    #o   $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
+    $user = $userProvider->getUserEntityCheckedFromLdap($credentials['username'], $credentials['password']);
         //  dd($user);
 
       $this->user = $user;
