@@ -455,11 +455,15 @@ Comment sent to PI</a>
 				{{loop.index}}
 				 {{member.researcher}}
 				{% if member.confirmed=='1' %} <i class="fa fa-check text-success"></i> 
-				<br>
+				 
 
-			{% elseif member.confirmed==''  %}  <i class="fa fa-trash text-danger"></i>    
-				<br>
+			{% elseif member.confirmed==''    %}  <i class="fa fa-times-circle text-danger"></i>    
+				 
+
+			{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
+			{% else  %}  <i class="fa fa-close text-danger"></i>    
 				 {% endif %}
+				<br>
 				
 				  
 			{% else %}
