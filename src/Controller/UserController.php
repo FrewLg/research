@@ -574,6 +574,21 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
             $prifilepicture = $form->get('image')->getData();
         // dd($request->request->get("department"));
             // dd($form->getData());
+            foreach ($userInfo->getIrbClearances() as $key => $clearance) {
+
+                // $file = $form->get('file')->getData();
+                $files = $clearance->getFile('irb_clearance');
+
+                if ($files == NULL) {
+
+                    $this->addFlash('danger', "Please upload a file with only valid word file format! Allowed file formats are  .doc , .docx , .odp ,
+                ");
+
+                    // return $this->redirectToRoute('submission_firststepold', ["uidentifier" => $callForProposal->getUidentifier()]);
+
+                }
+            }
+
             $Emailpicture = $user->getEmail();
             // $publishedResearch->saveIrbClearance(Form $form);
             $userInfo->setHasCompleteProfile(true);
