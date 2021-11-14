@@ -13,7 +13,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=PublishedResearchRepository::class)
+ * @Vich\Uploadable
  */
+
 class  PublishedResearch
 {
     /**
