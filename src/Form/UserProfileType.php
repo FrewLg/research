@@ -96,29 +96,29 @@ class UserProfileType extends AbstractType
             ])
             
             ->add('suffix')
-            // ->add('education_level',EntityType::class,[
-            //     'placeholder' => '---Select Education level ---',
-            //     "class"=>EducationalLevel::class,
-            //     "attr"=>[
-            //         "class"=>"select2 ",
-            //     ]
-            // ])
+            ->add('education_level',EntityType::class,[
+                'placeholder' => '---Select Education level ---',
+                "class"=>EducationalLevel::class,
+                "attr"=>[
+                    "class"=>"select2 ",
+                ]
+            ])
             
-            // ->add('academic_rank',EntityType::class,[
-            //     'placeholder' => '---Select Academic rank---',
+            ->add('academic_rank',EntityType::class,[
+                'placeholder' => '---Select Academic rank---',
                
-            //     "class"=>AcademicRank::class,
-            //     "attr"=>[
-            //         "class"=>"select2 ",
-            //     ]
-            // ])
-            // ->add('college',EntityType::class,[
-            //     'placeholder' => '---Select College---',
-            //     "class"=>College::class,
-            //     "attr"=>[
-            //         "class"=>"select2 college",
-            //     ]
-            // ])
+                "class"=>AcademicRank::class,
+                "attr"=>[
+                    "class"=>"select2 ",
+                ]
+            ])
+            ->add('college',EntityType::class,[
+                'placeholder' => '---Select College---',
+                "class"=>College::class,
+                "attr"=>[
+                    "class"=>"select2 college",
+                ]
+            ])
             
             // ->add('department',EntityType::class,[
             //     'placeholder' => '---Select Department---',
