@@ -52,7 +52,8 @@ class PublishedResearchType extends AbstractType
             //     ],
             // ])
 
-            ->add('irb_clearance'  ,VichFileType::class,[
+            ->add('imageName'  ,VichFileType::class,[
+                'allow_delete' => false,
                 'allow_delete' => false,
                 // 'delete_label' => 'Remove file',
            //     'download_uri' => '...',
