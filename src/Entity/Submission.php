@@ -122,8 +122,6 @@ class Submission
      */
     private $reference;
     
-
-
     /**
      * @ORM\Column(type="text",   nullable=true)
      */

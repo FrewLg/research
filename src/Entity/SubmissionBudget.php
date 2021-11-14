@@ -27,12 +27,12 @@ class SubmissionBudget
 
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float" , nullable=true)
      */
     private $cost;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer" , nullable=true)
      */
     private $quantity;
 
@@ -42,7 +42,7 @@ class SubmissionBudget
     private $remark;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text" , nullable=true)
      */
     private $description;
 
