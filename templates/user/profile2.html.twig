@@ -408,6 +408,8 @@ $(this).closest('.row').fadeOut().remove();
 
 });
 $(document).on('click', '.add-another-collection-widget', function (e) {
+$(".select2").select2();
+
 var list = jQuery(jQuery(this).attr('data-list-selector'));
 
 var counter = list.data('widget-counter') || list.children().length;
