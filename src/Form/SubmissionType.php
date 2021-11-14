@@ -28,10 +28,15 @@ class SubmissionType extends AbstractType
             // )
             ->add('abstract' ) 
             ->add('background_and_rationale' ) 
-            ->add('methodology' ) 
+            ->add('methodology'  ) 
             ->add('research_outcome' ) 
 
-            ->add('reference' ) 
+            ->add('reference' ,   CKEditorType::class,[
+                'attr'=>['placeholder'=>'References',
+                'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                             'required' => false,
+            
+            ],]) 
               
 ->add('budget_and_time_schedule' ,   CKEditorType::class,[
     'attr'=>['placeholder'=>'Budget and time schedule',

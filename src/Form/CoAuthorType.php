@@ -18,7 +18,16 @@ class CoAuthorType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('researcher')
+            ->add('researcher' , EntityType::class, array(
+                'required'=>false,
+                                      'placeholder' => '-- Select researcher --',
+                         'class' => 'App\Entity\User',
+                         'attr' => array(
+                             'empty' => 'Select User ',
+                             'required' => false,
+                             'class' => 'form-control select2 chosen-select ',
+                         )
+                     ))
            ->add('department'
         //    ,null,['attr'=>['class'=>'form-control select2']])
             
