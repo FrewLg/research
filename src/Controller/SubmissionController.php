@@ -314,7 +314,7 @@ class SubmissionController extends AbstractController {
                 $applicantsubject = $applicantmessages->getSubject();
                 $applicantbody = $applicantmessages->getBody();
 
-                $submission_url = 'submission' . $submission->getId() . 'status';
+                $submission_url = 'submission/' . $submission->getId() . '/status';
                 $applicant = $submission->getAuthor()->getEmail();
                 $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
                 $emailtwo = (new TemplatedEmail())
