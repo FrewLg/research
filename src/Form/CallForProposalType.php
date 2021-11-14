@@ -66,19 +66,7 @@ class CallForProposalType extends AbstractType
                 'format' => 'yyyy-MM-dd',
             ))
               
-                  ->add('thematic_area', EntityType::class
-                  
-                 , array(
-       'placeholder' => '-- Select Thematic area--',
-
-       'class' => 'App\Entity\ThematicArea',
-         'attr' => array(
-            'empty' => 'Select disability detail ',
-          'required' => true,
- 	'class' => 'form-control form-inline col col-md-12 col-sm-12 col-lg-9 ',
- 
-         )
-     ))
+               
                  ->add('funding_source' , TextType:: class, [
             'attr'=>['class'=>'form-control col col-md-12 col-sm-12 col-lg-9 '],
             ])
