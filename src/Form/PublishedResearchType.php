@@ -52,13 +52,14 @@ class PublishedResearchType extends AbstractType
             //     ],
             // ])
 
-            ->add('imageName'  ,VichFileType::class,[
-                'allow_delete' => false,
-                'allow_delete' => false,
-                // 'delete_label' => 'Remove file',
-           //     'download_uri' => '...',
-               'download_label' => 'Download file',
-            ])
+        //     ->add('imageFile'  ,VichFileType::class,[
+        //         'allow_delete' => false,
+        //         // 'allow_add' => true,
+        //         // 'data_class' => null,                
+        //         // 'delete_label' => 'Remove file',
+        //    //     'download_uri' => '...',
+        //        'download_label' => 'Download file',
+        //     ])
             // ->add('user')
 
         ;
