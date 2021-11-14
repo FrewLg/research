@@ -26,37 +26,12 @@ class SubmissionType extends AbstractType
             // ->add('abstract',
             // CKEditorType::class
             // )
-            ->add('abstract',   CKEditorType::class,[
-                'attr'=>['placeholder'=>'Executive Summary',
-                'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                             'required' => false,
-            
-            ],]) 
-            ->add('background_and_rationale',   CKEditorType::class,[
-                'attr'=>['placeholder'=>'Background and rationale',
-                'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                             'required' => false,
-            
-            ],]) 
-            ->add('methodology',   CKEditorType::class,[
-                'attr'=>['placeholder'=>'Methodology',
-                'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                             'required' => false,
-            
-            ],]) 
-            ->add('research_outcome',   CKEditorType::class,[
-                'attr'=>['placeholder'=>'Research  outcome    ',
-                'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                             'required' => false,
-            
-            ],]) 
+            ->add('abstract' ) 
+            ->add('background_and_rationale' ) 
+            ->add('methodology' ) 
+            ->add('research_outcome' ) 
 
-            ->add('reference',   CKEditorType::class,[
-                'attr'=>['placeholder'=>'reference    ',
-                'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                             'required' => false,
-            
-            ],]) 
+            ->add('reference' ) 
               
 ->add('budget_and_time_schedule' ,   CKEditorType::class,[
     'attr'=>['placeholder'=>'Budget and time schedule',

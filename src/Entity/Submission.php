@@ -128,10 +128,9 @@ class Submission
      * @ORM\Column(type="text",   nullable=true)
      */
     private $action_plan;
-
  
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text",  nullable=true)
      */
     private $GeneralObjective;
 
