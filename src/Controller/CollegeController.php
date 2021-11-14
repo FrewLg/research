@@ -26,6 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Guidelines;
 use App\Form\GuidelinesType;
 use App\Repository\GuidelinesRepository;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 #[Route('/college')]
 class CollegeController extends AbstractController
@@ -97,7 +98,12 @@ class CollegeController extends AbstractController
         }
     $guideline = new Guidelines();        
     $guidelineform = $this->createFormBuilder($guideline)  
-         ->add('guideline')
+         ->add('guideline',   CKEditorType::class,[
+            'attr'=>['placeholder'=>'Executive Summary',
+            'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                         'required' => false,
+        
+        ],]) 
  
            ->add('attachment', FileType::class, [
                 'label' => 'Guideline attachment  file',

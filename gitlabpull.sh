@@ -9,6 +9,7 @@ rm -r var/cache/*
 rm -r var
 mkdir var
 chmod -R 777 var/
+git push
 #chmod -R 777 public/
 #mkdir yegitlab_dir
 #chmod -R 777 yegitlab_dir
