@@ -41,7 +41,7 @@ class Guidelines
 
 
  /**
-     * @ORM\OneToOne(targetEntity=College::class, inversedBy="guidelines", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntityCollege::class, inversedBy="guidelines", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $college;
