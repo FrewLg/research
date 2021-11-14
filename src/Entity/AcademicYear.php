@@ -50,7 +50,10 @@ class AcademicYear
 
         return $this;
     }
-
+    public function __toString()
+    {
+     return $this->year_name;   
+    }
     /**
      * @return Collection|PublishedResearch[]
      */
