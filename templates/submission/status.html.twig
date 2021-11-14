@@ -529,7 +529,9 @@ $("#showEditRequestContent").html("Problem");
 				{% if member.confirmed=='1' %} <i class="fa fa-check text-success"></i> 
 				<br>
 
-			{% elseif member.confirmed==''  %}  <i class="fa fa-close text-danger"></i>    
+			{% elseif member.confirmed==''    %}  <i class="fa fa-times-circle text-danger"></i>    
+			{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
+			{% else  %}  <i class="fa fa-close text-danger"></i>    
 				<br>
 				 {% endif %}
 				

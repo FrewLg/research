@@ -64,10 +64,7 @@ class  PublishedResearch
      */
     private $submission; 
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $irb_clearance;
+     
 
     /**
      * @ORM\ManyToOne(targetEntity=UserInfo::class, inversedBy="researches"  , cascade={"persist", "remove"})
@@ -77,25 +74,17 @@ class  PublishedResearch
     private $userInfo;
 
 
-      
-    /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     
+      /**
      * 
-     * @Vich\UploadableField(mapping="published_research", fileNameProperty="imageName", size="imageSize")
+     * @Vich\UploadableField(mapping="imageFile", fileNameProperty="imageFile")
      * 
      * @var File|null
      */
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string")
-     *
-     * @var string|null
-     */
-    private $imageName;
-
-    /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer" , length=255, nullable=true)
      *
      * @var int|null
      */
@@ -138,17 +127,7 @@ class  PublishedResearch
     {
         return $this->imageFile;
     }
-
-    public function setImageName(?string $imageName): void
-    {
-        $this->imageName = $imageName;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
-    }
-    
+   
     public function setImageSize(?int $imageSize): void
     {
         $this->imageSize = $imageSize;
@@ -166,18 +145,6 @@ class  PublishedResearch
  
 
     
-
-    // public function getYear(): ?\DateTimeInterface
-    // {
-    //     return $this->year;
-    // }
-
-    // public function setYear(?\DateTimeInterface $year): self
-    // {
-    //     $this->year = $year;
-
-    //     return $this;
-    // }
 
     public function getFinalReport(): ?string
     {
@@ -254,17 +221,7 @@ class  PublishedResearch
         return $this;
     }
  
-    public function getIrbClearance(): ?string
-    {
-        return $this->irb_clearance;
-    }
-
-    public function setIrbClearance(?string $irb_clearance): self
-    {
-        $this->irb_clearance = $irb_clearance;
-
-        return $this;
-    }
+   
 //     public function saveIrbClearance(Form $form)
 // {
 //     $userInfo = $this->getUser->getUserInfo();
