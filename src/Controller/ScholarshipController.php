@@ -49,6 +49,7 @@ class ScholarshipController extends AbstractController
     #[Route('/new', name: 'scholarship_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
+        
         $scholarship = new Scholarship();
         $form = $this->createForm(ScholarshipType::class, $scholarship);
         $form->handleRequest($request);

@@ -125,6 +125,7 @@ class UserInfo
     /**
      * @ORM\OneToMany(targetEntity=PublishedResearch::class, mappedBy="userInfo" , cascade={"persist", "remove"} , orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true) 
+     * 
      *
      */
     private $researches;

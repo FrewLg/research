@@ -19,7 +19,7 @@ class SubmissionBudgetType extends AbstractType
             ->add('quantity',IntegerType::class,["attr"=>["min"=>"0"]])
             // ->add('remark')
             // ->add('submission')
-            ->add('category')
+            ->add('category' )
         ;
     }
 

@@ -586,7 +586,7 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
             }
             $entityManager->persist($publishedResearch);
             $entityManager->flush();
-            return $this->redirectToRoute('researchworks' );
+            return $this->redirectToRoute('call_for_proposal_all' );
         }
         $entityManager = $this->getDoctrine()->getManager();
 

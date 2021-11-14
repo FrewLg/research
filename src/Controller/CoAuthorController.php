@@ -84,8 +84,8 @@ class CoAuthorController extends AbstractController {
         ##########################
                $userdetails = $this->getUser()->getUserInfo();
                if($userdetails->getFirstName()=='' ||$userdetails->getMidleName()=='' || 
-               $userdetails ->getLastName() =='' ||  
-                $userdetails-> getCollege() =='' || $userdetails-> getDepartment() =='' ||
+               $userdetails ->getLastName() =='' ||
+                $userdetails-> getCollege() =='' ||
                  $userdetails-> getEducationLevel() =='' || $userdetails-> getAcademicRank()==''  )
                 
                {

@@ -188,7 +188,7 @@ class SubmissionController extends AbstractController {
         if (
             $userdetails->getFirstName() == '' || $userdetails->getMidleName() == '' ||
             $userdetails->getLastName() == '' ||
-            $userdetails->getCollege() == '' || $userdetails->getDepartment() == '' ||
+            $userdetails->getCollege() == '' ||  
             $userdetails->getEducationLevel() == '' || $userdetails->getAcademicRank() == '') {
             $flashbag = $this->get('session')->getFlashBag();
             $flashbag->add("danger", "Please complete your profile first before you submit the proposal  !");

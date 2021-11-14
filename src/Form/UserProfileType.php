@@ -79,7 +79,7 @@ class UserProfileType extends AbstractType
              ],
             'expanded'=>true,
             'attr' => [
-                    'class' => 'form-control  col-md-3',
+                    'class' => 'form-group  form-control  col-md-3',
                   'required' => true,
                 'multiple'=>false,
                    ] ,            
