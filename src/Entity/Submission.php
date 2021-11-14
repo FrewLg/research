@@ -552,7 +552,7 @@ class Submission
     }
  
 
-    public function getComponentType(): ?string
+    public function getActionPlan(): ?string
     {
         return $this->action_plan;
     }
