@@ -81,7 +81,7 @@ class  PublishedResearch
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="published_research", fileNameProperty="imageName", size="imageSize")
+     * @Vich\UploadableField(mapping="irb_clearance", fileNameProperty="imageName", size="imageSize")
      * 
      * @var File|null
      */
