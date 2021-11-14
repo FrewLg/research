@@ -572,6 +572,7 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager(); 
             $prifilepicture = $form->get('image')->getData();
+            // dd($form->getData());
             $Emailpicture = $user->getEmail();
             // $publishedResearch->saveIrbClearance(Form $form);
             $userInfo->setHasCompleteProfile(true);
