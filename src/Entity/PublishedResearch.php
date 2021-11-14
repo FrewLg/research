@@ -11,9 +11,17 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
+ 
+
+ /**
+ * PublishedResearch 
+ *
+ * @ORM\Table(name="published_research")
+ * 
  * @ORM\Entity(repositoryClass=PublishedResearchRepository::class)
+ * @Vich\Uploadable
  */
+
 class  PublishedResearch
 {
     /**
@@ -73,7 +81,7 @@ class  PublishedResearch
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName", size="imageSize")
+     * @Vich\UploadableField(mapping="published_research", fileNameProperty="imageName", size="imageSize")
      * 
      * @var File|null
      */
@@ -92,7 +100,7 @@ class  PublishedResearch
      * @var int|null
      */
     private $imageSize;
-    
+
 
     /**
      * @ORM\ManyToOne(targetEntity=PublishedTopic::class, inversedBy="title")
