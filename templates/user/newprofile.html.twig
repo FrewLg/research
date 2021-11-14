@@ -469,42 +469,30 @@
 
 											{# //////////////// #}
 											<script type="text/javascript">
-												{
-# $(document).ready(function () {
-#
-}
+												  $(document).ready(function () {
+ 
 
 function yesnoCheck() {
 if (document.getElementById('yesCheck').checked) {
 document.getElementById('ifYes').style.display = 'block';
 } else 
 document.getElementById('ifYes').style.display = 'none';
-
-
-{
-# if (document.getElementById('yesCheck').checked) {
+  if (document.getElementById('yesCheck').checked) {
 document.getElementById('ifYes').style.display = 'block';
 }
-jhjk
-else 
+ 
+else  
 document.getElementById('ifYes').style.display = 'none';
-
-#
-}
-
-
-}
-{
-#
-});
-#
-}
+ 
+ 
+ 
+												  }
+												  });
+												   
 											</script>
 
 
-											{# ########## #}
-
-
+											 
 										</div>
 									</div>
 
@@ -537,33 +525,23 @@ counter++;
 list.data('widget-counter', counter);
 var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
 newElem.appendTo(list);
-<<<<<<< HEAD
+ 
 
 $("#user_profile_researches_0_title").select2();
 $("#user_profile_researches_1_title").select2(); 
 $("#user_profile_researches_2_title").select2(); 
 $("#user_profile_researches_3_title").select2(); 
 $("#user_profile_researches_4_title").select2(); 
- });
-=======
->>>>>>> tamex
+ }); 
 });
 });
 var form = $("#form-horizontal");
 $input.appendTo($('ul[aria-label=Pagination]'));
-<<<<<<< HEAD
-	</script>
+ </script>
 	<script>
 	$(function () {
 $(".select2").select2(); 
 
-
-=======
-							</script>
-							<script>
-								$(function () {
-$(".select2").select2();
->>>>>>> tamex
-})
-							</script>
+ 		</script>
+							 
 						{% endblock %}

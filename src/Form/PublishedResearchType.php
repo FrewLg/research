@@ -35,33 +35,22 @@ class PublishedResearchType extends AbstractType
                 ]
             ])  
             ->add('allotted_budget')
-            ->add('year'   , DateType::class, array(
-                            'placeholder' => [
-                  'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                ],
-                          'widget' => 'single_text',
-                          'format' => 'yyyy-MM-dd',
-                             'attr' => array(
-                
-                       'required' => true,
-                'class'=>'form-group col-md-4',
-                   )
-                      ))
+            ->add('year'  )
                       
             // ->add('remark')
             ->add('successfully_completed')
             // ->add('final_report') 
-            ->add('irb_clearance', FileType::class, [
-                'label' => 'IRB clearance document  file',
-                'mapped' => false,
-                'required' => false,
-                'attr' => [ 
-                    'class' => 'form-control',
+            // ->add('irb_clearance', FileType::class, [
+            //     'label' => 'IRB clearance document  file',
+            //     'mapped' => false,
+            //     'required' => false,
+            //     'attr' => [ 
+            //         'class' => 'form-control',
     
-                    'required' => false,
+            //         'required' => false,
     
-                ],
-            ])
+            //     ],
+            // ])
             // ->add('user')
 
         ;

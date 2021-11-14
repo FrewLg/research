@@ -460,7 +460,9 @@ class UserController extends AbstractController
             }
             $em->flush();
             $this->addFlash("success", "Updated Successfully");
-            return $this->redirectToRoute('myprofile');
+            // return $this->redirectToRoute('myprofile');
+            return $this->redirectToRoute('call_for_proposal_all' );
+
         }
 
         #$usersPublication=getSubmissionRepository('Submission':class, findBy('author'=>$user->getId()));
@@ -590,7 +592,7 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
 
         $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find($this->getUser());
           
-        return $this->render('user/newprofile.html.twig', [
+        return $this->render('user/profile2.html.twig', [
             'published_research' => $publishedResearch,
             'user' => $user,
             'alltitles'=>$earlierprojects,

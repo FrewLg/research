@@ -42,15 +42,9 @@
 		</div>
 	</div>
 
-	<div class="col-md-1">
-		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">irb clearance</label>
-			{{form_widget(researches.irb_clearance )}}
+ 
 
-		</div>
-	</div>
-
-	<div class="col-md-1">
+	<div class="col-md-2">
 		<div class="form-group">
 
 			<button type="button" class=" btn btn-danger btn-sm close  remove-collection-widget mt-4   bgc-h-danger-l2 radius-round ">
@@ -502,6 +496,13 @@ list.data('widget-counter', counter);
 var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
 newElem.appendTo(list);
 $(".select").select2("destroy").select2();
+
+$("#user_profile_researches_0_title").select2();
+$("#user_profile_researches_1_title").select2(); 
+$("#user_profile_researches_2_title").select2(); 
+$("#user_profile_researches_3_title").select2(); 
+$("#user_profile_researches_4_title").select2(); 
+
 });
 });
 
