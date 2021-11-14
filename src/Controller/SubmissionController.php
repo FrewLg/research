@@ -390,7 +390,7 @@ class SubmissionController extends AbstractController {
 
         $font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
         $font = null;
-        $dompdf->getCanvas()->page_text(72, 18, "dsds: {PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0, 0, 0));
+        $dompdf->getCanvas()->page_text(72, 18, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0, 0, 0));
 
         ob_end_clean();
         $filename = $submission->getTitle();
