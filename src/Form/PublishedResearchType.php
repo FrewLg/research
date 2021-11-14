@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class PublishedResearchType extends AbstractType
 {
@@ -51,6 +51,13 @@ class PublishedResearchType extends AbstractType
     
             //     ],
             // ])
+
+            ->add('irb_clearance'  ,VichFileType::class,[
+                'allow_delete' => false,
+                // 'delete_label' => 'Remove file',
+           //     'download_uri' => '...',
+               'download_label' => 'Download file',
+            ])
             // ->add('user')
 
         ;
