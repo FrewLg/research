@@ -323,14 +323,18 @@
 
 		<h4>Action plan
 		</h4>
-		{{ submission.actionPlan}}
+						{{ submission.ActionPlan ? submission.ActionPlan |raw: "" }}
+
 		<h5>Project budget
 		</h5>
 
 
 	</div>
+
 	<!--end col-->
 	<div class="col-12">
+					{% if submission.submissionBudgets|length>0 %}
+
 		<div class="table-responsive">
 			<table style="border: 1px solid grey; width:100%;">
 				<thead>
@@ -382,6 +386,9 @@
 				</tbody>
 			</table>
 		</div>
+				{% endif %}
+
+					 
 
 		<div class="col-12">
 			<div class="table-responsive">
