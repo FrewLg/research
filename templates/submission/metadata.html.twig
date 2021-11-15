@@ -752,21 +752,16 @@
 								{% endif %}
 
 							</div>
-
 						</div>
-											{# {{ submission.BackgroundAndRationale ? submission.BackgroundAndRationale |raw: "no   Background And Rationale" }}
-
-{% if submission.ActionPlan|length >0  %}
-
-											{{ submission.BackgroundAndRationale ? submission.BackgroundAndRationale |raw: "no   Background And Rationale" }}
-
+ 
+{% if submission.ActionPlan|length >0  %}  
 						<div class="col-12">
 							<div class="table-responsive">
 								<h4>Action plan :</h4>
 								{{  submission.ActionPlan }}
 </div>
 </div>
- 	{% endif %} #}
+ 	{% endif %}
 
 {% if submission.submissionBudgets|length >0  %}
 
@@ -835,7 +830,9 @@
 			<!--end card-body-->
 		</div>
 		<!--end card-->
-	</div><!--end col--></div><!--end row-->{% endblock%}
+	</div><!--end col--></div>
+	
+	{% endblock%}
 {% block script %}
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" 
 	integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -850,7 +847,7 @@
 $(document).on('click', '.remove-collection-widget', function (e) {
 $(this).closest('.row').fadeOut().remove();
 $(".select2").select2();
-
+																																																																																																																		
 
 });
 $(document).on('click', '.add-another-collection-widget', function (e) {
