@@ -146,7 +146,8 @@
 														<th>#</th>
 														<th>Name</th>
 														{# <th>Last name</th> #}
-														<th>Affiliation</th>
+														<th>College</th>
+														<th>Department</th>
 														<th>Email</th>
 														<th>Role</th>
 
@@ -157,7 +158,8 @@
 																<td>1</td>
 																<td>{{ submission.author.email }}</td>
 																{# <td>{{ co_author.role }}</td> #}
-																<td>{{ submission.author.userInfo.affiliation }}</td>
+																<td>{{ submission.author.userInfo.college }}</td>
+																<td>{{ submission.author.userInfo.department }}</td>
 																<td>{{ submission.author.email }}</td>
 																<td>PI</td>
 
@@ -165,10 +167,11 @@
 														{% for co_author in submission.coAuthors %}
 															<tr>
 																<td>{{ loop.index }}</td>
-																<td>{{ co_author.name }}</td>
+																<td>{{ co_author.researcher.userInfo }}</td>
 																{# <td>{{ co_author.role }}</td> #}
-																<td>{{ co_author.affiliation }}</td>
-																<td>{{ co_author.email }}</td>
+																<td>{{ co_author.researcher.userInfo.college }}</td>
+																<td>{{ co_author.researcher.userInfo.department }}</td>
+																<td>{{ co_author.researcher.email }}</td>
 																<td>{{ co_author.role }}</td>
 
 															</tr>
@@ -180,7 +183,6 @@
 													</tr>
 												</tbody>
 											</table>
-
 												<h4 class='text-'>Budget breakdown</h4>
 												<table class="table table-striped">
 													<thead>
@@ -525,7 +527,7 @@ $("#showEditRequestContent").html("Problem");
 
 			{% for member in submission.coAuthors %}
 				{{loop.index}}
-				 {{member.researcher}}
+				 {{member.researcher.userInfo}}
 				{% if member.confirmed=='1' %} <i class="fa fa-check text-success"></i> 
 				 
 

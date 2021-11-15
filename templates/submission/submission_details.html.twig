@@ -230,6 +230,15 @@
 												</table>
 											{% else %}
 												<h4 class='text-'>Action paln</h4>
+{% if submission.actionplan|length >0  %}  
+						<div class="col-12">
+							<div class="table-responsive">
+								<h4>Action plan :</h4>
+								{{  submission.actionplan |raw }}
+</div>
+</div>
+ 	{% endif %}
+
 												<h5 class='text-'>Budget breakdown</h5>
 												<table class="table table-striped">
 													<thead>
