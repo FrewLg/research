@@ -86,18 +86,15 @@
 									{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d H:i:s') : '' }}
 								</li>
 
-								<li>
-									Commitment from other research:
-								</li>
 
 								<li>
 									Review process: starts at
-									{{ call_for_proposal.reviewProcessEnd ? call_for_proposal.reviewProcessEnd|date('Y-m-d H:i:s') : '' }}
+			{{ call_for_proposal.reviewProcessStart ? call_for_proposal.reviewProcessStart|date('Y-m-d H:i:s') : '' }}
 									and ends at
-									{{ call_for_proposal.reviewProcessEnd ? call_for_proposal.reviewProcessStart|date('Y-m-d H:i:s') : '' }}
+			{{ call_for_proposal.reviewProcessEnd ? call_for_proposal.reviewProcessEnd|date('Y-m-d H:i:s') : '' }}
 								</li>
 								<li>
-									Reviewers decision will be communicated at
+									Reviewers decision will be communicated starting
 									{{ call_for_proposal.reviewersDecisionWillBeCommunicatedAt ? call_for_proposal.reviewersDecisionWillBeCommunicatedAt|date('Y-m-d H:i:s') : '' }}
 								</li>
 								<li>
