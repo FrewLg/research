@@ -270,8 +270,13 @@ id="main">
 				<div class="sidebar"> {% block aside %}{% endblock %}
 					{% if is_granted("ROLE_USER")%}
 						<aside class="widget widget-Categories with-title">
+<h3 class="widget-title">Guidelines</h3>
+						
+
+							<a href='{{ asset('Guidelines.pdf') }}' class='btn btn-primary btn-sm'>Proposal submission guideline</a>
+
+
 							<h3 class="widget-title">Researche Directorates</h3>
-							<a href='{{ asset('Guidelines.pdf') }}'>Proposal submission guideline</a>
 							<ul>
 								<li>
 									<a href="https://www.ju.edu.et/technology-transfer">Technology Transfer</a>
