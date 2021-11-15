@@ -48,12 +48,14 @@
 									My assigned</a>
 							</li>
 
+				{% if is_granted("assn_clg_cntr") %}
 
 							<li class="nav-item">
 								<a class="nav-link" href="{{ path('published_research_index') }}">
 									<i class="ti-control-record"></i>
 									Published Researches  </a>
 							</li>
+				{% endif  %}
 
 						</ul>
 					</li>

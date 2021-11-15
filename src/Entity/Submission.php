@@ -246,6 +246,11 @@ class Submission
      */
     private $budget_and_time_schedule;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $actionplan;
+
    
 
  
