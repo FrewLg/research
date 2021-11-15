@@ -247,9 +247,11 @@
 						</div>
 						<div class="p-3">
 							<div class="form-check">
-								{{ form_widget(submissionform.agree_to_the_terms) }}
-								{{ form_label(submissionform.agree_to_the_terms) }}<br>
-
+							{# <h1 class='form-control'> #}
+							
+										<h2 class="font-24 text-primary corm-check   d-block mt-2"> 
+							 {{ form_label(submissionform.agree_to_the_terms) }} {{ form_widget(submissionform.agree_to_the_terms) }}</b></h2>
+	
 							</div>
 						</div>
 
@@ -410,7 +412,7 @@
 										<h4 class="font-20 fw-bold d-block mt-2"> 
 								Add Budget Expense and Time schedules </h4>
 								
-								{{form_widget(submissionform.budget_and_time_schedule)}}
+								{{form_widget(submissionform.actionplan)}}
 							</div>
 
 							<div class="col-12">
@@ -754,11 +756,11 @@
 							</div>
 						</div>
  
-{% if submission.ActionPlan|length >0  %}  
+{% if submission.actionplan|length >0  %}  
 						<div class="col-12">
 							<div class="table-responsive">
 								<h4>Action plan :</h4>
-								{{  submission.ActionPlan }}
+								{{  submission.actionplan |raw }}
 </div>
 </div>
  	{% endif %}
@@ -917,7 +919,7 @@ rules: {
 required: true,
 minlength: 5
 },
-"submission[agree_to_the_terms]": {
+"#submission_agree_to_the_terms_0": {
 required: true
 }
 

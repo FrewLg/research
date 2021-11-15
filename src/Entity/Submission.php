@@ -122,10 +122,7 @@ class Submission
      */
     private $reference;
     
-    /**
-     * @ORM\Column(type="text",   nullable=true)
-     */
-    private $action_plan;
+  
  
     /**
      * @ORM\Column(type="text",  nullable=true)
@@ -309,6 +306,19 @@ class Submission
         return $this;
     }
 
+    public function getActionplan(): ?string
+    {
+        return $this->actionplan;
+    }
+
+    public function setActionplan(?string $actionplan): self
+    {
+        $this->actionplan = $actionplan;
+
+        return $this;
+    }
+    
+    
     public function getAuthor(): ?User
     {
         return $this->author;
@@ -557,18 +567,7 @@ class Submission
     }
  
 
-    public function getActionPlan(): ?string
-    {
-        return $this->action_plan;
-    }
-
-    public function setActionPlan(?string $action_plan): self
-    {
-        $this->action_plan = $action_plan;
-
-        return $this;
-    }
- 
+    
 
     public function getGeneralObjective(): ?string
     {

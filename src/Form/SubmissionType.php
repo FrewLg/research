@@ -23,10 +23,14 @@ class SubmissionType extends AbstractType
             ->add('title',TextType::class,['attr'=>[]])
             ->add('step',HiddenType::class)
             ->add('sub_title')
-            // ->add('abstract',
-            // CKEditorType::class
-            // )
-            ->add('abstract' ) 
+            ->add('abstract') 
+            ->add('actionplan' ,   CKEditorType::class,[
+                'attr'=>['placeholder'=>'References',
+                'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                             'required' => false,
+            
+                ],]) 
+            // ->add('abstract' ) 
             ->add('background_and_rationale' ) 
             ->add('methodology'  ) 
             ->add('research_outcome' ) 
@@ -36,11 +40,11 @@ class SubmissionType extends AbstractType
                 'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
                              'required' => false,
             
-            ],]) 
+                ],]) 
               
-->add('budget_and_time_schedule' ,   CKEditorType::class,[
-    'attr'=>['placeholder'=>'Budget and time schedule',
-    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+             ->add('budget_and_time_schedule' ,   CKEditorType::class,[
+                'attr'=>['placeholder'=>'Budget and time schedule',
+             'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
                  'required' => false,
 
 ],]) 
@@ -78,8 +82,11 @@ class SubmissionType extends AbstractType
             ->add('agree_to_the_terms',
             ChoiceType::class, [
                 "label"=>"I have read guidelines and agree",
+    'required' => true,
+                
                 "choices" =>  ["I have read guidelines and agree"=>"1"],
-             'mapped' => false, "multiple" => true, 'expanded'=>true,
+    'required' => true,
+    'mapped' => false, "multiple" => true, 'expanded'=>true,
                ])
 
 
