@@ -231,8 +231,7 @@
 			<div class="card-header">
 				<h4 class="card-title">Response to call:
 					{{ call.subject| raw }}</h4>
-				<p class="text-muted mb-0">Deadline:
-					{{ call.deadline | date('Y-M-d') }}</p>
+			 
 			</div>
 			<!--end card-header-->
 			<div class="card-body">
@@ -242,16 +241,21 @@
 				<fieldset>
 					<div class="row">
 						<div class="p-3 mt-10 ">
+						<div class="p-3 mt-20 ">
 						
 						{{ call.guidelines | raw }}
+						</div>
 						</div>
 						<div class="p-3">
 							<div class="form-check">
 							{# <h1 class='form-control'> #}
+							<div class="form-checkgroup">
 							
 										<h2 class="font-24 text-primary corm-check   d-block mt-2"> 
-							 {{ form_label(submissionform.agree_to_the_terms) }} {{ form_widget(submissionform.agree_to_the_terms) }}</b></h2>
+							 
+							 {{ form_widget(submissionform.agree_to_the_terms) }}  
 	
+							</div>
 							</div>
 						</div>
 
@@ -416,7 +420,7 @@
 							</div>
 
 							<div class="col-12">
-								<h4> Budget (<span class='text-'> Alternative </span>)</h4>
+								<h4> Budget  </h4>
 								<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#budget-fields-list">
 									<span aria-hidden="true">+</span>
 									Add Budget Expense
@@ -441,7 +445,7 @@
 
 							<div class="col-12">
 								<h4>
-									Time schedules  (<span class='text-'> Alternative </span>)</h4>
+									Time schedules   </h4>
 								<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#research-schedule-list">
 									<span aria-hidden="true">+</span>
 									Add task schedule
