@@ -2,6 +2,7 @@
 
 namespace App\Controller; 
 use App\Entity\CollegeCoordinator;
+use App\Entity\Department;
 use App\Entity\DirectorateOfficeUser;
 use App\Entity\PublishedResearch;
 use App\Entity\User;
@@ -34,7 +35,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 /**
  * @Route("/user")
@@ -234,6 +234,18 @@ class UserController extends AbstractController
         return $this->render('user/detail.html.twig', [
             'user' => $user,
 
+        ]);
+    }
+
+
+    /**
+     * @Route("/{id}/researcher", name="researcher", methods={"GET","POST"})
+     */
+    public function researcher(Request $request, User $user): Response
+    {
+        $this->denyAccessUnlessGranted("ROLE_USER");  
+        return $this->render('user/resercher.html.twig', [
+            'user' => $user, 
         ]);
     }
 
@@ -574,6 +586,11 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
             $entityManager = $this->getDoctrine()->getManager(); 
             $prifilepicture = $form->get('image')->getData();
         // dd($request->request->get("department"));
+
+        $dep=$request->request->get("department");
+$udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'=>$dep));
+            // dd($udep);
+        $userInfo->setDepartment($udep);
             // dd($form->getData());
             // foreach ($userInfo->getIrbClearances() as $key => $clearance) {
 

@@ -121,13 +121,13 @@
 									<li class="mt-2">
 										<i class="ti ti-world text-secondary font-16 align-middle me-2"></i>
 										<b>
-											Website
+											Department:   
 										</b>
 										:
 										<a href="" class="font-14 text-primary">
-											{% if userInfo.affiliation is defined %}
+											{% if user.userInfo.department is defined %}
 
-												{{ userInfo.affiliation }}
+												{{ user.userInfo.department }}
 												{% else %}
 											{% endif %}
 										</a>
@@ -337,8 +337,11 @@
 													<div class="form-group">
 
 														<label class="form-controll">Department</label><br>
-<input type="hidden" name="department"/>
-														<select id="dep" name="department_id"   class="dep m-5 select2 col-md-12" required="required"></select>
+
+													<input type="hidden" name="department"/>
+														<select id="dep" name="department"   class="dep m-5 select2 col-md-12" required="required">
+														
+														</select>
 													</div>
 												</div>
 												{# <div class="col-md-3">
@@ -557,6 +560,10 @@ college: college
 dataType: "json",
 success: function (data) {
 $('.dep').children().remove()
+
+
+select.append('<option  id="dep" name="department"    value="">'  +'--Select Department--'+ '</option>');
+
 for (let [key, value] of Object.entries(data)) {
 
 
