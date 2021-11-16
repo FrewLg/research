@@ -31,8 +31,8 @@
 		<link
 		href="{{ asset('Anyar/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
-	{# <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}"> 
-		<link
+	<link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}"> 
+		{# <link
 		rel="stylesheet" type="text/css" href="{{ asset('classic/classic_files/font-awesome.css') }}"> #}
 
 		<!-- Template Main CSS File -->
@@ -270,14 +270,15 @@ id="main">
 				<div class="sidebar"> {% block aside %}{% endblock %}
 					{% if is_granted("ROLE_USER")%}
 						<aside class="widget widget-Categories with-title">
-<h3 class="widget-title">Guidelines</h3>
+<h4 class="widget-title">Guidelines</h4>
 						
+<hr>
+							<a href='{{ asset('Guidelines.pdf') }}' >Download proposal submission guideline <i data-feather="power" class="fa fa-file-pdf"></i></a>
+<hr>
 
-							<a href='{{ asset('Guidelines.pdf') }}' class='btn btn-primary btn-sm'>Proposal submission guideline</a>
-
-
-							<h3 class="widget-title">Researche Directorates</h3>
-							<ul>
+							<h4 class="widget-title">Researche Directorates</h4>
+<hr>
+							<ul class='nav'>
 								<li>
 									<a href="https://www.ju.edu.et/technology-transfer">Technology Transfer</a>
 									<span>3</span>

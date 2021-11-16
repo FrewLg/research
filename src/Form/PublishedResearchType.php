@@ -31,7 +31,7 @@ class PublishedResearchType extends AbstractType
              
                 "class"=>PublishedTopic::class,
                 "attr"=>[
-                    "class"=>"select2 col-lg-2 col-md-2",
+                    "class"=>"select2 col-lg-2 col-sm-4 col-md-2",
                 ]
             ])  
             ->add('allotted_budget')
