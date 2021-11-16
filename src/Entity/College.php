@@ -100,11 +100,7 @@ class College
         $this->institutionalReviewersBoards = new ArrayCollection();
         $this->guidelines = new ArrayCollection();
     }
-    public function __toString()
-    {
-        
-   return $this->name;
-    }
+ 
 
     public function getId(): ?int
     {
@@ -123,6 +119,12 @@ class College
         return $this;
     }
 
+    public function __toString()
+    {
+        
+   return $this->name;
+    }
+    
     /**
      * @return Collection|CollegeCoordinator[]
      */

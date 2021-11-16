@@ -142,10 +142,10 @@
 																		</p>
 
 
- 																		{{ submission.submissionType}}
+																		{{ submission.submissionType}}
 
 																		<hr>
-																		
+
 
 																	</td>
 
@@ -176,13 +176,13 @@
 																<td>PI</td>
 
 															</tr>
-															{% for co_author in co_authors %}
+															{% for co_author in  submission.coAuthors %}
 																<tr>
 																	<td>{{ loop.index }}</td>
 																	<td>{{ co_author.name }}</td>
-																	 <a href='{{path('researcher',{'id':co_author.researcher.id})}}'>
-																{{ co_author.researcher.userInfo }}
-																</a>
+																	<a href='{{path('researcher',{'id':co_author.researcher.id})}}'>
+																		{{ co_author.researcher.userInfo }}
+																	</a>
 																	{# <td>{{ co_author.role }}</td> #}
 																	<td>{{ co_author.Department }}</td>
 																	<td>{{ co_author.email }}</td>
@@ -233,125 +233,122 @@
 												</table>
 											{% else %}
 												<h4 class='text-'>Action paln</h4>
-{% if submission.actionplan|length >0  %}  
-					 
-								{{  submission.actionplan |raw }}
-</div>
-</div>
- 	{% endif %}
+												{% if submission.actionplan|length >0  %}
 
-												<h5 class='text-'>Budget breakdown</h5>
-												<table class="table table-striped">
-													<thead>
-														<tr>
-															<th>#</th>
-															<th>Expense category</th>
-															<th>Cost
-															</th>
-
-															<th>Quantity
-															</th>
-															<th>Description
-															</th>
-															<th>Remark
-															</th>
-															{# <th>Approved 															</th> #}
-
-														</tr>
-													</thead>
-													<tbody>
-														{% for expense in expenses %}
-															<tr>
-																<td>{{ loop.index }}</td>
-																<td>{{ expense.category }}</td>
-
-																<td>{{ expense.cost }}</td>
-																<td>{{ expense.quantity }}</td>
-																<td>{{ expense.description }}</td>
-																<td>{{ expense.remark }}</td>
-																{# <td>{{ expense.approvedexpense }}</td> #}
-																{# {% set tot=expense.cost*expense.quantity %} #}
-															</tr>
-															{# {{tot}} #}
-														{% else %}
-															<tr>
-																<td colspan="3">no records found</td>
-															</tr>
-														{% endfor %}
-														<tr class='text-success strong'>{# <td colspan='5'>
-																																																																																																																																																																																																																																																																											Grand Total
-																																																																																																																																																																																																																																																																										</td>  #}
-															{# <td colspan='1'></td> #}
-															{# <td>{{ Overall_budger_request.Totalapproved }}</td> #}
-
-														</tr>
-													</tbody>
-												</table>
-											{% endif %}
-
-											<div class="table-responsive">
-												{% if submission.researchTimeTables|length >0 %}
-
-													<h4>Time table :
-													</h4>
-
-													<table class="table table-bordered">
-
-														<thead>
-															<tr class="bg-gray-dark">
-																<th>Task</th>
-
-																<th>Date Start</th>
-
-																<th>Date End</th>
-																<th>Remark</th>
-
-															</tr>
-														</thead>
-														<tbody>
-															{% for schedule in submission.researchTimeTables %}
-
-
-																<tr>
-																	<td>{{ schedule.task }}</td>
-
-
-																	<td>
-																		{{ schedule.DateStart|date('d M Y ') }}
-																	</td>
-
-																	<td>
-																		{{ schedule.DateEnd|date('d M Y') }}
-
-																	</td>
-																	<td>{{ schedule.remark }}</td>
-
-
-																</tr>
-																{% else %}
-
-															{% endfor %}
-
-
-														</tbody>
-													</table>
-													{% else %}
-												{% endif %}
-
+													{{  submission.actionplan |raw }}
+												</div>
 											</div>
+										{% endif %}
 
-										</div>
+										<h5 class='text-'>Budget breakdown</h5>
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>Expense category</th>
+													<th>Cost
+													</th>
+
+													<th>Quantity
+													</th>
+													<th>Description
+													</th>
+													<th>Remark
+													</th>
+													{# <th>Approved 															</th> #}
+
+												</tr>
+											</thead>
+											<tbody>
+												{% for expense in expenses %}
+													<tr>
+														<td>{{ loop.index }}</td>
+														<td>{{ expense.category }}</td>
+
+														<td>{{ expense.cost }}</td>
+														<td>{{ expense.quantity }}</td>
+														<td>{{ expense.description }}</td>
+														<td>{{ expense.remark }}</td>
+														{# <td>{{ expense.approvedexpense }}</td> #}
+														{# {% set tot=expense.cost*expense.quantity %} #}
+													</tr>
+													{# {{tot}} #}
+												{% else %}
+													<tr>
+														<td colspan="3">no records found</td>
+													</tr>
+												{% endfor %}
+												<tr class='text-success strong'>{# <td colspan='5'>
+																																																																																																																																																																																																																																																																																																																		Grand Total
+																																																																																																																																																																																																																																																																																																																	</td>  #}
+													{# <td colspan='1'></td> #}
+													{# <td>{{ Overall_budger_request.Totalapproved }}</td> #}
+
+												</tr>
+											</tbody>
+										</table>
+									{% endif %}
+
+									<div class="table-responsive">
+										{% if submission.researchTimeTables|length >0 %}
+
+											<h4>Time table :
+											</h4>
+
+											<table class="table table-bordered">
+
+												<thead>
+													<tr class="bg-gray-dark">
+														<th>Task</th>
+
+														<th>Date Start</th>
+
+														<th>Date End</th>
+														<th>Remark</th>
+
+													</tr>
+												</thead>
+												<tbody>
+													{% for schedule in submission.researchTimeTables %}
+
+
+														<tr>
+															<td>{{ schedule.task }}</td>
+
+
+															<td>
+																{{ schedule.DateStart|date('d M Y ') }}
+															</td>
+
+															<td>
+																{{ schedule.DateEnd|date('d M Y') }}
+
+															</td>
+															<td>{{ schedule.remark }}</td>
+
+
+														</tr>
+														{% else %}
+
+													{% endfor %}
+
+
+												</tbody>
+											</table>
+											{% else %}
+										{% endif %}
 
 									</div>
+
 								</div>
 
 							</div>
-
 						</div>
+
+
 						<div class="tab-pane" id="tab-2">
 
 
-						
 							{% for review in reviews %}
 
 								<table class="table shoping-cart-table">
@@ -359,13 +356,13 @@
 									<tbody>
 										<tr>
 											<td class="desc">
-												
+
 												<p class="small">
 
 													{{ review.comment |raw}}
 												</p>
 												<dl class="small m-b-none">
-													<dt>Revised at 
+													<dt>Revised at
 														{{ review.CreatedAt ?
                                                         review.CreatedAt|date('Y-m-d H') : '' }}
 													</dt>
@@ -374,7 +371,7 @@
 												<div class="m-t-sm">
 
 													{% if review.attachment %}
-						<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="badge bg-info mt-2">
+														<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="badge bg-info mt-2">
 															Download review file
 															<i class="fa fa-download material-icons  "></i>
 														</a>
@@ -392,20 +389,18 @@
 												</h4>
 												{{ review.remark |raw}}
 												<hr>
-													{% if review.AllowToView=='' %}
- 
-<a href="{{ path('allocomment', {'id': review.id}) }}"  class="btn btn-primary"
-onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
-Send   comment to PI</a>
-												
+												{% if review.AllowToView=='' %}
 
-{% elseif review.AllowToView=='1'  %}
-					<a   class="btn btn-success"
- >
-Comment sent to PI</a>	
+													<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-primary" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
+														Send   comment to PI</a>
+
+
+												{% elseif review.AllowToView=='1'  %}
+													<a class="btn btn-success">
+														Comment sent to PI</a>
 													{% else %}
 
-													{% endif %}
+												{% endif %}
 
 												<hr>
 												{# {{editorialDecisions.decision}} #}
@@ -414,18 +409,17 @@ Comment sent to PI</a>
 									</tbody>
 									{% else %}
 									{# <tr>
-											 																																																				                                    </tr> #}
+																																			 																																																				                                    </tr> #}
 								{% endfor %}
 							</table>
 							<hr>
-								{{ form_start(adminvevisionform) }}
+							{{ form_start(adminvevisionform) }}
 							{{ form_widget(adminvevisionform) }}
 							<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
 							{{ form_end(adminvevisionform) }}
- 						</div>
-						<div class="tab-pane" id="tab-3">
-
-							{# {{ submission.abstract |raw }} #}
+						</div>
+						<div
+							class="tab-pane" id="tab-3">{# {{ submission.abstract |raw }} #}
 						</div>
 					</div>
 				</div>
@@ -434,16 +428,16 @@ Comment sent to PI</a>
 	</div>
 </div>
 <div class="col-lg-3">
+	<div class="card">
+		<div class="card-body ">
 
-<div class="card">
-			<div class="card-body ">
- 
-					<h4 class="font-18 m-0 fw-bold">Attachments: </h4>
+			<h4 class="font-18 m-0 fw-bold">Attachments:
+			</h4>
 			<br>
 
 			{% for submissionattachment in submission.submissionAttachements %}
 				<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-					{{submissionattachment.name}} 
+					{{submissionattachment.name}}
 					<i class="fa fa-download material-icons warning"></i>
 				</a>
 			{% else %}
@@ -451,77 +445,78 @@ Comment sent to PI</a>
 					{% trans %}No attachement found{% endtrans %}
 				</span>
 			{% endfor %}
-				</div>
-				</div> 
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-body ">
 
-
-<div class="card">
-			<div class="card-body ">
- 
-					<h4 class="font-18 m-0 fw-bold">Co-PI confirmation: </h4>
+			<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:
+			</h4>
 			<br>
 
 			{% for member in submission.coAuthors %}
 				{{loop.index}}
-				 {# {{member.researcher}} #}
-				  <a href='{{path('researcher',{'id':member.researcher.id})}}'>
-																{{ member.researcher.userInfo }}
-																</a>
-				{% if member.confirmed=='1' %} <i class="fa fa-check text-success"></i> 
-				 
+				{# {{member.researcher}} #}
+				<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+					{{ member.researcher.userInfo }}
+				</a>
+				{% if member.confirmed=='1' %}
+					<i class="fa fa-check text-success"></i>
 
-			{% elseif member.confirmed==''    %}  <i class="fa fa-times-circle text-danger"></i>    
-				 
 
-			{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
-			{% else  %}  <i class="fa fa-close text-danger"></i>    
-				 {% endif %}
+				{% elseif member.confirmed==''    %}
+					<i class="fa fa-times-circle text-danger"></i>
+
+
+					{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
+				{% else  %}
+					<i class="fa fa-close text-danger"></i>
+				{% endif %}
 				<br>
-				
-				  
+
+
 			{% else %}
-				 No Co-PI has been involved
+				No Co-PI has been involved
 			{% endfor %}
-				</div>
-				</div> 
+		</div>
+	</div>
 	<div class="card">
-			<div class="card-body ">
-	<h5 class="font-18 m-0 fw-bold">Reviewers</h5>
-			 <hr>
-	{% for review_assignment in review_assignments %}
+		<div class="card-body ">
+			<h5 class="font-18 m-0 fw-bold">Reviewers</h5>
+			<hr>
+			{% for review_assignment in review_assignments %}
 
-		
- 					<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
-						{{ review_assignment.reviewer }}
 
-						
+				<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
+					{{ review_assignment.reviewer }}
 
-						{{ review_assignment.ExternalreviewerName }}</h4>
-					<p class="text-muted  mb-0 font-13">
-						<span class="text-dark">
-							Invitation Sent At:
-							{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
-						</span>
 
-						<span class="text-dark">
-							Review duedate:
-							{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
-						</span>
+					{{ review_assignment.ExternalreviewerName }}</h4>
+				<p class="text-muted  mb-0 font-13">
+					<span class="text-dark">
+						Invitation Sent At:
+						{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+					</span>
 
-					</p> 
+					<span class="text-dark">
+						Review duedate:
+						{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+					</span>
+
+				</p>
 				<div class="row mt-4 d-flex align-items-center">
 					<div class="col">
 						<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
 						<p
 							class="mb-0 text-muted">
 							{# {% if review_assignment.status == 1 %}
-																						<span class="badge bg-info" title="Invitation not sent">Selected</span>
-																					{% elseif  review_assignment.status == 2 %}
-																						<span class="badge bg-primary">Invitation Sent</span>
-																					{% elseif  review_assignment.status == 3 %}
-																						<span class="badge bg-primary">Reviewing</span>
-														
-																					{% endif %} #}
+																																								<span class="badge bg-info" title="Invitation not sent">Selected</span>
+																																							{% elseif  review_assignment.status == 2 %}
+																																								<span class="badge bg-primary">Invitation Sent</span>
+																																							{% elseif  review_assignment.status == 3 %}
+																																								<span class="badge bg-primary">Reviewing</span>
+																																
+																																							{% endif %} #}
 
 							{% if review_assignment.ExternalreviewerEmail  %}
 								<span class="badge bg-primary">External reviewer</span>
@@ -545,16 +540,14 @@ Comment sent to PI</a>
 						</p>
 					</div>
 				</div>
-			
-
-	{% else %}
-		No reviewers has been assigned yet
-		<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Assign Reviewer</a>
 
 
-	{% endfor %}
-</div>
+			{% else %}
+				No reviewers has been assigned yet
+				<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Assign Reviewer</a>
+
+
+			{% endfor %}
 		</div>
-
-
+	</div>
 </div>{% endblock %}

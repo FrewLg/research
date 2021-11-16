@@ -77,9 +77,9 @@
 							<div class="col-lg-4 align-self-center mb-3 mb-lg-0">
 								<div class="dastone-profile-main">
 									<div class="dastone-profile-main-pic">
-										{% if app.user.userInfo and app.user.userInfo.image %}
+										{% if  user.userInfo and  user.userInfo.image %}
 
-											<img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;">
+											<img src="{{ asset('files/profile_pictures/'~user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;">
 										{% else %}
 											<img src="{{ asset('/img/defaultuser.png') }}" class="rounded-circle circle-border  " alt="profile" style="width:110px; height:110px;">
 										{% endif %}
@@ -95,7 +95,14 @@
 												{{ userInfo.affiliation }}
 												{% else %}
 											{% endif %}
-											{{ user.userInfo.college }}
+										
+                                          ( 
+                                            {{ user.userInfo.educationLevel }} ) 
+                                           
+                                         {{  user.userInfo.academicRank }}  at 
+                                            {{ user.userInfo.department}} 
+                                            {{ user.userInfo.college }}
+                                            
 										</p>
 									</div>
 								</div>
@@ -114,16 +121,27 @@
 									<li class="mt-2">
 										<i class="ti ti-email text-secondary font-16 align-middle me-2"></i>
 										<b>
-											Email
-										</b>
-										:
-										{{ user.email }}</li>
+											Email </b> : {{ user.email }}</li>
+
+                                            <li class="mt-2"> 
+										<i class="ti ti-user text-secondary font-16 align-middle me-2"></i>
+                                      <b>   Gender:</b>   {{ user.userInfo.gender }} ) 
+										
+                                        </li>
 									<li class="mt-2">
-										<i class="ti ti-world text-secondary font-16 align-middle me-2"></i>
+										<i class="ti ti-home text-secondary font-16 align-middle me-2"></i>
 										<b>
-											Website
+											Affiliation: 
+
 										</b>
-										:
+                                       ( 
+                                            {{ user.userInfo.educationLevel }} ) 
+                                           
+                                         {{  user.userInfo.academicRank }}  at 
+                                            {{ user.userInfo.department}} 
+                                            {{ user.userInfo.college }} 
+
+										 
 										<a href="" class="font-14 text-primary">
 											{% if userInfo.affiliation is defined %}
 
@@ -283,16 +301,42 @@
 
 									<div class="row">
 										<div class="col-sm-12">
-{{ user.userInfo}}
-{{ user.userInfo.college}}
-{{ user.userInfo.department}}
-{{ user.userInfo.alternativeEmail}}
-{{ user.userInfo.alternativeEmail}}
-{{ user.userInfo.gender}}
-{{ user.userInfo.academicRank}}
-{{ user.userInfo.educationLevel}}
-{{ user.userInfo.bio}}
-										 
+
+ 
+
+                                    <table class="table table-bordered">
+        <tbody>
+           
+            <tr>
+                <th>Researcher:</th>
+                <td> {{ user.userInfo}} </td>
+            </tr>
+
+            <tr>
+                <th>College</th>
+                <td>{{ user.userInfo.college }}</td>
+            </tr>
+            <tr>
+                <th>Department</th>
+                <td>{{ user.userInfo.department }}</td>
+            </tr>
+            <tr>
+                <th>Alternative Email</th>
+                <td>{{ user.userInfo.alternativeEmail }}</td>
+            </tr>
+            <tr>
+                <th>Academic Rank</th>
+                <td>{{ user.userInfo.academicRank }}</td>
+            </tr>
+            <tr>
+                <th>Education Level</th>
+                <td>{{ user.userInfo.educationLevel }}</td>
+            </tr>
+           
+            
+        </tbody>
+    </table>
+    	 
 										 
 
 										</div>
