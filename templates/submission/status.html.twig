@@ -167,12 +167,19 @@
 														{% for co_author in submission.coAuthors %}
 															<tr>
 																<td>{{ loop.index }}</td>
-																<td>{{ co_author.researcher.userInfo }}</td>
+																<td>
+																 
+																<a href='{{path('researcher',{'id':co_author.researcher.id})}}'>
+																{{ co_author.researcher.userInfo }}
+																</a>
+																</td>
 																{# <td>{{ co_author.role }}</td> #}
 																<td>{{ co_author.researcher.userInfo.college }}</td>
 																<td>{{ co_author.researcher.userInfo.department }}</td>
 																<td>{{ co_author.researcher.email }}</td>
-																<td>{{ co_author.role }}</td>
+																<td>
+																
+																{{ co_author.role }}</td>
 
 															</tr>
 														{% else %}
@@ -527,7 +534,8 @@ $("#showEditRequestContent").html("Problem");
 
 			{% for member in submission.coAuthors %}
 				{{loop.index}}
-				 {{member.researcher.userInfo}}
+				 {{member.researcher.userInfo}} 
+																
 				{% if member.confirmed=='1' %} <i class="fa fa-check text-success"></i> 
 				 
 

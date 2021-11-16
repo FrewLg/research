@@ -180,6 +180,9 @@
 																<tr>
 																	<td>{{ loop.index }}</td>
 																	<td>{{ co_author.name }}</td>
+																	 <a href='{{path('researcher',{'id':co_author.researcher.id})}}'>
+																{{ co_author.researcher.userInfo }}
+																</a>
 																	{# <td>{{ co_author.role }}</td> #}
 																	<td>{{ co_author.Department }}</td>
 																	<td>{{ co_author.email }}</td>
@@ -231,9 +234,7 @@
 											{% else %}
 												<h4 class='text-'>Action paln</h4>
 {% if submission.actionplan|length >0  %}  
-						<div class="col-12">
-							<div class="table-responsive">
-								<h4>Action plan :</h4>
+					 
 								{{  submission.actionplan |raw }}
 </div>
 </div>
@@ -462,7 +463,10 @@ Comment sent to PI</a>
 
 			{% for member in submission.coAuthors %}
 				{{loop.index}}
-				 {{member.researcher}}
+				 {# {{member.researcher}} #}
+				  <a href='{{path('researcher',{'id':member.researcher.id})}}'>
+																{{ member.researcher.userInfo }}
+																</a>
 				{% if member.confirmed=='1' %} <i class="fa fa-check text-success"></i> 
 				 
 
@@ -489,6 +493,9 @@ Comment sent to PI</a>
 		
  					<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
 						{{ review_assignment.reviewer }}
+
+						
+
 						{{ review_assignment.ExternalreviewerName }}</h4>
 					<p class="text-muted  mb-0 font-13">
 						<span class="text-dark">

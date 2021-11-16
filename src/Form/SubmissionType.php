@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Submission;
+use App\Entity\ThematicArea;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -11,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Count;
 
@@ -22,8 +25,15 @@ class SubmissionType extends AbstractType
            
             ->add('title',TextType::class,['attr'=>[]])
             ->add('step',HiddenType::class)
-            ->add('sub_title')
-            ->add('abstract') 
+            ->add('sub_title' ,TextType::class,['attr'=>[
+                'class'=>'form-control',
+            ], 'required'=>true])
+            ->add('abstract' ,TextareaType::class,[
+                'required'=>true,
+                'attr'=>[
+                'class'=>'form-control',
+            ], ]
+            )
             ->add('actionplan' ,   CKEditorType::class,[
                 'attr'=>['placeholder'=>'References',
                 'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
@@ -31,9 +41,24 @@ class SubmissionType extends AbstractType
             
                 ],]) 
             // ->add('abstract' ) 
-            ->add('background_and_rationale' ) 
-            ->add('methodology'  ) 
-            ->add('research_outcome' ) 
+            ->add('background_and_rationale' ,TextareaType::class,[
+                'required'=>true,
+                'attr'=>[
+                'class'=>'form-control',
+            ], ]
+            )
+            ->add('methodology'   ,TextareaType::class,[
+                'required'=>true,
+                'attr'=>[
+                'class'=>'form-control',
+            ], ]
+            ) 
+            ->add('research_outcome'  ,TextareaType::class,[
+                'required'=>true,
+                'attr'=>[
+                'class'=>'form-control',
+            ], ]
+            )
 
             ->add('reference' ,   CKEditorType::class,[
                 'attr'=>['placeholder'=>'References',
@@ -48,15 +73,28 @@ class SubmissionType extends AbstractType
                  'required' => false,
 
 ],]) 
-->add('GeneralObjective')
+->add('GeneralObjective'  ,TextareaType::class,[
+    'required'=>true,
+    'attr'=>[
+    'class'=>'form-control',
+], ]
+)
           
 ->add('specificObjectives', CollectionType::class, [
     'entry_type' => SpecificObjectiveType::class,
     'entry_options' => ['label' => false],
     'allow_add' => true,
     'by_reference' => false,
-    
+    'required' => true,
+     
     'allow_delete' => true,
+      'constraints' => [
+                    new Count([
+                      'min' => 3,
+                      'minMessage' => 'You have to add a specific objectives field',
+                     ]),
+                  ],
+
 ])
 
 
@@ -77,7 +115,14 @@ class SubmissionType extends AbstractType
     //   ],
 ])
 
-            ->add('thematic_area')
+            ->add('thematic_area' ,EntityType::class,[
+                'placeholder' => '---Select Thematic area ---',
+                "class"=>ThematicArea::class,
+                'required' => true,
+                "attr"=>[
+                    "class"=>"select2   ",
+                ]
+            ])
             ->add('keywords',null,["attr"=>["data-role"=>"tagsinput"]])
             ->add('agree_to_the_terms',
             ChoiceType::class, [
@@ -116,13 +161,14 @@ class SubmissionType extends AbstractType
                 'by_reference' => false,
                 'error_bubbling'=>false,
                 'allow_delete' => true,
-                'required'=>false
+                'required'=>true,
             ])
             ->add('coAuthors', CollectionType::class, [
             'entry_type' => CoAuthorType::class,
             'entry_options' => ['label' => false],
             'allow_add' => true,
             'by_reference' => false,
+    'required' => true,
             'allow_delete' => true,
         ])
         

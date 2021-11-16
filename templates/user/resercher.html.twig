@@ -1,276 +1,310 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Profile{% endblock %}
-{% block container_title %}Profile{% endblock %}
- {% block pagehead %}  Profile {% endblock %}
-{% block breadcrumb %} <li class="breadcrumb-item active">Profile</li>  {% endblock %} 
-{% block body %}
- 
-<div class="row m-b-lg m-t-lg ">
-                <div class="col-md-6">
-
-                    <div class="profile-image">
- 
-                                   {% if user.image is defined %}
-                   <img src="{{ asset('files/profile_pictures/'~user.image ) }}" class="rounded-circle circle-border m-b-md" alt="profile">
-                                       {% else %}
-                               <img src="{{ asset('/img/defaultuser.png') }}" class="rounded-circle circle-border m-b-md" alt="profile">
-                                    {% endif %}
-                    </div>
-                    <div class="profile-info">
-                        <div class="">
-                            <div>
-                                <h2 class="no-margins">
-                                     {{ user.suffix }}
-   {% if user.firstName is defined %}
-                                   
-                                    {{ user.firstName }}
-                                    {% else %}
-                                    {% endif %}
-                                    
-                                   {% if user.midleName is defined %}
-                                   
-                                    {{ user.midleName }}
-                                    {% else %}
-                                    {% endif %}
- 
-                                   {% if user.lastName is defined %}
-                                   
-                                    {{ user.lastName }}
-                                    {% else %}
-                                    {% endif %}
-                                   
-                                    
-                                </h2>
-                                <h4>  {% if user.affiliation is defined %}
-                                   
-                                    {{ user.affiliation }}
-                                    {% else %}
-                                    {% endif %} </h4>
-                                <small>
-                                    {% if user.bio is defined %}
-                                   
-                                    {{ user.bio |raw}}
-                                    {% else %}
-                                    {% endif %} 
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <table class="table small m-b-xs">
-                        <tbody>
-                        <tr>
-                            <td>
-                                <strong>Tel:</strong> {{ user.phoneNumber }}
-                            </td>
-                            <td>
-                                <strong>Gender:</strong> {{ user.gender }}
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>Email:</strong> {{ user.email }}
-                            </td>
-                            <td>
-                                <strong>Address</strong>  {{ user.address }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong> Affiliation: </strong> {{ user.affiliation }}
-                            </td>
-                            <td>
-                                 <strong> Affiliation: </strong> {{ user.affiliation }}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-3">
-                    <small class='text-success'> <b> {{ totalSubmissions }} Research submissions </b></small>                     
-     
-    
-                </div>
-
-
-            </div>
-             
- 
- <div class="col-lg-12">
-                    <div class="tabs-container">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li><a class="nav-link active show" data-toggle="tab" href="#tab-list"> Personal info </a></li>
-                            <li><a class="nav-link" data-toggle="tab" href="#tab-researches">Researches </a></li>
-                             <li><a class="nav-link" data-toggle="tab" href="#tab-subscriptions">Subscriptions </a></li>
-                        
-<li><a class="nav-link" data-toggle="tab" href="#tab-manage-user">Manage  User </a></li>
-                                                     </ul>
-                        <div class="tab-content">
-                    
- <div role="tabpanel" id="tab-list" class="tab-pane active show">
-                                <div class="panel-body">
- <table class="table table-striped">
-         <tbody>
-            <tr>
-                <th>Suffix</th>
-                <td>{{ user.Suffix }}</td>
-            </tr>
-            
-            <tr>
-                <th>Full name</th>
-                <td>{{ user.firstName }} {{ user.midleName }} {{ user.lastName }}</td>
-            </tr>
-            <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
-            <tr>
-                <th>Gender</th>
-                <td>{{ user.gender }}</td>
-            </tr>
-            <tr>
-                <th>Affiliation</th>
-                <td>{{ user.affiliation }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-                                </div>
-                            </div>
-                            
-                           <div role="tabpanel" id="tab-researches" class="tab-pane">
-                                <div class="panel-body">
-        <div class="row">                                
-        <div class="col-md-4">
-                    <h4 class='text-success'>Submissions</h4>
-                    
-                    <table class="table table-striped"> 
-        <thead>
-            <tr>
- 
-                <th>Research </th>
-                  <th>Publication </th> 
-            </tr>
-        </thead>
-        <tbody>
-        {% for usersubmission in usersubmissions %}
-            <tr>
-            <td>
-                {{ usersubmission.research }}
-                 </td>
-                 <td>{{ usersubmission.Submissions }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">No submission has been made yet</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-                    </div>
-                     <div class="col-md-4">
-                    <h4 class='text-success'>Reviews</h4>
-                    
-                    <table class="table table-striped"> 
-        <thead>
-            <tr>
- 
-                <th>Research </th>
-                                <th>Publication </th> 
-            </tr>
-        </thead>
-        <tbody>
-        {% for userpublication in userpublication %}
-            <tr>
- 
-   <td>
-                {{ userpublication.Subbmission_type }}
-                 </td>
-                                 <td>{{ userpublication.Proposals }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">No reviews has been made yet</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-       </div> 
-               <div class="col-md-4">
-                    <h4 class='text-success'>Publications</h4>
-                    
-                    <table class="table table-striped"> 
-        <thead>
-            <tr>
- 
-                <th>Research </th>
-                                <th>Publication </th> 
-            </tr>
-        </thead>
-        <tbody>
-        {% for userpublication in userpublication %}
-            <tr>
- 
-   <td>
-                {{ userpublication.Subbmission_type }}
-                 </td>
-                                 <td>{{ userpublication.Proposals }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">No publication has been made yet</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-       </div> 
-       
-              </div> 
-                                </div>
-                            </div>
-                               <div role="tabpanel" id="tab-subscriptions" class="tab-pane">
-                                <div class="panel-body">
-
-{% for subscription in subscriptions %}
-                                          <table class='table table-striped' >
-                                            <tr>
-  <td>
-                Announcements: {% if subscription.announcement=='1'%} <span class='text-success'>Subscribed</span> {% else %} <span class='text-danger'>Not subscribed</span>  {% endif %}
-                 </td>
-                     <tr>
-  <td>
-               News: {% if subscription.news=='1'%} <span class='text-success'>Subscribed</span> {% else %} <span class='text-danger'>Not subscribed</span>  {% endif %}
-                 </td>
-     <tr> <td>
-               New Submissions: {% if subscription.newSubmission=='1' %} <span class='text-success'>Subscribed</span>  {% else %}  <span class='text-danger'>Not subscribed</span>  {% endif %}
-                 </td>
-                    <tr>
-                    <td>New call for proposal announcement:{% if subscription.calls=='1' %}  <span class='text-success'>Subscribed</span>  {% else %} <span class='text-danger'>Not subscribed</span>  {% endif %}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">You havent subscribed yet</td>
-            </tr>
-        {% endfor %}
-</table>
-              
-               <hr>
- 
-                                </div>
-                            </div>
-                            
-                            
-                            <div role="tabpanel" id="tab-manage-user" class="tab-pane">
-                                <div class="panel-body">
- 
-
-                                </div>
-                            </div>
-                       </div>
-                    </div>
-                </div>
-                
+{% block title %}Profile
 {% endblock %}
+{% block container_title %}Profile
+{% endblock %}
+{% block header_contenttwo %}Profile
+{% endblock %}
+
+
+{% macro displayContent(researches) %}
+
+	<div class="col-md-4">
+		<div class="form-group select-wizard">
+			<label class="bmd-label-floating">Title</label>
+			{{form_widget(researches.title)}}
+
+		</div>
+	</div>
+
+
+	<div class="col-md-2">
+		<div class="form-group select-wizard">
+			<label class="bmd-label-floating">Allotted budget</label>
+			{{form_widget(researches.allotted_budget)}}
+
+		</div>
+	</div>
+
+	<div class="col-md-1">
+		<div class="form-group select-wizard">
+			<label class="bmd-label-floating">Year</label>
+			{{form_widget(researches.year)}}
+
+		</div>
+	</div>
+
+	<div class="col-md-2">
+		<div class="form-group select-wizard">
+			{{form_widget(researches.successfully_completed )}}
+
+		</div>
+	</div>
+
+{#  
+	<div class="col-md-2">
+		<div class="form-group select-wizard">
+		Upload approval of your clearance<br>
+			{{form_widget(researches.imageFile )}}
+
+		</div>
+	</div> #}
+
+
+	<div class="col-md-1">
+		<div class="form-group">
+
+			<button type="button" class=" btn btn-danger btn-sm close  remove-collection-widget mt-4   bgc-h-danger-l2 radius-round ">
+				<span aria-hidden="true">×</span>
+
+			</button>
+		</div>
+	</div>
+{% endmacro %}
+
+{% block body %}
+
+
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body p-0"></div>
+				<!--end card-body-->
+				<div class="card-body">
+					<div class="dastone-profile">
+						<div class="row">
+							<div class="col-lg-4 align-self-center mb-3 mb-lg-0">
+								<div class="dastone-profile-main">
+									<div class="dastone-profile-main-pic">
+										{% if app.user.userInfo and app.user.userInfo.image %}
+
+											<img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;">
+										{% else %}
+											<img src="{{ asset('/img/defaultuser.png') }}" class="rounded-circle circle-border  " alt="profile" style="width:110px; height:110px;">
+										{% endif %}
+										<span class="dastone-profile_main-pic-change">
+											<i class="fas fa-camera"></i>
+										</span>
+									</div>
+									<div class="dastone-profile_user-detail">
+										<h5 class="dastone-user-name">{{ user}}</h5>
+										<p class="mb-0 dastone-user-name-post">
+											{% if userInfo.affiliation is defined %}
+
+												{{ userInfo.affiliation }}
+												{% else %}
+											{% endif %}
+											{{ user.userInfo.college }}
+										</p>
+									</div>
+								</div>
+							</div>
+							<!--end col-->
+
+							<div class="col-lg-4 ms-auto align-self-center">
+								<ul class="list-unstyled personal-detail mb-0">
+									<li class="">
+										<i class="ti ti-mobile me-2 text-secondary font-16 align-middle"></i>
+										<b>
+											phone
+										</b>
+										:
+										{{ user.userInfo.phoneNumber }}</li>
+									<li class="mt-2">
+										<i class="ti ti-email text-secondary font-16 align-middle me-2"></i>
+										<b>
+											Email
+										</b>
+										:
+										{{ user.email }}</li>
+									<li class="mt-2">
+										<i class="ti ti-world text-secondary font-16 align-middle me-2"></i>
+										<b>
+											Website
+										</b>
+										:
+										<a href="" class="font-14 text-primary">
+											{% if userInfo.affiliation is defined %}
+
+												{{ userInfo.affiliation }}
+												{% else %}
+											{% endif %}
+										</a>
+									</li>
+								</ul>
+
+							</div>
+							<!--end col-->
+							<div class="col-lg-4 align-self-center">
+								<div class="row">
+									<div class="col-auto text-end border-end">
+										<button type="button" class="btn btn-soft-primary btn-icon-circle btn-icon-circle-sm mb-2">
+											<i class="fab fa-facebook-f"></i>
+										</button>
+										<p class="mb-0 fw-semibold">Publications</p>
+										{# <h4 class="m-0 fw-bold">25k
+																																																																																	<span class="text-muted font-12 fw-normal">Proceedings</span>
+																																																																																</h4> #}
+									</div>
+									<!--end col-->
+									<div class="col-auto">
+										<button type="button" class="btn btn-soft-info btn-icon-circle btn-icon-circle-sm mb-2">
+											<i class="fab fa-twitter"></i>
+										</button>
+										{# <p class="mb-0 fw-semibold">Publications</p>
+																																																																																<h4 class="m-0 fw-bold">58k
+																																																																																	<span class="text-muted font-12 fw-normal">Proceedings</span>
+																																																																																</h4> #}
+									</div>
+									<!--end col-->
+								</div>
+								<!--end row-->
+							</div>
+							<!--end col-->
+						</div>
+						<!--end row-->
+					</div>
+					<!--end f_profile-->
+				</div>
+				<!--end card-body-->
+			</div>
+			<!--end card-->
+		</div>
+		<!--end col-->
+	</div>
+	<div class="pb-4">
+		<ul class="nav-border nav nav-pills mb-0" id="pills-tab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link " id="Profile_Project_tab" data-bs-toggle="pill" href="#Profile_Project">Projects</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="Profile_Post_tab" data-bs-toggle="pill" href="#Profile_Post">Coferences</a>
+			</li>
+			{# <li class="nav-item">
+																									<a class="nav-link" id="portfolio_detail_tab" data-bs-toggle="pill" href="#Profile_Portfolio">Project Membership</a>
+																								</li> #}
+			<li class="nav-item">
+				<a class="nav-link active" id="settings_detail_tab" data-bs-toggle="pill" href="#About">About</a>
+			</li>
+		</ul>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="tab-content" id="pills-tabContent">
+				<div class="tab-pane fade " id="Profile_Project" role="tabpanel" aria-labelledby="Profile_Project_tab">
+					 
+						<div class="row"> <div class="col-3">
+							<div class="card">
+								<div class="card-body "></div>
+								<!--end card-body-->
+							</div>
+							<!--end card-->
+						</div>
+						<!--end col-->
+						<div class="col-3"></div>
+					</div>
+				</div>
+				<!--end tab-pane-->
+				<div class="tab-pane fade" id="Profile_Post" role="tabpanel" aria-labelledby="Profile_Post_tab">
+					<div class="row">
+						<div class="col-lg-9">
+							<div
+								class="row">
+
+								<!--end col-->
+								<div class="col-lg-6">
+									<div class="card">
+										<div class="card-body  report-card"></div>
+										<!--end card-body-->
+									</div>
+									<!--end card-->
+								</div>
+								<!--end col-->
+							</div>
+							<!--end row-->
+
+
+							<!--end card-->
+						</div>
+						<!--end col-->
+						<div class="col-lg-3">
+							<div class="card">
+								<div
+									class="card-header"><!--end row-->
+								</div>
+								<!--end card-header-->
+							{# <div class="card-body">
+ </div> #}
+								<!--end card-body-->
+							</div>
+
+							{# <div class="card">
+	 <!--end card-body-->
+																																																								</div> #}
+							<!--end card-->
+						</div>
+						<!--end col-->
+					</div>
+					<!--end row-->
+				</div>
+				<div class="tab-pane fade" id="Profile_Portfolio" role="tabpanel" aria-labelledby="portfolio_detail_tab">
+					<div class="row">
+						<div class="col-md-6">{# <div class="card">
+																																																									<div class="card-body">
+																																																										<div class="ribbon2 rib2-primary">
+			 </div> #}
+							<!--end card-->
+						</div>
+						<!--end col-->
+
+						<!--end col-->
+					</div>
+
+
+					<!--end row-->
+				</div>
+				<div class="tab-pane fade active show" id="About" role="tabpanel" aria-labelledby="settings_detail_tab">
+					<div class="row">
+						<div class="col-lg-12   col-xl-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="row align-items-center">
+										<div class="col">
+											<h4 class="card-title">Personal Information</h4>
+										</div>
+										<!--end col-->
+									</div>
+									<!--end row-->
+								</div>
+								<!--end card-header-->
+								<div class="card-body">
+
+
+									<div class="row">
+										<div class="col-sm-12">
+{{ user.userInfo}}
+{{ user.userInfo.college}}
+{{ user.userInfo.department}}
+{{ user.userInfo.alternativeEmail}}
+{{ user.userInfo.alternativeEmail}}
+{{ user.userInfo.gender}}
+{{ user.userInfo.academicRank}}
+{{ user.userInfo.educationLevel}}
+{{ user.userInfo.bio}}
+										 
+										 
+
+										</div>
+									</div>
+
+
+								</div>
+							</div>
+					 
+
+					</div> </div></div></div> 
+		 
+		{% endblock %}
+
+ 
