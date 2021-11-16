@@ -10,9 +10,9 @@
 
 {% macro displayContent(researches) %}
 
-	<div class="col-md-4">
-		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">Title</label>
+	<div class="col-md-4" style='width:200px;'>
+		<div class="form-group select-wizard"  >
+			<label class="bmd-label-floating" >Title</label>
 			{{form_widget(researches.title)}}
 
 		</div>
@@ -35,6 +35,7 @@
 		</div>
 	</div>
 
+
 	<div class="col-md-2">
 		<div class="form-group select-wizard">
 			{{form_widget(researches.successfully_completed )}}
@@ -51,7 +52,11 @@
 		</div>
 	</div> #}
 
-
+	<div class="col-md-1">
+		<div class="form-group select-wizard">
+		 
+		</div>
+	</div>
 	<div class="col-md-1">
 		<div class="form-group">
 
@@ -428,7 +433,9 @@ Yes <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesC
 		{% block script %}
 			<script src="{{ asset('plugins/jquery-steps/jquery.steps.min.js')}}"></script>
 			<script src="{{ asset('plugins/select2/select2.min.js')}}"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>{# <script src="{{ asset('assets/pages/jquery.form-wizard.init.js')}}"></script> #}<script>
+			{# <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="{{ asset('assets/pages/jquery.form-wizard.init.js')}}"></script>
+			#}
+			<script> 
 				jQuery(document).ready(function () {
 
 $(document).on('click', '.remove-collection-widget', function (e) {
