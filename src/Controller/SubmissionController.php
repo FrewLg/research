@@ -47,6 +47,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/submission")
  */
+
 class SubmissionController extends AbstractController {
     /**
      * @Route("/", name="submission_index", methods={"GET","POST"})
@@ -218,7 +219,7 @@ class SubmissionController extends AbstractController {
 
         } else {
             if ($submission->getStep() == 10) {
-                $this->addFlash('warning', "Already completed submission");
+                $this->addFlash('warning', "You have a  submission with this call. Edit your submission instead.");
                 // return $this->redirectToRoute('myreviews');
             }
         }

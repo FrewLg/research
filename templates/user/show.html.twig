@@ -109,14 +109,44 @@
 							</span>
 						</td>
 					</tr>
+
 					<tr>
 						<td>
 							<b>Gender :-</b>
-						 
+					  {% if user.userInfo.gender is defined%}
+													 {{ user.userInfo.gender ?  user.userInfo.gender|raw :"Not set"}}
+ 
+							
+						{% endif %} 
 
 						<td>
 							<b>College :-</b>
-							{{ userInfo.department }}</td>
+					  {% if user.userInfo.college is defined%}
+
+							{{ userInfo.college ?  userInfo.college|raw :"Not set"}}</td> 
+
+						{% endif %} 
+
+					</tr>
+
+					<tr>
+						<td>
+							<b>Department :-</b>
+						 
+						   {% if user.userInfo.department is defined%}
+
+							{{ userInfo.department ?  userInfo.department|raw :"Not set"}}</td> 
+
+						{% endif %} 
+						<td>
+							<b>Alternative Email :-</b>
+							  {% if user.userInfo.alternativeEmail is defined%}
+
+							{{ userInfo.alternativeEmail ?  userInfo.alternativeEmail|raw :"Not set"}}</td> 
+
+						{% endif %} 
+
+</td> 
 
 
 					</tr>
@@ -128,7 +158,12 @@
 
 						<td>
 							<b>Phone :-</b>
-							{{ userInfo.phoneNumber }}
+ 
+ {% if user.userInfo.phoneNumber is defined%}
+
+							{{ userInfo.phoneNumber ?  userInfo.phoneNumber|raw :"Not set"}}</td> 
+
+						{% endif %} 
 
 
 						</td>
