@@ -183,42 +183,41 @@ class SubmissionController extends AbstractController {
                 ///////////// Let us email  co-pis    to  remind
                 $entityManager = $this->getDoctrine()->getManager();
                 
-                $submission = $entityManager->getRepository('App:Submission')->findBy(['complete' => NULL]);
+                // $submission = $entityManager->getRepository('App:Submission')->findBy(['complete' => NULL]);
                 $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_CO_PI_INVITATION']);
                 $subject = $messages->getSubject();
                 $body = $messages->getBody();
                 $em = $this->getDoctrine()->getManager();
                 $query = $entityManager->createQuery(
-                    'SELECT u.email , p.id,    u.username,  p.complete, p.title  , ui.first_name
-	    FROM App:CoAuthor s
-	    JOIN s.researcher u
-	    JOIN u.userInfo ui
-	    JOIN s.submission p
- 	    WHERE  
- 	     p.complete is NULL');
-
-            // $query = $entityManager->createQuery(
-            //     'SELECT  s.complete, c.submission, 
-            // FROM App:Submission s
-            // JOIN .submission u
-            // JOIN u.userInfo ui
-            // JOIN s.submission p
-            // WHERE  
-            // s.complete is NULL and c.submision=s.id');
-
-                    // ->setParameter('submission', $submission) 
-                    // ->setParameter('cstatus', 'completed' );
+                    'SELECT u.email , c.id ,  u.username,  s.complete, s.title 
+                      , pi.first_name ,pi.gender, ui.alternative_email
+                    FROM App:CoAuthor c
+                    JOIN c.researcher u
+                    JOIN u.userInfo ui
+                    JOIN c.submission s
+                    JOIN s.author p
+                    JOIN p.userInfo pi 
+                    WHERE  
+ 	     c.confirmed is NULL and s.complete=:completed') 
+ 
+                    ->setParameter('completed', 'completed' );
                 $recepients = $query->getResult();
-                dd($recepients);
+                // dd($recepients);
                 $em = $this->getDoctrine()->getManager();
-                $qb = $em->createQueryBuilder();
-                $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_CO_PI_INVITATION']);
+                // $qb = $em->createQueryBuilder();
+                $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_CO_PI_REMINDER']);
                 $subject = $messages->getSubject();
                 $body = $messages->getBody();
                 foreach ($recepients as $row) {
                     $theEmails[] = $row['email'] . ' ';
                     $theNames[] = $row['username'] . ' ';
                     $theFirstNames[] = $row['username'] . ' ';
+                    $pi_name[] = $row['first_name'] . ' ';
+                    $titles[] = $row['title'] . ' ';
+                    $alternative_email[] = $row['alternative_email'] . ' ';
+                    $copi_id[] = $row['id'] . ' ';
+                // dd($row[0]);
+
                 }
                 ////////////
                 $length = count($recepients);
@@ -229,18 +228,30 @@ class SubmissionController extends AbstractController {
                              $theFirstName = $theNames[$i];
                             // dd($theFirstName);
                              }
+                             if($alternative_email[$i] ==''){
+                                $alternative_email[$i]= $theEmails[$i];
+                             }
+                    $pi_name = $theEmails[$i];
                     $theEmail = $theEmails[$i];
-                    $email = (new TemplatedEmail())
+                    // $titles = $titles[$i];
+
+                    $body='Dear ' .$theFirstNames[$i].',  <br> 
+                     '. $pi_name.' is waiting for you to respond 
+                    to his recent proposal submisison entitled
+"'.$titles[$i] .' ". Please respond to the invitaion using the invitation 
+link below before the deadline of the call.';
+                $invitation_url = 'submission/my-membership-details/'.$copi_id[$i];
+                  $email = (new TemplatedEmail())
                         ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
-                        //    ->to($theEmails)
                         ->to(new Address($theEmails[$i], $theFirstNames[$i]))
-                        ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
+                        // ->cc(new Address($alternative_email[$i], $theFirstNames[$i]))
                         ->subject($subject)
                         ->htmlTemplate('emails/co-authorship-alert.html.twig')
                         ->context([
                             'subject' => $subject,
                             'body' => $body,
-                            'title' => $submission->getTitle(),
+                            'title' => $titles[$i] ,
+                            'pi' => $pi_name  ,
                             'submission_url' => $invitation_url,
                             'name' => $theFirstName,
                             'Authoremail' => $theEmail,
@@ -249,10 +260,11 @@ class SubmissionController extends AbstractController {
                     $mailer->send($email);
                 }
 ##########
-return $this->render('submission/index.html.twig', [
-    'info' => $info,
-    'submissions' => $Allsubmissions,
-]);
+$flashbag = $this->get('session')->getFlashBag();
+            $flashbag->add("success", "Alert sent to Co-PI s successffully  !");
+
+return $this->redirectToRoute('submission_index');
+ 
     }
     /**
      * @Route("/wizard/{uidentifier}", name="submission_firststepold", methods={"GET","POST"})
@@ -1519,13 +1531,38 @@ return $this->render('submission/index.html.twig', [
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            10
-        );
+                10
+            );
 
-        return $this->render('submission/co-authorship.html.twig', [
-            'collaborations' => $Allmyresearches,
-        ]);
-    }
+            return $this->render('submission/co-authorship.html.twig', [
+                'collaborations' => $Allmyresearches,
+            ]);
+        }
+
+
+    /**
+     * @Route("/my-membership-details", name="membershipdetails", methods={"GET"})
+     */
+    public function mymembershipdetails(CoAuthor $coAuthor): Response {
+      
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $entityManager = $this->getDoctrine()->getManager();
+        $myresearches = $entityManager->getRepository(CoAuthor::class)->find($coAuthor);
+        $researcher=$coAuthor->getResearcher();
+        $user = $this->getUser();
+        if(!$researcher==$user){
+            
+            $flashbag = $this->get('session')->getFlashBag();
+            $flashbag->add("danger", "Sorry you are not allowed for this service ! Thank you!");
+            return $this->redirectToRoute('membership');          
+
+        }
+ 
+
+            return $this->render('submission/co-authorship_detail.html.twig', [
+                'collaboration' => $myresearches,
+            ]);
+        }
 
     /**
      * @Route("/myresearches", name="myreviews", methods={"GET"})
