@@ -15,8 +15,8 @@ class SubmissionBudgetType extends AbstractType
     {
         $builder
             ->add('description')
-            ->add('cost',NumberType::class,["attr"=>["min"=>"1"]])
-            ->add('quantity',IntegerType::class,["attr"=>["min"=>"1"]])
+            ->add('cost',NumberType::class,["attr"=>["min"=>"1"],'required'=>true])
+            ->add('quantity',IntegerType::class,["attr"=>["min"=>"1"],'required'=>true])
             // ->add('remark')
             // ->add('submission')
             ->add('category' )
