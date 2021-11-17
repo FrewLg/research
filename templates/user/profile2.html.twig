@@ -361,13 +361,12 @@
 														{{ form_widget(submissionform.college  ) }}
 													</div>
 												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														<label class="">Department</label><br>
+												<div class="col-md-4">
+													<div class="form-d">
+													Department <br>
 
 													<input type="hidden" name="department"/>
-														<select id="dep" name="department"   class="dep m-5 select2 col-md-12" required="required">
+														<select id="dep" name="department"   class="select2 col-sm-12 col-lg-4 col-md-12" style='widht:200px;' required="required">
 														
 														</select>
 													</div>
@@ -381,13 +380,13 @@
 												<div class="col-md-2">
 													<div class="form-group">
 														{{ form_label(submissionform.education_level  ) }}
-														{{ form_widget(submissionform.education_level  ) }}
+													<br>	{{ form_widget(submissionform.education_level  ) }}
 													</div>
 												</div>
 												<div class="col-md-3">
 													<div class="form-group">
 														{{ form_label(submissionform.academic_rank  ) }}
-														{{ form_widget(submissionform.academic_rank  ) }}
+														<br>{{ form_widget(submissionform.academic_rank  ) }}
 													</div>
 												</div>
 											</div>

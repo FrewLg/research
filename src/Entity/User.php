@@ -149,6 +149,16 @@ class User implements UserInterface
      */
     private $coAuthors;
 
+    /**
+     * @ORM\OneToMany(targetEntity=UserFeedback::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $userFeedback;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_reviewer;
+
   
 
 
@@ -172,6 +182,7 @@ class User implements UserInterface
         $this->subscriptions = new ArrayCollection();
         $this->announcements = new ArrayCollection();
         $this->coAuthors = new ArrayCollection();
+        $this->userFeedback = new ArrayCollection();
     }
   
 
@@ -788,6 +799,48 @@ class User implements UserInterface
                 $coAuthor->setResearcher(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserFeedback[]
+     */
+    public function getUserFeedback(): Collection
+    {
+        return $this->userFeedback;
+    }
+
+    public function addUserFeedback(UserFeedback $userFeedback): self
+    {
+        if (!$this->userFeedback->contains($userFeedback)) {
+            $this->userFeedback[] = $userFeedback;
+            $userFeedback->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserFeedback(UserFeedback $userFeedback): self
+    {
+        if ($this->userFeedback->removeElement($userFeedback)) {
+            // set the owning side to null (unless already changed)
+            if ($userFeedback->getUser() === $this) {
+                $userFeedback->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIsReviewer(): ?bool
+    {
+        return $this->is_reviewer;
+    }
+
+    public function setIsReviewer(?bool $is_reviewer): self
+    {
+        $this->is_reviewer = $is_reviewer;
 
         return $this;
     }

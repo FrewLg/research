@@ -172,6 +172,88 @@ class SubmissionController extends AbstractController {
             'submissions' => $Allsubmissions,
         ]);
     }
+
+
+    /**
+     * @Route("/alert/", name="alert", methods={"GET","POST"})
+     */
+    public function alert(  MailerInterface $mailer): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+         #####################################
+                ///////////// Let us email  co-pis    to  remind
+                $entityManager = $this->getDoctrine()->getManager();
+                
+                $submission = $entityManager->getRepository('App:Submission')->findBy(['complete' => NULL]);
+                $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_CO_PI_INVITATION']);
+                $subject = $messages->getSubject();
+                $body = $messages->getBody();
+                $em = $this->getDoctrine()->getManager();
+                $query = $entityManager->createQuery(
+                    'SELECT u.email , p.id,    u.username,  p.complete, p.title  , ui.first_name
+	    FROM App:CoAuthor s
+	    JOIN s.researcher u
+	    JOIN u.userInfo ui
+	    JOIN s.submission p
+ 	    WHERE  
+ 	     p.complete is NULL');
+
+            // $query = $entityManager->createQuery(
+            //     'SELECT  s.complete, c.submission, 
+            // FROM App:Submission s
+            // JOIN .submission u
+            // JOIN u.userInfo ui
+            // JOIN s.submission p
+            // WHERE  
+            // s.complete is NULL and c.submision=s.id');
+
+                    // ->setParameter('submission', $submission) 
+                    // ->setParameter('cstatus', 'completed' );
+                $recepients = $query->getResult();
+                dd($recepients);
+                $em = $this->getDoctrine()->getManager();
+                $qb = $em->createQueryBuilder();
+                $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_CO_PI_INVITATION']);
+                $subject = $messages->getSubject();
+                $body = $messages->getBody();
+                foreach ($recepients as $row) {
+                    $theEmails[] = $row['email'] . ' ';
+                    $theNames[] = $row['username'] . ' ';
+                    $theFirstNames[] = $row['username'] . ' ';
+                }
+                ////////////
+                $length = count($recepients);
+                for ($i = 0; $i < $length; $i++) {
+///////////////
+                        $theFirstName = $theFirstNames[$i];
+                           if ($theFirstName == '') {
+                             $theFirstName = $theNames[$i];
+                            // dd($theFirstName);
+                             }
+                    $theEmail = $theEmails[$i];
+                    $email = (new TemplatedEmail())
+                        ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+                        //    ->to($theEmails)
+                        ->to(new Address($theEmails[$i], $theFirstNames[$i]))
+                        ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
+                        ->subject($subject)
+                        ->htmlTemplate('emails/co-authorship-alert.html.twig')
+                        ->context([
+                            'subject' => $subject,
+                            'body' => $body,
+                            'title' => $submission->getTitle(),
+                            'submission_url' => $invitation_url,
+                            'name' => $theFirstName,
+                            'Authoremail' => $theEmail,
+                        ])
+                    ;
+                    $mailer->send($email);
+                }
+##########
+return $this->render('submission/index.html.twig', [
+    'info' => $info,
+    'submissions' => $Allsubmissions,
+]);
+    }
     /**
      * @Route("/wizard/{uidentifier}", name="submission_firststepold", methods={"GET","POST"})
      */
@@ -189,7 +271,7 @@ class SubmissionController extends AbstractController {
         if (
             $userdetails->getFirstName() == '' || $userdetails->getMidleName() == '' ||
             $userdetails->getLastName() == '' ||
-            $userdetails->getCollege() == '' ||  
+            $userdetails->getCollege() == '' ||
             $userdetails->getEducationLevel() == '' || $userdetails->getAcademicRank() == '') {
             $flashbag = $this->get('session')->getFlashBag();
             $flashbag->add("danger", "Please complete your profile first before you submit the proposal  !");
@@ -260,7 +342,7 @@ class SubmissionController extends AbstractController {
 
                 $invitation_url = 'submission/my-membership';
                 #####################################
-                ///////////// Let us email subscribed users to announcements
+                ///////////// Let us email  co-pis    to  remind
                 $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_CO_PI_INVITATION']);
                 $subject = $messages->getSubject();
                 $body = $messages->getBody();
@@ -286,15 +368,15 @@ class SubmissionController extends AbstractController {
                 $length = count($recepients);
                 for ($i = 0; $i < $length; $i++) {
 ///////////////
-                    $theFirstName = $theFirstNames[$i];
-                    if ($theFirstName == '') {
-                        $theFirstName = $theNames[$i];
-                        dd($theFirstName);
-                    }
+                        $theFirstName = $theFirstNames[$i];
+                           if ($theFirstName == '') {
+                             $theFirstName = $theNames[$i];
+                            // dd($theFirstName);
+                             }
                     $theEmail = $theEmails[$i];
                     $email = (new TemplatedEmail())
                         ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
-//    ->to($theEmails)
+                        //    ->to($theEmails)
                         ->to(new Address($theEmails[$i], $theFirstNames[$i]))
                         ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
                         ->subject($subject)
@@ -463,7 +545,7 @@ class SubmissionController extends AbstractController {
                 $submission->setSentAt(new \DateTime());
                 // $submission->setUidentifier(md5());
 
-        $submission->setUidentifier(md5(uniqid()));
+                $submission->setUidentifier(md5(uniqid()));
 
                 $submission->setComplete("completed");
                 $entityManager->flush();
@@ -1302,7 +1384,7 @@ class SubmissionController extends AbstractController {
         ################### Are you the one? #################################
 
         #####################################
-         
+
         # $review = $entityManager->getRepository(Review::class)->findBy(['submission' => $submission ] );
         $budger_requests = $entityManager->getRepository(Expense::class)->findBy(['submission' => $submission]);
         $contributors = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission]);
