@@ -95,12 +95,17 @@
 									<div class="dastone-profile_user-detail">
 										<h5 class="dastone-user-name">{{ user}}</h5>
 										<p class="mb-0 dastone-user-name-post">
-											{% if userInfo.affiliation is defined %}
+											{% if user.userInfo.affiliation is defined %}
 
-												{{ userInfo.affiliation }}
+												{{ user.userInfo.affiliation }}
 												{% else %}
 											{% endif %}
+											  {% if user.userInfo.college is defined %}
+
 											{{ user.userInfo.college }}
+											{% else %}
+											{% endif %}
+
 										</p>
 									</div>
 								</div>
