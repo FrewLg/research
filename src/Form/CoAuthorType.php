@@ -24,7 +24,7 @@ class CoAuthorType extends AbstractType
                          'class' => 'App\Entity\User',
                          'attr' => array(
                              'empty' => 'Select User ',
-                             'required' => false,
+                             'required' => true,
                              'class' => 'form-control select2 chosen-select ',
                          )
                      ))
@@ -37,7 +37,7 @@ class CoAuthorType extends AbstractType
                      'class' => 'App\Entity\Department',
                      'attr' => array(
                          'empty' => 'Select College ',
-                         'required' => false,
+                         'required' => true,
                          'class' => 'form-control select2 chosen-select ',
                      )
                  ))

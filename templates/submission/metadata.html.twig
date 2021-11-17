@@ -236,6 +236,15 @@
 			<!--end card-header-->
 			<div class="card-body">
 				{{ form_start(submissionform,{ "attr":{"id":"form-horizontal", "class":""}}) }}
+			
+			
+			{% if form_errors(submissionform) %}
+								{% do submission.setStep(1) %}
+							{% endif %}
+							<div class="col-md-12">
+								{{ form_errors(submissionform) }}
+							</div>
+
 				<h3>Get started
 				</h3>
 				<fieldset>
@@ -281,12 +290,7 @@
 					<h3>Research details</h3>
 					<fieldset>
 						<div class="row">
-							{% if form_errors(submissionform) %}
-								{% do submission.setStep(1) %}
-							{% endif %}
-							<div class="col-md-12">
-								{{ form_errors(submissionform) }}
-							</div>
+							
 							<div class="col-md-8">
 
 
@@ -328,43 +332,44 @@
 
 									{{ form_widget(submissionform.sub_title,{'attr':{'class':'form-control'}}) }}
 
-
+<br>
 									{# <div class="form-group row col-12"> #}
 									<label for="txtLastNameBilling" class="form-label mt-3 mb-1"> Executive Summary / Abstract</label>
-
+	<span class='text-danger'>*</span>
 									{{ form_widget(submissionform.abstract,{'attr':{'class':'form-control'}}) }}
-
+<br>
 									{# </div><!--end form-group--> #}
 
 									<label class="form-label mt-3 mb-1">Keywords</label>
-
+	<span class='text-danger'>*</span>
 									{{ form_widget(submissionform.keywords,{'attr':{'class':'form-control'}}) }}
-
+<br>
 									<label class="form-label mt-3 mb-1">Thematic area:</label>
-
+	<span class='text-danger'>*</span>
 									{{ form_widget(submissionform.thematic_area,{'attr':{'class':'form-control'}}) }}
-
+<br>
 
 									<label class="form-label mt-3 mb-1">Background and rationale:
 									</label>
-
+	<span class='text-danger'>*</span>
 									{{ form_widget(submissionform.background_and_rationale,{'attr':{'class':'form-control'}}) }}
-
+<br>
 									<label class="form-label mt-3 mb-1">Methodology:
 									</label>
-
+	<span class='text-danger'>*</span>
 									{{ form_widget(submissionform.methodology,{'attr':{'class':'form-control'}}) }}
 
-									<label class="form-label mt-3 mb-1">Research outcome/ Output:
+								<br>	<label class="form-label mt-3 mb-1">Research outcome/ Output:
 									</label>
-
+	<span class='text-danger'>*</span>
 									{{ form_widget(submissionform.research_outcome,{'attr':{'class':'form-control'}}) }}
-
+<br>
 									<label class="form-label mt-3 mb-1">References:
 									</label>
+	<span class='text-danger'>*</span>
 
 									{{ form_widget(submissionform.reference,{'attr':{'class':'form-control'}}) }}
-
+<br>
 
 								</div>
 

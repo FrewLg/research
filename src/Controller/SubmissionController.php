@@ -463,7 +463,6 @@ class SubmissionController extends AbstractController {
                 $submission->setSentAt(new \DateTime());
 
         $submission->setUidentifier(md5(uniqid()));
-#                $submission->setUidentifier(md5());
 
                 $submission->setComplete("completed");
                 $entityManager->flush();

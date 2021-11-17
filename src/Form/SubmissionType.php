@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Submission;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -11,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Count;
 
@@ -23,7 +25,12 @@ class SubmissionType extends AbstractType
             ->add('title',TextType::class,['attr'=>[]])
             ->add('step',HiddenType::class)
             ->add('sub_title')
-            ->add('abstract') 
+            ->add('abstract',TextareaType::class,[
+                'required'=>true,
+                'attr'=>[
+                'class'=>'form-control',
+            ], ]
+            ) 
             ->add('actionplan' ,   CKEditorType::class,[
                 'attr'=>['placeholder'=>'References',
                 'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
@@ -31,9 +38,24 @@ class SubmissionType extends AbstractType
             
                 ],]) 
             // ->add('abstract' ) 
-            ->add('background_and_rationale' ) 
-            ->add('methodology'  ) 
-            ->add('research_outcome' ) 
+            ->add('background_and_rationale' ,TextareaType::class,[
+                'required'=>true,
+                'attr'=>[
+                'class'=>'form-control',
+            ], ]
+            ) 
+            ->add('methodology'  ,TextareaType::class,[
+                'required'=>true,
+                'attr'=>[
+                'class'=>'form-control',
+            ], ]
+            ) 
+            ->add('research_outcome' ,TextareaType::class,[
+                'required'=>true,
+                'attr'=>[
+                'class'=>'form-control',
+            ], ]
+            )  
 
             ->add('reference' ,   CKEditorType::class,[
                 'attr'=>['placeholder'=>'References',
@@ -48,14 +70,25 @@ class SubmissionType extends AbstractType
                  'required' => false,
 
 ],]) 
-->add('GeneralObjective')
+->add('GeneralObjective',TextareaType::class,[
+    'required'=>true,
+    'attr'=>[
+    'class'=>'form-control',
+], ]
+) 
           
 ->add('specificObjectives', CollectionType::class, [
     'entry_type' => SpecificObjectiveType::class,
     'entry_options' => ['label' => false],
     'allow_add' => true,
     'by_reference' => false,
-    
+    // 'constraints' => [
+    //     new Count([
+    //       'min' => 0,
+    //       'minMessage' => 'You have to add some  specific objectives to your research details',
+    //       // also has max and maxMessage just like the Length constraint
+    //     ]),
+    //   ],
     'allow_delete' => true,
 ])
 
@@ -77,17 +110,23 @@ class SubmissionType extends AbstractType
     //   ],
 ])
 
-            ->add('thematic_area')
+            ->add('thematic_area'  , EntityType::class, array(
+                'placeholder' => '---Select Thematic Area    ---',
+              
+                'class' => 'App\Entity\ThematicArea',
+                'attr' => array(
+                    'empty' => 'Thematic Area    ',
+                    'required' => true,
+                    'class' => 'select2 chosen-select form-control',
+                )
+             ))
             ->add('keywords',null,["attr"=>["data-role"=>"tagsinput"]])
             ->add('agree_to_the_terms',
             ChoiceType::class, [
                 "label"=>"I have read guidelines and agree",
                 "choices" =>  ["I have read guidelines and agree"=>"1"],
              'mapped' => false, "multiple" => true, 'expanded'=>true,
-               ])
-
-
-               
+               ]) 
             
             // null,["label"=>"I agree with the Terms and Conditions."])
             ->add('submissionBudgets',CollectionType::class,[
@@ -112,6 +151,13 @@ class SubmissionType extends AbstractType
                 'by_reference' => false,
                 'error_bubbling'=>false,
                 'allow_delete' => true,
+                  'constraints' => [
+                    new Count([
+                      'min' => 1,
+                      'minMessage' => 'You have to add some  attachment',
+                      // also has max and maxMessage just like the Length constraint
+                    ]),
+                  ],
                 'required'=>false
             ])
             ->add('coAuthors', CollectionType::class, [
