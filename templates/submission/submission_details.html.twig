@@ -172,10 +172,17 @@
 																<td>1</td>
 																<td>
 																	<a href='{{path('researcher',{'id':submission.author.id})}}'>
-																		{ submission.author.userInfo }}
+																	{% if submission.author.userInfo is defined %}
+																		{{ submission.author.userInfo }}
+																	{% else %}
+																		{{ submission.author.email }} (
+																		{{ submission.author.username }} )
+																	{% endif %}
+																	
+																	
 																	</a>
 
-																	{</td>
+																	 </td>
 																<td>{{ submission.author.userInfo.affiliation }}</td>
 																<td>{{ submission.author.email }}</td>
 																<td>PI</td>
@@ -184,10 +191,17 @@
 															{% for co_author in  submission.coAuthors %}
 																<tr>
 																	<td>{{ loop.index }}</td>
-																	<td>{{ co_author.name }}</td>
+																	<td>{{ co_author.name }}
 																	<a href='{{path('researcher',{'id':co_author.researcher.id})}}'>
-																		{{ co_author.researcher.userInfo }}
+																		 
+																	
+																	{% if co_author.researcher.userInfo  is defined %}
+																		{{ co_author.researcher.userInfo  }}
+																	{% else %}
+																		{{ co_author.researcher.email }}
+																	{% endif %}
 																	</a>
+																	</td>
 																	{# <td>{{ co_author.role }}</td> #}
 																	<td>{{ co_author.Department }}</td>
 																	<td>{{ co_author.email }}</td>
@@ -284,8 +298,8 @@
 													</tr>
 												{% endfor %}
 												<tr class='text-success strong'>{# <td colspan='5'>
-																																																																																																																																																																																																																																																																																																																																																																																																Grand Total
-																																																																																																																																																																																																																																																																																																																																																																																															</td>  #}
+																																																																																																																																																																																																																																																																																																																																																																																																													Grand Total
+																																																																																																																																																																																																																																																																																																																																																																																																												</td>  #}
 													{# <td colspan='1'></td> #}
 													{# <td>{{ Overall_budger_request.Totalapproved }}</td> #}
 
@@ -414,7 +428,7 @@
 									</tbody>
 									{% else %}
 									{# <tr>
-																																																																																									 																																																				                                    </tr> #}
+																																																																																																		 																																																				                                    </tr> #}
 								{% endfor %}
 							</table>
 							<hr>
@@ -433,129 +447,128 @@
 		</div>
 		</div>
 
-		<div class="col-lg-3">
-			<div class="card">
-				<div class="card-body ">
+	<div class="col-lg-3">
+		<div class="card">
+			<div class="card-body ">
 
-					<h4 class="font-18 m-0 fw-bold">Attachments:
-					</h4>
+				<h4 class="font-18 m-0 fw-bold">Attachments:
+				</h4>
+				<br>
+
+				{% for submissionattachment in submission.submissionAttachements %}
+					<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
+						{{submissionattachment.name}}
+						<i class="fa fa-download material-icons warning"></i>
+					</a>
+				{% else %}
+					<span class="label label-danger">
+						{% trans %}No attachement found{% endtrans %}
+					</span>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-body ">
+
+				<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:
+				</h4>
+				<br>
+
+				{% for member in submission.coAuthors %}
+					{{loop.index}}
+					{# {{member.researcher}} #}
+					<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+						{{ member.researcher.userInfo }}
+					</a>
+					{% if member.confirmed=='1' %}
+						<i class="fa fa-check text-success"></i>
+
+
+					{% elseif member.confirmed==''    %}
+						<i class="fa fa-times-circle text-danger"></i>
+
+
+						{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
+					{% else  %}
+						<i class="fa fa-close text-danger"></i>
+					{% endif %}
 					<br>
 
-					{% for submissionattachment in submission.submissionAttachements %}
-						<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-							{{submissionattachment.name}}
-							<i class="fa fa-download material-icons warning"></i>
-						</a>
-					{% else %}
-						<span class="label label-danger">
-							{% trans %}No attachement found{% endtrans %}
+
+				{% else %}
+					No Co-PI has been involved
+				{% endfor %}
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-body ">
+				<h5 class="font-18 m-0 fw-bold">Reviewers</h5>
+				<hr>
+				{% for review_assignment in review_assignments %}
+
+
+					<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
+						{{ review_assignment.reviewer }}
+
+
+						{{ review_assignment.ExternalreviewerName }}</h4>
+					<p class="text-muted  mb-0 font-13">
+						<span class="text-dark">
+							Invitation Sent At:
+							{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
 						</span>
-					{% endfor %}
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-body ">
 
-					<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:
-					</h4>
-					<br>
+						<span class="text-dark">
+							Review duedate:
+							{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+						</span>
 
-					{% for member in submission.coAuthors %}
-						{{loop.index}}
-						{# {{member.researcher}} #}
-						<a href='{{path('researcher',{'id':member.researcher.id})}}'>
-							{{ member.researcher.userInfo }}
-						</a>
-						{% if member.confirmed=='1' %}
-							<i class="fa fa-check text-success"></i>
+					</p>
+					<div class="row mt-4 d-flex align-items-center">
+						<div class="col">
+							<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
+							<p
+								class="mb-0 text-muted">
+								{# {% if review_assignment.status == 1 %}
+																																																																																																				<span class="badge bg-info" title="Invitation not sent">Selected</span>
+																																																																																																			{% elseif  review_assignment.status == 2 %}
+																																																																																																				<span class="badge bg-primary">Invitation Sent</span>
+																																																																																																			{% elseif  review_assignment.status == 3 %}
+																																																																																																				<span class="badge bg-primary">Reviewing</span>
+																																																																																												
+																																																																																																			{% endif %} #}
 
-
-						{% elseif member.confirmed==''    %}
-							<i class="fa fa-times-circle text-danger"></i>
-
-
-							{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
-						{% else  %}
-							<i class="fa fa-close text-danger"></i>
-						{% endif %}
-						<br>
-
-
-					{% else %}
-						No Co-PI has been involved
-					{% endfor %}
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-body ">
-					<h5 class="font-18 m-0 fw-bold">Reviewers</h5>
-					<hr>
-					{% for review_assignment in review_assignments %}
+								{% if review_assignment.ExternalreviewerEmail  %}
+									<span class="badge bg-primary">External reviewer</span>
+								{% else %}
+									<span class="badge bg-success">Internal reviewer</span>
+								{% endif %}
+								<hr>
+								{# {{ include('review_assignment/_delete_form.html.twig') }} #}
+								<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
+									<input type="hidden" name="_method" value="DELETE">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
+									<button class="btn btn-danger btn-xs">
+										<i class="ace-icon fa fa-attachement">
+											Unassign</i>
+									</button>
 
 
-						<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
-							{{ review_assignment.reviewer }}
+								</form>
 
-
-							{{ review_assignment.ExternalreviewerName }}</h4>
-						<p class="text-muted  mb-0 font-13">
-							<span class="text-dark">
-								Invitation Sent At:
-								{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
-							</span>
-
-							<span class="text-dark">
-								Review duedate:
-								{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
-							</span>
-
-						</p>
-						<div class="row mt-4 d-flex align-items-center">
-							<div class="col">
-								<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
-								<p
-									class="mb-0 text-muted">
-									{# {% if review_assignment.status == 1 %}
-																																																																																												<span class="badge bg-info" title="Invitation not sent">Selected</span>
-																																																																																											{% elseif  review_assignment.status == 2 %}
-																																																																																												<span class="badge bg-primary">Invitation Sent</span>
-																																																																																											{% elseif  review_assignment.status == 3 %}
-																																																																																												<span class="badge bg-primary">Reviewing</span>
-																																																																																				
-																																																																																											{% endif %} #}
-
-									{% if review_assignment.ExternalreviewerEmail  %}
-										<span class="badge bg-primary">External reviewer</span>
-									{% else %}
-										<span class="badge bg-success">Internal reviewer</span>
-									{% endif %}
-									<hr>
-									{# {{ include('review_assignment/_delete_form.html.twig') }} #}
-									<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
-										<input type="hidden" name="_method" value="DELETE">
-										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
-										<button class="btn btn-danger btn-xs">
-											<i class="ace-icon fa fa-attachement">
-												Unassign</i>
-										</button>
-
-
-									</form>
-
-									<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
-								</p>
-							</div>
+								<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
+							</p>
 						</div>
+					</div>
 
 
-					{% else %}
-						No reviewers has been assigned yet
-						<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Assign Reviewer</a>
+				{% else %}
+					No reviewers has been assigned yet
+					<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Assign Reviewer</a>
 
 
-					{% endfor %}
-				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>
-{% endblock %}
+</div>{% endblock %}
