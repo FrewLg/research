@@ -302,9 +302,32 @@
 														{{ form_label(submissionform.suffix  ) }}
 														{{ form_widget(submissionform.suffix  ) }}
 													</div>
+												</div> 
+
+
+												<div class="col-md-2">
+													<div class="form-s">
+														<div class="label">
+															Given name</div>
+														{{ form_widget(submissionform.first_name  ) }}
+													</div>
 												</div>
+												<div class="col-md-3">
+													<div class="form-group">
 
-
+														 Midle name
+														{{ form_widget(submissionform.midle_name  ) }}
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														 Sur name
+														 
+														{{ form_widget(submissionform.last_name  ) }}
+													</div>
+												</div>
+</div>
+												<div class="row">
 												<div class="col-md-2">
 													<div class="form-s">
 														<div class="label">
@@ -338,10 +361,10 @@
 														{{ form_widget(submissionform.college  ) }}
 													</div>
 												</div>
-												<div class="col-md-4">
+												<div class="col-md-3">
 													<div class="form-group">
 
-														<label class="form-controll">Department</label><br>
+														<label class="">Department</label><br>
 
 													<input type="hidden" name="department"/>
 														<select id="dep" name="department"   class="dep m-5 select2 col-md-12" required="required">

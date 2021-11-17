@@ -30,22 +30,28 @@ class UserProfileType extends AbstractType
        
 
             $builder
-//             ->add('first_name' ,TextType::class,[
-//                 'label'                 =>'Given name',
-//                                 'attr'=>[]
-//                                 ]
-//                             )
-//             ->add('midle_name' ,TextType::class,[
-// 'label'                 =>'Middle name',
-//                 'attr'=>[]
-//                 ]
-//             )
+            ->add('first_name' ,TextType::class,[
+                'required' => true,
+
+                'label'                 =>'Given name',
+                                'attr'=>[]
+                                ]
+                            )
+            ->add('midle_name' ,TextType::class,[
+'label'                 =>'Middle name',
+'required' => true,
+
+                'attr'=>[]
+                ]
+            )
             
-//             ->add('last_name' ,TextType::class,[
-//                 'label'                 =>'Sur name',
-//                                 'attr'=>[]
-//                                 ]
-//                             )
+            ->add('last_name' ,TextType::class,[
+                'label'                 =>'Sur name',
+                'required' => true,
+
+                                'attr'=>[]
+                                ]
+                            )
             
             // ->add('birth_date' 
             // , DateType::class, array(
@@ -120,13 +126,13 @@ class UserProfileType extends AbstractType
                 ]
             ])
             
-            // ->add('department',EntityType::class,[
-            //     'placeholder' => '---Select Department---',
-            //     "class"=>Department::class,
-            //     "attr"=>[
-            //         "class"=>"select2 ",
-            //     ]
-            // ])
+        // ->add('department',EntityType::class,[
+        //     'placeholder' => '---Select Department---',
+        //     "class"=>Department::class,
+        //     "attr"=>[
+        //         "class"=>"select2 ",
+        //     ]
+        // ])
             // 
             ->add('image', FileType::class, [
                 'label' => 'Upload profile picture... ',
