@@ -56,5 +56,22 @@ class SubmissionRepository extends ServiceEntityRepository
     //     return   $userpublication 
     //     ;
     // }
-    
+// public function findBySStatus(): ?Submission
+//     {
+//     $em = $this->getDoctrine()->getManager();
+//     $query = $em->createQuery(
+//         'SELECT u.email , p.id,    u.username,  p.complete, p.title  , ui.first_name
+// FROM App:CoAuthor s
+// JOIN s.researcher u
+// JOIN u.userInfo ui
+// JOIN s.submission p
+// WHERE  
+// p.complete is NULL');
+//         // ->setParameter('submission', $submission) 
+//         // ->setParameter('cstatus', 'completed' );
+//     $recepients = $query->getResult();
+ 
+//         return   $recepients 
+//         ;
+//     }   
 }

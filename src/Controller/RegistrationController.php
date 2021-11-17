@@ -136,6 +136,7 @@ class RegistrationController extends AbstractController
                         $userInfo->setFirstName($data['firstName']);
                         $userInfo->setMidleName($data['middleName']);
                         $userInfo->setLastName($data['lastName']);
+                        $user->setIsReviewer(1);
                         $user->setEmail($data['alternativeEmail']);
                         $user->setPassword($data['password']);
                         $userInfo->setPhoneNumber($data['phone']);
