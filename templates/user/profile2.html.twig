@@ -366,13 +366,12 @@
 														{{ form_widget(submissionform.college  ) }}
 													</div>
 												</div>
-												<div class="col-md-4">
-													{# <div class="form-d"> #}
+												<div class="col-md-12">
+													<div class="form-ggroup">
 													Department <br>
-													<div class="form-group">
 
 													<input type="hidden" name="department"/>
-														<select id="dep" name="department"   class="select2 col-sm-12 col-lg-4 col-md-12" style='widht:200px;' required="required">
+														<select id="dep" name="department"   class="select2 col-sm-12  col-md-12"   required="required">
 														
 														</select>
 													</div>
@@ -547,26 +546,10 @@ required: "You need to agree with the Terms and Conditions before you continue."
 }
 }
 });
-$.fn.steps.setStep = function (step) {
-var currentIndex = $(this).steps('getCurrentIndex');
-for (var i = 0; i < Math.abs(step - currentIndex); i++) {
-if (step > currentIndex) {
-$(this).steps('next');
-} else {
-$(this).steps('previous');
-}
-}
-};
-
-$input.appendTo($('ul[aria-label=Pagination]'));
+ 
+ 
 			</script>
-			<script>
-				$(function () {
-$(".select2").select2();
-
-
-})
-			</script>
+			 
 			{# <script>
 		$('.oper').click(function () {
 
@@ -594,7 +577,7 @@ college: college
 },
 dataType: "json",
 success: function (data) {
-$('.dep').children().remove()
+$('.dep').children().remove();
 
 
 select.append('<option  id="dep" name="department"    value="">'  +'--Select Department--'+ '</option>');
