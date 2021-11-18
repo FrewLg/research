@@ -178,7 +178,7 @@ class SubmissionController extends AbstractController {
      * @Route("/alert/", name="alert", methods={"GET","POST"})
      */
     public function alert(  MailerInterface $mailer): Response {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
          #####################################
                 ///////////// Let us email  co-pis    to  remind
                 $entityManager = $this->getDoctrine()->getManager();
