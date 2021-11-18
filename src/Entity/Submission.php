@@ -60,7 +60,7 @@ class Submission
     private $callForProposal;
 
     /**
-     * @ORM\OneToMany(targetEntity=CoAuthor::class, mappedBy="submission",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=CoAuthor::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
      */
   #  private $coAuthors;
 
@@ -93,7 +93,7 @@ class Submission
     private $thematic_area;
 
     /**
-     * @ORM\OneToMany(targetEntity=ReviewAssignment::class, mappedBy="submission")
+     * @ORM\OneToMany(targetEntity=ReviewAssignment::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
      */
     private $reviewAssignments;
 
@@ -135,7 +135,7 @@ class Submission
     private $funding_organization;
 
     /**
-     * @ORM\OneToMany(targetEntity=CollaboratingInstitution::class, mappedBy="submission")
+     * @ORM\OneToMany(targetEntity=CollaboratingInstitution::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
      */
     private $collaboratingInstitutions;
 
@@ -160,7 +160,7 @@ class Submission
     private $is_author_pi;
 
     /**
-     * @ORM\OneToMany(targetEntity=EditorialDecision::class, mappedBy="submission")
+     * @ORM\OneToMany(targetEntity=EditorialDecision::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
      */
     private $editorialDecisions;
 
@@ -214,7 +214,7 @@ class Submission
     private $keywords;
 
     /**
-     * @ORM\OneToMany(targetEntity=SubmissionAttachement::class, mappedBy="submission",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=SubmissionAttachement::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
      */
     private $submissionAttachements;
 
@@ -224,12 +224,12 @@ class Submission
     private $step=0;
 
     /**
-     * @ORM\OneToMany(targetEntity=SpecificObjective::class, mappedBy="submission" ,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=SpecificObjective::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
      */
     private $specificObjectives;
 
     /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="submission", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
      */
     private $reviews;
 

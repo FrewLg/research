@@ -189,7 +189,7 @@ class SubmissionController extends AbstractController {
                 $body = $messages->getBody();
                 $em = $this->getDoctrine()->getManager();
                 $query = $entityManager->createQuery(
-                    'SELECT u.email , c.id ,  u.username,  s.complete, s.title 
+'SELECT u.email , c.id ,  u.username,  s.complete, s.title 
                       , pi.first_name ,pi.gender, ui.alternative_email
                     FROM App:CoAuthor c
                     JOIN c.researcher u
@@ -209,7 +209,7 @@ class SubmissionController extends AbstractController {
                 $subject = $messages->getSubject();
                 $body = $messages->getBody();
                 foreach ($recepients as $row) {
-                    $theEmails[] = $row['email'] . ' ';
+                    $theEmails[]             = $row['email'] . ' ';
                     $theNames[] = $row['username'] . ' ';
                     $theFirstNames[] = $row['username'] . ' ';
                     $pi_name[] = $row['first_name'] . ' ';
