@@ -23,5 +23,4 @@ return [
     SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
     Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
     Craue\FormFlowBundle\CraueFormFlowBundle::class => ['all' => true],
-    // Lexik\Bundle\TranslationBundle\LexikTranslationBundle::class => ['all' => true],
 ];
