@@ -24,6 +24,7 @@ class SpecificObjective
 
     /**
      * @ORM\ManyToOne(targetEntity=Submission::class, inversedBy="specificObjectives")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $submission;
 
