@@ -378,29 +378,6 @@
 
 
 												<div class="col-md-2">
-													<div class="form-s">
-														<div class="label">
-															Given name</div>
-														{{ form_widget(submissionform.first_name  ) }}
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-
-														 Midle name
-														{{ form_widget(submissionform.midle_name  ) }}
-													</div>
-												</div>
-												<div class="col-md-3">
-													<div class="form-group">
-														 Sur name
-														 
-														{{ form_widget(submissionform.last_name  ) }}
-													</div>
-												</div>
-</div>
-	<div class="row">
-												<div class="col-md-2">
 													<div class="form-group">
 														<div class="label">
 															Gender</div>
@@ -433,23 +410,12 @@
 														{{ form_widget(submissionform.college  ) }}
 													</div>
 												</div>
-<<<<<<< HEAD
-												<div class="col-md-12">
-													<div class="form-ggroup">
-													Department <br>
-
-													<input type="hidden" name="department"/>
-														<select id="dep" name="department"   class="select2 col-sm-12  col-md-12"   required="required">
-														
-														</select>
-=======
 												<div class="col-md-4">
 													<div class="form-group">
 
 														<label class="form-controll">Department</label><br>
 
 														<select id="dep" name="dep" style="width: 350px;" class="dep m-5 select2" required="required"></select>
->>>>>>> ee95896f3307226d9f87db5a271ed02d27b0d686
 													</div>
 												</div>
 												{# <div class="col-md-3">
@@ -477,51 +443,6 @@
 												<br>
 											</div>
 
-<div class="col-12">
-												<br>
-												<h4>If previously granted Mega project from the institute (at list in past 4 years)</h4>
-												<br>
-											</div>
-										 
-
-
-  <script type="text/javascript">
-
-function yesnoCheck() {
-    if (document.getElementById('yesCheck').checked) {
-        document.getElementById('ifYes').style.display = 'block';
-    }
-    else document.getElementById('ifYes').style.display = 'none';
-
-}
-
-</script>
-Yes <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck"> No <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck"><br>
-    <div id="ifYes" style="display:none">
-														If yes, add and insert titles below:<hr>
-		<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#contact-fields-list">
-															<span aria-hidden="true">+</span>
-															Add research Titles
-														</button><br><br><br>
-														<ul id="contact-fields-list" class="m-t-5" data-prototype="{{_self.displayContent(submissionform.researches.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ submissionform.researches|length }}">
-															{% for coAuthor in submissionform.researches %}
-																<div class="row ">
-																	{{ _self.displayContent(coAuthor) }}
-																</div>
-															{% endfor %}
-														</ul>
- </div>
-        
-        
-
- 
-
-
-											 
-											</div></div>
-											<hr>
-														
-{#
 											<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#contact-fields-list">
 												<span aria-hidden="true">+</span>
 												Add research Titles
@@ -533,18 +454,6 @@ Yes <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesC
 													</div>
 												{% endfor %}
 											</ul>
- </div>
-        
-        
-
- 
-
-
-											 
-											</div></div>
-											<hr>
-
-#}
 											<button class="btn btn-primary">{{ button_label|default('Save Profile') }}</button>
 											{{ form_end(submissionform) }}
 
@@ -642,10 +551,26 @@ required: "You need to agree with the Terms and Conditions before you continue."
 }
 }
 });
- 
- 
+$.fn.steps.setStep = function (step) {
+var currentIndex = $(this).steps('getCurrentIndex');
+for (var i = 0; i < Math.abs(step - currentIndex); i++) {
+if (step > currentIndex) {
+$(this).steps('next');
+} else {
+$(this).steps('previous');
+}
+}
+};
+
+$input.appendTo($('ul[aria-label=Pagination]'));
 			</script>
-			 
+			<script>
+				$(function () {
+$(".select2").select2();
+
+
+})
+			</script>
 			{# <script>
 		$('.oper').click(function () {
 
@@ -673,16 +598,7 @@ college: college
 },
 dataType: "json",
 success: function (data) {
-<<<<<<< HEAD
-$('.dep').children().remove();
-
-
-select.append('<option  id="dep" name="department"    value="">'  +'--Select Department--'+ '</option>');
-
-=======
 $('.dep').children().remove()
-	select.append('<option  id="dep" name="department"    value=""  >'  +'--Select Department--'+ '</option>');
->>>>>>> ee95896f3307226d9f87db5a271ed02d27b0d686
 for (let [key, value] of Object.entries(data)) {
 
 

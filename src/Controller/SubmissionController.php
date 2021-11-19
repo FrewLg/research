@@ -1546,8 +1546,12 @@ return $this->redirectToRoute('submission_index');
       
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
-        $myresearches = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission]);
-        $researcher=$coAuthor->getResearcher();
+ 
+            return $this->redirectToRoute('membership');          
+       $myresearches = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission]);
+#        $researcher=$coAuthor->getResearcher();
+#        $researcher=$submission->getCoAuthors()->getResearcher();
+
         $user = $this->getUser();
         if(!$researcher==$user){
             
