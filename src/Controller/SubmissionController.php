@@ -189,7 +189,7 @@ class SubmissionController extends AbstractController {
                 $body = $messages->getBody();
                 $em = $this->getDoctrine()->getManager();
                 $query = $entityManager->createQuery(
-'SELECT u.email , c.id ,  u.username,  s.complete, s.title 
+'SELECT u.email , s.id ,  u.username,  s.complete, s.title 
                       , pi.first_name ,pi.gender, ui.alternative_email
                     FROM App:CoAuthor c
                     JOIN c.researcher u
@@ -555,7 +555,6 @@ return $this->redirectToRoute('submission_index');
 
             if ($submission->getStep() == 10) {
                 $submission->setSentAt(new \DateTime());
-                // $submission->setUidentifier(md5());
 
                 $submission->setUidentifier(md5(uniqid()));
 
@@ -1516,7 +1515,7 @@ return $this->redirectToRoute('submission_index');
     /**
      * @Route("/my-membership", name="membership", methods={"GET"})
      */
-    public function mymembership(Request $request, PaginatorInterface $paginator): Response {
+    public function mymembership(Request $request,  PaginatorInterface $paginator): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
@@ -1541,24 +1540,22 @@ return $this->redirectToRoute('submission_index');
 
 
     /**
-     * @Route("/my-membership-details", name="membershipdetails", methods={"GET"})
+     * @Route("/my-membership-details/{id}", name="membershipdetails" ,  methods={"GET","POST"})
      */
-    public function mymembershipdetails(CoAuthor $coAuthor): Response {
+    public function mymembershipdetailss(Request $request, Submission $submission): Response {
       
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
-        $myresearches = $entityManager->getRepository(CoAuthor::class)->find($coAuthor);
+        $myresearches = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission]);
         $researcher=$coAuthor->getResearcher();
         $user = $this->getUser();
         if(!$researcher==$user){
             
             $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("danger", "Sorry you are not allowed for this service ! Thank you!");
+            $flashbag->add("danger", "Sorry the link bronek!");
             return $this->redirectToRoute('membership');          
 
-        }
- 
-
+        } 
             return $this->render('submission/co-authorship_detail.html.twig', [
                 'collaboration' => $myresearches,
             ]);

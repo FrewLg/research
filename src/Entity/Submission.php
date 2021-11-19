@@ -62,7 +62,7 @@ class Submission
     /**
      * @ORM\OneToMany(targetEntity=CoAuthor::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
      */
-  #  private $coAuthors;
+  #  private $coAuthors; 
 
        protected $coAuthors;
        

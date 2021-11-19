@@ -36,6 +36,9 @@
                     <a href="{{ path('user_roles_edit', {'id': user.id}) }}" class='btn btn-success btn-xs btn-outlined'>{% trans %}Roles{% endtrans %}</a>
                    <a href="{{ path('resercher_detail', {'id': user.id}) }}" class='btn btn-info btn-xs btn-outlined'>
                                <i class="fa fa-user " title='Language' > </i> {% trans %}Profile{% endtrans %} </a>
+<a href="{{ path('researcher', {'id': user.id}) }}" class="btn btn-warning btn-sm" title="edit">
+					<i class="fa fa-user"></i>
+									</a>
                 </td>
             </tr>
         {% else %}

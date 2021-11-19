@@ -21,6 +21,7 @@ class CoAuthor
 
     /**
      * @ORM\ManyToOne(targetEntity=Submission::class, inversedBy="coAuthors")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $submission;
 

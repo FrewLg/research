@@ -118,7 +118,7 @@
 										
 										{% if app.user.userInfo and app.user.userInfo.image %}
 
-										{{  app.user.user.name}}	 
+										{{  app.user.userInfo}}	 
 										
 										<img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="profile-user" class="rounded-circle thumb-xs" style="width:30px;height: 30px;"/>
 										{% else %}
