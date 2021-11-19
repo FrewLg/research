@@ -44,19 +44,21 @@
 					<b>{{ call_for_proposal.researchType}} </b>
 					&nbsp;</span>
 				<small>
-					<span class="label label text-success">{{ call_for_proposal.views}}
-						Views</span>
-					{% for applicants in number_of_applicants %}
-						<span class="label label text-success">{{ applicants.Proposals}}
-							Applicant
-							{% if applicants.Proposals >1 %}s
-							{% endif %}
-						</span>
-					{% else %}
-						<span class="label label text-success">
-							Be the first applicant for this call!</span>
+       <p id="demo">Time  remaining</p>
 
-					{% endfor %}
+				{# <span class="label label text-success">{{ call_for_proposal.views}}
+					Views</span>
+				{% for applicants in number_of_applicants %}
+					<span class="label label text-success">{{ applicants.Proposals}}
+						Applicant
+						{% if applicants.Proposals >1 %}s
+						{% endif %}
+					</span>
+				{% else %}
+					<span class="label label text-success">
+						Be the first applicant for this call!</span>
+
+				{% endfor %} #}
 				</small>
 				<h6 style="font-family:arial; text-align:justify;"> 
 				<p class='text-default'>{{ call_for_proposal.heading|raw }}</h6></p>
@@ -84,9 +86,7 @@
 								<li>
 									Submission Deadline :
 									{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d H:i:s') : '' }}
-								</li>
-
-
+								</li> 
 								<li>
 									Review process: starts at
 			{{ call_for_proposal.reviewProcessStart ? call_for_proposal.reviewProcessStart|date('Y-m-d H:i:s') : '' }}
@@ -133,5 +133,40 @@
 						</div>
 					</div>
 </div>
+
+
+<script>
+    // Set the date we're counting down to
+
+    // var countDownDate = new Date("Jan 5, 2020 15:37:25").getTime();
+    var countDownDate = new Date("{% if call_for_proposal.deadline %}{{ call_for_proposal.deadline|date('M d ,y :i:s') }}{% endif %}").getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function () {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Output the result in an element with id="demo"
+        document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
+
+        // If the count down is over, write some text 
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("demo").innerHTML = "<span class='text-danger'>Registration expired</span>";
+        }
+    }, 1000);
+</script>
+
 				{% endblock %}
 				{% block aside %}{% endblock %}
