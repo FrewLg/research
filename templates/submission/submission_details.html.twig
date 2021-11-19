@@ -246,15 +246,17 @@
 																<td colspan="4">no records found</td>
 															</tr>
 														{% endfor %}
-													</tbody>
-												</table>
 											{% else %}
 												<h4 class='text-'>Action paln</h4>
 												{% if submission.actionplan|length >0  %}
 
 													{{  submission.actionplan |raw }}
+  </tbody>
+                                                                                                </table>
 												</div>
 											</div>
+
+
 										{% endif %}
 
 										<h5 class='text-'>Budget breakdown</h5>
@@ -360,7 +362,20 @@
 								</div>
 
 							</div>
-						</div>
+						  </div>
+
+                                                        </div>
+  </div>
+
+
+  </div>
+
+  </div>
+
+                                                        </div>  </div>
+
+
+
 
 
 						<div class="tab-pane" id="tab-2">
@@ -427,8 +442,10 @@
 									{% else %}
 									{# <tr>
 																																																																																																		 																																																				                                    </tr> #}
+</table>
 								{% endfor %}
-							</table>
+	
+
 							<hr>
 							{{ form_start(adminvevisionform) }}
 							{{ form_widget(adminvevisionform) }}
@@ -441,10 +458,10 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		</div>
-		</div>
 
+  </div>
+
+  </div>
 	<div class="col-lg-3">
 		<div class="card">
 			<div class="card-body ">
