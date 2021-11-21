@@ -397,8 +397,8 @@
 												</div>
 											</div>
 											<div class="col-12">
-												<br>
-												<h4>If previously granted Mega project from the institute (at list in past 4 years)</h4>
+								<br>
+						<h4>If previously granted Mega project from the institute (at list in past 4 years)</h4>
 												<br>
 											</div>
 										 
@@ -420,9 +420,9 @@ Yes <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesC
 														If yes, add and insert titles below:<hr>
 		<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#contact-fields-list">
 															<span aria-hidden="true">+</span>
-															Add research Titles
-														</button><br><br><br>
-														<ul id="contact-fields-list" class="m-t-5" data-prototype="{{_self.displayContent(submissionform.researches.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ submissionform.researches|length }}">
+											Add research Titles
+										</button><br><br><br>
+<ul id="contact-fields-list" class="m-t-5" data-prototype="{{_self.displayContent(submissionform.researches.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ submissionform.researches|length }}">
 															{% for coAuthor in submissionform.researches %}
 																<div class="row ">
 																	{{ _self.displayContent(coAuthor) }}

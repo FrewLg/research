@@ -96,12 +96,19 @@
 												{% else %}
 											{% endif %}
 										
-                                          ( 
-                                            {{ user.userInfo.educationLevel }} ) 
-                                           
-                                         {{  user.userInfo.academicRank }}  at 
-                                            {{ user.userInfo.department}} 
-                                            {{ user.userInfo.college }}
+
+{{ user.userInfo.suffix   }}
+ ({{ user.userInfo.educationLevel   }})
+{{ user.userInfo.academicRank   }}, 
+ {% if user.userInfo.department  is defined %}
+Department of 
+
+{{ user.userInfo.department   }}
+ {% else %}
+                                                                                        {% endif %}
+, 
+{{ user.userInfo.college  }}
+
                                             
 										</p>
 									</div>
@@ -137,8 +144,9 @@
                                        ( 
                                             {{ user.userInfo.educationLevel }} ) 
                                            
-                                         {{  user.userInfo.academicRank }}  at 
-                                            {{ user.userInfo.department}} 
+                                         {{  user.userInfo.academicRank }},  
+                                            {{ user.userInfo.department}} at 
+
                                             {{ user.userInfo.college }} 
 
 										 
