@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DepartmentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +29,12 @@ class Department
      * @ORM\JoinColumn(nullable=false)
      */
     private $college;
+
+      /**
+     * @ORM\OneToMany(targetEntity=UserInfo::class, mappedBy="department")
+     */
+    private $userInfos;
+
 
     public function getId(): ?int
     {
@@ -62,4 +70,45 @@ class Department
 
         return $this;
     }
+
+   
+
+    public function __construct()
+    {
+   
+        $this->users = new ArrayCollection(); 
+    }
+
+    /**
+     * @return Collection|userInfo[]
+     */
+    public function getUserInfos(): Collection
+    {
+        return $this->userInfos;
+    }
+
+    public function addUserInfo(userInfo $userInfo): self
+    {
+        if (!$this->userInfos->contains($userInfo)) {
+            $this->userInfos[] = $userInfo;
+            $userInfo->setDepartment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserInfo(userInfo $userInfo): self
+    {
+        if ($this->userInfos->removeElement($userInfo)) {
+            // set the owning side to null (unless already changed)
+            if ($userInfo->getDepartment() === $this) {
+                $userInfo->setDepartment(null);
+            }
+        }
+
+        return $this;
+    }
+
+ 
+
 }

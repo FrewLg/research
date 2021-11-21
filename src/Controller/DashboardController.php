@@ -4,6 +4,8 @@ namespace App\Controller;
 use App\Entity\CallForProposal;
 use App\Entity\CoAuthor;
 use App\Entity\CollaboratingInstitution;
+use App\Entity\College;
+use App\Entity\Department;
 use App\Entity\EditorialDecision;
 use App\Entity\Expense;
 use App\Entity\PublishedSubmission;
@@ -122,29 +124,40 @@ class DashboardController extends AbstractController {
         
                 $entityManager = $this->getDoctrine()->getManager(); 
                 #################################           
-                $querytwo = $entityManager->createQuery(
-                               'SELECT    t.name,   t.id
-                     FROM App:Submission s
-                         JOIN s.thematic_area t
-                       WHERE   s.complete=:completed  
-                    and s.thematic_area=t.id
-                    --   GROUP BY t.id   
-                      ORDER BY t.id   
-
-                    '   
-                    ) 
-                      
-                      ->setParameter('completed', 'completed' );
-                $recepients = $querytwo->getResult();
+                // $querytwo = $entityManager->createQuery(
+                //                'SELECT      d.id 
+                //      FROM App:Submission s  , App:User u 
+                //          JOIN u.userInfo i
+                //           JOIN i.department d
+                //           JOIN d.college c
+                //        WHERE   s.complete=:completed and c.id =:college   
+                //       ORDER BY  s.author 
+                //     '   
+                //     ) 
+        //         $querytwo = $entityManager->createQuery(
+        //             'SELECT      d.id,  s.title
+        //   FROM App:Department d  , App:User u ,App:Submission s
+        //       JOIN u.userInfo i 
+        //        JOIN d.college c
+        //     WHERE   s.complete=:completed and c.id =:college   
+           
+        //  '   
+        //  ) 
+        //               ->setParameter('completed', 'completed' ) 
+        //               ->setParameter('college', $this->getUser()->getUserInfo()->getCollege()->getId() );
+        //         $recepients = $querytwo->getScalarResult();
              
                     //   dd($recepients);
 
 ########################## 
         $thiscollege = $this->getUser()->getUserInfo()->getCollege();
         $submissionbytheme = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $thiscollege ]);
+        $submsissionbytheme = $entityManager->getRepository(College::class)->findBy(['id' => $thiscollege ]);
 
              return $this->render('dashboard/bytheme.html.twig', [
                 'thematic_areas'=>$submissionbytheme,
+                'colleges'=>$submissionbytheme,
+                // 'sub_by_departments'=>$recepients,
             ]);
     }
 

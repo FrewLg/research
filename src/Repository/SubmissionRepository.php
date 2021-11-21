@@ -40,7 +40,6 @@ class SubmissionRepository extends ServiceEntityRepository
     }
     
 
-    
     // public function findBySubmissionByUser($value): ?Submission
     // {
     //     $qb= $this->createQueryBuilder('s');
@@ -55,7 +54,21 @@ class SubmissionRepository extends ServiceEntityRepository
 
     //     return   $userpublication 
     //     ;
-    // }
+    // }  
+    #################
+    // public function findBySubmissionByDepartment($value): ?Submission
+    // {
+    //    return $this->createQueryBuilder('a')
+    //             ->innerJoin('a.department', 'd')
+    //             ->innerJoin('d.college', 'c') 
+    //             ->andWhere('c.id = :e') 
+    //             ->setParameter('e', $value)
+    //             ->orderBy('a.id', 'ASC') 
+    //             ->getQuery()
+    //             ->getResult()
+    //         ;
+    //     }
+        
 // public function findBySStatus(): ?Submission
 //     {
 //     $em = $this->getDoctrine()->getManager();

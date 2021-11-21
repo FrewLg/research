@@ -13,7 +13,7 @@
 			</h4>
 
 			{{ include('submission/progress.html.twig') }}
-<div class="row">
+			<div class="row">
 				<div class="col-lg-12">
 					<dl class="row mb-0">
 						<div class="col-sm-2 text-sm-right">
@@ -109,8 +109,9 @@
 									<div class="tab-pane active" id="tab-1">
 										<div class="row">
 
-											
-													 <h4 class='text-primary m-3'> Research details</h4>
+
+											<h4 class='text-primary m-3'>
+												Research details</h4>
 
 
 											<div class="accordion" id="accordionExample">
@@ -157,16 +158,50 @@
 												</div>
 
 
+												{# <div class="accordion-item">
+																									<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
+																										<button class="accordion-button fw-semibold collapsed" 
+																										type="button" data-bs-toggle="collapse" 
+																										data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
+																											Background And Rationale
+																										</button>
+																									</h5>
+																									<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
+																										<div class="accordion-body">
+												
+																											{{ submission.BackgroundAndRationale |raw}}
+												
+																										</div>
+																									</div>
+																								</div> #}
+
 												<div class="accordion-item">
 													<h5 class="accordion-header m-0" id="Objectives">
 														<button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoo" aria-expanded="false" aria-controls="collapseTwoo">
 															Objectives
 														</button>
 													</h5>
-													<div id="collapseTwoo" class="accordion-collapse collapse" aria-labelledby="Objectives" data-bs-parent="#accordionExampleo" style="">
+													<div id="collapseTwoo" class="accordion-collapse collapse" aria-labelledby="Objectives" data-bs-parent="#accordionExample" style="">
 														<div class="accordion-body">
 
-															Objectives
+															<h5 class="font-20 fw-bold d-block mt-2">General objective:</h5>
+															<p>
+																{{ submission.GeneralObjective }}
+															</p>
+															<h5 class="font-20 fw-bold d-block mt-2">Specific Objectives:</h5>
+
+															<ul class="list-unstyled mb-0 row">
+																{% for objective in submission.specificObjectives %}
+																	<li class="col-12 my-1 p-1 list-unstyled">
+
+																		{{ loop.index }}
+																		{{ objective.objective}}
+
+
+																	</li>
+																{% endfor %}
+
+															</ul>
 
 														</div>
 													</div>
@@ -196,7 +231,8 @@
 													<div id="collepaselast" class="accordion-collapse collapse" aria-labelledby="headingLastTwo" data-bs-parent="#accordionExample" style="">
 														<div class="accordion-body">
 
-															{{  submission.actionplan |raw }} <h5 class='text-'>Budget breakdown</h5>
+															{{  submission.actionplan |raw }}
+															<h5 class='text-'>Budget breakdown</h5>
 															<table class="table table-striped">
 																<thead>
 																	<tr>
@@ -208,12 +244,15 @@
 																		</th>
 																		<th>Description
 																		</th>
-																		<th>Remark
+
+																		<th>Total
 																		</th>
-																		{# <th>Approve </th> #}
 																	</tr>
 																</thead>
 																<tbody>
+																	{% set total = 0 %}
+
+
 																	{% for expense in expenses %}
 																		<tr>
 																			<td>{{ loop.index }}</td>
@@ -222,22 +261,27 @@
 																			<td>{{ expense.cost }}</td>
 																			<td>{{ expense.quantity }}</td>
 																			<td>{{ expense.description }}</td>
-																			<td>{{ expense.remark }}</td>
-																			{# <td>{{ expense.approvedexpense }}</td> #}
-																			{# {% set tot=expense.cost*expense.quantity %} #}
+																			<td>
+																				{{ expense.cost * expense.quantity }}
+																			</td>
+																			{% set total = total + (expense.cost * expense.quantity)  %}
 																		</tr>
-																		{# {{tot}} #}
-																		=
+
+
 																	{% else %}
 																		<tr>
-																			<td colspan="3">no records found</td>
+																			<td colspan="4">no records found</td>
 																		</tr>
 																	{% endfor %}
-																	<tr class='text-success strong'>{# <td colspan='5'>
-																																																																																																																																		Grand Total     </td>  #}
-																		{# <td colspan='1'></td> #}
-																		{# <td>{{ Overall_budger_request.Totalapproved }}</td> #}
-
+																	<tr class="bg-black text-white">
+																		<td colspan="4" class="border-0 font-14">
+																			<b>Grand Total</b>
+																		</td>
+																		<td class="border-0 font-14"></td>
+																		<td class="border-0 font-14">
+																			<b>{{ total }}
+																				ETB</b>
+																		</td>
 																	</tr>
 																</tbody>
 															</table>{#{% endif %}#}<div class="table-responsive">
@@ -307,309 +351,311 @@
 													</h5>
 													<div id="members" class="accordion-collapse collapse" aria-labelledby="headingLastFThree" data-bs-parent="#accordionExample" style="">
 														<div class="accordion-body">
-															 
-													  
-
-													 <h4 class='text-'>Research team({{  submission.coAuthors|length +1}})</h4>
 
 
-<div class="row">
+															<h4 class='text-'>Research team({{  submission.coAuthors|length +1}})</h4>
 
-	<div class="col-lg-4">
-		<div class="card">
-			<div class="card-body">
-				<div
-					class="text-center">
-					{# <img class="me-3 rounded-circle thumb-xl" src="assets/images/users/user-4.jpg" alt=""> #}
 
-					{% if submission.author.userInfo.image   %}
-						<img src="{{ asset('files/profile_pictures/'~ submission.author.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
-					{% else %}
-						<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
-					{% endif %}
+															<div class="row">
 
-					<div class="">
-						<h5 class="mb-0">
-							{{ submission.author.userInfo}}</h5>
-						<small class="text-muted">
-							{{ submission.author.userInfo.college}}</small>
+																<div class="col-lg-4">
+																	<div class="card">
+																		<div class="card-body">
+																			<div
+																				class="text-center">
+																				{# <img class="me-3 rounded-circle thumb-xl" src="assets/images/users/user-4.jpg" alt=""> #}
 
+																				{% if submission.author.userInfo.image   %}
+																					<img src="{{ asset('files/profile_pictures/'~ submission.author.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+																				{% else %}
+																					<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+																				{% endif %}
+
+																				<div class="">
+																					<h5 class="mb-0">
+																						{{ submission.author.userInfo}}</h5>
+																					<small class="text-muted">
+																						{{ submission.author.userInfo.college}}</small>
+
+																				</div>
+																				<p class="text-muted px-2">
+																					{{ submission.author.userInfo.department}}
+																				</p>
+
+																				<p class="text-muted mb-2">{{ submission.author.userInfo.academicRank }}</p>
+																				<div class="mb-3">
+																					<span class='me-3  text-success'>Principal Investigtor</span>
+																				</div>
+																				<a href='{{path('researcher',{'id':submission.author.id})}}' class="btn btn-sm btn-soft-primary">
+																					More Detail</a>
+																			</div>
+																		</div>
+																		<!--end card-body-->
+																	</div>
+																	<!--end card-->
+																</div>
+
+																{% for co_author in  submission.coAuthors %}
+																	<div class="col-lg-4">
+
+																		<div class="card">
+
+																			<div class="card-body text-center">
+
+
+																				{% if co_author.researcher.userInfo.image   %}
+																					<img src="{{ asset('files/profile_pictures/'~ co_author.researcher.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+																				{% else %}
+																					<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+																				{% endif %}
+
+																				<h5 class="fw-bold mt-3 mb-1">{{ co_author.researcher.userInfo}}
+																					<sapn class="text-muted mb-0">({{ co_author.researcher.userInfo.educationLevel }})</span>
+																				</h5>
+																				<p class="text-muted mb-0">{{ co_author.researcher.userInfo.college }}</p>
+																				<p class="text-muted mb-0">{{ co_author.researcher.userInfo.department }}</p>
+																				<p class="text-muted mb-0">{{ co_author.researcher.userInfo.academicRank }}</p>
+																				<div class="mb-3">
+																					<a href="apps-tasks.html#" class="me-3 text-warning">
+																						{{ co_author.role }}</a>
+																					{# {{ co_author.researcher|length}} #}
+																					{# <a href="apps-tasks.html#" class=" text-warning">295 Coauthorship</a> #}
+																				</div>
+
+																				<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">More details</a>
+
+																			</div>
+																		</div>
+																	</div>
+																{% endfor %}
+
+															</div>
+
+
+														</div>
+
+
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+
+
+									<div class="tab-pane" id="Revision">
+
+										<h3>
+											<a href="#" class="text-navy">
+												Comments from reviewer
+											</a>
+										</h3>
+
+										{% for review in reviews %}
+
+											<table class="table shoping-cart-table">
+
+												<tbody>
+													<tr>
+														<td class="desc">
+
+															<p class="small">
+
+																{{ review.comment |raw}}
+															</p>
+															<dl class="small m-b-none">
+																<dt>Revised at
+																	{{ review.CreatedAt ?
+                                                        review.CreatedAt|date('Y-m-d H') : '' }}
+																</dt>
+															</dl>
+
+															<div class="m-t-sm">
+
+																{% if review.attachment %}
+																	<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="badge bg-info mt-2">
+																		Download review file
+																		<i class="fa fa-download material-icons  "></i>
+																	</a>
+																{% else %}
+																	<span class="label label-danger">
+																		{% trans %}No attachement found{% endtrans %}
+																	</span>
+																{% endif %}
+															</div>
+														</td>
+														<td width="65" nowrap="nowrap">
+															<h4 class='text-primary'>
+																Review :
+																{{ loop.index }}
+															</h4>
+															{{ review.remark |raw}}
+															<hr>
+															{% if review.AllowToView=='' %}
+
+																<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-primary" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
+																	Send   comment to PI</a>
+
+
+															{% elseif review.AllowToView=='1'  %}
+																<a class="btn btn-success">
+																	Comment sent to PI</a>
+																{% else %}
+
+															{% endif %}
+
+															<hr>
+															{# {{editorialDecisions.decision}} #}
+														</td>
+													</tr>
+												</tbody>
+										{% else %}
+												{# <tr>
+																																																																																																																																																																																																																																																																																																																																																																 																																																				                                    </tr> #}
+											</table>
+										{% endfor %}
+
+
+										<hr>
+										{{ form_start(adminvevisionform) }}
+										{{ form_widget(adminvevisionform) }}
+										<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
+										{{ form_end(adminvevisionform) }}
+
+
+									</div>
+									<div class="tab-pane" id="copyedit">
+										{{ submission.abstract|raw }}
+									</div>
+									<div class="tab-pane" id="progress-report">
+										{{ submission.title }}
+									</div>
+									<div class="tab-pane" id="terminal-report"></div>
+								</div>
+
+							</div>
+						</div>
 					</div>
-					<p class="text-muted px-2">
-						{{ submission.author.userInfo.department}}
-					</p>
-
-					<p class="text-muted mb-2">{{ submission.author.userInfo.academicRank }}</p>
-					<div class="mb-3">
-						<span class='me-3  text-success'>Principal Investigtor</span>
-					</div>
-					<a href='{{path('researcher',{'id':submission.author.id})}}' class="btn btn-sm btn-soft-primary">
-						More Detail</a>
 				</div>
 			</div>
-			<!--end card-body-->
 		</div>
-		<!--end card-->
-	</div>
+		<div class="col-lg-3">
 
-	{% for co_author in  submission.coAuthors %}
-		<div class="col-lg-4">
 
 			<div class="card">
-
-				<div class="card-body text-center">
-
-
-					{% if co_author.researcher.userInfo.image   %}
-						<img src="{{ asset('files/profile_pictures/'~ co_author.researcher.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+				<div class="card-body ">
+					<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
+					{% for submissionattachment in submission.submissionAttachements %}
+						<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
+							{{submissionattachment.name}}
+							<i class="fa fa-download material-icons warning"></i>
+						</a>
 					{% else %}
-						<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
-					{% endif %}
-
-					<h5 class="fw-bold mt-3 mb-1">{{ co_author.researcher.userInfo}}
-						<sapn class="text-muted mb-0">({{ co_author.researcher.userInfo.educationLevel }})</span>
-					</h5>
-					<p class="text-muted mb-0">{{ co_author.researcher.userInfo.college }}</p>
-					<p class="text-muted mb-0">{{ co_author.researcher.userInfo.department }}</p>
-					<p class="text-muted mb-0">{{ co_author.researcher.userInfo.academicRank }}</p>
-					<div class="mb-3">
-						<a href="apps-tasks.html#" class="me-3 text-warning">
-							{{ co_author.role }}</a>
-						{# {{ co_author.researcher|length}} #}
-						{# <a href="apps-tasks.html#" class=" text-warning">295 Coauthorship</a> #}
-					</div>
-
-					<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">More details</a>
-
+						<span class="label label-danger">
+							{% trans %}No attachement found{% endtrans %}</span>
+					{% endfor %}
 				</div>
 			</div>
-		</div>
-	{% endfor %}
+			<div class="card">
+				<div class="card-body ">
+					<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
+					{% for member in submission.coAuthors %}
+						{{loop.index}}{# {{member.researcher}} #}<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+							{{ member.researcher.userInfo }}</a>
+						{% if member.confirmed=='1' %}
+							<i class="fa fa-check text-success"></i>
+						{% elseif member.confirmed==''    %}
+							<i class="fa fa-times-circle text-danger"></i>
 
-</div>
+
+							{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
+						{% else  %}
+							<i class="fa fa-close text-danger"></i>
+						{% endif %}<br>{% else %}No Co-PI has been involved
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body ">
+					<h5 class="font-18 m-0 fw-bold">Reviewers</h5><hr>
+					{% for review_assignment in review_assignments %}
+						<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
+							{{ review_assignment.reviewer }}
 
 
-											</div>
+							{{ review_assignment.ExternalreviewerName }}</h4>
+						<p class="text-muted  mb-0 font-13">
+							<span class="text-dark">
+								Invitation Sent At:
+								{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+							</span>
+
+							<span class="text-dark">
+								Review duedate:
+								{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+							</span>
+						</p>
+						<div class="row mt-4 d-flex align-items-center">
+							<div class="col">
+								<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
+								<p class="mb-0 text-muted">
 
 
-										</div>
+									{% if review_assignment.ExternalreviewerEmail  %}
+										<span class="badge bg-primary">External reviewer</span>
+									{% else %}
+										<span class="badge bg-success">Internal reviewer</span>
+									{% endif %}
+									<hr>
+									{# {{ include('review_assignment/_delete_form.html.twig') }} #}
+									<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
+										<input type="hidden" name="_method" value="DELETE">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
+										<button class="btn btn-danger btn-xs">
+											<i class="ace-icon fa fa-attachement">
+												Unassign</i>
+										</button>
+
+
+									</form>
+
+									<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
+								</p>
+								<div class="row mt-4 d-flex align-items-center">
+									<div class="col">
+										<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
+										<p class="mb-0 text-muted">
+
+
+											{% if review_assignment.ExternalreviewerEmail  %}
+												<span class="badge bg-primary">External reviewer</span>
+											{% else %}
+												<span class="badge bg-success">Internal reviewer</span>
+											{% endif %}
+											<hr>
+											{# {{ include('review_assignment/_delete_form.html.twig') }} #}
+											<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
+												<input type="hidden" name="_method" value="DELETE">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
+												<button class="btn btn-danger btn-xs">
+													<i class="ace-icon fa fa-attachement">
+														Unassign</i>
+												</button>
+
+
+											</form>
+
+											<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
+										</p>
 									</div>
 								</div>
-							</div>
-
-						</div>
-
-
-						<div class="tab-pane" id="Revision">
-
-							<h3>
-								<a href="#" class="text-navy">
-									Comments from reviewer
-								</a>
-							</h3>
-
-							{% for review in reviews %}
-
-								<table class="table shoping-cart-table">
-
-									<tbody>
-										<tr>
-											<td class="desc">
-
-												<p class="small">
-
-													{{ review.comment |raw}}
-												</p>
-												<dl class="small m-b-none">
-													<dt>Revised at
-														{{ review.CreatedAt ?
-                                                        review.CreatedAt|date('Y-m-d H') : '' }}
-													</dt>
-												</dl>
-
-												<div class="m-t-sm">
-
-													{% if review.attachment %}
-														<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="badge bg-info mt-2">
-															Download review file
-															<i class="fa fa-download material-icons  "></i>
-														</a>
-													{% else %}
-														<span class="label label-danger">
-															{% trans %}No attachement found{% endtrans %}
-														</span>
-													{% endif %}
-												</div>
-											</td>
-											<td width="65" nowrap="nowrap">
-												<h4 class='text-primary'>
-													Review :
-													{{ loop.index }}
-												</h4>
-												{{ review.remark |raw}}
-												<hr>
-												{% if review.AllowToView=='' %}
-
-													<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-primary" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
-														Send   comment to PI</a>
-
-
-												{% elseif review.AllowToView=='1'  %}
-													<a class="btn btn-success">
-														Comment sent to PI</a>
-													{% else %}
-
-												{% endif %}
-
-												<hr>
-												{# {{editorialDecisions.decision}} #}
-											</td>
-										</tr>
-									</tbody>
-							{% else %}
-									{# <tr>
-																																																																																																																																																																																																																																																																																																																																																				 																																																				                                    </tr> #}
-								</table>
+								{% else %}No reviewers has been assigned yet<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Assign Reviewer</a>
 							{% endfor %}
-
-
-							<hr>
-							{{ form_start(adminvevisionform) }}
-							{{ form_widget(adminvevisionform) }}
-							<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
-							{{ form_end(adminvevisionform) }}
-
-
 						</div>
-						<div class="tab-pane" id="copyedit">
-							{{ submission.abstract|raw }}
-						</div>
-						<div class="tab-pane" id="progress-report">
-							{{ submission.title }}
-						</div>
-						<div class="tab-pane" id="terminal-report"></div>
 					</div>
 
 				</div>
+
 			</div>
-		</div>
-	</div>
-</div></div><div class="col-lg-3">
-
-
-<div class="card">
-	<div class="card-body ">
-		<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
-		{% for submissionattachment in submission.submissionAttachements %}
-			<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-				{{submissionattachment.name}}
-				<i class="fa fa-download material-icons warning"></i>
-			</a>
-		{% else %}
-			<span class="label label-danger">
-				{% trans %}No attachement found{% endtrans %}</span>
-		{% endfor %}
-	</div>
-</div>
-<div class="card">
-	<div class="card-body ">
-		<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
-		{% for member in submission.coAuthors %}
-			{{loop.index}}{# {{member.researcher}} #}<a href='{{path('researcher',{'id':member.researcher.id})}}'>
-				{{ member.researcher.userInfo }}</a>
-			{% if member.confirmed=='1' %}
-				<i class="fa fa-check text-success"></i>
-			{% elseif member.confirmed==''    %}
-				<i class="fa fa-times-circle text-danger"></i>
-
-
-				{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
-			{% else  %}
-				<i class="fa fa-close text-danger"></i>
-			{% endif %}<br>{% else %}No Co-PI has been involved
-		{% endfor %}
-	</div>
-</div>
-
-<div class="card">
-	<div class="card-body ">
-		<h5 class="font-18 m-0 fw-bold">Reviewers</h5><hr>
-		{% for review_assignment in review_assignments %}
-			<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
-				{{ review_assignment.reviewer }}
-
-
-				{{ review_assignment.ExternalreviewerName }}</h4>
-			<p class="text-muted  mb-0 font-13">
-				<span class="text-dark">
-					Invitation Sent At:
-					{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
-				</span>
-
-				<span class="text-dark">
-					Review duedate:
-					{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
-				</span>
-			</p>
-			<div class="row mt-4 d-flex align-items-center">
-				<div class="col">
-					<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
-					<p class="mb-0 text-muted">
-
-
-						{% if review_assignment.ExternalreviewerEmail  %}
-							<span class="badge bg-primary">External reviewer</span>
-						{% else %}
-							<span class="badge bg-success">Internal reviewer</span>
-						{% endif %}
-						<hr>
-						{# {{ include('review_assignment/_delete_form.html.twig') }} #}
-						<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
-							<input type="hidden" name="_method" value="DELETE">
-							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
-							<button class="btn btn-danger btn-xs">
-								<i class="ace-icon fa fa-attachement">
-									Unassign</i>
-							</button>
-
-
-						</form>
-
-						<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
-					</p>
-					<div class="row mt-4 d-flex align-items-center">
-						<div class="col">
-							<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
-							<p class="mb-0 text-muted">
-
-
-								{% if review_assignment.ExternalreviewerEmail  %}
-									<span class="badge bg-primary">External reviewer</span>
-								{% else %}
-									<span class="badge bg-success">Internal reviewer</span>
-								{% endif %}
-								<hr>
-								{# {{ include('review_assignment/_delete_form.html.twig') }} #}
-								<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
-									<input type="hidden" name="_method" value="DELETE">
-									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
-									<button class="btn btn-danger btn-xs">
-										<i class="ace-icon fa fa-attachement">
-											Unassign</i>
-									</button>
-
-
-								</form>
-
-								<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
-							</p>
-						</div>
-					</div>
-					{% else %}No reviewers has been assigned yet<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Assign Reviewer</a>
-				{% endfor %}
-			</div>
-		</div>
-
-	</div>
-
-</div>{% endblock %}
+		{% endblock %}
