@@ -13,6 +13,7 @@ use App\Entity\ReviewAssignment;
 use App\Entity\Submission;
 use App\Entity\SubmissionAttachement;
 use App\Entity\SubmissionBudget;
+use App\Entity\ThematicArea;
 use App\Filter\Type\FilterFunctions;
 use App\Filter\Type\SubmissionFilterType;
 use App\Form\EditorialDecisionType;
@@ -110,6 +111,43 @@ class DashboardController extends AbstractController {
                 
             ]);
     }
+
+
+
+    /**
+     * @Route("/theme/", name="theme", methods={"GET","POST"})
+     */
+    public function theme(MailerInterface $mailer): Response {
+        // $this->denyAccessUnlessGranted('assn_clg_cntr');
+        
+                $entityManager = $this->getDoctrine()->getManager(); 
+                #################################           
+                $querytwo = $entityManager->createQuery(
+                               'SELECT    t.name,   t.id
+                     FROM App:Submission s
+                         JOIN s.thematic_area t
+                       WHERE   s.complete=:completed  
+                    and s.thematic_area=t.id
+                    --   GROUP BY t.id   
+                      ORDER BY t.id   
+
+                    '   
+                    ) 
+                      
+                      ->setParameter('completed', 'completed' );
+                $recepients = $querytwo->getResult();
+             
+                    //   dd($recepients);
+
+########################## 
+        $thiscollege = $this->getUser()->getUserInfo()->getCollege();
+        $submissionbytheme = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $thiscollege ]);
+
+             return $this->render('dashboard/bytheme.html.twig', [
+                'thematic_areas'=>$submissionbytheme,
+            ]);
+    }
+
 
     /**
      * @Route("/", name="dashboard", methods={"GET","POST"})
