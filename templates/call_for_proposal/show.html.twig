@@ -44,7 +44,7 @@
 					<b>{{ call_for_proposal.researchType}} </b>
 					&nbsp;</span>
 				<small>
-       <p id="demo">Time  remaining</p>
+<h4> Time Remaining:        <p id="demo" class='text-success'>Time  remaining</p></h4><hr>
 
 				{# <span class="label label text-success">{{ call_for_proposal.views}}
 					Views</span>
@@ -139,7 +139,8 @@
     // Set the date we're counting down to
 
     // var countDownDate = new Date("Jan 5, 2020 15:37:25").getTime();
-    var countDownDate = new Date("{% if call_for_proposal.deadline %}{{ call_for_proposal.deadline|date('M d ,y :i:s') }}{% endif %}").getTime();
+    var countDownDate = new Date("{% if call_for_proposal.deadline %}
+{{ call_for_proposal.deadline|date('M d, y h:i ') }}{% endif %}").getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function () {
@@ -163,7 +164,7 @@
         // If the count down is over, write some text 
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("demo").innerHTML = "<span class='text-danger'>Registration expired</span>";
+            document.getElementById("demo").innerHTML = "<span class='text-danger'>Call  expired</span>";
         }
     }, 1000);
 </script>
