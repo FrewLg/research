@@ -180,19 +180,90 @@ class DashboardController extends AbstractController {
     {
         $em = $this->getDoctrine()->getManager();
 
-        $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
+        $submission = array_reverse($em->getRepository('App:Submission')->findAll());
         $Allsubmissions = $paginator->paginate(
             // Doctrine Query, not results
-            $submissionRepository,
+            $submission,
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
             10
         );
 
-        return $this->render('dashboard/all_researchers.html.twig', [ 
-            'submissions' => $Allsubmissions, 
+    // $submission = $em->getRepository('App:Submission')->findOneBy(['uidentifier' => $uid]);
+
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('isRemoteEnabled', true);
+
+        $pdfOptions->set('tempDir', '/home/ghost/Desktop/pdf-export/tmp');
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        $dompdf->set_option("isPhpEnabled", true);
+
+        $html = $this->renderView('dashboard/all_researchers.html.twig', [
+            'user' => $this->getUser(),
+            'submissions' => $Allsubmissions,
         ]);
+
+
+         $submissions = $em->getRepository(Submission::class)->findAll();
+     
+     
+        $spreadsheet = new Spreadsheet();
+        
+        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Number !');
+        $sheet->setTitle("Researcher");
+ 
+        $counter = 2;
+        foreach ($submissions as $phoneNumber) {
+            $sheet->setCellValue('A' . $counter, $phoneNumber->getId());
+            $counter2 = 2; 
+            ########################
+            $sheet->setCellValue('B' . $counter, $phoneNumber->getAuthor()->getUserInfo());
+            
+            foreach ($phoneNumber->getCoAuthors() as $CoAuthors) {
+// $members=$CoAuthors->getResearcher()->getUsername();
+$sheet->setCellValue('C' . $counter, $CoAuthors->getResearcher()->getUserInfo());
+
+            $counter++;
+            $counter2++; 
+        
+##########epients);
+$copi[]=0;
+foreach ($CoAuthors as $row) {
+    $copi[]             = $row->getResearcher()->getUserInfo();
+  
+    $theNames[] = $row['email'] . ' '; 
+// dd($row[0]);
+$length = count($phoneNumber->getCoAuthors()); 
+$counter++;
+            $counter2++;
+// dd($length) ;
+     
+}
+  
+
+        }
+                   
+############################
+          $counter++;
+        }
+         $writer = new Xlsx($spreadsheet);
+         $fileName = 'Researchers.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        
+         $writer->save($temp_file);
+        
+         return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+        
+
+        // return $this->render('dashboard/test.html.twig', [ 
+        //     'submissions' => $Allsubmissions, 
+        // ]);
 
     }
 
