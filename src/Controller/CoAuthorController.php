@@ -97,6 +97,21 @@ class CoAuthorController extends AbstractController {
                }
                ##########################
 
+#######################
+$em  = $this->getDoctrine()->getManager();
+$lastdate = $em->getRepository('App:CallForProposal')->find($sub->getCallForProposal());
+
+ $deadline = $lastdate->getDeadline();
+  $today = new \DateTime('');
+  if ($deadline <= $today) {
+$flashbag = $this->get('session')->getFlashBag();
+     $flashbag->add("danger", "Sorry! Call has expired!  Thank you!");
+    return $this->redirectToRoute('myreviews');
+ }
+
+################################
+
+
         $coAuthor->setConfirmed(1);
         $entityManager = $this->getDoctrine()->getManager();
         $pi = $sub->getAuthor();

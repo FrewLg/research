@@ -173,15 +173,45 @@ class DashboardController extends AbstractController {
         ]);
     }  
   
- /**
-     * @Route("/ex", name="authorexcel", methods={"GET","POST"})
+     /**
+     * @Route("/research-theams", name="research_theams", methods={"GET","POST"})
      */
-    public function excelAuthors( )
+    public function theams( Request $request, PaginatorInterface $paginator  )
     {
         $em = $this->getDoctrine()->getManager();
 
-        $Allsubmissions = array_reverse($em->getRepository('App:Submission')->findAll());
+        $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
+        $Allsubmissions = $paginator->paginate(
+            // Doctrine Query, not results
+            $submissionRepository,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            10
+        );
 
+        return $this->render('dashboard/all_researchers.html.twig', [ 
+            'submissions' => $Allsubmissions, 
+        ]);
+
+    }
+
+ /**
+     * @Route("/ex", name="authorexcel", methods={"GET","POST"})
+     */
+    public function excelAuthors( Request $request, PaginatorInterface $paginator  )
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
+        $Allsubmissions = $paginator->paginate(
+            // Doctrine Query, not results
+            $submissionRepository,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            10
+        );
 
         return $this->render('dashboard/all_researchers.html.twig', [ 
             'submissions' => $Allsubmissions, 
