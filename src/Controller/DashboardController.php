@@ -174,39 +174,13 @@ class DashboardController extends AbstractController {
     }  
   
      /**
-     * @Route("/research-theams", name="research_theams", methods={"GET","POST"})
+     * @Route("/theam", name="exportexcel", methods={"GET","POST"})
      */
-    public function theams( Request $request, PaginatorInterface $paginator  )
+    public function theams(   )
     {
         $em = $this->getDoctrine()->getManager();
-
-        $submission = array_reverse($em->getRepository('App:Submission')->findAll());
-        $Allsubmissions = $paginator->paginate(
-            // Doctrine Query, not results
-            $submission,
-            // Define the page parameter
-            $request->query->getInt('page', 1),
-            // Items per page
-            10
-        );
-
-    // $submission = $em->getRepository('App:Submission')->findOneBy(['uidentifier' => $uid]);
-
-        // Configure Dompdf according to your needs
-        $pdfOptions = new Options();
-        $pdfOptions->set('defaultFont', 'Arial');
-        $pdfOptions->set('isRemoteEnabled', true);
-
-        $pdfOptions->set('tempDir', '/home/ghost/Desktop/pdf-export/tmp');
-        // Instantiate Dompdf with our options
-        $dompdf = new Dompdf($pdfOptions);
-        $dompdf->set_option("isPhpEnabled", true);
-
-        $html = $this->renderView('dashboard/all_researchers.html.twig', [
-            'user' => $this->getUser(),
-            'submissions' => $Allsubmissions,
-        ]);
-
+ 
+ 
 
          $submissions = $em->getRepository(Submission::class)->findAll();
      
@@ -238,16 +212,11 @@ foreach ($CoAuthors as $row) {
     $copi[]             = $row->getResearcher()->getUserInfo();
   
     $theNames[] = $row['email'] . ' '; 
-// dd($row[0]);
-$length = count($phoneNumber->getCoAuthors()); 
-$counter++;
+  $counter++;
             $counter2++;
-// dd($length) ;
-     
+      
 }
-  
-
-        }
+     }
                    
 ############################
           $counter++;
@@ -259,69 +228,32 @@ $counter++;
          $writer->save($temp_file);
         
          return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
-        
-
-        // return $this->render('dashboard/test.html.twig', [ 
-        //     'submissions' => $Allsubmissions, 
-        // ]);
-
+         
     }
 
  /**
-     * @Route("/ex", name="authorexcel", methods={"GET","POST"})
+     * @Route("/research-theams", name="research_theams", methods={"GET","POST"})
      */
-    public function excelAuthors( Request $request, PaginatorInterface $paginator  )
+    public function allresearchers( Request $request, PaginatorInterface $paginator  )
     {
         $em = $this->getDoctrine()->getManager();
 
-        $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
+        $submission = array_reverse($em->getRepository('App:Submission')->findAll());
         $Allsubmissions = $paginator->paginate(
             // Doctrine Query, not results
-            $submissionRepository,
+            $submission,
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
             10
         );
-
-        return $this->render('dashboard/all_researchers.html.twig', [ 
+ 
+        return $this->render('dashboard/test.html.twig', [ 
             'submissions' => $Allsubmissions, 
         ]);
 
-
+    } 
  
-//          $submissions = $em->getRepository(Submission::class)->findAll();
-     
-     
-//         $spreadsheet = new Spreadsheet();
-        
-//         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
-//         $sheet = $spreadsheet->getActiveSheet();
-//         $sheet->setCellValue('A1', 'Hello World !');
-//         $sheet->setTitle("My First Worksheet");
-        
-//         $counter = 2;
-//         foreach ($submissions as $phoneNumber) {
-//             $sheet->setCellValue('A' . $counter, $phoneNumber->getId());
-//             $counter2 = 0;
-            
-// ########################
-//   $sheet->setCellValue('B' . $counter, $phoneNumber->getAuthor()->getUserInfo());
-                    
-                   
-// ############################
-//           $counter++;
-//         }
-//          $writer = new Xlsx($spreadsheet);
-//          $fileName = 'Researchers.xlsx';
-//         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
-        
-//          $writer->save($temp_file);
-        
-        // Return the excel file as an attachment
-        // return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
-        
- 
-    }
+    
 
 }
