@@ -189,7 +189,11 @@ class DashboardController extends AbstractController {
         
         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'Number !');
+        $sheet->setCellValue('A1', 'No.');
+        $sheet->setCellValue('B1', 'PI');
+        $sheet->setCellValue('C1', 'Co-PI (s)');
+        $sheet->setCellValue('D1', 'PI\'s Institute');
+        $sheet->setCellValue('E1', 'PI\'s College');
         $sheet->setTitle("Researcher");
  
         $counter = 2;
@@ -198,6 +202,8 @@ class DashboardController extends AbstractController {
             $counter2 = 2; 
             ########################
             $sheet->setCellValue('B' . $counter, $phoneNumber->getAuthor()->getUserInfo());
+            $sheet->setCellValue('D' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getCollege());
+            $sheet->setCellValue('E' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getDepartment());
             
             foreach ($phoneNumber->getCoAuthors() as $CoAuthors) {
 // $members=$CoAuthors->getResearcher()->getUsername();
@@ -205,17 +211,7 @@ $sheet->setCellValue('C' . $counter, $CoAuthors->getResearcher()->getUserInfo())
 
             $counter++;
             $counter2++; 
-        
-##########epients);
-$copi[]=0;
-foreach ($CoAuthors as $row) {
-    $copi[]             = $row->getResearcher()->getUserInfo();
-  
-    $theNames[] = $row['email'] . ' '; 
-  $counter++;
-            $counter2++;
-      
-}
+       
      }
                    
 ############################
