@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block title %}Submission
+{% endblock %}
+{% block container_title %}Submissions
+{% endblock %}
+{% block body %}
+	<!-- testFilter.html.twig -->
+
+
+	<div class="row">
+		<div class="col-lg-10">
+
+
+			<div class="table-responsive">
+
+				<table class="table  table-bordered table-striped table-responsive">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Title</th>
+							<th>Researcher(PI)</th>
+							<th>Co-PIs</th>
+							<th>Submission Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for submission in submissions %}
+							<tr {% if submission.complete=='completed' %} class='text-' {% elseif submission.complete==''%} class='text-danger' {% endif %}>
+								<td>{{ loop.index  }}</td>
+								<td>{{ submission.title }}</td>
+								<td>{{ submission.author.userInfo }}</td>
+
+								<td>
+									<ol>
+										{% for copi in submission.coAuthors %}
+
+											<li>
+												{{copi.Researcher.userInfo}}
+											</li>
+
+
+										{% else %}
+
+											<li>
+												No Co-PI found
+											</li>
+
+										{% endfor %}
+									</ol>
+
+								</td>
+								<td>
+									{% if submission.sentAt %}
+										{{ submission.sentAt|date() }}
+									{% endif %}
+								</td>
+
+							</tr>
+
+
+						{% else %}
+							<tr>
+								<td colspan="8">no records found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

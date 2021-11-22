@@ -5,46 +5,25 @@ use App\Entity\CallForProposal;
 use App\Entity\CoAuthor;
 use App\Entity\CollaboratingInstitution;
 use App\Entity\College;
-use App\Entity\Department;
-use App\Entity\EditorialDecision;
-use App\Entity\Expense;
-use App\Entity\PublishedSubmission;
-use App\Entity\PublishedSubmissionAttachment;
-use App\Entity\Review;
-use App\Entity\ReviewAssignment;
 use App\Entity\Submission;
-use App\Entity\SubmissionAttachement;
-use App\Entity\SubmissionBudget;
 use App\Entity\ThematicArea;
 use App\Filter\Type\FilterFunctions;
-use App\Filter\Type\SubmissionFilterType;
-use App\Form\EditorialDecisionType;
-use App\Form\ReviewType;
-use App\Form\SubmissionType;
-use App\Message\SendEmailMessage;
-use App\Repository\CallForProposalRepository;
-use App\Repository\EvaluationFormRepository;
-use App\Repository\ReviewRepository;
+use App\Filter\Type\SubmissionFilterType; 
 use App\Repository\SubmissionRepository;
 use App\Utils\Constants;
+use Composer\Console\HtmlOutputFormatter;
 use Doctrine\ORM\Query\Expr;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
-use Knp\Component\Pager\PaginatorInterface;
-use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag; 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Html;
+ use Knp\Component\Pager\PaginatorInterface;
+use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface; 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController; 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
+use Symfony\Component\HttpFoundation\Response; 
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -57,7 +36,7 @@ class DashboardController extends AbstractController {
     /**
      * @Route("/all/", name="aadashboard", methods={"GET","POST"})
      */
-    public function dashboard(MailerInterface $mailer): Response {
+    public function dashboard( ): Response {
         // $this->denyAccessUnlessGranted('assn_clg_cntr');
         
                 $entityManager = $this->getDoctrine()->getManager();
@@ -119,7 +98,7 @@ class DashboardController extends AbstractController {
     /**
      * @Route("/theme/", name="theme", methods={"GET","POST"})
      */
-    public function theme(MailerInterface $mailer): Response {
+    public function theme( ): Response {
         // $this->denyAccessUnlessGranted('assn_clg_cntr');
         
                 $entityManager = $this->getDoctrine()->getManager(); 
@@ -134,20 +113,19 @@ class DashboardController extends AbstractController {
                 //       ORDER BY  s.author 
                 //     '   
                 //     ) 
-        //         $querytwo = $entityManager->createQuery(
-        //             'SELECT      d.id,  s.title
-        //   FROM App:Department d  , App:User u ,App:Submission s
-        //       JOIN u.userInfo i 
-        //        JOIN d.college c
-        //     WHERE   s.complete=:completed and c.id =:college   
-           
-        //  '   
-        //  ) 
-        //               ->setParameter('completed', 'completed' ) 
-        //               ->setParameter('college', $this->getUser()->getUserInfo()->getCollege()->getId() );
-        //         $recepients = $querytwo->getScalarResult();
+                $querytwo = $entityManager->createQuery(
+                    'SELECT      d.id,  s.title
+          FROM App:Department d  , App:User u ,App:Submission s
+              JOIN u.userInfo i 
+               JOIN d.college c
+            WHERE   s.complete=:completed and c.id =:college   
+           '   
+         ) 
+                      ->setParameter('completed', 'completed' ) 
+                      ->setParameter('college', $this->getUser()->getUserInfo()->getCollege()->getId() );
+                $recepients = $querytwo->getScalarResult();
              
-                    //   dd($recepients);
+                      dd($recepients);
 
 ########################## 
         $thiscollege = $this->getUser()->getUserInfo()->getCollege();
@@ -195,5 +173,54 @@ class DashboardController extends AbstractController {
         ]);
     }  
   
+ /**
+     * @Route("/ex", name="authorexcel", methods={"GET","POST"})
+     */
+    public function excelAuthors( )
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $Allsubmissions = array_reverse($em->getRepository('App:Submission')->findAll());
+
+
+        return $this->render('dashboard/all_researchers.html.twig', [ 
+            'submissions' => $Allsubmissions, 
+        ]);
+
+
+ 
+//          $submissions = $em->getRepository(Submission::class)->findAll();
+     
+     
+//         $spreadsheet = new Spreadsheet();
+        
+//         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+//         $sheet = $spreadsheet->getActiveSheet();
+//         $sheet->setCellValue('A1', 'Hello World !');
+//         $sheet->setTitle("My First Worksheet");
+        
+//         $counter = 2;
+//         foreach ($submissions as $phoneNumber) {
+//             $sheet->setCellValue('A' . $counter, $phoneNumber->getId());
+//             $counter2 = 0;
+            
+// ########################
+//   $sheet->setCellValue('B' . $counter, $phoneNumber->getAuthor()->getUserInfo());
+                    
+                   
+// ############################
+//           $counter++;
+//         }
+//          $writer = new Xlsx($spreadsheet);
+//          $fileName = 'Researchers.xlsx';
+//         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        
+//          $writer->save($temp_file);
+        
+        // Return the excel file as an attachment
+        // return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+        
+ 
+    }
 
 }

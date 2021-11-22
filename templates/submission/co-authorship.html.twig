@@ -33,11 +33,11 @@
 											{% if collaboration.confirmed ==0 or collaboration.confirmed =='' %}
 												{# <div class="container">
 												
-																									<div class="ribbon4 rib4-primary">
-																										<span class="ribbon4-band ribbon4-band-primary text-white text-center">New
-																										</span>
-																									</div>
-																								</div> #}
+												<div class="ribbon4 rib4-primary">
+												<span class="ribbon4-band ribbon4-band-primary text-white text-center">New
+												</span>
+												</div>
+												</div> #}
 
 											{% endif %}
 
@@ -56,7 +56,7 @@
 													<br>
 													<br>
 													<p class="text-muted">Principal Investigator :
-														{{ collaboration.submission.author }} 
+														{{ collaboration.submission.author }}
 													</p>
 													<p class="text-muted">Sent at :
 														{% if collaboration.submission.sentAt %}
@@ -67,11 +67,10 @@
 
 													<small class="float-right">
 														<strong>
-															 
+
 															Thematic area:
 															{{ collaboration.submission.thematicArea |raw}}
-															Princiapal Investigator:
-															{{ collaboration.submission.author}}
+															 
 														</strong>
 
 														<span class='text-success'>{{ collaboration.submission.submissionType |raw }}</span>
@@ -92,8 +91,8 @@
 												{# <a href="#" class="btn btn-soft-primary btn-sm">Appproval</a> #}
 
 												{# <a class="btn btn-sm  btn-primary" data-bs-toggle="collapse" href="#expand{{ collaboration.submission.id }}" role="button" aria-expanded="false" aria-controls="expand{{ collaboration.submission.id }}">
-																																																																						<i class="fa fa-chevron-right"></i>
-																																																																					</a> #}
+																																																																																														<i class="fa fa-chevron-right"></i>
+																																																																																													</a> #}
 											</p>
 											<div class="collapse" id="expand{{ collaboration.submission.id }}">
 												<div class="card card-body">
@@ -129,7 +128,7 @@
 							{% else %}
 
 								<span class='text-danger'>Not involved as CO-PI yet
-																																																																																																																																																																													                                                yet!</span>
+																																																																																																																																																																																															                                                yet!</span>
 								<br>
 
 							{% endfor %}
