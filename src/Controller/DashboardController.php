@@ -113,19 +113,19 @@ class DashboardController extends AbstractController {
                 //       ORDER BY  s.author 
                 //     '   
                 //     ) 
-                $querytwo = $entityManager->createQuery(
-                    'SELECT      d.id,  s.title
-          FROM App:Department d  , App:User u ,App:Submission s
-              JOIN u.userInfo i 
-               JOIN d.college c
-            WHERE   s.complete=:completed and c.id =:college   
-           '   
-         ) 
-                      ->setParameter('completed', 'completed' ) 
-                      ->setParameter('college', $this->getUser()->getUserInfo()->getCollege()->getId() );
-                $recepients = $querytwo->getScalarResult();
+        //         $querytwo = $entityManager->createQuery(
+        //             'SELECT      d.id,  s.title
+        //   FROM App:Department d  , App:User u ,App:Submission s
+        //       JOIN u.userInfo i 
+        //        JOIN d.college c
+        //     WHERE   s.complete=:completed and c.id =:college   
+        //    '   
+        //  ) 
+        //               ->setParameter('completed', 'completed' ) 
+        //               ->setParameter('college', $this->getUser()->getUserInfo()->getCollege()->getId() );
+        //         $recepients = $querytwo->getScalarResult();
              
-                      dd($recepients);
+        //               dd($recepients);
 
 ########################## 
         $thiscollege = $this->getUser()->getUserInfo()->getCollege();
