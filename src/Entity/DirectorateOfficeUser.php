@@ -19,13 +19,13 @@ class DirectorateOfficeUser
 
     /**
      * @ORM\ManyToOne(targetEntity=DirectorateOffice::class, inversedBy="directorateOfficeUsers")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $directorateOffice;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $directorate;
 
