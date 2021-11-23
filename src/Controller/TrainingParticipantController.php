@@ -11,34 +11,64 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 #[Route('/apply-training')]
 class TrainingParticipantController extends AbstractController
 {
-    #[Route('/', name: 'training_participant_index', methods: ['GET'])]
-    public function index(TrainingParticipantRepository $trainingParticipantRepository): Response
+    #[Route('/{id}/', name: 'training_participant_index', methods: ['GET'])]
+    public function index(Request $request, PaginatorInterface $paginator, CallForTraining $callForTraining ): Response
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $allcallForTraining = $em->getRepository('App:TrainingParticipant')->findBy(['training'=>$callForTraining]);
+
+        $paginatedcallForTraining = $paginator->paginate(
+            // Doctrine Query, not results
+            $allcallForTraining,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            10
+        );
+
         return $this->render('training_participant/index.html.twig', [
-            'training_participants' => $trainingParticipantRepository->findAll(),
+            'training_participants' => $paginatedcallForTraining  ,
+            'callForTraining'=>$callForTraining,
         ]);
     }
 
     #[Route('/apply/{id}/', name: 'participate', methods: ['GET', 'POST'])]
-    public function new(Request $request , CallForTraining $callForTraining, EntityManagerInterface $entityManager): Response
+    public function new(Request $request , CallForTraining $callForTraining, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $trainingParticipant = new TrainingParticipant();
       
         $userdetails = $this->getUser()->getUserInfo(); 
+        $user = $this->getUser();  
 
         $$callForTraining = $entityManager->getRepository('App:CallForTraining')->find($callForTraining);
         if (  $userdetails->getFirstName() == '' || $userdetails->getMidleName() == '' ||
             $userdetails->getLastName() == '' ||
-            $userdetails->getCollege() == '' ||
-            $userdetails->getEducationLevel() == '' || $userdetails->getAcademicRank() == '') {
+            $userdetails->getCollege() == ''  
+             ) {
             $flashbag = $this->get('session')->getFlashBag();
             $flashbag->add("danger", "Please complete your profile first before you  register for participation  !");
 
             return $this->redirectToRoute('myprofile');
+        }
+
+        $ifexists = $entityManager->getRepository('App:TrainingParticipant')->findBy(['participant'=>$user, 'training'=>$callForTraining] );
+
+        if($ifexists){
+
+            $flashbag = $this->get('session')->getFlashBag();
+            $flashbag->add("warning", "You have already been registered! Thank you");
+            return $this->redirectToRoute('homepage');
+
         }
 
         $p_i_college = $this->getUser()->getUserInfo()->getCollege();
@@ -50,7 +80,6 @@ class TrainingParticipantController extends AbstractController
             return $this->redirectToRoute('researchworks');
         }
  
-        $user = $this->getUser();  
         
             $trainingParticipant->setParticipant($user);
         $trainingParticipant->setTraining($callForTraining); 
@@ -61,22 +90,22 @@ class TrainingParticipantController extends AbstractController
         $flashbag = $this->get('session')->getFlashBag();
             $flashbag->add("success", "You have been successfully registered for training. Thank You!");
  
-            $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUCCESSFUL_TRAINING_PARTICIPATION']);
+            $applicantmessages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUCCESSFUL_TRAINING_PARTICIPATION']);
                 $applicantsubject = $applicantmessages->getSubject();
                 $applicantbody = $applicantmessages->getBody();
 
-                $submission_url = 'submission/' . $submission->getId() . '/status';
-                $applicant = $submission->getParticipant()->getEmail();
-                $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
+                $submission_url = 'submission/' . $trainingParticipant->getId() . '/status';
+                $applicant = $trainingParticipant->getParticipant()->getEmail();
+                $applicantname = $trainingParticipant->getParticipant()->getUserInfo()->getFirstName();
                 $emailtwo = (new TemplatedEmail())
                     ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
                     ->to($applicant)
                     ->subject($applicantsubject)
-                    ->htmlTemplate('emails/application_ack.html.twig')
+                    ->htmlTemplate('emails/general.html.twig')
                     ->context([
                         'subject' => $applicantsubject,
                         'body' => $applicantbody,
-                        'title' => $submission->getTitle(),
+                        'title' => $callForTraining->getName(),
                         'submission_url' => $submission_url,
                         'name' => $applicantname,
                         'Authoremail' => $applicant])
@@ -84,7 +113,7 @@ class TrainingParticipantController extends AbstractController
 
                 $mailer->send($emailtwo);  
 
-            return $this->redirectToRoute('training_participant_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('homepage');
    
 
          

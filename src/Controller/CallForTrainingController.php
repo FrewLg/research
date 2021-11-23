@@ -59,7 +59,16 @@ class CallForTrainingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $callForTraining->setCreatedAt(new \Datetime());
             $callForTraining->setCollege($this->getUser()->getUserInfo()->getCollege());
-          
+              $file3 = $form->get('document_attachment')->getData();
+             if ($file3 == "") {
+
+            } else {
+                $file3 = $form->get('document_attachment')->getData();
+                $fileName3 = md5(uniqid()) . '.' . $file3->guessExtension();
+                $file3->move($this->getParameter('review_files'), $fileName3);
+                $callForTraining->setDocumentAttachment($fileName3);
+            }
+
             $entityManager->persist($callForTraining);
             $entityManager->flush();
 
@@ -84,13 +93,35 @@ class CallForTrainingController extends AbstractController
         ]);
     }
 
+
+    #[Route('/{id}/adm', name: 'call_for_training_show_adm', methods: ['GET'])]
+    public function admshow(CallForTraining $callForTraining): Response
+    {
+        return $this->render('call_for_training/admshow.html.twig', [
+            'call_for_training' => $callForTraining,
+        ]);
+    }
     #[Route('/{id}/edit', name: 'call_for_training_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request,  EntityManagerInterface $entityManager): Response
+    public function edit(Request $request,  CallForTraining $callForTraining, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CallForTrainingType::class, $callForTraining);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+           
+           
+            $callForTraining->setCollege($this->getUser()->getUserInfo()->getCollege());
+            $file3 = $form->get('document_attachment')->getData();
+           if ($file3 == "") {
+
+          } else {
+              $file3 = $form->get('document_attachment')->getData();
+              $fileName3 = md5(uniqid()) . '.' . $file3->guessExtension();
+              $file3->move($this->getParameter('review_files'), $fileName3);
+              $callForTraining->setDocumentAttachment($fileName3);
+          }
+
+          
             $entityManager->flush();
 
             return $this->redirectToRoute('call_for_training_index', [], Response::HTTP_SEE_OTHER);

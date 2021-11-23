@@ -23,7 +23,7 @@ class TrainingParticipant
     private $participant;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $applied_at;
 
@@ -31,6 +31,16 @@ class TrainingParticipant
      * @ORM\ManyToOne(targetEntity=CallForTraining::class, inversedBy="trainingParticipants")
      */
     private $training;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $participated;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $certificate_id;
 
     public function getId(): ?int
     {
@@ -49,12 +59,12 @@ class TrainingParticipant
         return $this;
     }
 
-    public function getAppliedAt(): ?\DateTimeImmutable
+    public function getAppliedAt(): ?\DateTime 
     {
         return $this->applied_at;
     }
 
-    public function setAppliedAt(?\DateTimeImmutable $applied_at): self
+    public function setAppliedAt(?\DateTime  $applied_at): self
     {
         $this->applied_at = $applied_at;
 
@@ -69,6 +79,30 @@ class TrainingParticipant
     public function setTraining(?CallForTraining $training): self
     {
         $this->training = $training;
+
+        return $this;
+    }
+
+    public function getParticipated(): ?bool
+    {
+        return $this->participated;
+    }
+
+    public function setParticipated(?bool $participated): self
+    {
+        $this->participated = $participated;
+
+        return $this;
+    }
+
+    public function getCertificateId(): ?string
+    {
+        return $this->certificate_id;
+    }
+
+    public function setCertificateId(?string $certificate_id): self
+    {
+        $this->certificate_id = $certificate_id;
 
         return $this;
     }

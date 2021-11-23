@@ -6,6 +6,8 @@ use App\Entity\CoAuthor;
 use App\Entity\CollaboratingInstitution;
 use App\Entity\College;
 use App\Entity\Submission;
+
+use App\Entity\TrainingParticipant;
 use App\Entity\ThematicArea;
 use App\Filter\Type\FilterFunctions;
 use App\Filter\Type\SubmissionFilterType; 
@@ -178,15 +180,10 @@ class DashboardController extends AbstractController {
      */
     public function theams(   )
     {
-        $em = $this->getDoctrine()->getManager();
- 
- 
-
-         $submissions = $em->getRepository(Submission::class)->findAll();
-     
-     
-        $spreadsheet = new Spreadsheet();
-        
+        $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
+        $em = $this->getDoctrine()->getManager();  
+         $submissions = $em->getRepository(Submission::class)->findAll(); 
+        $spreadsheet = new Spreadsheet(); 
         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'No.');
@@ -194,8 +191,7 @@ class DashboardController extends AbstractController {
         $sheet->setCellValue('C1', 'Co-PI (s)');
         $sheet->setCellValue('D1', 'PI\'s Institute');
         $sheet->setCellValue('E1', 'PI\'s College');
-        $sheet->setTitle("Researcher");
- 
+        $sheet->setTitle("Researcher"); 
         $counter = 2;
         foreach ($submissions as $phoneNumber) {
             $sheet->setCellValue('A' . $counter, $phoneNumber->getId());
@@ -204,12 +200,9 @@ class DashboardController extends AbstractController {
             $sheet->setCellValue('B' . $counter, $phoneNumber->getAuthor()->getUserInfo());
             $sheet->setCellValue('D' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getCollege());
             $sheet->setCellValue('E' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getDepartment());
-            
-            foreach ($phoneNumber->getCoAuthors() as $CoAuthors) {
-// $members=$CoAuthors->getResearcher()->getUsername();
-$sheet->setCellValue('C' . $counter, $CoAuthors->getResearcher()->getUserInfo());
-
-            $counter++;
+             foreach ($phoneNumber->getCoAuthors() as $CoAuthors) {
+             $sheet->setCellValue('C' . $counter, $CoAuthors->getResearcher()->getUserInfo());
+             $counter++;
             $counter2++; 
        
      }
@@ -220,6 +213,41 @@ $sheet->setCellValue('C' . $counter, $CoAuthors->getResearcher()->getUserInfo())
          $writer = new Xlsx($spreadsheet);
          $fileName = 'Researchers.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+         $writer->save($temp_file);
+         return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+         
+    }
+ 
+     /**
+     * @Route("/participant", name="exportexcelparticipant", methods={"GET","POST"})
+     */
+    public function participant(  )
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $em = $this->getDoctrine()->getManager();
+ 
+          $submissions = $em->getRepository(TrainingParticipant::class)->findAll();
+         $spreadsheet = new Spreadsheet();
+         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'No.');
+        $sheet->setCellValue('B1', 'Full name');
+         $sheet->setCellValue('C1', 'Participant\'s Institute');
+        $sheet->setCellValue('D1', 'Participant\'s College');
+        $sheet->setTitle("Participants");
+ 
+        $counter = 2;
+        foreach ($submissions as $phoneNumber) {
+            $sheet->setCellValue('A' . $counter, $phoneNumber->getId()); 
+            $sheet->setCellValue('B' . $counter, $phoneNumber->getParticipant()->getUserInfo());
+            $sheet->setCellValue('C' . $counter, $phoneNumber->getParticipant()->getUserInfo()->getCollege());
+            $sheet->setCellValue('D' . $counter, $phoneNumber->getParticipant()->getUserInfo()->getDepartment()); 
+          $counter++;
+        }
+         $writer = new Xlsx($spreadsheet);
+         $fileName = 'Traninig participant.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
         
          $writer->save($temp_file);
         
@@ -227,11 +255,14 @@ $sheet->setCellValue('C' . $counter, $CoAuthors->getResearcher()->getUserInfo())
          
     }
 
+
  /**
      * @Route("/research-theams", name="research_theams", methods={"GET","POST"})
      */
     public function allresearchers( Request $request, PaginatorInterface $paginator  )
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $em = $this->getDoctrine()->getManager();
 
         $submission = array_reverse($em->getRepository('App:Submission')->findAll());

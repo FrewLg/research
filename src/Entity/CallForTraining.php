@@ -49,6 +49,16 @@ class CallForTraining
      */
     private $trainingParticipants;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $document_attachment;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TrainingType::class, inversedBy="callForTrainings")
+     */
+    private $training_type;
+
     public function __construct()
     {
         $this->trainingParticipants = new ArrayCollection();
@@ -148,6 +158,30 @@ class CallForTraining
                 $trainingParticipant->setTraining(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDocumentAttachment(): ?string
+    {
+        return $this->document_attachment;
+    }
+
+    public function setDocumentAttachment(?string $document_attachment): self
+    {
+        $this->document_attachment = $document_attachment;
+
+        return $this;
+    }
+
+    public function getTrainingType(): ?TrainingType
+    {
+        return $this->training_type;
+    }
+
+    public function setTrainingType(?TrainingType $training_type): self
+    {
+        $this->training_type = $training_type;
 
         return $this;
     }

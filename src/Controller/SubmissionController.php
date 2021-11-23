@@ -52,7 +52,8 @@ class SubmissionController extends AbstractController {
     /**
      * @Route("/", name="submission_index", methods={"GET","POST"})
      */
-    public function index(Request $request, SubmissionRepository $submissionRepository, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
+    public function index(Request $request, SubmissionRepository $submissionRepository, PaginatorInterface $paginator,
+     FilterBuilderUpdaterInterface $query_builder_updater): Response {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
         $em = $this->getDoctrine()->getManager();
         //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
@@ -483,7 +484,9 @@ return $this->redirectToRoute('submission_index');
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         $pdfOptions->set('isRemoteEnabled', true);
-
+        $data = file_get_contents('img/logo.png');
+        $type='png';
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
         $pdfOptions->set('tempDir', '/home/ghost/Desktop/pdf-export/tmp');
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
@@ -491,6 +494,7 @@ return $this->redirectToRoute('submission_index');
 
         $html = $this->renderView('submission/summary.html.twig', [
             'user' => $this->getUser(),
+            'base64'=>$base64,
             'submission' => $submission,
         ]);
         $dompdf->loadHtml($html);

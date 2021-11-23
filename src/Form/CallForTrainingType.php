@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class CallForTrainingType extends AbstractType
 {
@@ -15,6 +16,15 @@ class CallForTrainingType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('training_type')
+            
+              ->add('document_attachment', FileType::class, [
+                                'label' => 'Upload document attachment',
+                                'mapped' => false,
+                                'required' => false,
+                            ])
+
+                
             ->add('description' , CKEditorType::class, [
                 'attr' => ['placeholder' => 'Description and  details',
                     'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
