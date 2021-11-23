@@ -90,6 +90,15 @@ class College
      */
     private $guidelines;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CallForTraining::class, mappedBy="college")
+     */
+    private $callForTrainings;
+
+ 
+
+    
+
     public function __construct()
     {
         $this->collegeCoordinators = new ArrayCollection();
@@ -99,7 +108,8 @@ class College
         $this->guidelineForReviewers = new ArrayCollection();
         $this->institutionalReviewersBoards = new ArrayCollection();
         $this->guidelines = new ArrayCollection();
-    }
+        $this->callForTrainings = new ArrayCollection();
+      }
  
 
     public function getId(): ?int
@@ -216,6 +226,7 @@ class College
         return $this;
     }
 
+     
     public function getPrincipalContact(): ?string
     {
         return $this->principal_contact;
@@ -407,5 +418,39 @@ class College
 
         return $this;
     }
+
+    /**
+     * @return Collection|CallForTraining[]
+     */
+    public function getCallForTrainings(): Collection
+    {
+        return $this->callForTrainings;
+    }
+
+    public function addCallForTraining(CallForTraining $callForTraining): self
+    {
+        if (!$this->callForTrainings->contains($callForTraining)) {
+            $this->callForTrainings[] = $callForTraining;
+            $callForTraining->setCollege($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCallForTraining(CallForTraining $callForTraining): self
+    {
+        if ($this->callForTrainings->removeElement($callForTraining)) {
+            // set the owning side to null (unless already changed)
+            if ($callForTraining->getCollege() === $this) {
+                $callForTraining->setCollege(null);
+            }
+        }
+
+        return $this;
+    }
+
+     
+
+    
  
 }

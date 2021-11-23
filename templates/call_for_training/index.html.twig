@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CallForTraining index{% endblock %}
+
+{% block body %}
+    <h1>CallForTraining index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>Created_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for call_for_training in call_for_trainings %}
+            <tr>
+                <td>{{ call_for_training.id }}</td>
+                <td>{{ call_for_training.name }}</td>
+                <td>{{ call_for_training.description }}</td>
+                <td>{{ call_for_training.deadline ? call_for_training.deadline|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ call_for_training.createdAt ? call_for_training.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('call_for_training_show', {'id': call_for_training.id}) }}">show</a>
+                    <a href="{{ path('call_for_training_edit', {'id': call_for_training.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('call_for_training_new') }}">Create new</a>
+{% endblock %}

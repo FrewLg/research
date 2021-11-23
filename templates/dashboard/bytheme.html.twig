@@ -9,10 +9,10 @@
 
 		<tbody>
 			{% for thematic_area in thematic_areas %}
-				<tr class='text-info ' style='background-color:#303e67;color:#fff'>
+				<tr class='text-info m-1' style='background-color:#0c213a'>
 					<td>{{ loop.index }}</td>
 					<td>
-						<h5 class='text-info '>{{ thematic_area.name }}
+						<h5 class='text-info m-0 '>{{ thematic_area.name }}
 							({{thematic_area.submissions|length}})</h5>
 					</td>
 
@@ -50,14 +50,14 @@
 													
                                                      
 													<span class='badge bg-danger'>
-                                                      {{count   }}
+                                                      {{count}}
                                                         {% if count==0 %}
 													 
                                                         {% elseif count<=1 %}
                                                         <sup>st</sup>
 												{% elseif count<=2%}
                                                         <sup>nd</sup>
-{% elseif count<=3%}
+												{% elseif count<=3%}
                                                         <sup>rd</sup>
                                                         {% elseif count>=4%}
                                                         <sup>th</sup>
