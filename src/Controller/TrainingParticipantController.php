@@ -17,6 +17,8 @@ use Symfony\Component\Mime\Address;
 use Knp\Component\Pager\PaginatorInterface;
 
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 #[Route('/apply-training')]
 class TrainingParticipantController extends AbstractController
 {
@@ -117,6 +119,49 @@ class TrainingParticipantController extends AbstractController
    
 
          
+    }
+
+    /**
+     * @Route("/{id}/cert", name="cert", methods={"GET"})
+     */
+    public function exportcertnow(Request $request, TrainingParticipant $uid) {
+
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $em = $this->getDoctrine()->getManager();
+
+ 
+        $submission = $em->getRepository('App:TrainingParticipant')->findOneBy(['id' => $uid]);
+
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('isRemoteEnabled', true);
+        $pdfOptions->set('tempDir', '/home/ghost/Desktop/pdf-export/tmp');
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        $dompdf->set_option("isPhpEnabled", true);
+
+        $html = $this->renderView('training_participant/cert.html.twig', [
+            'name' => $this->getUser(),
+             'desc' => $submission->getTraining()->getDescription(),
+             'type' => $submission->getTraining()->getTrainingType(),
+             
+        ]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // $font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
+        // $font = null;
+        // $dompdf->getCanvas()->page_text(72, 18,  $font, 10, array(0, 0, 0));
+
+        ob_end_clean();
+        $filename = $submission->getParticipant();
+
+        $dompdf->stream($filename . "file.pdf", [
+            "Attachment" => false,
+        ]);
     }
 
     #[Route('/{id}', name: 'training_participant_show', methods: ['GET'])]
