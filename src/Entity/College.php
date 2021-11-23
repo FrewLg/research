@@ -418,7 +418,7 @@ class College
 
         return $this;
     }
-
+ 
     /**
      * @return Collection|CallForTraining[]
      */
@@ -451,6 +451,5 @@ class College
 
      
 
-    
- 
+  
 }
