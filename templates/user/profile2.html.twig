@@ -404,9 +404,7 @@ Department of
 															Gender</div>
 														{{ form_widget(submissionform.gender  ) }}
 													</div>
-												</div>
-
-
+												</div> 
 
 												<div class="col-md-2">
 													<div class="form-s">
@@ -432,7 +430,7 @@ Department of
 </div>
 
 												<div class="row">
-
+ 
 												<div class="col-md-3">
 													<div class="form-group">
 
@@ -464,7 +462,9 @@ Department of
 
 														<label class="form-controll">Department</label><br>
 
+ 
 														<select id="dep" name="department" style="width: 350px;" class="dep m-5 select2" required="required"></select>
+ 
 													</div>
 												</div>
 												{# <div class="col-md-3">
@@ -505,8 +505,7 @@ Department of
 												{% endfor %}
 											</ul>
 											<button class="btn btn-primary">{{ button_label|default('Save Profile') }}</button>
-									
-
+ 
 
 #}
 <div class="col-12">
@@ -556,7 +555,7 @@ No <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noChe
  <button class="btn btn-primary">{{ button_label|default('Save Profile') }}</button>
 
 
-		{{ form_end(submissionform) }}
+		{{ form_end(submissionform) }} 
 
 										</div>
 									</div>
@@ -699,7 +698,7 @@ college: college
 },
 dataType: "json",
 success: function (data) {
-$('.dep').children().remove()
+$('.dep').children().remove() 
 {% if user.userInfo.department=="" %}
 select.append('<option  id="dep" name="department"    value=""  >'  +'--Select Department--'+ '</option>');
 
@@ -709,7 +708,7 @@ select.append('<option  id="dep" name="department"    value=""  >'  +'--Select D
  select.append('<option  id="dep" name="department"    value=""  >'  +'-- Select Department ----'+ '</option>');
 
 
-{% endif %}
+{% endif %} 
 for (let [key, value] of Object.entries(data)) {
 
 
