@@ -18,14 +18,13 @@
 							<small>
 								{{ callForTraining.name}}</small>
 
-                               <span class='badge bg-success'> {{ callForTraining.trainingType }}</span>
+							<span class='badge bg-success'>
+								{{ callForTraining.trainingType }}</span>
 						</div>
 						<!--end col-->
 						<div class="col-auto">
 
-							Total: ({{training_participants|length}}) participant
-							{%if training_participants|length <=1   %}
-								{%else%}s{%endif%}
+							Total: ({{training_participants|length}}) participant{%if training_participants|length <=1   %}{%else%}s{%endif%}
 
 								<a href="{{ path('exportexcelparticipant' ) }}" class='btn btn-primary btn-xs mb-1'>Export all</a>
 
@@ -39,16 +38,22 @@
 					</div>
 					<!--end card-header-->
 					<div class="card-body">
-						<div class="table-responsive browser_users table-bordered">
+						<div
+							class="table-responsive browser_users table-bordered">
+							{# <form method="POST" action="{{ url('assign_items') }}"> #}
 							<table class="table table-bordered">
 								<thead>
 									<tr>
+										<th>
+											<input type="checkbox" class="select-all checkbox" name="select-all"/>
+											<span class="checkmark"></span>
+										</th>
 										<th>#</th>
 										<th>Participant full Name</th>
 										<th>College</th>
 										<th>Department</th>
 										<th>Applied at</th>
- 										<th>Attended</th>
+										<th>Attended</th>
 										<th>Actions</th>
 									</tr>
 								</thead>
@@ -56,12 +61,18 @@
 								<tbody>
 									{% for training_participant in training_participants %}
 										<tr>
+											<td class="center">
+												<input name="ids[]" value="{{ training_participant.id }}" class="select-item checkbox" type="checkbox">
+												<span class="checkmark"></span>
+											</td>
+
+
 											<td>{{ loop.index }}</td>
 											<td>{{ training_participant.participant.userinfo }}</td>
 											<td>{{ training_participant.participant.userinfo.College }}</td>
 											<td>{{ training_participant.participant.userinfo.department }}</td>
 											<td>{{ training_participant.appliedAt ? training_participant.appliedAt|date('Y-m-d H:i:s') : '' }}</td>
- 
+
 											<td>{{ training_participant.participated }}</td>
 
 											<td>
@@ -76,18 +87,46 @@
 									{% endfor %}
 								</tbody>
 							</table>
-							<div class="float-right" id="custompaginator">{{ knp_pagination_render(training_participants) }}</div>
+
+<hr>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<button type="submit" class="btn btn-primary btn-sm btn-block">{% trans %}Save Participated{% endtrans %}</button>
+							</div>
+
+						</form>
+
+						<div class="float-right" id="custompaginator">{{ knp_pagination_render(training_participants) }}</div>
 
 
-							<!--end table-->
-						</div>
-						<!--end /div-->
+						<!--end table-->
 					</div>
-					<!--end card-body-->
+					<!--end /div-->
 				</div>
-				<!--end card-->
+				<!--end card-body-->
 			</div>
+			<!--end card-->
 		</div>
+	</div>
 
+{% endblock %}
+{% block script %}
 
-	{% endblock %}
+	<script>
+		$(function () { // column checkbox select all or cancel
+$("input.select-all").click(function () {
+var checked = this.checked;
+$("input.select-item").each(function (index, item) {
+item.checked = checked;
+});
+});
+
+// check selected items
+$("input.select-item").click(function () {
+var checked = this.checked;
+console.log(checked);
+checkSelected();
+});
+
+});
+	</script>
+{% endblock %}

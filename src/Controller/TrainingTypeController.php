@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/training/type')]
+#[Route('/training-type')]
 class TrainingTypeController extends AbstractController
 {
     #[Route('/', name: 'training_type_index', methods: ['GET'])]
