@@ -345,6 +345,8 @@ class UserController extends AbstractController
      */
     public function manageroles(Request $request, User $user): Response
     {
+        $this->denyAccessUnlessGranted("usr_edt");
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -363,6 +365,8 @@ class UserController extends AbstractController
      */
     public function resercher(Request $request, User $user): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+
         $em = $this->getDoctrine()->getManager();
 	$qb = $em->createQueryBuilder();
 	$totalSubmissions = $qb
@@ -410,7 +414,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
-        $this->denyAccessUnlessGranted("usr_edt");
+        // $this->denyAccessUnlessGranted("usr_edt");
 
         $form = $this->createForm(UserType::class, $user->getUserInfo());
         $form->get('roles')->setData($user->getRoles());

@@ -11,24 +11,45 @@
 {% endblock %}
 
  
-{% block body %}
-	<!-- testFilter.html.twig -->
+{% block body %} 
 
 
 	<div class="row">
-		<div class="col-lg-10">
-
-
-			<h5 class='text-info'>
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="row align-items-center">
+						<div class="col">
+							<h4 class="card-title">
 				All call for papers
-			</h5>
-			<div classs='float-right'>
-				<a href="{{ path('call_for_proposal_new') }}" class='btn btn-primary btn-sm'>
-					Make a new call for proposal</a>
-			</div>
-			<div class="table-responsive">
+							</h4>
+							Total: ({{call_for_proposals|length}}) Call for proposal so far
+							{%if call_for_proposals|length <=1   %}
+								{%else%}s{%endif%}
 
-				<table class="table table-striped table-responsive">
+							 	</div>
+						<!--end col-->
+						<div class="col-auto">
+
+							
+
+								 <a href="{{ path('call_for_proposal_new') }}" class='btn btn-primary btn-sm'>
+					Make a new call for proposal</a>
+
+							</div>
+							<!--end col-->
+						</div>
+
+
+						<!--end row-->
+					</div>
+					<!--end card-header-->
+					<div class="card-body">
+						<div class="table-responsive browser_users table-bordered">
+							 
+							 <div class="table-responsive">
+
+				<table class="table table-bordered table-responsive">
 					<thead>
 						<tr>
 							<th>#</th>
@@ -81,43 +102,25 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
 
-		<div class="col-lg-2">
-			<div class="ibox">
-				<h4 class='text-success'>Quick Filter<h4>
-						<div class="ibox-content ibox-heading">
-							<a href="{{ path('submission_filter', {'filter': 'al'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>All
-							</a>
-							<a href="{{ path('submission_filter', {'filter': 'cp'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>Complete
-							</a>
-							<a href="{{ path('submission_filter', {'filter': 'mg'}) }}" class='btn btn-warning btn-xs btn-outline btn-block'>Mega</a>
-							<a href="{{ path('submission_filter', {'filter': 'cs'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>Community
-							</a>
-
-							<a href="{{ path('submission_filter', {'filter': 'gr'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>Grant
-							</a>
-							<a href="{{ path('submission_filter', {'filter': 'tt'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>TT
-							</a>
-							<a href="{{ path('submission_filter', {'filter': 'ps'}) }}" class='btn btn-success btn-xs btn-outline btn-block'>Published
-							</a>
-							<a href="{{ path('submission_filter', {'filter': 'ap'}) }}" class='btn btn-info btn-xs btn-outline btn-block'>Approved
-							</a>
-							<a href="{{ path('submission_filter', {'filter': 'ap'}) }}" class='btn btn-danger btn-xs btn-outline btn-block'>Rejected
-							</a>
-							<a href="{{ path('submission_filter', {'filter': 'rv'}) }}" class='btn btn-warning btn-xs btn-outline btn-block'>Review assigned</a>
-
-							<p>
-
-								<div class="text-center  "></div>
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="navigation">
+ <div class="navigation">
 					{{ knp_pagination_render(call_for_proposals) }}
 				</div>
+
+							<!--end table-->
+						</div>
+						<!--end /div-->
+					</div>
+					<!--end card-body-->
+				</div>
+				<!--end card-->
 			</div>
+		</div>
+
+
+	 
+		 
+
+			 
 
 		{% endblock %}

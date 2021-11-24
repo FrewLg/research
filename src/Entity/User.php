@@ -159,19 +159,19 @@ class User implements UserInterface
      */
     private $is_reviewer;
 
-  
+    /**
+     * @ORM\OneToMany(targetEntity=TrainingParticipant::class, mappedBy="participant")
+     */
+    private $trainingParticipants;
 
-
-    
+     
     public function __construct()
     {
         $this->isSuperAdmin =0;
         $this->isActive =1;
         $this->registeredAt=new \DateTime('now');
         $this->userGroup = new ArrayCollection();
-        $this->proposals = new ArrayCollection();
-        // $this->submissions = new ArrayCollection();
-        // $this->reviews = new ArrayCollection();
+        $this->proposals = new ArrayCollection(); 
         $this->institutionalReviewersBoards = new ArrayCollection();
         $this->reviewAssignments = new ArrayCollection();
         $this->i_r_b_member = new ArrayCollection();
@@ -183,7 +183,8 @@ class User implements UserInterface
         $this->announcements = new ArrayCollection();
         $this->coAuthors = new ArrayCollection();
         $this->userFeedback = new ArrayCollection();
-    }
+        $this->trainingParticipants = new ArrayCollection();
+     }
   
 
     public function getLastLoginAgo()
@@ -410,37 +411,7 @@ class User implements UserInterface
 
         return $this;
     }
-
-    // /**
-    //  * @return Collection|Submission[]
-    //  */
-    // public function getSubmissions(): Collection
-    // {
-    //     return $this->submissions;
-    // }
-
-    // public function addSubmission(Submission $submission): self
-    // {
-    //     if (!$this->submissions->contains($submission)) {
-    //         $this->submissions[] = $submission;
-    //         $submission->setCoAuthor($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeSubmission(Submission $submission): self
-    // {
-    //     if ($this->submissions->removeElement($submission)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($submission->getCoAuthor() === $this) {
-    //             $submission->setCoAuthor(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
-
+ 
    
 
     /**
@@ -844,6 +815,38 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|TrainingParticipant[]
+     */
+    public function getTrainingParticipants(): Collection
+    {
+        return $this->trainingParticipants;
+    }
+
+    public function addTrainingParticipant(TrainingParticipant $trainingParticipant): self
+    {
+        if (!$this->trainingParticipants->contains($trainingParticipant)) {
+            $this->trainingParticipants[] = $trainingParticipant;
+            $trainingParticipant->setParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingParticipant(TrainingParticipant $trainingParticipant): self
+    {
+        if ($this->trainingParticipants->removeElement($trainingParticipant)) {
+            // set the owning side to null (unless already changed)
+            if ($trainingParticipant->getParticipant() === $this) {
+                $trainingParticipant->setParticipant(null);
+            }
+        }
+
+        return $this;
+    }
+
+     
 
   
 }

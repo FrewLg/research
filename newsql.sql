@@ -1900,7 +1900,7 @@ CREATE TABLE `title` (
 
 LOCK TABLES `title` WRITE;
 /*!40000 ALTER TABLE `title` DISABLE KEYS */;
-INSERT INTO `title` VALUES (2,'Mr.'),(3,'Dr.'),(4,'Prof'),(5,'Mrs.');
+  INSERT INTO `title` VALUES (2,'Mr.'),(3,'Dr.'),(4,'Prof'),(5,'Mrs.');
 /*!40000 ALTER TABLE `title` ENABLE KEYS */;
 UNLOCK TABLES;
 

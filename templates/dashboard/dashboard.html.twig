@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Call for proposal{% endblock %}
+ 
+{% block pagehead %}Call For Proposal {% endblock %}
+{% block breadcrumb %} <li class="breadcrumb-item active">Call For Proposal</li>  {% endblock %} 
+{% block body %}
+   <div class="row">
+                        <div class="col-lg-12 col-xl-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Line Chart</h4>
+                                    <p class="text-muted mb-0">A line chart is a way of plotting data
+                                        points on a line. Often, it is used to show trend data, and the
+                                        comparison of two data sets.
+                                    </p>   
+                                </div><!--end card-header-->
+                                <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>            
+                                    <canvas id="lineChart" class="drop-shadow chartjs-render-monitor" style="display: block; width: 657px; height: 300px;" width="657" height="300"></canvas>            
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div> <!-- end col -->
+
+                        <div class="col-lg-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Donut Chart</h4>
+                                    <p class="text-muted mb-0">Pie and doughnut charts are probably
+                                        the most commonly used chart there are. They are divided into segments,
+                                        the arc of each segment shows the proportional value of each piece of
+                                        data.
+                                    </p>   
+                                </div><!--end card-header-->
+                                <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>            
+                                    <canvas id="doughnut" class="drop-shadow chartjs-render-monitor" style="display: block;" width="303.317" height="300"></canvas>            
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div> <!-- end col -->
+
+                        <div class="col-lg-12 col-xl-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Bar Chart</h4>
+                                    <p class="text-muted mb-0">A bar chart is a way of showing data as
+                                        bars. It is sometimes used to show trend data, and the comparison of
+                                        multiple data sets side by side.
+                                    </p>   
+                                </div><!--end card-header-->
+                                <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>          
+                                    <canvas id="bar" class="drop-shadow chartjs-render-monitor" style="display: block; width: 657px; height: 300px;" width="657" height="300"></canvas>            
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div> <!-- end col -->
+
+                        <div class="col-lg-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Polar Chart</h4>
+                                    <p class="text-muted mb-0">Polar area charts are similar to pie
+                                        charts, but each segment has the same angle - the radius of the segment
+                                        differs depending on the value.
+                                    </p>   
+                                </div><!--end card-header-->
+                                <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>    
+                                    <canvas id="polarArea" class="drop-shadow chartjs-render-monitor" style="display: block;" width="303.317" height="300"> </canvas>            
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div> <!-- end col -->                                
+                    </div>
+
+
+
+
+					<div class="row">
+                        <div class="col-lg-12 col-xl-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Line Chart</h4>
+                                    <p class="text-muted mb-0">A line chart is a way of plotting data
+                                        points on a line. Often, it is used to show trend data, and the
+                                        comparison of two data sets.
+                                    </p>   
+                                </div><!--end card-header-->
+                                <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>            
+                                    <canvas id="lineChart" class="drop-shadow chartjs-render-monitor" style="display: block; width: 657px; height: 300px;" width="657" height="300"></canvas>            
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div> <!-- end col -->
+
+                        <div class="col-lg-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Donut Chart</h4>
+                                    <p class="text-muted mb-0">Pie and doughnut charts are probably
+                                        the most commonly used chart there are. They are divided into segments,
+                                        the arc of each segment shows the proportional value of each piece of
+                                        data.
+                                    </p>   
+                                </div><!--end card-header-->
+                                <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>            
+                                    <canvas id="doughnut" class="drop-shadow chartjs-render-monitor" style="display: block;" width="303.317" height="300"></canvas>            
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div> <!-- end col -->
+
+                        <div class="col-lg-12 col-xl-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Bar Chart</h4>
+                                    <p class="text-muted mb-0">A bar chart is a way of showing data as
+                                        bars. It is sometimes used to show trend data, and the comparison of
+                                        multiple data sets side by side.
+                                    </p>   
+                                </div><!--end card-header-->
+                                <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>          
+                                    <canvas id="bar" class="drop-shadow chartjs-render-monitor" style="display: block; width: 657px; height: 300px;" width="657" height="300"></canvas>            
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div> <!-- end col -->
+
+                        <div class="col-lg-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Polar Chart</h4>
+                                    <p class="text-muted mb-0">Polar area charts are similar to pie
+                                        charts, but each segment has the same angle - the radius of the segment
+                                        differs depending on the value.
+                                    </p>   
+                                </div><!--end card-header-->
+                                <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>    
+                                    <canvas id="polarArea" class="drop-shadow chartjs-render-monitor" style="display: block;" width="303.317" height="300"> </canvas>            
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div> <!-- end col -->                                
+                    </div>
+					
+       
+{% endblock %}
+{% block javascript %}
+
+  <!-- Chart JS -->
+        
+    <script src="{{ asset('plugins/chartjs/chart.min.js')}}"></script>
+    <script src="{{ asset('assets/pages/jquery.chartjs.init.js')}}"></script>
+
+{% endblock %}

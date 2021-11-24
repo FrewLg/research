@@ -7,9 +7,14 @@ use App\Entity\College;
 use App\Entity\Department;
 use App\Entity\EducationalLevel;
 use App\Entity\UserInfo;
+// use App\Entity\Suffixe;
+use App\Entity\Suffixe;
+
 use Attribute;
+
 use Doctrine\Common\Annotations\Annotation\Required;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -101,23 +106,30 @@ class UserProfileType extends AbstractType
                 'allow_delete' => true,
             ])
             
-            ->add('suffix')
-            ->add('education_level',EntityType::class,[
-                'placeholder' => '---Select Education level ---',
-                "class"=>EducationalLevel::class,
-                "attr"=>[
-                    "class"=>"select2 ",
-                ]
-            ])
+            // ->add('suffix' ,EntityType::class,[
+            //     'placeholder' => '---Select Suffixe   ---',
+            //     "class"=>Suffixe::class,
+            //     'expanded'=>true,
+            //     "attr"=>[
+            //         "class"=>"select2 ",
+            //     ]
+            // ])
+            // ->add('education_level',EntityType::class,[
+            //     'placeholder' => '---Select Education level ---',
+            //     "class"=>EducationalLevel::class,
+            //     "attr"=>[
+            //         "class"=>"select2 ",
+            //     ]
+            // ])
             
-            ->add('academic_rank',EntityType::class,[
-                'placeholder' => '---Select Academic rank---',
+            // ->add('academic_rank',EntityType::class,[
+            //     'placeholder' => '---Select Academic rank---',
                
-                "class"=>AcademicRank::class,
-                "attr"=>[
-                    "class"=>"select2 ",
-                ]
-            ])
+            //     "class"=>AcademicRank::class,
+            //     "attr"=>[
+            //         "class"=>"select2 ",
+            //     ]
+            // ])
             ->add('college',EntityType::class,[
                 'placeholder' => '---Select College---',
                 "class"=>College::class,

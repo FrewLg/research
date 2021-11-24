@@ -52,7 +52,8 @@ class SubmissionController extends AbstractController {
     /**
      * @Route("/", name="submission_index", methods={"GET","POST"})
      */
-    public function index(Request $request, SubmissionRepository $submissionRepository, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
+    public function index(Request $request, SubmissionRepository $submissionRepository, PaginatorInterface $paginator,
+     FilterBuilderUpdaterInterface $query_builder_updater): Response {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
         $em = $this->getDoctrine()->getManager();
         //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
@@ -272,6 +273,20 @@ return $this->redirectToRoute('submission_index');
     public function metadata(Request $request, CallForProposal $callForProposal, UserController $test, MailerInterface $mailer): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
+
+#######################
+        $em  = $this->getDoctrine()->getManager();
+       $lastdate = $em->getRepository('App:CallForProposal')->find($callForProposal);
+
+    	$deadline = $lastdate->getDeadline();
+         $today = new \DateTime('');
+         if ($deadline <= $today) {
+       $flashbag = $this->get('session')->getFlashBag();
+            $flashbag->add("danger", "Sorry! Call has expired!  Thank you!");
+           return $this->redirectToRoute('myreviews');
+        }
+
+################################
         ##########################
         $userdetails = $this->getUser()->getUserInfo();
         if ($userdetails == '') {
@@ -469,7 +484,9 @@ return $this->redirectToRoute('submission_index');
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         $pdfOptions->set('isRemoteEnabled', true);
-
+        $data = file_get_contents('img/logo.png');
+        $type='png';
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
         $pdfOptions->set('tempDir', '/home/ghost/Desktop/pdf-export/tmp');
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
@@ -477,6 +494,7 @@ return $this->redirectToRoute('submission_index');
 
         $html = $this->renderView('submission/summary.html.twig', [
             'user' => $this->getUser(),
+            'base64'=>$base64,
             'submission' => $submission,
         ]);
         $dompdf->loadHtml($html);
@@ -1546,12 +1564,9 @@ return $this->redirectToRoute('submission_index');
       
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
+   
+        $researcher=$submission->getCoAuthors->getResearcher();
  
-            return $this->redirectToRoute('membership');          
-       $myresearches = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission]);
-#        $researcher=$coAuthor->getResearcher();
-#        $researcher=$submission->getCoAuthors()->getResearcher();
-
         $user = $this->getUser();
         if(!$researcher==$user){
             

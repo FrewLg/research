@@ -20,8 +20,7 @@
 						<tr>
 							<th>#</th>
 							<th>Title</th>
-							<th>Category</th>
-							<th>Researcher(PI)</th>
+ 							<th>Researcher(PI)</th>
 							<th>Submission Date</th>
 							<th>Action</th>
 						</tr>
@@ -32,13 +31,15 @@
 								<td>{{ loop.index  }}</td>
 								<td>{{ submission.title }}</td>
 
-								<td class='text-center'>
-									<span class="label label-{% if submission.submissionType=='Mega research' %}success{% elseif submission.submissionType=='Grant'%}info{% elseif submission.submissionType=='Technology transfer'%}primary{% elseif submission.submissionType=='Community service'%}warning{% elseif submission.submissionType==''%}default{% endif %}">{{ submission.submissionType }}</span>
+		 
+								<td>{{ submission.author.userInfo }}
+								<sub ><span class='badge bg-success badge-sm'>
+												+({{ submission.coAuthors|length   }})
+											</span></sub>
 								</td>
-								<td>{{ submission.author.email }}</td>
 								<td>
 									{% if submission.sentAt %}
-										{{ submission.sentAt|date() }}
+										{{ submission.sentAt|date('d-m-y i:s') }}
 									{% endif %}
 								</td>
 								<td nowrap="nowrap">
@@ -80,6 +81,12 @@
 <div class="ibox">
 	<h4 class='text-info'>Quick Filter<h4>
 			<div class="row container   mb-3">
+				<a href="{{ path('theme') }}" class='btn btn-primary btn-xs mb-1 btn-block'>All by theme
+				</a>
+				
+				<a href="{{ path('research_theams') }}" class='btn btn-info  btn-xs mb-1 btn-block'>All Researcher
+				<span class='badge bg-sucess badge-primary'> <i class='fa fa-book'></i></span>
+				</a>
 				<a href="{{ path('submission_filter', {'filter': 'al'}) }}" class='btn btn-primary btn-xs mb-1 btn-block'>All
 				</a>
 				<a href="{{ path('submission_filter', {'filter': 'cp'}) }}" class='btn btn-primary btn-xs mb-1 btn-block'>Complete

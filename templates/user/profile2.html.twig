@@ -98,7 +98,7 @@
 									<li class="">
 										<i class="ti ti-mobile me-2 text-secondary font-16 align-middle"></i>
 										<b>
-											phone
+											Phone
 										</b>
 										:
 										{{ user.userInfo.phoneNumber }}</li>
@@ -109,18 +109,39 @@
 										</b>
 										:
 										{{ user.email }}</li>
+ <li class="mt-2">
+                                                                                <i class="ti ti-email text-secondary font-16 align-middle me-2"></i>
+                                                                                <b>
+                                                                                   Alternative      Email
+                                                                                </b>
+                                                                                :
+                                                                                {{ user.userInfo.alternativeEmail }}</li>
+
+
+
 									<li class="mt-2">
 										<i class="ti ti-world text-secondary font-16 align-middle me-2"></i>
 										<b>
-											Website
+											Affiliation: 
 										</b>
 										:
-										<a href="" class="font-14 text-primary">
+										<a href="" class="font-12 text-default ">
 											{% if userInfo.affiliation is defined %}
 
 												{{ userInfo.affiliation }}
 												{% else %}
 											{% endif %}
+{{ user.userInfo.suffix   }}
+ ({{ user.userInfo.educationLevel   }})
+{{ user.userInfo.academicRank   }}, 
+ {% if user.userInfo.department  is defined %}
+Department of 
+
+{{ user.userInfo.department   }}
+ {% else %}
+                                                                                        {% endif %}
+, 
+{{ user.userInfo.college  }}
 										</a>
 									</li>
 								</ul>
@@ -371,8 +392,8 @@
 												<div class="col-md-1">
 													<div class="form-group">
 
-														{{ form_label(submissionform.suffix  ) }}
-														{{ form_widget(submissionform.suffix  ) }}
+														{# {{ form_label(submissionform.suffix  ) }}
+														{{ form_widget(submissionform.suffix  ) }} #}
 													</div>
 												</div>
 
@@ -383,7 +404,33 @@
 															Gender</div>
 														{{ form_widget(submissionform.gender  ) }}
 													</div>
+												</div> 
+
+												<div class="col-md-2">
+													<div class="form-s">
+														<div class="label">
+															Given name</div>
+														{{ form_widget(submissionform.first_name  ) }}
+													</div>
 												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+
+														 Midle name
+														{{ form_widget(submissionform.midle_name  ) }}
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														 Sur name
+														 
+														{{ form_widget(submissionform.last_name  ) }}
+													</div>
+												</div>
+</div>
+
+												<div class="row">
+ 
 												<div class="col-md-3">
 													<div class="form-group">
 
@@ -415,7 +462,9 @@
 
 														<label class="form-controll">Department</label><br>
 
-														<select id="dep" name="dep" style="width: 350px;" class="dep m-5 select2" required="required"></select>
+ 
+														<select id="dep" name="department" style="width: 350px;" class="dep m-5 select2" required="required"></select>
+ 
 													</div>
 												</div>
 												{# <div class="col-md-3">
@@ -426,17 +475,18 @@
 												</div> #}
 												<div class="col-md-2">
 													<div class="form-group">
-														{{ form_label(submissionform.education_level  ) }}
-														{{ form_widget(submissionform.education_level  ) }}
+														{# {{ form_label(submissionform.education_level  ) }}
+														{{ form_widget(submissionform.education_level  ) }} #}
 													</div>
 												</div>
 												<div class="col-md-3">
 													<div class="form-group">
-														{{ form_label(submissionform.academic_rank  ) }}
-														{{ form_widget(submissionform.academic_rank  ) }}
+														{# {{ form_label(submissionform.academic_rank  ) }}
+														{{ form_widget(submissionform.academic_rank  ) }} #}
 													</div>
 												</div>
 											</div>
+{#
 											<div class="col-12">
 												<br>
 												If previously granted Mega project from the institute (at list in past 4 years)
@@ -455,7 +505,57 @@
 												{% endfor %}
 											</ul>
 											<button class="btn btn-primary">{{ button_label|default('Save Profile') }}</button>
-											{{ form_end(submissionform) }}
+ 
+
+#}
+<div class="col-12">
+                                                                <br>
+                                                <h4>If previously granted Mega project from the institute (at list in past 4 years)</h4>
+                                                                                                <br>
+                                                                                        </div>
+
+
+
+
+
+  <script type="text/javascript">
+
+function yesnoCheck() {
+    if (document.getElementById('yesCheck').checked) {
+        document.getElementById('ifYes').style.display = 'block';
+    }
+    else document.getElementById('ifYes').style.display = 'none';
+
+}
+
+</script>
+Yes
+
+ <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck"> 
+No <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck"><br>
+    <div id="ifYes" style="display:none">
+         If yes, add and insert titles below:<hr>
+                <button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#contact-fields-list">
+                  <span aria-hidden="true">+</span> 
+  Add research Titles
+   </button>
+<br>
+<br>
+<br>
+<ul id="contact-fields-list" class="m-t-5" data-prototype="{{_self.displayContent(submissionform.researches.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ submissionform.researches|length }}">
+                                                                                                                        {% for coAuthor in submissionform.researches %}
+                                                                                                                                <div class="row ">
+                                                                                                                                        {{ _self.displayContent(coAuthor) }}
+                                                                                                                                </div>
+                                                                                                                        {% endfor %}
+                                                                                                                </ul>
+    </div> 
+ </div></div>
+ <hr>
+ <button class="btn btn-primary">{{ button_label|default('Save Profile') }}</button>
+
+
+		{{ form_end(submissionform) }} 
 
 										</div>
 									</div>
@@ -598,7 +698,17 @@ college: college
 },
 dataType: "json",
 success: function (data) {
-$('.dep').children().remove()
+$('.dep').children().remove() 
+{% if user.userInfo.department=="" %}
+select.append('<option  id="dep" name="department"    value=""  >'  +'--Select Department--'+ '</option>');
+
+{% else %}
+{# select.append('<option  id="dep" name="department"    value="{{user.userInfo.department}}"  >'  +'{{user.userInfo.department}}'+ '</option>');#}
+{#select.append('<option>' + value.name + '</option>');#}
+ select.append('<option  id="dep" name="department"    value=""  >'  +'-- Select Department ----'+ '</option>');
+
+
+{% endif %} 
 for (let [key, value] of Object.entries(data)) {
 
 
@@ -611,4 +721,4 @@ $("#dep").prop("required", true)
 });
 })
 	</script>
-		{% endblock %}
+		{% endblock %} 
