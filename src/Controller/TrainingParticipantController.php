@@ -187,8 +187,7 @@ class TrainingParticipantController extends AbstractController
 //          }  
 //          $em->persist($item);
 //          $em->flush();
-//          return $this->redirectToRoute('all_items'); 
-//    } 
+ //    } 
 //        return $this->render('item/new.html.twig', array(
 //            'items' => $items, 
 //            'users' => $users, 
