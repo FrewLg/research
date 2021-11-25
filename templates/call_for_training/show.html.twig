@@ -11,6 +11,7 @@
 		<article class=""> 
 							<h5> {{ call_for_training.name}}</h5>
 							 <hr>
+                             
 							<small>
 							{{ call_for_training.createdAt ? call_for_training.createdAt|date('Y-M-d h:s') : '' }}
 							</small> 
@@ -35,8 +36,15 @@
 																{% endif %}
                                                                 <br>
                                                                 <hr>
+                                                               
+                          {% if ifexists %}
+                                                               
+                                                                
+    <a href="#" class='btn btn-success btn-xs'>Registered </a>
+				 {% else %}
     <a href="{{ path('participate', {'id': call_for_training.id}) }}" class='btn btn-primary btn-xs'>Register </a>
-				 
+																	  
+																{% endif %}
 					 
 				 </article>
 
