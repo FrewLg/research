@@ -38,11 +38,18 @@
 <div class="mt-4 d-flex justify-content-between">
                                         <div class="img-group">
                                              
+									{% if submission.author.userInfo and  submission.author.userInfo.image %}
 
 
 <a class="user-avatar user-avatar-group" href="apps-project-teams.html#{{submission.id}}">
                                                 <img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
                                             </a>
+
+{% else %}
+<a class="user-avatar user-avatar-group" href="apps-project-teams.html#{{submission.id}}">
+                                                <img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
+                                            </a>
+										{% endif %}
 
 											{% for member in submission.coAuthors %}
 					

@@ -106,18 +106,7 @@
 													{{ submission.Reference |raw}}
 												</p>
 
-												{% for submissionattachment in submission.submissionAttachements %}
-													<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-														{{submissionattachment.name}}
-														-
-														{# {{ submission.componentType }} #}
-														<i class="fa fa-download material-icons warning"></i>
-													</a>
-												{% else %}
-													<span class="label label-danger">
-														{% trans %}No attachement found{% endtrans %}
-													</span>
-												{% endfor %}
+												 
 
 											</td>
 										</tr>

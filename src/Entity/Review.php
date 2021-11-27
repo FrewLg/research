@@ -24,6 +24,12 @@ class Review
      */
     private $attachment;
 
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $evaluation_attachment;
+
     /**
      * @ORM\Column(type="text", nullable=true)
      */
@@ -92,6 +98,21 @@ class Review
 
         return $this;
     }
+
+    public function getEvaluationAttachment(): ?string
+    {
+        return $this->evaluation_attachment;
+    }
+
+    public function setEvaluationAttachment(?string $evaluation_attachment): self
+    {
+        $this->evaluation_attachment = $evaluation_attachment;
+
+        return $this;
+    }
+
+
+    
 
     public function getComment(): ?string
     {
