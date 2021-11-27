@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
+ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 class ReviewAssignmentType extends AbstractType
@@ -34,8 +35,8 @@ class ReviewAssignmentType extends AbstractType
          ->add('file_tobe_reviewed', FileType::class, [
             'label' => 'Upload document attachment',
             'mapped' => false,
-            'required' => false,
-        ])
+            'required' => true,
+            ])
   
       ->add('invitationDueDate', DateType::class, array(
         'placeholder' => [
@@ -63,6 +64,78 @@ class ReviewAssignmentType extends AbstractType
 'class'=>'form-control',
 )              
 ))
+
+
+   
+            
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => ReviewAssignment::class,
+        ]);
+    }
+}
+
+
+class ExternalReviewAssignmentType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $reviewAssignment=$options['data'];
+        if (!$reviewAssignment  instanceof ReviewAssignment ) {
+           return;
+        }
+        $builder
+     
+->add('external_reviewer_name')
+->add('middle_name')
+->add('last_name')
+
+
+
+->add('external_reviewer_email' ,
+TextType::class, [
+    'attr' => ['class' => 'form-control col col-md-12 col-sm-12 col-lg-9 '],
+])
+
+->add('invitationDueDate', DateType::class, array(
+    'placeholder' => [
+'year' => 'Year', 'month' => 'Month', 'day' => 'Day', ],
+'label' => 'Invitation response duedate',
+ 
+'widget' => 'single_text',
+  'format' => 'yyyy-MM-dd',
+     'attr' => array(
+        'min'=>(new DateTime('now'))->format('Y-m-d'),
+'required' => true,
+'class'=>'form-control',
+)              
+))
+
+
+->add('file_tobe_reviewed', FileType::class, [
+'label' => 'Upload document attachment',
+'mapped' => false,
+'required' => true,
+])
+
+->add('duedate', DateType::class, array(
+    'placeholder' => [
+'year' => 'Year', 'month' => 'Month', 'day' => 'Day', ],
+    'label' => 'Review duedate',
+    'widget' => 'single_text',
+  'format' => 'yyyy-MM-dd',
+     'attr' => array(
+'min'=>(new DateTime('now'))->format('Y-m-d'), 
+'max'=>$reviewAssignment->getSubmission()->getCallForProposal()->getReviewProcessEnd()->format('Y-m-d'),
+'required' => true,
+'class'=>'form-control',
+)              
+))
+
 
 
    
