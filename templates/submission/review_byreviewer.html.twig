@@ -13,7 +13,7 @@
 					<dl class="row mb-0">
 						<div class="col-sm-2 text-sm-right float-right pull-right">
 							<dt>
-							{% if submission.sentAt %}
+								{% if submission.sentAt %}
 									{{ submission.sentAt|date() }}
 								{% endif %}
 							</dt>
@@ -32,13 +32,7 @@
 						<div class="col-sm-1 text-sm-left">
 							<dd>
 								<div class="nowrap">
-									<div style="width: 100%;" class="text-success strong">
-
-										<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
-											PDF
-											<i class="fa fa-download"></i>
-										</a>
-									</div>
+									<div style="width: 100%;" class="text-success strong"></div>
 								</div>
 							</dd>
 						</div>
@@ -132,7 +126,7 @@
 							</div>
 						</div>
 						<div class="tab-pane p-3" id="evaluation" role="tabpanel">
-							<form method="post" action="{{ path('evaluation_form_option_new', {'id': submission.id}) }}" >
+							<form method="post" action="{{ path('evaluation_form_option_new', {'id': submission.id}) }}">
 								<ol type="I" class="list">
 									{% for evaluationForm in evaluationForms %}
 										<li class="parent">
@@ -259,8 +253,8 @@
 											</td>
 										</tr>
 									</tbody>
-								{% else %}
-								 
+									{% else %}
+
 								{% endfor %}
 							</table>
 							<hr>
@@ -279,75 +273,88 @@
 
 
 			<div class="card">
-				<div class="card-body ">
-					<div class="text-">
-						<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
-							Thematic area:
-							{{submission.thematicArea}}
-						</h4>
-						<p class="text-muted  mb-0 font-13">
-							<span class="text-dark">
+				<div class="card-header">
+					<h5>Review info:<h5></div>
+						<!--end card-header-->
 
-								Invitation Sent At:
-								{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+						<div class="card-body ">
+							<div
+								class="text-">
+								{# {{ review_assignment.submission.callForProposal}} #}
+								 
+								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.attachment ) }}">
+									Review guideline PDF
+									<i class="fa fa-download"></i>
+								</a>
 
-								Review duedate:
-								{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+								<br>
+								<br>
+								 
+								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.evaluationfrom ) }}">
+									Review evaluation from PDF
+									<i class="fa fa-download"></i>
+								</a>
+								
+								<br>
 
-							</span>
 
-							<span class="text-dark">
-								<h5>Keywords:</h5>
-								<ul class="tag-list" style="padding: 0">
-									{{submission.keywords}}
-								</ul>
-							</span>
+								{# <h4 class="m-0 fw-semibold text-dark font-16 mt-3">
+									Thematic area:
+									{{submission.thematicArea}}
+								</h4> #}
+								<br>
+								<p class="text-muted  mb-0 font-13">
+									<span class="text-dark">
 
-						</p>
-					</div>
-					<div class="row mt-4 d-flex align-items-center">
-						<div
-							class="col">
-							{# <h5 class="font-16 m-0 fw-bold">1</h5> #}
-							<p class="mb-0 text-muted">
+										Invitation Sent At:
+										{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+<br>
+										Review duedate:
+										{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
 
-								<h5>Attachment files</h5>
-								<ul class="list-unstyled project-files">
-									{% for submissionattachment in submission.submissionAttachements %}
-										<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-											{{submissionattachment.name}}
+									</span>
 
-											<i class="fa fa-download material-icons warning"></i>
+									{# <span class="text-dark">
+										<h5>Keywords:</h5>
+										<ul class="tag-list" style="padding: 0">
+											{{submission.keywords}}
+										</ul>
+									</span> #}
+
+								</p>
+							</div>
+							<div class="row mt-2 d-flex align-items-center">
+								<div
+									class="col">
+									{# <h5 class="font-16 m-0 fw-bold">1</h5> #}
+									<p class="mb-0 text-muted">
+
+										<h5>Attachment files</h5>
+
+										<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
+											Submission file PDF
+											<i class="fa fa-download"></i>
 										</a>
-									{% else %}
-										<span class="label label-danger">
-											{% trans %}No attachement found{% endtrans %}
-										</span>
-									{% endfor %}
-								</ul>
-							</p><hr>
-							{# <a class="btn btn-primary btn-xs float-right" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
-																						<span>Download PDF
-																							<i class="fa fa-download material-icons  "></i>
-														
-																						</span>
-																					</a> #}
 
 
-							<script src="/ui/js/jquery.min.js"></script>
-							<p></p>
+									</p><hr>
+
+
+									<script src="/ui/js/jquery.min.js"></script>
+									<p></p>
+								</div>
+							</div>
 						</div>
 					</div>
+
+
 				</div>
 			</div>
-
-
 		</div>
 	</div>
 
-	{% include "submission/modal.html.twig" %}
+	{# {% include "submission/modal.html.twig" %} #}
 {% endblock %}
-
 {% block javascript  %}
 	<script>
 		$('.form-check-input').change(function () {

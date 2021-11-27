@@ -164,6 +164,12 @@ class CallForProposal
         return $this->id;
     }
 
+    public function __toString()
+    {
+        
+   return $this->subject;
+    }
+    
  
 
     public function getGuidelines(): ?string

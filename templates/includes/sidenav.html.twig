@@ -25,7 +25,7 @@
 						</span>
 					</a>
 					<ul class="nav-second-level" aria-expanded="false">
-						{% if is_granted("assn_clg_cntr") %}
+						{% if is_granted("ROLE_ADMIN") %}
 							<li class="nav-item">
 								<a class="nav-link" href="{{ path('submission_index') }}">
 									<i class="ti-control-record"></i>Submissions</a>
