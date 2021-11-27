@@ -108,6 +108,7 @@ class CallForTraining
     {
         return  $this->name;
     }
+    
     public function getCollege(): ?College
     {
         return $this->college;

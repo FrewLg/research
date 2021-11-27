@@ -22,6 +22,21 @@ class GuidelineForReviewer
      */
     private $name;
 
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $attachment;
+
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $evaluationfrom;
+
+
     /**
      * @ORM\ManyToOne(targetEntity=WorkUnit::class, inversedBy="guidelineForReviewers")
      */
@@ -38,7 +53,8 @@ class GuidelineForReviewer
     private $created_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=College::class, inversedBy="guidelineForReviewers")
+     * @ORM\OneToOne(targetEntity=College::class, inversedBy="guidelineForReviewers", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $college;
 
@@ -55,6 +71,32 @@ class GuidelineForReviewer
     public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+
+    public function getAttachment(): ?string
+    {
+        return $this->attachment;
+    }
+
+    public function setAttachment(?string $attachment): self
+    {
+        $this->attachment = $attachment;
+
+        return $this;
+    }
+
+
+    public function getEvaluationfrom(): ?string
+    {
+        return $this->evaluationfrom;
+    }
+
+    public function setEvaluationfrom(?string $evaluationfrom): self
+    {
+        $this->evaluationfrom = $evaluationfrom;
 
         return $this;
     }

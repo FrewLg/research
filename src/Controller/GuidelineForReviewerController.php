@@ -67,7 +67,31 @@ class GuidelineForReviewerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+           
+           
+            $file3 = $form->get('attachment')->getData();  
+            if (!$file3){ 
+          }   else{
+              $file3 = $form->get('attachment')->getData();  
+                   $fileName3 = md5(uniqid()).'.'.$file3->guessExtension();  
+               $file3->move($this->getParameter('review_files'), $fileName3);  
+               $guidelineForReviewer->setAttachment($fileName3); 
+ 
+                  }
+
+                  $evaluationfromf = $form->get('evaluationfrom')->getData();  
+                  if (!$evaluationfromf){ 
+                  echo 'File not uploaded';
+        }   
+        else{
+        $evaluationfromf = $form->get('evaluationfrom')->getData();  
+                $file_name = 'Eval-edited'.md5(uniqid()).'.'.$evaluationfromf->guessExtension();  
+            $evaluationfromf->move($this->getParameter('review_files'), $file_name);  
+            $guidelineForReviewer->setEvaluationfrom($file_name); 
+            }
+
+                  
+                  $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('guideline_for_reviewer_index');
         }

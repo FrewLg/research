@@ -17,29 +17,53 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Unique;
-
-class RegistrationFormType extends AbstractType
+ 
+class FetchUASFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email',EmailType::class,[
+            ->add('username',TextType::class,[
                 "attr"=>[
-                    "placeholder"=>"Enter your email",
+                    "placeholder"=>"Enter your UAS username",
                     "class"=>"form-control "
                 ],
                 'constraints' => [
-                    new Email([
-                        'message' => 'invalid email address.',
-                    ]),
+                  
                     new NotBlank([
                         'message' => 'Email field should not be empty.',
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'username must be at least {{ limit }} characters',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 100,
                     ]),
                 ],
               
             ])
-            ->add('username',TextType::class,['attr'=>[]])
-
+            ->add('password', PasswordType::class, [
+                // instead of being set onto the object directly,
+               
+                // this is read and encoded in the controller
+                'mapped' => false,
+                'attr' => [
+                    'autocomplete' => 'new-password',
+                    "placeholder"=>"Enter your UAS password",
+                  
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter a password',
+                    ]),
+                    new Length([
+                        'min' => 4,
+                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
+                ],
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -48,28 +72,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-
           
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'options' => ['attr' => ['class' => 'password-field']],
-                'attr' => ['autocomplete' => 'new-password'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-                'required' => true,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
-            ])
         ;
     }
 
@@ -80,4 +83,3 @@ class RegistrationFormType extends AbstractType
         ]);
     }
 }
-

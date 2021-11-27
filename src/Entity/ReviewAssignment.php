@@ -55,6 +55,13 @@ class ReviewAssignment
      */
     private $Declined;
 
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $file_tobe_reviewed;
+
+
     /**
      * @ORM\Column(type="date")
      */
@@ -158,6 +165,21 @@ class ReviewAssignment
 
         return $this;
     }
+
+
+    public function getFileTobeReviewedeclined(): ?string
+    {
+        return $this->file_tobe_reviewed;
+    }
+    public function setFileTobeReviewed(?string $file_tobe_reviewed): self
+    {
+        $this->file_tobe_reviewed = $file_tobe_reviewed;
+
+        return $this;
+    }
+
+    
+
     public function getExternalrevieweremail(): ?string
     {
         return $this->external_reviewer_email;

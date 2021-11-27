@@ -72,3 +72,6 @@ services:
             $ldapSearchPassword: '%env(LDAP_SEARCH_PASSWORD)%'
             $ldapSearchDnString:  '%env(LDAP_SEARCH_DN_STRING)%'
 
+    # App\EventListener\ExceptionListener:
+    #     tags:
+    #         - { name: kernel.event_listener, event: kernel.exception }

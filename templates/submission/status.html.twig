@@ -599,6 +599,90 @@ $("#showEditRequestContent").html("Problem");
 
 
 			<div class="col-lg-3">
+			<div class="card team-card">
+				<div class="card-body">
+					<div class="float-end">
+						<div
+							class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="teams{{submission.id}}#" role="button" aria-haspopup="false" aria-expanded="false">
+																<i class="las la-ellipsis-v font-24 text-muted"></i>
+															</a>
+															<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
+																<a class="dropdown-item" href="teams{{submission.id}}#">Open Project</a>
+																<a class="dropdown-item" href="teams{{submission.id}}#">Edit Card</a>
+																<a class="dropdown-item" href="teams{{submission.id}}#">Delete</a>
+															</div> #}
+						</div>
+					</div>
+					<div class="media align-items-center">
+
+						{% if submission.author.userInfo and submission.author.userInfo.image %}
+
+
+							<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="" class="rounded-circle user-img">
+						{% else %}
+
+							<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle user-img">
+
+
+						{% endif %}
+
+
+						<div class="online-circle">
+							<i class="fa fa-circle text-success"></i>
+						</div>
+						<div class="media-body ms-3 align-self-center">
+							<h4 class="team-leader m-0">{{submission.author.userInfo}}</h4>
+							<p class="text-muted font-12 mb-0">Research PI</p>
+						</div>
+					</div>
+					<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{submission.CallForProposal.ResearchType}}
+						Team</h4>
+					<p class="text-muted mb-0">
+						{{submission.title}}</p>
+
+					<div class="mt-4 d-flex justify-content-between">
+						<div class="img-group">
+
+
+							<a class="user-avatar user-avatar-group" href="#">
+								<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+							</a>
+
+							{% for member in submission.coAuthors %}
+
+
+								{% if member.researcher.userInfo and member.researcher.userInfo.image %}
+
+									<a class="user-avatar user-avatar-group" href="#">
+										<img src="{{ asset('files/profile_pictures/'~member.researcher.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+									</a>
+
+
+									{# <img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;"> #}
+								{% else %}
+									<a class="user-avatar user-avatar-group" href="#">
+										<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
+									</a>
+								{% endif %}
+
+								{% else %}No Co-PI has been involved
+							{% endfor %}
+
+
+							<a href="teams{{submission.id}}" class="avatar-box thumb-xxs align-self-center">
+								<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+									+{{ submission.coAuthors|length   }}
+								</span>
+							</a>
+						</div>
+
+					</div>
+					<hr class="hr-dashed my-4">
+
+				</div>
+				<!--end card-body-->
+			</div>
+
 				<div class="card">
 					<div class="card-body ">
 						<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>

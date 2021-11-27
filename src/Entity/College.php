@@ -70,9 +70,9 @@ class College
     private $prefix;
 
     /**
-     * @ORM\OneToMany(targetEntity=GuidelineForReviewer::class, mappedBy="college")
+     * @ORM\OneToOne(targetEntity=GuidelineForReviewer::class, mappedBy="college", cascade={"persist", "remove"})
      */
-    private $guidelineForReviewers;
+    private $guidelineForReviewer;
 
 
     /**
@@ -105,7 +105,7 @@ class College
         $this->departments = new ArrayCollection();
         $this->callForProposals = new ArrayCollection();
         $this->thematicAreas = new ArrayCollection();
-        $this->guidelineForReviewers = new ArrayCollection();
+        // $this->guidelineForReviewers = new ArrayCollection();
         $this->institutionalReviewersBoards = new ArrayCollection();
         $this->guidelines = new ArrayCollection();
         $this->callForTrainings = new ArrayCollection();
@@ -317,36 +317,29 @@ class College
         return $this;
     }
 
-    /**
-     * @return Collection|GuidelineForReviewer[]
-     */
-    public function getGuidelineForReviewers(): Collection
+
+
+
+
+
+    public function getGuidelineForReviewer(): ?GuidelineForReviewer
     {
-        return $this->guidelineForReviewers;
+        return $this->guidelineForReviewer;
     }
 
-    public function addGuidelineForReviewer(GuidelineForReviewer $guidelineForReviewer): self
+    public function setGuidelineForReviewer(GuidelineForReviewer $guidelineForReviewer): self
     {
-        if (!$this->guidelineForReviewers->contains($guidelineForReviewer)) {
-            $this->guidelineForReviewers[] = $guidelineForReviewer;
-            $guidelineForReviewer->setCollege($this);
+        // set the owning side of the relation if necessary
+        if ($guidelineForReviewer->getUser() !== $this) {
+            $guidelineForReviewer->setUser($this);
         }
+
+        $this->guidelineForReviewer = $guidelineForReviewer;
 
         return $this;
     }
 
-    public function removeGuidelineForReviewer(GuidelineForReviewer $guidelineForReviewer): self
-    {
-        if ($this->guidelineForReviewers->removeElement($guidelineForReviewer)) {
-            // set the owning side to null (unless already changed)
-            if ($guidelineForReviewer->getCollege() === $this) {
-                $guidelineForReviewer->setCollege(null);
-            }
-        }
-
-        return $this;
-    }
-
+     
     /**
      * @return Collection|InstitutionalReviewersBoard[]
      */

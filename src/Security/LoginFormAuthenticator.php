@@ -33,6 +33,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private $csrfTokenManager;
     private $passwordEncoder;
     private $userRepository;
+    private $is_ldap_user;
+    private $user;
     private $flashBag;
     public function __construct(EntityManagerInterface $entityManager, FlashBagInterface $flashBagInterface, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder ,      UserRepository $userRepository )
     {
@@ -40,6 +42,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->userRepository = $userRepository;
+        $this->is_ldap_user =false;
+        $this->user = null ;
         $this->passwordEncoder = $passwordEncoder;
         $this->flashBag= $flashBagInterface;
     }
@@ -78,19 +82,25 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
       }
            // from local database or ldap
       // $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
-      $user = $userProvider->getUserEntityCheckedFromLdap($credentials['username'], $credentials['password']);
+ 
+      $ldapuser = $userProvider->getUserEntityCheckedFromLdap($credentials['username'], $credentials['password']);
+ 
         //  dd($user);
 
+if($ldapuser){
+  $this->is_ldap_user = true;
+  return $ldapuser ;
+}
+$user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
+
       $this->user = $user;
-      if (!$user) {
-        
+      // if (!$user) { 
+      //     throw new CustomUserMessageAuthenticationException('Invalid Credentials.');
+      //     // throw new CustomUserMessageAuthenticationException('Username could not be found.');
+      // } else {
 
-          throw new CustomUserMessageAuthenticationException('Invalid Credentials.');
-          // throw new CustomUserMessageAuthenticationException('Username could not be found.');
-      } else {
-
-          $this->is_ldap_user = true;
-      }
+      //     $this->is_ldap_user = true;
+      // }
 
       return $user;
   }
@@ -117,7 +127,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
    
 
-      $user = $this->user;
+      $user = $token->getUser();
       // dd($user);
 
 

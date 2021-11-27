@@ -6,9 +6,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\UserInfo;
-use App\Form\FetchUASFormType;
-use App\Helper\MailHelper;
+use App\Form\FetchUASFormType; 
 use App\Form\RegistrationFormType;
+use App\Helper\MailHelper;
 use App\Security\EmailVerifier;
 use App\Security\LoginFormAuthenticator;
 use App\Repository\UserRepository;
@@ -44,10 +44,15 @@ class RegistrationController extends AbstractController
 
         $is_external=true;
         $user = new User();
+        $user2 = new User();
+
+        // dd($request);
+        $uas_form = $this->createForm(FetchUASFormType::class, $user2);
+
         $form = $this->createForm(RegistrationFormType::class, $user);
-        $uas_form = $this->createForm(FetchUASFormType::class, $user);
-        $form->handleRequest($request);
         $uas_form->handleRequest($request);
+        
+        $form->handleRequest($request);
 
         /**
          * to control tabs 
@@ -82,19 +87,7 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // $to=$user->getEmail();
-            // $subject='Please Confirm your Email';
-            // $template='registration/confirmation_email.html.twig';
-            // $content=[];
-            // $mailHelper->sendEmail($to, $subject, $template, $content);
-            // do anything else you need here, like send an email
-
-            // return $guardHandler->authenticateUserAndHandleSuccess(
-            //     $user,
-            //     $request,
-            //     $authenticator,
-            //     'main' // firewall name in security.yaml
-            // );
+         
             $this->addFlash("success","Registered Successfully!!");
             // dd();
            
