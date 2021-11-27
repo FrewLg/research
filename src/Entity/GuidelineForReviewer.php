@@ -53,7 +53,7 @@ class GuidelineForReviewer
     private $created_at;
 
     /**
-     * @ORM\OneToOne(targetEntity=College::class, inversedBy="guidelineForReviewers", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=College::class, inversedBy="guidelineForReviewer", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $college;
