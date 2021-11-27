@@ -144,45 +144,11 @@ class IRBReviewController extends AbstractController
         $review->setSubmission($reviewAssignment->getSubmission());
         $review->setReviewedBy($measareviewer);
 
-//////allow reviewer if he is only assigned to this submission
-        $form = $this->createFormBuilder($review)
-            ->add('remark', ChoiceType::class, [
-                'placeholder' => 'Select Editorial decision',
-                'choices' => [
-                    'Declined' => 'Declined',
-                    'Accepted with major revision' => 'Accepted with major revision',
-                    'Accepted with minor revision' => 'Accepted with minor revision',
-                    'Accepted' => 'Accepted',
-
-                ],
-                'attr' => [
-                    'class' => 'form-control',
-                    'required' => true,
-                ],
-            ])
-            ->add('comment', CKEditorType::class, [
-                'attr' => ['placeholder' => 'Describe your reason why',
-
-                    'class' => 'form-control',
-
-                    'required' => false,
-
-                ]])
-            ->add('attachment', FileType::class, [
-                'label' => 'Review document  file',
-                'mapped' => false,
-                'required' => false,
-                'attr' => [
-// 'placeholder'=>'Describe your reason why',
-
-                    'class' => 'form-control',
-
-                    'required' => false,
-
-                ],
-            ])
-            ->getForm();
+        // $review = new Review();
+        $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
+
+ 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $reviewfile = $form->get('attachment')->getData();
@@ -206,21 +172,7 @@ class IRBReviewController extends AbstractController
 
         $editorialDecision = new EditorialDecision();
         $editorialDecisionform = $this->createFormBuilder($editorialDecision)
-        // ->add('decision', ChoiceType::class, [
-        //     'placeholder' => 'Select remark',
-        //     'choices' => [
-
-        //         'Declined' => 'Declined',
-        //         'Accepted with major revision' => 'Accepted with major revision',
-        //         'Accepted with minor revision' => 'Accepted with minor revision',
-        //         'Accepted' => 'Accepted',
-
-        //     ],
-        //     'attr' => [
-        //         'class' => 'form-control',
-        //         'required' => true,
-        //     ],
-        // ])
+      
             ->add('feedback', TextareaType::class, array(
                 'attr' => array(
                     'placeholder' => 'Feedback  for the author',
@@ -229,18 +181,24 @@ class IRBReviewController extends AbstractController
                 )))
             ->getForm();
         $editorialDecisionform->handleRequest($request);
-        if ($editorialDecisionform->isSubmitted() && $editorialDecisionform->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $editorialDecision->setSubmission($submissions);
-            $editorialDecision->setRevisedAt(new \DateTime());
-            // $editorialDecision->setCreatedAt(new \DateTime());
 
-            $editorialDecision->setEditedBy($this->getUser());
-            $entityManager->persist($editorialDecision);
-            $entityManager->flush();
 
-            return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
-        }
+        // $editorialDecision = new EditorialDecision();
+        // $editorialDecisionform = $this->createForm(EditorialDecisionType::class, $editorialDecision);
+        // $editorialDecisionform->handleRequest($request);
+
+        // if ($editorialDecisionform->isSubmitted() && $editorialDecisionform->isValid()) {
+        //     $entityManager = $this->getDoctrine()->getManager();
+        //     $editorialDecision->setSubmission($submissions);
+        //     $editorialDecision->setRevisedAt(new \DateTime());
+        //     // $editorialDecision->setCreatedAt(new \DateTime());
+
+        //     $editorialDecision->setEditedBy($this->getUser());
+        //     $entityManager->persist($editorialDecision);
+        //     $entityManager->flush();
+
+        //     return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
+        // }
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $reviewAssignment->getSubmission(), 'reviewed_by' => $measareviewer]);
 
         return $this->render('submission/review_byreviewer.html.twig', [
