@@ -24,6 +24,7 @@ use App\Repository\DepartmentRepository;
 use App\Repository\PublishedResearchRepository;
 use App\Utils\Constants;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -34,7 +35,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
+
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 /**
  * @Route("/user")
@@ -659,6 +669,73 @@ $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'
         return $this->redirectToRoute('researchworks');
 
      }
+
+
+      /**
+     * @Route("/chaxnge-password", name="change_pasxsword", methods={"GET","POST"})
+     */
+    public function updatepassword( MailerInterface $email,    EntityManagerInterface $entityManager,
+    UserPasswordEncoderInterface $passwordEncoder, Request $request) {
+
+        $this->denyAccessUnlessGranted("ROLE_USER");
+
+        $user = $this->getUser();
+
+        
+        $form = $this->createFormBuilder($user)  
+
+        ->add('password', PasswordType::class, [
+            'label'=>"Old password",
+            'attr' => ['autocomplete' => 'new-password'],
+            
+             
+            'required' => true,  
+        ])
+        ->add('username')
+
+        ->add('newpassword', RepeatedType::class, [
+            'type' => PasswordType::class,
+            'invalid_message' => 'The password fields must match.',
+            'options' => ['attr' => ['class' => 'password-field']],
+          
+            'mapped' => false,
+            'required' => true,
+            'first_options'  => ['label' => 'New Password'],
+            'second_options' => ['label' => 'Repeat Password'],
+        ])
+        ->getForm(); 
+        $form->handleRequest($request);  
+       
+        if ($form->isSubmitted() && $form->isValid()) {
+             
+            // $old=  $passwordEncoder->encodePassword($user,  $form->get('password')->getData()  );
+            // $oldfromform=  $passwordEncoder->encodePassword($user,  $user->getPassword() );
+            
+            
+            // if($oldfromform!=$old){
+            // $this->addFlash('danger', "Old password do not match!   ");
+            // return $this->redirectToRoute('change_password');              }
+
+            $user->setPassword(
+                $passwordEncoder->encodePassword( $user, $form->get('newpassword')->getData()
+                )
+            );
+
+           
+            $entityManager->flush();
+
+           
+            $this->addFlash('success', "Password has been changed successfully!   ");
+ 
+            return $this->redirectToRoute('researchworks');
+       
+        } 
+        return $this->render('user/new.html.twig', [
+             'user' => $user, 
+            'form' => $form->createView(),
+        ]);
+     }
+
 
 
     /**

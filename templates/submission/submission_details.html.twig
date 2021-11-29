@@ -15,7 +15,7 @@
 			{{ include('submission/progress.html.twig') }}
 			<div class="row">
 				<div class="col-lg-12">
-					<dl class="row mb-0">
+					<div class="row mb-0">
 						<div class="col-sm-2 text-sm-right">
 							<dt>
 								{% if submission.sentAt %}
@@ -25,36 +25,36 @@
 							<span class="label label-{% if submission.submissionType=='mega' %}success {% elseif submission.submissionType=='grant'%}info{% elseif submission.submissionType=='technology'%}primary{% elseif submission.submissionType=='community'%}warning{% endif %}">{{ submission.submissionType }}</span>
 						</div>
 						<div class="col-sm-9 text-sm-left">
-							<dd>
-								<div class="nowrap">
-									<div style="width: 100%;" class="text-success strong">
-										<h5 class="font-16 m-0 fw-bold">
-											{{ submission.Title }}:{{ submission.subTitle }}
 
-										</h5>
-									</div>
+							<div class="nowrap">
+								<div style="width: 100%;" class="text-success strong">
+									<h5 class="font-16 m-0 fw-bold">
+										{{ submission.Title }}:{{ submission.subTitle }}
+
+									</h5>
 								</div>
-								<small>
-									{{ submission.author }}
-								</small>
-							</dd>
+							</div>
+							<small>
+								{{ submission.author }}
+							</small>
+						</dd>
+					</div>
+					<div class="col-sm-1 text-sm-left">
+
+						<div class="nowrap">
+							<div style="width: 100%;" class="text-success strong">
+
+								<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
+									PDF
+									<i class="fa fa-download"></i>
+								</a>
+
+
+							</div>
 						</div>
-						<div class="col-sm-1 text-sm-left">
-							<dd>
-								<div class="nowrap">
-									<div style="width: 100%;" class="text-success strong">
 
-										<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
-											PDF
-											<i class="fa fa-download"></i>
-										</a>
+					</div>
 
-
-									</div>
-								</div>
-							</dd>
-						</div>
-					</dl>
 				</div>
 			</div>
 
@@ -63,7 +63,7 @@
 					<div class="panel blank-panel">
 						<div class="panel-heading">
 							<div class="panel-options">
-								<ul class="nav nav-tabs">
+								<ul class="nav nav-pills nav-justified">
 									<li>
 										<a class="nav-link active" href="#tab-1" data-bs-toggle="tab">Research detail</a>
 									</li>
@@ -159,21 +159,21 @@
 
 
 												{# <div class="accordion-item">
-																																																													<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
-																																																														<button class="accordion-button fw-semibold collapsed" 
-																																																														type="button" data-bs-toggle="collapse" 
-																																																														data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
-																																																															Background And Rationale
-																																																														</button>
-																																																													</h5>
-																																																													<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
-																																																														<div class="accordion-body">
-																																																
-																																																															{{ submission.BackgroundAndRationale |raw}}
-																																																
-																																																														</div>
-																																																													</div>
-																																																												</div> #}
+																																																																																																																																																																																																																																																																																					<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
+																																																																																																																																																																																																																																																																																						<button class="accordion-button fw-semibold collapsed" 
+																																																																																																																																																																																																																																																																																						type="button" data-bs-toggle="collapse" 
+																																																																																																																																																																																																																																																																																						data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
+																																																																																																																																																																																																																																																																																							Background And Rationale
+																																																																																																																																																																																																																																																																																						</button>
+																																																																																																																																																																																																																																																																																					</h5>
+																																																																																																																																																																																																																																																																																					<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
+																																																																																																																																																																																																																																																																																						<div class="accordion-body">
+																																																																																																																																																																																																																																																																								
+																																																																																																																																																																																																																																																																																							{{ submission.BackgroundAndRationale |raw}}
+																																																																																																																																																																																																																																																																								
+																																																																																																																																																																																																																																																																																						</div>
+																																																																																																																																																																																																																																																																																					</div>
+																																																																																																																																																																																																																																																																																				</div> #}
 
 												<div class="accordion-item">
 													<h5 class="accordion-header m-0" id="Objectives">
@@ -509,10 +509,10 @@
 														</td>
 													</tr>
 												</tbody>
-										{% else %}
-												{# <tr>
-																																																																																																																																																																																																																																																																																																																																																																																																				 																																																				                                    </tr> #}
 											</table>
+
+											{% else %}
+
 										{% endfor %}
 
 
@@ -524,239 +524,209 @@
 
 
 									</div>
-									<div class="tab-pane" id="copyedit">
-										{{ submission.abstract|raw }}
-									</div>
-									<div class="tab-pane" id="progress-report">
-										{{ submission.title }}
-									</div>
-									<div class="tab-pane" id="terminal-report"></div>
 								</div>
-
 							</div>
+							{# <div class="tab-pane" id="copyedit">
+																																																																																																																					{{ submission.abstract|raw }}
+																																																																																																																				</div>
+																																																																																																																				<div class="tab-pane" id="progress-report">
+																																																																																																																					{{ submission.title }}
+																																																																																																																				</div>
+																																																																																																																				<div class="tab-pane" id="terminal-report"></div> #}
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
-		<div
-			class="col-lg-3">
+	</div> <div class="col-lg-3"><div class="card team-card"><div class="card-body">
+<div class="float-end">
+	<div
+		class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="##" role="button" aria-haspopup="false" aria-expanded="false">
+																																																																	<i class="las la-ellipsis-v font-24 text-muted"></i>
+																																																																	</a>
+																																																																	<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
+																																																																	<a class="dropdown-item" href="##">Open Project</a>
+																																																																	<a class="dropdown-item" href="##">Edit Card</a>
+																																																																	<a class="dropdown-item" href="##">Delete</a>
+																																																																	</div> #}
+	</div>
+</div>
+<div class="media align-items-center">
 
-			{# <div class="col-lg-4"> #}
-			<div class="card team-card">
-				<div class="card-body">
-					<div class="float-end">
-						<div
-							class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="##" role="button" aria-haspopup="false" aria-expanded="false">
-																<i class="las la-ellipsis-v font-24 text-muted"></i>
-															</a>
-															<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
-																<a class="dropdown-item" href="##">Open Project</a>
-																<a class="dropdown-item" href="##">Edit Card</a>
-																<a class="dropdown-item" href="##">Delete</a>
-															</div> #}
-						</div>
-					</div>
-					<div class="media align-items-center">
-
-						{% if submission.author.userInfo and submission.author.userInfo.image %}
+	{% if submission.author.userInfo and submission.author.userInfo.image %}
 
 
-							<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="" class="rounded-circle user-img">
-						{% else %}
+		<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="" class="rounded-circle user-img">
+	{% else %}
 
-							<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle user-img">
-
-
-						{% endif %}
+		<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle user-img">
 
 
-						<div class="online-circle">
-							<i class="fa fa-circle text-success"></i>
-						</div>
-						<div class="media-body ms-3 align-self-center">
-							<h4 class="team-leader m-0">{{submission.author.userInfo}}</h4>
-							<p class="text-muted font-12 mb-0">Research PI</p>
-						</div>
-					</div>
-					<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{submission.CallForProposal.ResearchType}}
-						Team</h4>
-					<p class="text-muted mb-0">
-						{{submission.title}}</p>
-
-					<div class="mt-4 d-flex justify-content-between">
-						<div class="img-group">
+	{% endif %}
 
 
-	{% if submission.author.userInfo and  submission.author.userInfo.image %}
+	<div class="online-circle">
+		<i class="fa fa-circle text-success"></i>
+	</div>
+	<div class="media-body ms-3 align-self-center">
+		<h4 class="team-leader m-0">{{submission.author.userInfo}}</h4>
+		<p class="text-muted font-12 mb-0">Research PI</p>
+	</div>
+</div>
+<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{submission.CallForProposal.ResearchType}}
+	Team</h4>
+<p class="text-muted mb-0">
+	{{submission.title}}</p>
 
- <a class="user-avatar user-avatar-group" href="##{{submission.id}}">
-								<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
-							</a>
+<div class="mt-4 d-flex justify-content-between">
+	<div class="img-group">
 
+
+		{% if submission.author.userInfo and  submission.author.userInfo.image %}
+
+			<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
+				<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+			</a>
+
+		{% else %}
+			<a class="user-avatar user-avatar-group" href="apps-project-teams.html#{{submission.id}}">
+				<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
+			</a>
+		{% endif %}
+
+
+		{% for member in submission.coAuthors %}
+
+
+			{% if member.researcher.userInfo and member.researcher.userInfo.image %}
+
+				<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
+					<img src="{{ asset('files/profile_pictures/'~member.researcher.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+				</a>
+
+
+				{# <img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;"> #}
+			{% else %}
+				<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
+					<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
+				</a>
+			{% endif %}
+
+			{% else %}No Co-PI has been involved
+		{% endfor %}
+
+
+		<a href="#" class="avatar-box thumb-xxs align-self-center">
+			<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+				+{{ submission.coAuthors|length   }}
+			</span>
+		</a>
+	</div>
+
+</div>
+<hr class="hr-dashed my-4"></div><!--end card-body--></div><!--end card-->{# </div> #}<div class="card"><div class="card-body ">
+<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
+{% for submissionattachment in submission.submissionAttachements %}
+	<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
+		{{submissionattachment.name}}
+		<i class="fa fa-download material-icons warning"></i>
+	</a>
 {% else %}
-<a class="user-avatar user-avatar-group" href="apps-project-teams.html#{{submission.id}}">
-                                                <img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
-                                            </a>
-										{% endif %}
+	<span class="label label-danger">
+		{% trans %}No attachement found{% endtrans %}</span>
+{% endfor %}</div></div><div class="card"><div class="card-body ">
+<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
 
 
-							
-
-							{% for member in submission.coAuthors %}
-
-
-								{% if member.researcher.userInfo and member.researcher.userInfo.image %}
-
-									<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
-										<img src="{{ asset('files/profile_pictures/'~member.researcher.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
-									</a>
+{% for member in submission.coAuthors %}
+	{{loop.index}}{# {{member.researcher}} #}<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+		{{ member.researcher.userInfo }}</a>
+	{% if member.confirmed=='1' %}
+		<i class="fa fa-check text-success"></i>
+	{% elseif member.confirmed==''    %}
+		<i class="fa fa-times-circle text-danger"></i>
 
 
-									{# <img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;"> #}
-								{% else %}
-									<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
-										<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
-									</a>
-								{% endif %}
+		{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
+	{% else  %}
+		<i class="fa fa-close text-danger"></i>
+	{% endif %}<br>{% else %}No Co-PI has been involved
+{% endfor %}</div></div><div class="card"><div class="card-body ">
+<h5 class="font-18 m-0 fw-bold">Reviewers</h5><hr>
+{% for review_assignment in review_assignments %}
+	<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
+		{{ review_assignment.reviewer }}
 
-								{% else %}No Co-PI has been involved
-							{% endfor %}
+
+		{{ review_assignment.ExternalreviewerName }}</h4>
+	<p class="text-muted  mb-0 font-13">
+		<span class="text-dark">
+			Invitation Sent At:
+			{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+		</span>
+
+		<span class="text-dark">
+			Review duedate:
+			{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+		</span>
+	</p>
+	<div class="row mt-4 d-flex align-items-center">
+		<div class="col">
+			<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
+			<p class="mb-0 text-muted">
 
 
-							<a href="#" class="avatar-box thumb-xxs align-self-center">
-								<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-									+{{ submission.coAuthors|length   }}
-								</span>
-							</a>
-						</div>
+				{% if review_assignment.ExternalreviewerEmail  %}
+					<span class="badge bg-primary">External reviewer</span>
+				{% else %}
+					<span class="badge bg-success">Internal reviewer</span>
+				{% endif %}
+				<hr>
+				{# {{ include('review_assignment/_delete_form.html.twig') }} #}
+				<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
+					<input type="hidden" name="_method" value="DELETE">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
+					<button class="btn btn-danger btn-xs">
+						<i class="ace-icon fa fa-attachement">
+							Unassign</i>
+					</button>
 
-					</div>
-					<hr class="hr-dashed my-4">
 
+				</form>
+
+				<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
+			</p>
+			<div class="row mt-4 d-flex align-items-center">
+				<div class="col">
+					<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
+					<p class="mb-0 text-muted">
+
+
+						{% if review_assignment.ExternalreviewerEmail  %}
+							<span class="badge bg-primary">External reviewer</span>
+						{% else %}
+							<span class="badge bg-success">Internal reviewer</span>
+						{% endif %}
+						<hr>
+						{# {{ include('review_assignment/_delete_form.html.twig') }} #}
+						<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
+							<input type="hidden" name="_method" value="DELETE">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
+							<button class="btn btn-danger btn-xs">
+								<i class="ace-icon fa fa-attachement">
+									Unassign</i>
+							</button>
+
+
+						</form>
+
+						<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
+					</p>
 				</div>
-				<!--end card-body-->
 			</div>
-			<!--end card-->
-			{# </div> #}
+		</div>
+	</div>
+	{% else %}No reviewers has been assigned yet<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Assign Reviewer</a>
 
-			<div class="card">
-				<div class="card-body ">
-					<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
-					{% for submissionattachment in submission.submissionAttachements %}
-						<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-							{{submissionattachment.name}}
-							<i class="fa fa-download material-icons warning"></i>
-						</a>
-					{% else %}
-						<span class="label label-danger">
-							{% trans %}No attachement found{% endtrans %}</span>
-					{% endfor %}
-				</div>
-			</div>
-			<div class="card">
-
-				<div class="card-body ">
-					<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
-
-
-					{% for member in submission.coAuthors %}
-						{{loop.index}}{# {{member.researcher}} #}<a href='{{path('researcher',{'id':member.researcher.id})}}'>
-							{{ member.researcher.userInfo }}</a>
-						{% if member.confirmed=='1' %}
-							<i class="fa fa-check text-success"></i>
-						{% elseif member.confirmed==''    %}
-							<i class="fa fa-times-circle text-danger"></i>
-
-
-							{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
-						{% else  %}
-							<i class="fa fa-close text-danger"></i>
-						{% endif %}<br>{% else %}No Co-PI has been involved
-					{% endfor %}
-				</div>
-			</div>
-
-			<div class="card">
-				<div class="card-body ">
-					<h5 class="font-18 m-0 fw-bold">Reviewers</h5><hr>
-					{% for review_assignment in review_assignments %}
-						<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
-							{{ review_assignment.reviewer }}
-
-
-							{{ review_assignment.ExternalreviewerName }}</h4>
-						<p class="text-muted  mb-0 font-13">
-							<span class="text-dark">
-								Invitation Sent At:
-								{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
-							</span>
-
-							<span class="text-dark">
-								Review duedate:
-								{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
-							</span>
-						</p>
-						<div class="row mt-4 d-flex align-items-center">
-							<div class="col">
-								<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
-								<p class="mb-0 text-muted">
-
-
-									{% if review_assignment.ExternalreviewerEmail  %}
-										<span class="badge bg-primary">External reviewer</span>
-									{% else %}
-										<span class="badge bg-success">Internal reviewer</span>
-									{% endif %}
-									<hr>
-									{# {{ include('review_assignment/_delete_form.html.twig') }} #}
-									<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
-										<input type="hidden" name="_method" value="DELETE">
-										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
-										<button class="btn btn-danger btn-xs">
-											<i class="ace-icon fa fa-attachement">
-												Unassign</i>
-										</button>
-
-
-									</form>
-
-									<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
-								</p>
-								<div class="row mt-4 d-flex align-items-center">
-									<div class="col">
-										<h5 class="font-16 m-0 fw-bold">{{ loop.index }}</h5>
-										<p class="mb-0 text-muted">
-
-
-											{% if review_assignment.ExternalreviewerEmail  %}
-												<span class="badge bg-primary">External reviewer</span>
-											{% else %}
-												<span class="badge bg-success">Internal reviewer</span>
-											{% endif %}
-											<hr>
-											{# {{ include('review_assignment/_delete_form.html.twig') }} #}
-											<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
-												<input type="hidden" name="_method" value="DELETE">
-												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
-												<button class="btn btn-danger btn-xs">
-													<i class="ace-icon fa fa-attachement">
-														Unassign</i>
-												</button>
-
-
-											</form>
-
-											<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
-										</p>
-									</div>
-								</div>
-								{% else %}No reviewers has been assigned yet<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Assign Reviewer</a>
-							{% endfor %}
-						</div>
-					</div>
-
-				</div>
-
-			</div>
-		{% endblock %}
+{% endfor %}</div></div></div>{% endblock %}

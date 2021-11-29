@@ -44,21 +44,21 @@
 				<div
 					class="card-body">
 					<!-- Nav tabs -->
-					<ul class="nav nav-tabs" role="tablist">
-						<li class="nav-item">
-							<a class="nav-link active" data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
+					<ul class="nav nav-pills nav-justified" role="tablist">
+						<li class="nav-item  waves-effect waves-light">
+							<a class="nav-link " data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
 						</li>
-						<li class="nav-item">
+						{# <li class="nav-item  waves-effect waves-light">
 							<a class="nav-link" data-bs-toggle="tab" href="#evaluation" role="tab" aria-selected="false">Evaluation</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
+						</li> #}
+						<li class="nav-item  waves-effect waves-light">
+							<a class="nav-link active" data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
 						</li>
 					</ul>
 
 					<!-- Tab panes -->
 					<div class="tab-content">
-						<div class="tab-pane p-3 active" id="home" role="tabpanel">
+						<div class="tab-pane p-3  " id="home" role="tabpanel">
 							<div class="table-responsive">
 								<table class="table shoping-cart-table">
 
@@ -106,7 +106,6 @@
 													{{ submission.Reference |raw}}
 												</p>
 
-												 
 
 											</td>
 										</tr>
@@ -114,7 +113,7 @@
 								</table>
 							</div>
 						</div>
-						<div class="tab-pane p-3" id="evaluation" role="tabpanel">
+						<div class="tab-pane p-3 " id="evaluation" role="tabpanel">
 							<form method="post" action="{{ path('evaluation_form_option_new', {'id': submission.id}) }}">
 								<ol type="I" class="list">
 									{% for evaluationForm in evaluationForms %}
@@ -191,7 +190,7 @@
 
 							</form>
 						</div>
-						<div class="tab-pane p-3" id="profile" role="tabpanel">
+						<div class="tab-pane p-3 active" id="profile" role="tabpanel">
 							<h3>
 								<a href="#" class="text-navy">
 									Comments from reviewer
@@ -270,7 +269,7 @@
 							<div
 								class="text-">
 								{# {{ review_assignment.submission.callForProposal}} #}
-								 
+
 								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.attachment ) }}">
 									Review guideline PDF
 									<i class="fa fa-download"></i>
@@ -278,37 +277,37 @@
 
 								<br>
 								<br>
-								 
+
 								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.evaluationfrom ) }}">
 									Review evaluation from PDF
 									<i class="fa fa-download"></i>
 								</a>
-								
+
 								<br>
 
 
 								{# <h4 class="m-0 fw-semibold text-dark font-16 mt-3">
-									Thematic area:
-									{{submission.thematicArea}}
-								</h4> #}
+																									Thematic area:
+																									{{submission.thematicArea}}
+																								</h4> #}
 								<br>
 								<p class="text-muted  mb-0 font-13">
 									<span class="text-dark">
 
 										Invitation Sent At:
 										{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
-<br>
+										<br>
 										Review duedate:
 										{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
 
 									</span>
 
 									{# <span class="text-dark">
-										<h5>Keywords:</h5>
-										<ul class="tag-list" style="padding: 0">
-											{{submission.keywords}}
-										</ul>
-									</span> #}
+																												<h5>Keywords:</h5>
+																												<ul class="tag-list" style="padding: 0">
+																													{{submission.keywords}}
+																												</ul>
+																											</span> #}
 
 								</p>
 							</div>
