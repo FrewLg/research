@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Entity\UserInfo;
 use App\Entity\Submission;
 use App\Entity\Subscription;
+use App\Form\ChangePasswordFormType;
 use App\Form\CollegeCoordinatorType;
 use App\Form\DirecotorateOfficeUserType;
 use App\Form\PublishedResearchType;
@@ -672,65 +673,43 @@ $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'
 
 
       /**
-     * @Route("/chaxnge-password", name="change_pasxsword", methods={"GET","POST"})
+     * @Route("/chaxnge-password", name="update_password", methods={"GET","POST"})
      */
     public function updatepassword( MailerInterface $email,    EntityManagerInterface $entityManager,
-    UserPasswordEncoderInterface $passwordEncoder, Request $request) {
+    UserPasswordEncoderInterface $passwordEncoder, Request $request): Response
+    {
 
         $this->denyAccessUnlessGranted("ROLE_USER");
 
         $user = $this->getUser();
 
+        $entityManager = $this->getDoctrine()->getManager();
         
-        $form = $this->createFormBuilder($user)  
-
-        ->add('password', PasswordType::class, [
-            'label'=>"Old password",
-            'attr' => ['autocomplete' => 'new-password'],
-            
-             
-            'required' => true,  
-        ])
-        ->add('username')
-
-        ->add('newpassword', RepeatedType::class, [
-            'type' => PasswordType::class,
-            'invalid_message' => 'The password fields must match.',
-            'options' => ['attr' => ['class' => 'password-field']],
-          
-            'mapped' => false,
-            'required' => true,
-            'first_options'  => ['label' => 'New Password'],
-            'second_options' => ['label' => 'Repeat Password'],
-        ])
-        ->getForm(); 
+        $form = $this->createForm(ChangePasswordFormType::class, $user) ; 
+ 
         $form->handleRequest($request);  
+        // dd($form);
        
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()  ) {
              
             // $old=  $passwordEncoder->encodePassword($user,  $form->get('password')->getData()  );
-            // $oldfromform=  $passwordEncoder->encodePassword($user,  $user->getPassword() );
-            
+            // $oldfromform= $passwordEncoder->encodePassword($user, $user->getPassword());
             
             // if($oldfromform!=$old){
-            // $this->addFlash('danger', "Old password do not match!   ");
-            // return $this->redirectToRoute('change_password');              }
+            // $this->addFlash('danger', "Old password do not match!");
+            // return $this->redirectToRoute('change_pasxsword');              }
 
             $user->setPassword(
                 $passwordEncoder->encodePassword( $user, $form->get('newpassword')->getData()
                 )
-            );
-
-           
-            $entityManager->flush();
-
-           
-            $this->addFlash('success', "Password has been changed successfully!   ");
+            ); 
  
-            return $this->redirectToRoute('researchworks');
+            $entityManager->flush();  
+            $this->addFlash('success', "Password has been changed successfully!   ");
+            return $this->redirectToRoute('change_pasxsword');
        
         } 
-        return $this->render('user/new.html.twig', [
+        return $this->render('user/change-password.html.twig', [
              'user' => $user, 
             'form' => $form->createView(),
         ]);

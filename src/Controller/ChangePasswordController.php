@@ -26,7 +26,7 @@ class ChangePasswordController extends AbstractController
 {
 
    /**
-     * @Route("/password", name="change_password", methods={"GET","POST"})
+     * @Route("/password", name="uppass", methods={"GET","POST"})
      */
     public  function changepasswordnow(Request $request, UserPasswordEncoderInterface $passwordEncoder ,
       MailerInterface $mailer) : Response
