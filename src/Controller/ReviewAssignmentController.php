@@ -200,7 +200,7 @@ if($one_of_co_authors){
                 'Authoremail' => $theEmail,
             ])
         ;
-       // $mailer->send($email);
+        $mailer->send($email);
 
             // return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
         }
