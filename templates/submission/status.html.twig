@@ -124,21 +124,21 @@
 
 
 														{# <div class="accordion-item">
-																																																																															<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
-																																																																																<button class="accordion-button fw-semibold collapsed" 
-																																																																																type="button" data-bs-toggle="collapse" 
-																																																																																data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
-																																																																																	Background And Rationale
-																																																																																</button>
-																																																																															</h5>
-																																																																															<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
-																																																																																<div class="accordion-body">
-																																																																		
-																																																																																	{{ submission.BackgroundAndRationale |raw}}
-																																																																		
-																																																																																</div>
-																																																																															</div>
-																																																																														</div> #}
+																																																																																													<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
+																																																																																														<button class="accordion-button fw-semibold collapsed" 
+																																																																																														type="button" data-bs-toggle="collapse" 
+																																																																																														data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
+																																																																																															Background And Rationale
+																																																																																														</button>
+																																																																																													</h5>
+																																																																																													<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
+																																																																																														<div class="accordion-body">
+																																																																																
+																																																																																															{{ submission.BackgroundAndRationale |raw}}
+																																																																																
+																																																																																														</div>
+																																																																																													</div>
+																																																																																												</div> #}
 
 														<div class="accordion-item">
 															<h5 class="accordion-header m-0" id="Objectives">
@@ -412,8 +412,8 @@
 									</div>
 
 
-								</div> 
-							</div> 
+								</div>
+							</div>
 							<div class="tab-pane" id="Revision">
 								<h3>
 									<a href="#" class="text-navy">
@@ -443,7 +443,7 @@
 
 														{% if review.attachment %}
 															<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="btn btn-info btn-xs float-right">
-																Download review file
+																Download reviewed comment file
 																<i class="fa fa-download material-icons warning"></i>
 															</a>
 														{% else %}
@@ -468,11 +468,11 @@
 												</td>
 											</tr>
 										</tbody>
-</table>
+									</table>
 
-									{% else %}
-										 Revision not sent 
-									
+								{% else %}
+									Revision not sent
+
 								{% endfor %}
 								{% if submission.copyedit is  not empty %}
 									<hr>
@@ -562,7 +562,7 @@
 											<script>
 												$(document).ready(function () {
 
-$("#showRequestDetail4                             {{ publicationstatus.id }}").click(function () {
+$("#showRequestDetail4                              {{ publicationstatus.id }}").click(function () {
 $.ajax({
 url: "{{ path('publication_datasets', {'id':publicationstatus.id}) }}",
 success: function (result) {
@@ -600,13 +600,13 @@ $("#showEditRequestContent").html("Problem");
 						<div class="float-end">
 							<div
 								class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="teams{{submission.id}}#" role="button" aria-haspopup="false" aria-expanded="false">
-																																		<i class="las la-ellipsis-v font-24 text-muted"></i>
-																																	</a>
-																																	<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
-																																		<a class="dropdown-item" href="teams{{submission.id}}#">Open Project</a>
-																																		<a class="dropdown-item" href="teams{{submission.id}}#">Edit Card</a>
-																																		<a class="dropdown-item" href="teams{{submission.id}}#">Delete</a>
-																																	</div> #}
+																																											<i class="las la-ellipsis-v font-24 text-muted"></i>
+																																										</a>
+																																										<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
+																																											<a class="dropdown-item" href="teams{{submission.id}}#">Open Project</a>
+																																											<a class="dropdown-item" href="teams{{submission.id}}#">Edit Card</a>
+																																											<a class="dropdown-item" href="teams{{submission.id}}#">Delete</a>
+																																										</div> #}
 							</div>
 						</div>
 						<div class="media align-items-center">
@@ -683,7 +683,8 @@ $("#showEditRequestContent").html("Problem");
 					<div class="card-body ">
 						<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
 						{% for submissionattachment in submission.submissionAttachements %}
-							<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">{{submissionattachment.name}}<i class="fa fa-download material-icons warning"></i>
+							<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">{{submissionattachment.name}}
+							<i class="fa fa-download material-icons warning"></i>
 							</a>
 						{% else %}
 							<span class="label label-danger">{% trans %}No attachement found{% endtrans %}</span>

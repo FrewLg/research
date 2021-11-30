@@ -93,7 +93,8 @@
 							<td>{{ review_assignment.reviewer }}
 								{{ review_assignment.ExternalreviewerName }}
 								{% if review_assignment.ExternalreviewerEmail  %}
-									<span class="badge bg-primary">External</span>
+									<span class="badge bg-primary">External</span> 
+									{{review_assignment.reviewer.username}}
 								{% else %}
 									<span class="badge bg-success">Internal</span>
 								{% endif %}

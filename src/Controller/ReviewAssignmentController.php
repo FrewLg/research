@@ -200,9 +200,9 @@ if($one_of_co_authors){
                 'Authoremail' => $theEmail,
             ])
         ;
-       // $mailer->send($email);
+       $mailer->send($email);
 
-            // return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
+            return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
         }
 
         ////////////////External reviewer 
@@ -235,6 +235,24 @@ if($one_of_co_authors){
                            $username=$parts[0];// username
                             $ext_email = $externalreviewerform->get('external_reviewer_email')->getData();
                              
+
+        $newlyaddedusername = $entityManager->getRepository(User::class)->findBy(['username' => $username]);
+     $count= count($newlyaddedusername);
+     $count++;
+if($newlyaddedusername){
+    $username=$parts[0].$count;
+    $this->addFlash(
+        'warning',
+        'There is an existing  account    with "'.$ext_email.'" email address.   
+        Hence try with other email address or assign him using  internal reviewer option!'
+    );  
+    return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
+
+}
+else{
+    $username=$parts[0];
+}
+
                             $externaluser =new User();
                             $externaluser->setUsername($username);
                             $externaluser->setEmail($ext_email);
@@ -302,15 +320,10 @@ if($one_of_co_authors){
                          ;
                         $mailer->send($email);
 
-
-                        ######################
-                      
-                      
-
+   ######################
+                       
                         return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
-        
-                        
-
+         
             }
         ////////////////External reviewer
         return $this->render('review_assignment/new.html.twig', [

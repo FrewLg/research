@@ -17,6 +17,7 @@ use App\Filter\Type\FilterFunctions;
 use App\Filter\Type\SubmissionFilterType;
 use App\Form\EditorialDecisionType;
 use App\Form\ReviewType;
+use App\Form\ReviewDecisionType;
 use App\Form\SubmissionType;
 use App\Message\SendEmailMessage;
 use App\Repository\CallForProposalRepository;
@@ -1270,7 +1271,7 @@ return $this->redirectToRoute('submission_index');
 
 //////allow reviewer if he is only assigned to this submission
         // $form = $this->createFormBuilder($review)
-        $form = $this->createForm(ReviewType::class, $review);
+        $form = $this->createForm(ReviewDecisionType::class, $review);
 
         $form->handleRequest($request);
 
@@ -1287,8 +1288,7 @@ return $this->redirectToRoute('submission_index');
             }
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
-            // $review->setClosed(1);
-
+ 
             $entityManager->persist($review);
             $entityManager->flush();
 
