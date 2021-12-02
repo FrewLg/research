@@ -88,8 +88,18 @@ class CallForTrainingController extends AbstractController
     #[Route('/{id}', name: 'call_for_training_show', methods: ['GET'])]
     public function show(CallForTraining $callForTraining): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $em = $this->getDoctrine()->getManager();     
+        $user = $this->getUser();  
+       
+        $ifexists = $em->getRepository('App:TrainingParticipant')->findBy(['participant'=>$user, 'training'=>$callForTraining] );
+
+         
+
         return $this->render('call_for_training/show.html.twig', [
             'call_for_training' => $callForTraining,
+            'ifexists' => $ifexists,
         ]);
     }
 
@@ -97,6 +107,8 @@ class CallForTrainingController extends AbstractController
     #[Route('/{id}/adm', name: 'call_for_training_show_adm', methods: ['GET'])]
     public function admshow(CallForTraining $callForTraining): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         return $this->render('call_for_training/admshow.html.twig', [
             'call_for_training' => $callForTraining,
         ]);

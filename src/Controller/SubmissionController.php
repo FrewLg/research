@@ -17,6 +17,7 @@ use App\Filter\Type\FilterFunctions;
 use App\Filter\Type\SubmissionFilterType;
 use App\Form\EditorialDecisionType;
 use App\Form\ReviewType;
+use App\Form\ReviewDecisionType;
 use App\Form\SubmissionType;
 use App\Message\SendEmailMessage;
 use App\Repository\CallForProposalRepository;
@@ -54,7 +55,7 @@ class SubmissionController extends AbstractController {
      */
     public function index(Request $request, SubmissionRepository $submissionRepository, PaginatorInterface $paginator,
      FilterBuilderUpdaterInterface $query_builder_updater): Response {
-        $this->denyAccessUnlessGranted('assn_clg_cntr');
+        // $this->denyAccessUnlessGranted('assn_clg_cntr');
         $em = $this->getDoctrine()->getManager();
         //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
         $formFilter = $this->get('form.factory')->create(SubmissionFilterType::class);
@@ -113,7 +114,7 @@ class SubmissionController extends AbstractController {
      */
     public function byfilter(Request $request, $filter, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
 
-        $this->denyAccessUnlessGranted('assn_clg_cntr');
+        // $this->denyAccessUnlessGranted('assn_clg_cntr');
         $info = 'All';
         $em = $this->getDoctrine()->getManager();
         switch ($filter) {
@@ -489,7 +490,7 @@ return $this->redirectToRoute('submission_index');
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
         $pdfOptions->set('tempDir', '/home/ghost/Desktop/pdf-export/tmp');
         // Instantiate Dompdf with our options
-        $dompdf = new Dompdf($pdfOptions);
+        $dompdf = new Dompdf($pdfOptions);  
         $dompdf->set_option("isPhpEnabled", true);
 
         $html = $this->renderView('submission/summary.html.twig', [
@@ -1216,189 +1217,14 @@ return $this->redirectToRoute('submission_index');
 
         return $this->redirectToRoute('submission_firststepold', ["id" => $callForProposal->getId()]);
     }
-    /**
-     * @Route("/{id}/revise", name="reviewsubmission", methods={"GET","POST"})
-     */
-    public function revise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
-        ////Ultimate reviewers page
-        $this->denyAccessUnlessGranted('ROLE_USER');
-        $entityManager = $this->getDoctrine()->getManager();
-        $me = $this->getUser()->getId();
-        $submissionOfreviewer = $entityManager->getRepository(ReviewAssignment::class)->find($reviewAssignment);
-        $metoo = $this->getUser();
-        $me_as_a_reviewer = $submissionOfreviewer->getReviewer()->getId();
-        $submissions = $submissionOfreviewer->getSubmission();
-        $editorialDecisions = $entityManager->getRepository(EditorialDecision::class)->find($submissions);
-        #dd($me_as_a_reviewer.$me);
-        $iamareviewers = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submissions, 'reviewer' => $metoo]);
+    
+    
 
-        // $myassigned =  $entityManager->getRepository(ReviewAssignment::class)->findBy($reviewAssignment);
-        #######################
-        if ($reviewAssignment->getClosed() == 1) {
-            return $this->redirectToRoute('myassigned');
-
-        }
-        #######################
-        foreach ($submissionOfreviewer as $muke) {
-            $dd = $muke->getReviewer()->getId();
-            echo $dd; #=  $muke->getReviewer()->getId();
-
-            $lala = $dd . 'compare' . $me;
-            /////////
-            $me = $this->getUser()->getId();
-            $thereviewerone = $reviewAssignment->getReviewer()->getId();
-            if ($dd == $me) {
-
-                return $this->redirectToRoute('myreviews');
-                $this->addFlash(
-                    'danger',
-                    'Sorry you' . $dd . '//' . $me . ' never been assigned to this submision!'
-
-                );
-
-            }
-
-            /////
-        }
-        $measareviewer = $this->getUser();
-        $author = $submissions->getAuthor();
-        //   $reviews=$entityManager->getRepository(Review::class)->findBy(['submission' => $submissions ] );
-
-        if ($measareviewer == $author) {
-            ////if you are the author then you can't review it///////
-            $this->addFlash(
-                'warining',
-                'You can not see the submission you made in this page!'
-            );
-            return $this->redirectToRoute('myreviews');
-        }
-        $review = new Review();
-        $review->setReviewAssignment($reviewAssignment);
-        $review->setSubmission($reviewAssignment->getSubmission());
-        $review->setReviewedBy($measareviewer);
-
-//////allow reviewer if he is only assigned to this submission
-        $form = $this->createFormBuilder($review)
-            ->add('remark', ChoiceType::class, [
-                'placeholder' => 'Select Editorial decision',
-                'choices' => [
-                    'Declined' => 'Declined',
-                    'Accepted with major revision' => 'Accepted with major revision',
-                    'Accepted with minor revision' => 'Accepted with minor revision',
-                    'Accepted' => 'Accepted',
-
-                ],
-                'attr' => [
-                    'class' => 'form-control',
-                    'required' => true,
-                ],
-            ])
-            ->add('comment', CKEditorType::class, [
-                'attr' => ['placeholder' => 'Describe your reason why',
-
-                    'class' => 'form-control',
-
-                    'required' => false,
-
-                ]])
-            ->add('attachment', FileType::class, [
-                'label' => 'Review document  file',
-                'mapped' => false,
-                'required' => false,
-                'attr' => [
-// 'placeholder'=>'Describe your reason why',
-
-                    'class' => 'form-control',
-
-                    'required' => false,
-
-                ],
-            ])
-            ->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $reviewfile = $form->get('attachment')->getData();
-            if ($reviewfile == "") {
-                $review->setAttachment('');
-            } else {
-                $reviewfile = $form->get('attachment')->getData();
-                $Areviewfile = md5(uniqid()) . '.' . $reviewfile->guessExtension();
-                $reviewfile->move($this->getParameter('review_files'), $Areviewfile);
-                $review->setAttachment($Areviewfile);
-            }
-            $review->setCreatedAt(new \DateTime());
-            $review->setReviewedBy($this->getUser());
-            $reviewAssignment->setClosed(1);
-
-            $entityManager->persist($review);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
-        }
-
-        $editorialDecision = new EditorialDecision();
-        $editorialDecisionform = $this->createFormBuilder($editorialDecision)
-        // ->add('decision', ChoiceType::class, [
-        //     'placeholder' => 'Select remark',
-        //     'choices' => [
-
-        //         'Declined' => 'Declined',
-        //         'Accepted with major revision' => 'Accepted with major revision',
-        //         'Accepted with minor revision' => 'Accepted with minor revision',
-        //         'Accepted' => 'Accepted',
-
-        //     ],
-        //     'attr' => [
-        //         'class' => 'form-control',
-        //         'required' => true,
-        //     ],
-        // ])
-            ->add('feedback', TextareaType::class, array(
-                'attr' => array(
-                    'placeholder' => 'Feedback  for the author',
-                    'required' => true,
-                    'class' => 'form-control',
-                )))
-            ->getForm();
-        $editorialDecisionform->handleRequest($request);
-        if ($editorialDecisionform->isSubmitted() && $editorialDecisionform->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $editorialDecision->setSubmission($submissions);
-            $editorialDecision->setRevisedAt(new \DateTime());
-            // $editorialDecision->setCreatedAt(new \DateTime());
-
-            $editorialDecision->setEditedBy($this->getUser());
-            $entityManager->persist($editorialDecision);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
-        }
-        $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $reviewAssignment->getSubmission(), 'reviewed_by' => $measareviewer]);
-
-        return $this->render('submission/review_byreviewer.html.twig', [
-            'review_assignment' => $reviewAssignment,
-            'review_assignments' => $reviews,
-            'submission' => $submissions,
-            'editorialDecisions' => $editorialDecisions,
-            'editorialDecisionform' => $editorialDecisionform->createView(),
-            'form' => $form->createView(),
-            'evaluationForms' => $evaluationFormRepository->findBy(['parent' => null]),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/showinvitation", name="showinvitation", methods={"GET"})
-     */
-    public function showinvitation(ReviewAssignment $reviewAssignment): Response {
-        return $this->render('review_assignment/showinvitation.html.twig', [
-            'review_assignment' => $reviewAssignment,
-        ]);
-    }
     /**
      * @Route("/{id}/details", name="submission_show",  methods={"GET","POST"})
      */
-    public function directorshow(Request $request, Submission $submission, ReviewRepository $reviewRepository, MailerInterface $email): Response {
+    public function directorshow(Request $request, Submission $submission, ReviewRepository $reviewRepository, 
+    MailerInterface $email): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
         ################### Are you the one? #################################
@@ -1445,7 +1271,7 @@ return $this->redirectToRoute('submission_index');
 
 //////allow reviewer if he is only assigned to this submission
         // $form = $this->createFormBuilder($review)
-        $form = $this->createForm(ReviewType::class, $review);
+        $form = $this->createForm(ReviewDecisionType::class, $review);
 
         $form->handleRequest($request);
 
@@ -1462,8 +1288,7 @@ return $this->redirectToRoute('submission_index');
             }
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
-            // $review->setClosed(1);
-
+ 
             $entityManager->persist($review);
             $entityManager->flush();
 
@@ -1502,34 +1327,7 @@ return $this->redirectToRoute('submission_index');
             'expenses' => $Expenses,
         ]);
     }
-    /**
-     * @Route("/myassigned", name="myassigned", methods={"GET"})
-     */
-    public function myassigned(Request $request, PaginatorInterface $paginator): Response {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-        $entityManager = $this->getDoctrine()->getManager();
-        $me = $this->getUser()->getId();
-        $this_is_me = $this->getUser();
-        $myassigned = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => NULL]));
-        ////// if no throw exception
-        $myassigneds = $paginator->paginate(
-            // Doctrine Query, not results
-            $myassigned,
-            // Define the page parameter
-            $request->query->getInt('page', 1),
-            // Items per page
-            10
-        );
-#################################################
-
-#################################################
-
-        return $this->render('submission/myassigned.html.twig', [
-            'submissions' => $myassigneds,
-            'myreviews' => $myassigneds,
-        ]);
-    }
-
+    
     /**
      * @Route("/my-membership", name="membership", methods={"GET"})
      */
@@ -1564,9 +1362,9 @@ return $this->redirectToRoute('submission_index');
       
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
-   
+        $myresearches = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission]);
+       
         $researcher=$submission->getCoAuthors->getResearcher();
- 
         $user = $this->getUser();
         if(!$researcher==$user){
             

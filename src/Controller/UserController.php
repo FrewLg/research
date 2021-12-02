@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Entity\UserInfo;
 use App\Entity\Submission;
 use App\Entity\Subscription;
+use App\Form\ChangePasswordFormType;
 use App\Form\CollegeCoordinatorType;
 use App\Form\DirecotorateOfficeUserType;
 use App\Form\PublishedResearchType;
@@ -24,6 +25,7 @@ use App\Repository\DepartmentRepository;
 use App\Repository\PublishedResearchRepository;
 use App\Utils\Constants;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -34,7 +36,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
+
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 /**
  * @Route("/user")
@@ -659,6 +670,51 @@ $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'
         return $this->redirectToRoute('researchworks');
 
      }
+
+
+      /**
+     * @Route("/chaxnge-password", name="update_password", methods={"GET","POST"})
+     */
+    public function updatepassword( MailerInterface $email,    EntityManagerInterface $entityManager,
+    UserPasswordEncoderInterface $passwordEncoder, Request $request): Response
+    {
+
+        $this->denyAccessUnlessGranted("ROLE_USER");
+
+        $user = $this->getUser();
+
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        $form = $this->createForm(ChangePasswordFormType::class, $user) ; 
+ 
+        $form->handleRequest($request);  
+        // dd($form);
+       
+        if ($form->isSubmitted()  ) {
+             
+            // $old=  $passwordEncoder->encodePassword($user,  $form->get('password')->getData()  );
+            // $oldfromform= $passwordEncoder->encodePassword($user, $user->getPassword());
+            
+            // if($oldfromform!=$old){
+            // $this->addFlash('danger', "Old password do not match!");
+            // return $this->redirectToRoute('change_pasxsword');              }
+
+            $user->setPassword(
+                $passwordEncoder->encodePassword( $user, $form->get('newpassword')->getData()
+                )
+            ); 
+ 
+            $entityManager->flush();  
+            $this->addFlash('success', "Password has been changed successfully!   ");
+            return $this->redirectToRoute('change_pasxsword');
+       
+        } 
+        return $this->render('user/change-password.html.twig', [
+             'user' => $user, 
+            'form' => $form->createView(),
+        ]);
+     }
+
 
 
     /**

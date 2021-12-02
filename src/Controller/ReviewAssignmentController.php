@@ -11,11 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Review;
+use App\Entity\CoAuthor;
+
 use App\Entity\GuidelineForReviewer;
 use App\Form\GuidelineForReviewerType;
 use App\Repository\GuidelineForReviewerRepository;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
-use App\Form\ReviewType;
+use App\Form\ExternalReviewAssignmentType;
 use Symfony\Component\Form\Extension\Core\Type\DateType; 
 use Symfony\Component\Form\Extension\Core\Type\CoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -27,16 +29,20 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Entity\InstitutionalReviewersBoard;
+use App\Entity\UserInfo;
 use App\Helper\ReviewHelper;
 use DateTime;
 use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 // use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/assignment")
+ * @Route("/reviewer-assignment")
  */
 class ReviewAssignmentController extends AbstractController
 {
@@ -45,7 +51,9 @@ class ReviewAssignmentController extends AbstractController
     /**
      * @Route("/{id}/assign", name="review_assignment_new", methods={"GET","POST"})
      */
-    public function assign(Request $request, Submission $submission ,ReviewHelper $reviewHelper, InstitutionalReviewersBoardRepository $institutionalReviewersBoardRepository, ReviewAssignmentRepository $reviewAssignmentRepository): Response
+    public function assign(Request $request, Submission $submission ,ReviewHelper $reviewHelper, 
+    UserPasswordEncoderInterface $passwordEncoder,
+    MailerInterface $mailer,  ReviewAssignmentRepository $reviewAssignmentRepository): Response
     {
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -63,21 +71,21 @@ class ReviewAssignmentController extends AbstractController
         if($request->request->get('assign-selected')){
             $this->checkCsrf('assign-selected');
             $count=0;
-            $all=0;
+            $all=0; 
             foreach ($submission->getReviewAssignments() as $key => $reviewAssignment) {
               if($reviewAssignment->getStatus()== 1){
                 $reviewAssignment->setStatus(2);
                 $reviewHelper->sendReviewInvitation($reviewAssignment);
             $count++;
               }
-            }
+            }   
             if($count!=0){
                 $entityManager->flush();
                 
                 $this->addFlash('success',"$count Reviewer(s) invited successfully");
                
             }else $this->addFlash('danger',"Invalid request!");
-            return $this->redirectToRoute('review_assignment_new',['id'=>$submission->getId()]);
+            // return $this->redirectToRoute('review_assignment_new',['id'=>$submission->getId()]);
         }
             $user= $this->getUser();
 	
@@ -89,16 +97,10 @@ class ReviewAssignmentController extends AbstractController
         ); 
 	return $this->redirectToRoute('submission_index');
  }   
+
  ///// check if the submission is completed or not
- $confirmed=$entityManager->getRepository(Submission::class)->find($submission);
-        $is_submission_confirmed=$confirmed->getComplete();
-    //      if($is_submission_confirmed=='completed'){
-    // $this->addFlash(
-    //         'danger',
-    //         'The submission is not complete. Hence review assignment will never be performced!'
-    //   ); 
-    //      return $this->redirectToRoute('submission_index');
-    //        }
+//  $submission=$entityManager->getRepository(Submission::class)->findBy(['id'=>$submission->getId()]);
+    
  ///// check if the submission is completed or not 
    	$allreviewersfrom_i_r_b =  array_reverse($reviewAssignmentRepository->findBy(['submission' => $submission] ));
         $reviewAssignment = new ReviewAssignment();
@@ -112,6 +114,37 @@ class ReviewAssignmentController extends AbstractController
             $submission->setStatus(2);
             $entityManager = $this->getDoctrine()->getManager();
             
+            $file3 = $form->get('file_tobe_reviewed')->getData();
+
+   if ($file3==''){
+   
+    $this->addFlash(
+        'danger',
+        'Review file is not uploaded !'
+  ); 
+
+    }   else{
+     $file3 = $form->get('file_tobe_reviewed')->getData();
+          $fileName3 = md5(uniqid()).'.'.$file3->guessExtension();
+      $file3->move($this->getParameter('review_files'), $fileName3);
+           $reviewAssignment->setFileTobeReviewed($fileName3);
+         }
+
+
+         ##########################
+     $assignedreviewer = $form->get('reviewer')->getData();
+             
+ $one_of_co_authors=$entityManager->getRepository(CoAuthor::class)->findOneBy(['submission'=>$submission->getId(), 'researcher'=>$assignedreviewer ]);
+if($one_of_co_authors){
+     $this->addFlash(
+             'danger',
+             'This user is one of the Co-author hence '.$assignedreviewer->getUserInfo().'  cannot be assigned.!'
+       ); 
+       return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
+
+}
+ 
+            ##############
             ///deny if the user is the author
          $theassigned_reviewer=$reviewAssignment->getReviewer();
  if($theassigned_reviewer==$user){
@@ -136,66 +169,161 @@ class ReviewAssignmentController extends AbstractController
             'success',
             'Research reviewer assigned successfully!'
         ); 
+        // dd($submission->getId());
+
+
             $entityManager->persist($reviewAssignment);
             $entityManager->flush();
+           $suffix= $reviewAssignment->getReviewer()->getUserInfo()->getSuffix();
+
+           $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'REVIEW_INVITATION']);
+           $subject = $messages->getSubject();
+           $body = $messages->getBody();
+           $title=$submission->getTitle();
+           $theFirstName= $reviewAssignment->getReviewer()->getUserInfo()->getFirstName();
+          $invitation_url= "irb-review/".$reviewAssignment->getId()."/accept/" ;
+           $theEmail=$reviewAssignment->getReviewer()->getEmail();
+            $email = (new TemplatedEmail())
+            ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+            ->to(new Address($reviewAssignment->getReviewer()->getEmail(), $reviewAssignment->getReviewer()->getUserInfo()))
+            // ->cc(new Address($alternative_email[$i], $theFirstNames[$i]))
+            ->subject($subject)
+            ->htmlTemplate('emails/reviewerinvitation.html.twig')
+            ->context([
+                'subject' => $subject,
+                'suffix' => $suffix,
+                'body' => $body,
+                'title' => $title, 
+                'college'=>$submission->getCallForProposal()->getCollege(),
+                'reviewerinvitation_URL' => $invitation_url,
+                'name' => $theFirstName,
+                'Authoremail' => $theEmail,
+            ])
+        ;
+       $mailer->send($email);
+
             return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
         }
 
-        ////////////////External reviewer
-         $externalreviewerform = $this->createFormBuilder($reviewAssignment)
-            ->add('external_reviewer_name')
-            
-                ->add('external_reviewer_email' ,
-                TextType::class, [
-                    'attr' => ['class' => 'form-control col col-md-12 col-sm-12 col-lg-9 '],
-                ])
-              
-                ->add('invitationDueDate', DateType::class, array(
-                    'placeholder' => [
-          'year' => 'Year', 'month' => 'Month', 'day' => 'Day', ],
-          'label' => 'Invitation response duedate',
-                 
-          'widget' => 'single_text',
-                  'format' => 'yyyy-MM-dd',
-                     'attr' => array(
-                        'min'=>(new DateTime('now'))->format('Y-m-d'),
-               'required' => true,
-        'class'=>'form-control',
-           )              
-              ))
+        ////////////////External reviewer 
 
-                ->add('duedate', DateType::class, array(
-                    'placeholder' => [
-          'year' => 'Year', 'month' => 'Month', 'day' => 'Day', ],
-                    'label' => 'Review duedate',
-                    'widget' => 'single_text',
-                  'format' => 'yyyy-MM-dd',
-                     'attr' => array(
-        'min'=>(new DateTime('now'))->format('Y-m-d'), 
-        'max'=>$reviewAssignment->getSubmission()->getCallForProposal()->getReviewProcessEnd()->format('Y-m-d'),
-               'required' => true,
-        'class'=>'form-control',
-           )              
-              ))
-             
-
-                ->getForm();
-            $externalreviewerform->handleRequest($request);
+        $externalreviewerform = $this->createForm(ExternalReviewAssignmentType::class, $reviewAssignment);
+        $externalreviewerform->handleRequest($request); 
+ 
             if ($externalreviewerform->isSubmitted() && $externalreviewerform->isValid()) {
          
                 $reviewAssignment->setSubmission($submission);
                 $duedate=$reviewAssignment->getDuedate();
                         $reviewAssignment->setInvitationSentAt(new \DateTime());
-                  $this->addFlash(
-                        'success',
-                        'External  reviewer assigned successfully!'
-                    ); 
-                        $entityManager->persist($reviewAssignment);
-                        $entityManager->flush();
-                        return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
-        
-                        
+               
+                    $file3external = $externalreviewerform->get('file_tobe_reviewed')->getData();
 
+                    if ($file3external==''){
+                        $this->addFlash(
+                            'danger',
+                            'Review file is not uploaded !'
+                      ); 
+                     }   else{
+                      $file3external = $externalreviewerform->get('file_tobe_reviewed')->getData();
+                           $fileName3ext = md5(uniqid()).'.'.$file3external->guessExtension();
+                       $file3external->move($this->getParameter('review_files'), $fileName3ext);
+                            $reviewAssignment->setFileTobeReviewed($fileName3ext);
+                          }
+
+                          ##########create account for ecternmal reviewer  
+                            $parts=explode('@', $reviewAssignment->getExternalReviewerEmail()); 
+                           $username=$parts[0];// username
+                            $ext_email = $externalreviewerform->get('external_reviewer_email')->getData();
+                             
+
+        $newlyaddedusername = $entityManager->getRepository(User::class)->findBy(['username' => $username]);
+     $count= count($newlyaddedusername);
+     $count++;
+if($newlyaddedusername){
+    $username=$parts[0].$count;
+    $this->addFlash(
+        'warning',
+        'There is an existing  account    with "'.$ext_email.'" email address.   
+        Hence try with other email address or assign him using  internal reviewer option!'
+    );  
+    return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
+
+}
+else{
+    $username=$parts[0];
+}
+
+                            $externaluser =new User();
+                            $externaluser->setUsername($username);
+                            $externaluser->setEmail($ext_email);
+                            $pass_to_be_hashed="Rev".$username.$user->getId()."!";
+                            $externaluser->setIsReviewer(1);
+                            $externaluser->setPassword(
+                                $passwordEncoder->encodePassword(
+                                    $externaluser,
+                                    $pass_to_be_hashed
+                                )
+                            );
+
+                            $last_name = $externalreviewerform->get('last_name')->getData();
+                            $middle_name = $externalreviewerform->get('middle_name')->getData();
+                            $external_reviewer_name = $externalreviewerform->get('external_reviewer_name')->getData();
+                            
+                            // dd($pass_to_be_hashed);
+                            $reviewAssignment->setReviewer($externaluser);
+                
+                            $entityManager->persist($externaluser);
+                            $entityManager->flush();
+
+                            $externaluserinfo =new UserInfo();
+                            $externaluserinfo->setUser($externaluser);
+                            
+                            $externaluserinfo->setFirstName($external_reviewer_name);
+                            $externaluserinfo->setMidleName($middle_name);
+                            $externaluserinfo->setLastName($last_name);
+                            $entityManager->persist($externaluserinfo);
+                            $entityManager->flush();
+
+                            $entityManager->persist($reviewAssignment);
+                            $entityManager->flush();
+                            $this->addFlash(
+                                'success',
+                                'External  reviewer has been assigned successfully!'
+                            );  
+ 
+                            #######################Email
+
+                            $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'REVIEW_INVITATION']);
+                            $subject = $messages->getSubject();
+                            $body = $messages->getBody();
+                            $title=$submission->getTitle();
+                            $invitation_url= "irb-review/".$reviewAssignment->getId()."/accept/" ;
+                            $theEmail=$reviewAssignment->getReviewer()->getEmail();
+                             $email = (new TemplatedEmail())
+                             ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+                             ->to(new Address($ext_email, $external_reviewer_name))
+                              ->subject($subject)
+                             ->htmlTemplate('emails/review_invitation_external.html.twig')
+                             ->context([
+                                 'subject' => $subject,
+                                 'suffix' => "",
+                                 'body' =>  "<br>"."Please use your username and password provided below 
+                                 to get  started with our platform.<br> Username:".$username."
+                                 <br> Passwrod: ".$pass_to_be_hashed."<br>Please do not forget to change your password 
+                                 after you logged into the system.",
+                                 'title' => $title, 
+                                 'college'=>$submission->getCallForProposal()->getCollege(),
+                                 'reviewerinvitation_URL' => $invitation_url,
+                                 'name' => $external_reviewer_name,
+                                 'Authoremail' => $theEmail,
+                             ])
+                         ;
+                        $mailer->send($email);
+
+   ######################
+                       
+                        return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
+         
             }
         ////////////////External reviewer
         return $this->render('review_assignment/new.html.twig', [
@@ -206,52 +334,8 @@ class ReviewAssignmentController extends AbstractController
             'externalreviewerform'=>$externalreviewerform->createView(),
         ]);
     }
-  /**
-     * @Route("/{id}/accept/", name="accept_invitation", methods={"GET","POST"})
-     */
-    public function acceptinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
-    $entityManager = $this->getDoctrine()->getManager();
-    // if($this->getUser() != $reviewAssignment->getReviewer()){
-    //     throw new AccessDeniedException(); 
-    // }
-    if ($reviewAssignment->getIsAccepted()){
-        return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
-}
-    if ($reviewAssignment->getIsRejected()){
-        // echo"'dsada'";
-        // dd();
-        return $this->redirectToRoute('myassigned');
-}
-        $submission=$reviewAssignment->getSubmission();
-                 $workunit=$reviewAssignment->getSubmission();
-	 $guideline_for_reviewers = $entityManager->getRepository(GuidelineForReviewer::class)->findAll()[0];
-	$Allsubmission = $entityManager->getRepository(Submission::class)->findBy(['id' => $submission ] );
-	$deadline= $reviewAssignment->getDuedate();
-	$today= new \DateTime();
-	$message='';
- 	if ($deadline<=$today){
-        $flashbag = $this->get('session')->getFlashBag();
-        $flashbag->add("danger", "Sorry Invitation overdue !" );
-
-        //  $this->addFlash('error',"!!");
-        return $this->redirectToRoute('myassigned');
-}
+     
  
-        if ($request->request->get('accept-invitation')) {
-            $this->checkCsrf('accept-invitation');
-            $reviewAssignment->setAcceptedAt(new DateTime());
-            $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('reviewsubmission', array('id' =>$reviewAssignment->getId()));
-        }
- 
-	return $this->render('review_assignment/accept_invitation.html.twig', [
-	'review_assignment' => $reviewAssignment,
-	'guideline' => $guideline_for_reviewers,
-        ]);
-    } 
 
     /**
      * @Route("/{id}/edit", name="review_assignment_edit", methods={"GET","POST"})
@@ -279,29 +363,6 @@ class ReviewAssignmentController extends AbstractController
             'form' => $form->createView(),
         ]);
     } 
-  /**
-     * @Route("/{id}/decline/", name="decline_invitation", methods={"GET","POST"})
-     */
-    public function declineinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
-    {
-	$entityManager = $this->getDoctrine()->getManager();
-    $mew= $this->getUser()->getId();
-	$deadline= $reviewAssignment->getDuedate();
-	$today= new \DateTime();
-	$message='';
- 	if ($deadline<=$today){
- 	$message="Overdue!";
-#	echo $day;
-	}
-	////if he is not the one he has been assigned to this proposal then redirect the page to the list of the submission he hasd been assigned to
-	$reviewAssignment->setDeclined(1);
-	$this->getDoctrine()->getManager()->flush();
-	$this->addFlash( 
-            'danger',
-            'You declined your review invitation. The process will not be undone!'
-        ); 
-	return $this->redirectToRoute('myreviews');
-}
     /**
      * @Route("/{id}", name="unassign", methods={"DELETE", "GET","POST"})
      */

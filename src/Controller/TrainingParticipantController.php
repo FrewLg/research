@@ -108,6 +108,7 @@ class TrainingParticipantController extends AbstractController
                         'subject' => $applicantsubject,
                         'body' => $applicantbody,
                         'title' => $callForTraining->getName(),
+                        'info' => 'Your request for '.$callForTraining->getName().' registration hit success',
                         'submission_url' => $submission_url,
                         'name' => $applicantname,
                         'Authoremail' => $applicant])
@@ -115,7 +116,7 @@ class TrainingParticipantController extends AbstractController
 
                 $mailer->send($emailtwo);  
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('call_for_training_show', array('id'=>$callForTraining->getId()));
    
 
          
@@ -126,7 +127,7 @@ class TrainingParticipantController extends AbstractController
      */
     public function exportcertnow(Request $request, TrainingParticipant $uid) {
 
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        // $this->denyAccessUnlessGranted('ROLE_USER');
 
         $em = $this->getDoctrine()->getManager();
 
@@ -146,10 +147,13 @@ class TrainingParticipantController extends AbstractController
             'name' => $this->getUser(),
              'desc' => $submission->getTraining()->getDescription(),
              'type' => $submission->getTraining()->getTrainingType(),
-             
+             'date'=> $submission->getTraining()->getCreatedAt(),
+             'about' => $submission->getTraining()->getName(),
+             'training' => $submission->getTraining() ,
+              
         ]);
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
 
         // $font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
@@ -163,6 +167,86 @@ class TrainingParticipantController extends AbstractController
             "Attachment" => false,
         ]);
     }
+
+
+//     public function disposeAction(Request $request )
+//     {
+//        $em = $this->getDoctrine()->getManager();  
+//        $items = $em->getRepository('AppUABundle:Item')->findAll(); 
+//        $users = $em->getRepository('AppUABundle:User')->findAll(); 
+//        $item = new Item();  
+//        $data = $request->request->all(); 
+//        $selected_items = $data['ids'];  
+//        foreach ($selected_items as $item_id) {
+//          $item = $em->getRepository('AppUABundle:Item')->findBy($item_id); 
+//          if ($request->request->has('is_on_hand_of') or $request->request->get('is_on_hand_of')) { 
+//            $is_on_hand_of = $request->request->get('is_on_hand_of'); 
+//            $is_on_hand_ofid = $em->getRepository('AppUABundle:User')->findOneById($is_on_hand_of); 
+//            $item->setItemStatus($is_on_hand_ofid);
+//            echo($item->getId()); 
+//          }  
+//          $em->persist($item);
+//          $em->flush();
+ //    } 
+//        return $this->render('item/new.html.twig', array(
+//            'items' => $items, 
+//            'users' => $users, 
+//        ));
+   
+//    } 
+
+
+  
+#[Route('/{id}/attendees', name: 'attended', methods: ['GET'])]
+  
+   public function attended(Request $request, CallForTraining $callForTraining )
+   {
+      $em = $this->getDoctrine()->getManager();     
+      $defaultData= $em->getRepository('App:TrainingParticipant')->findBy(['training'=>$callForTraining]);  
+               $form = $this->createFormBuilder($defaultData);
+          $form = $form->getForm();
+      if ($form->isSubmitted() && $form->isValid()) {     
+          $i=0;
+              foreach ($defaultData as $value) {
+                   $data2= array('id' =>$request->request->get($defaultData[$i]['id']), 
+                'discrecional' =>$request->request->get('D'.$defaultData[$i]['id'])); 
+  
+                  if (($request->request->get('D'.$defaultData[$i]['id'])== '0' and $defaultData[$i]['discrecional']=='0') or
+                      ($request->request->get('D'.$defaultData[$i]['id'])== NULL and $defaultData[$i]['discrecional']=='1'))    
+                  {
+                   $em->getRepository('App:TrainingParticipant')->findBy($data2);
+                   $value->setParticipated(1);
+                  }
+                  $i=$i+1; 
+              }
+          }
+              ///////////////////////
+      $em = $this->getDoctrine()->getManager();  
+      
+    //   $item = new TrainingParticipant(); 
+    //   $data = $request->request->all(); 
+    //   $selected_items = $data['ids'];  
+    //   foreach ($selected_items as $item_id) {
+    //     $item = $em->getRepository('App:TrainingParticipant')->find($item_id); 
+    //     if ($request->request->has('is_on_hand_of') or $request->request->get('is_on_hand_of')) {
+    //        $is_on_hand_of = $request->request->get('is_on_hand_of');
+    //       $is_on_hand_ofid = $em->getRepository('App:TrainingParticipant')->findOneById($is_on_hand_of);
+    //         $item->setIsOnHandOf($is_on_hand_ofid);
+    //       echo($item->getId()); 
+    //     } 
+      
+    //     $em->persist($item);
+    //     $em->flush();
+    //     return $this->redirectToRoute('all_items');
+    //   // } 
+//   } 
+  return $this->render('training_participant/index.html.twig', array(
+    'item' => $item,
+          'form' => $form->createView(),
+      ));
+  
+  } 
+  
 
     #[Route('/{id}', name: 'training_participant_show', methods: ['GET'])]
     public function show(TrainingParticipant $trainingParticipant): Response

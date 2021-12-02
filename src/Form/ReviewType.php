@@ -29,27 +29,40 @@ class ReviewType extends AbstractType
                 'required' => true,
             ],
         ])
-        ->add('comment', CKEditorType::class, [
-            'attr' => ['placeholder' => 'Describe your reason why',
+        ->add('comment' ,   CKEditorType::class,[
+            'attr'=>['placeholder'=>'Comments ',
+            'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                         'required' => false,
+        
+            ],]) 
+            
 
-                'class' => 'form-control',
-
-                'required' => false,
-
-            ]])
         ->add('attachment', FileType::class, [
-            'label' => 'Review document  file',
+            'label' => 'Reviewed document  file',
             'mapped' => false,
-            'required' => false,
+            'required' => true,
             'attr' => [
-// 'placeholder'=>'Describe your reason why',
-
+ 
                 'class' => 'form-control',
 
                 'required' => false,
 
             ],
         ])
+
+        ->add('evaluation_attachment', FileType::class, [
+            'label' => 'Evaluation document file',
+            'mapped' => false,
+            'required' => true,
+            'attr' => [
+ 
+                'class' => 'form-control',
+
+                'required' => false,
+
+            ],
+        ])
+
         ;
     }
 

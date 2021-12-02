@@ -13,7 +13,7 @@
 					<dl class="row mb-0">
 						<div class="col-sm-2 text-sm-right float-right pull-right">
 							<dt>
-							{% if submission.sentAt %}
+								{% if submission.sentAt %}
 									{{ submission.sentAt|date() }}
 								{% endif %}
 							</dt>
@@ -32,13 +32,7 @@
 						<div class="col-sm-1 text-sm-left">
 							<dd>
 								<div class="nowrap">
-									<div style="width: 100%;" class="text-success strong">
-
-										<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
-											PDF
-											<i class="fa fa-download"></i>
-										</a>
-									</div>
+									<div style="width: 100%;" class="text-success strong"></div>
 								</div>
 							</dd>
 						</div>
@@ -50,21 +44,21 @@
 				<div
 					class="card-body">
 					<!-- Nav tabs -->
-					<ul class="nav nav-tabs" role="tablist">
-						<li class="nav-item">
-							<a class="nav-link active" data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
+					<ul class="nav nav-pills nav-justified" role="tablist">
+						<li class="nav-item  waves-effect waves-light">
+							<a class="nav-link " data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-bs-toggle="tab" href="#evaluation" role="tab" aria-selected="false">Evaluation</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
+						{# <li class="nav-item  waves-effect waves-light">
+													<a class="nav-link" data-bs-toggle="tab" href="#evaluation" role="tab" aria-selected="false">Evaluation</a>
+												</li> #}
+						<li class="nav-item  waves-effect waves-light">
+							<a class="nav-link active" data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
 						</li>
 					</ul>
 
 					<!-- Tab panes -->
 					<div class="tab-content">
-						<div class="tab-pane p-3 active" id="home" role="tabpanel">
+						<div class="tab-pane p-3  " id="home" role="tabpanel">
 							<div class="table-responsive">
 								<table class="table shoping-cart-table">
 
@@ -112,18 +106,6 @@
 													{{ submission.Reference |raw}}
 												</p>
 
-												{% for submissionattachment in submission.submissionAttachements %}
-													<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-														{{submissionattachment.name}}
-														-
-														{# {{ submission.componentType }} #}
-														<i class="fa fa-download material-icons warning"></i>
-													</a>
-												{% else %}
-													<span class="label label-danger">
-														{% trans %}No attachement found{% endtrans %}
-													</span>
-												{% endfor %}
 
 											</td>
 										</tr>
@@ -131,8 +113,8 @@
 								</table>
 							</div>
 						</div>
-						<div class="tab-pane p-3" id="evaluation" role="tabpanel">
-							<form method="post" action="{{ path('evaluation_form_option_new', {'id': submission.id}) }}" >
+						<div class="tab-pane p-3 " id="evaluation" role="tabpanel">
+							<form method="post" action="{{ path('evaluation_form_option_new', {'id': submission.id}) }}">
 								<ol type="I" class="list">
 									{% for evaluationForm in evaluationForms %}
 										<li class="parent">
@@ -146,8 +128,6 @@
 																{{ item.name }}({{ item.percent }}%)</p>
 															<div class="col-md-9 mb-1">
 																{% for i in item.evaluationFormOptions %}
-
-
 																	<div class="form-check">
 																		<input class="form-check-input" data-max="{{ i.max }}" data-min="{{ i.min }}" name="p{{ item.id }}" type="radio" value="" id="flexCheckDefault">
 																		<label class="form-check-label" for="flexCheckDefault">
@@ -155,13 +135,10 @@
 																			({{ i.value }})
 																		</label>
 																	</div>
-
-
 																{% endfor %}
 
 															</div>
-															<div
-																class="mb-3 row">
+															<div class="mb-3 row">
 																{# <label for="example-text-input" class="col-sm-2 form-label align-self-center mb-lg-0 text-end">Score</label> #}
 																<div class="col-sm-10 col-md-6">
 																	<input class="form-control col-6 score" type="text" placeholder="Score">
@@ -208,61 +185,8 @@
 
 							</form>
 						</div>
-						<div class="tab-pane p-3" id="profile" role="tabpanel">
-							<h3>
-								<a href="#" class="text-navy">
-									Comments from reviewer
-								</a>
-							</h3>
-							{% for review in review_assignments %}
+						<div class="tab-pane p-3 active" id="profile" role="tabpanel">
 
-								<table class="table shoping-cart-table">
-
-									<tbody>
-										<tr>
-											<td class="desc">
-
-												<p class="small">
-
-													{{ review.comment |raw}}
-												</p>
-												<dl class="small m-b-none">
-													<dt>Revised at
-														{{ review.CreatedAt ?
-                                                        review.CreatedAt|date('Y-m-d H') : '' }}
-													</dt>
-												</dl>
-
-												<div class="m-t-sm">
-
-													{% if review.attachment %}
-														<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="btn btn-info btn-xs float-right">
-															Download attachment
-															<i class="fa fa-download material-icons warning"></i>
-														</a>
-													{% else %}
-														<span class="label label-danger">
-															{% trans %}No attachement found{% endtrans %}
-														</span>
-													{% endif %}
-												</div>
-											</td>
-											<td width="65" nowrap="nowrap">
-												<h4 class='text-primary'>
-													Review Round:
-													{{ loop.index }}
-												</h4>
-												{{ review.remark |raw}}
-
-												<hr>
-												{# {{editorialDecisions.decision}} #}
-											</td>
-										</tr>
-									</tbody>
-								{% else %}
-								 
-								{% endfor %}
-							</table>
 							<hr>
 
 							{{ form_start(form) }}
@@ -279,75 +203,88 @@
 
 
 			<div class="card">
-				<div class="card-body ">
-					<div class="text-">
-						<h4 class="m-0 fw-semibold text-dark font-16 mt-3">
-							Thematic area:
-							{{submission.thematicArea}}
-						</h4>
-						<p class="text-muted  mb-0 font-13">
-							<span class="text-dark">
+				<div class="card-header">
+					<h5>Review info:<h5></div>
+						<!--end card-header-->
 
-								Invitation Sent At:
-								{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+						<div class="card-body ">
+							<div
+								class="text-">
+								{# {{ review_assignment.submission.callForProposal}} #}
 
-								Review duedate:
-								{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.attachment ) }}">
+									Review guideline PDF
+									<i class="fa fa-download"></i>
+								</a>
 
-							</span>
+								<br>
+								<br>
 
-							<span class="text-dark">
-								<h5>Keywords:</h5>
-								<ul class="tag-list" style="padding: 0">
-									{{submission.keywords}}
-								</ul>
-							</span>
+								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.evaluationfrom ) }}">
+									Review evaluation from PDF
+									<i class="fa fa-download"></i>
+								</a>
 
-						</p>
-					</div>
-					<div class="row mt-4 d-flex align-items-center">
-						<div
-							class="col">
-							{# <h5 class="font-16 m-0 fw-bold">1</h5> #}
-							<p class="mb-0 text-muted">
+								<br>
 
-								<h5>Attachment files</h5>
-								<ul class="list-unstyled project-files">
-									{% for submissionattachment in submission.submissionAttachements %}
-										<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-											{{submissionattachment.name}}
 
-											<i class="fa fa-download material-icons warning"></i>
+								{# <h4 class="m-0 fw-semibold text-dark font-16 mt-3">
+																																	Thematic area:
+																																	{{submission.thematicArea}}
+																																</h4> #}
+								<br>
+								<p class="text-muted  mb-0 font-13">
+									<span class="text-dark">
+
+										Invitation Sent At:
+										{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+										<br>
+										Review duedate:
+										{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+
+									</span>
+
+									{# <span class="text-dark">
+																																					<h5>Keywords:</h5>
+																																					<ul class="tag-list" style="padding: 0">
+																																						{{submission.keywords}}
+																																					</ul>
+																																				</span> #}
+
+								</p>
+							</div>
+							<div class="row mt-2 d-flex align-items-center">
+								<div
+									class="col">
+									{# <h5 class="font-16 m-0 fw-bold">1</h5> #}
+									<p class="mb-0 text-muted">
+
+										<h5>Attachment files</h5>
+
+										<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
+											Submission file PDF
+											<i class="fa fa-download"></i>
 										</a>
-									{% else %}
-										<span class="label label-danger">
-											{% trans %}No attachement found{% endtrans %}
-										</span>
-									{% endfor %}
-								</ul>
-							</p><hr>
-							{# <a class="btn btn-primary btn-xs float-right" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
-																						<span>Download PDF
-																							<i class="fa fa-download material-icons  "></i>
-														
-																						</span>
-																					</a> #}
 
 
-							<script src="/ui/js/jquery.min.js"></script>
-							<p></p>
+									</p><hr>
+
+
+									<script src="/ui/js/jquery.min.js"></script>
+									<p></p>
+								</div>
+							</div>
 						</div>
 					</div>
+
+
 				</div>
 			</div>
-
-
 		</div>
 	</div>
 
-	{% include "submission/modal.html.twig" %}
+	{# {% include "submission/modal.html.twig" %} #}
 {% endblock %}
-
 {% block javascript  %}
 	<script>
 		$('.form-check-input').change(function () {

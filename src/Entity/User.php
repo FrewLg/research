@@ -36,9 +36,9 @@ class User implements UserInterface
      */
     private $username;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+ /**
+     * @ORM\Column(type="json", nullable=true)
+     */   
     private $roles = [];
 
     /**
@@ -164,6 +164,8 @@ class User implements UserInterface
      */
     private $trainingParticipants;
 
+    
+
      
     public function __construct()
     {
@@ -282,20 +284,21 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-    #$roles[] = $groups;
+        $roles = $this->roles; 
+        $roles[] = 'ROLE_USER'; 
 
         return array_unique($roles);
     }
 
     public function setRoles(array $roles): self
     {
+       
         $this->roles = $roles;
 
         return $this;
     }
+
+ 
 
     /**
      * @see UserInterface
@@ -845,6 +848,8 @@ class User implements UserInterface
 
         return $this;
     }
+
+ 
 
      
 

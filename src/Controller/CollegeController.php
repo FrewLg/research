@@ -80,23 +80,55 @@ class CollegeController extends AbstractController
       # $thematicArea->setCreatedAt(new \DateTime());
             $entityManager->persist($thematicArea);
             $entityManager->flush(); 
-            return $this->redirectToRoute('college_show', array('prefix' => $college->getPrefix()));
+            return $this->redirectToRoute('college_show', array('id' => $college->getId()));
         }
 
     $guideline_for_reviewers = $entityManager->getRepository(GuidelineForReviewer::class)->findBy(['college' => $college ] );
-  $guidelineForReviewer = new GuidelineForReviewer();
+  $guidelineForReviewer =$entityManager->getRepository(GuidelineForReviewer::class)->findOneBy(['college' => $college ] );
+ if(!$guidelineForReviewer){
+    $guidelineForReviewer= new GuidelineForReviewer();
+ }
         $formGuidelineForReviewer = $this->createForm(GuidelineForReviewerType::class, $guidelineForReviewer);
         $formGuidelineForReviewer->handleRequest($request);
 
         if ($formGuidelineForReviewer->isSubmitted() && $formGuidelineForReviewer->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            $file3 = $formGuidelineForReviewer->get('attachment')->getData();  
+            if (!$file3){ 
+            echo ' file not uploaded';
+         }   else{
+              $file3 = $formGuidelineForReviewer->get('attachment')->getData();  
+                   $fileName3 = $formGuidelineForReviewer->get('name')->getData().'-'.md5(uniqid()).'.'.$file3->guessExtension();  
+               $file3->move($this->getParameter('review_files'), $fileName3);  
+                $guidelineForReviewer->setAttachment($fileName3); 
+                  }
+
+                  $evaluationfromf = $formGuidelineForReviewer->get('evaluationfrom')->getData();  
+                  if (!$evaluationfromf){ 
+                  echo 'File not uploaded';
+        }   
+        else{
+        $evaluationfromf = $formGuidelineForReviewer->get('evaluationfrom')->getData();  
+                $file_name = 'Eval-'.md5(uniqid()).'.'.$evaluationfromf->guessExtension();  
+            $evaluationfromf->move($this->getParameter('review_files'), $file_name);  
+            $guidelineForReviewer->setEvaluationfrom($file_name); 
+            }
+
+                  
+
+
             $guidelineForReviewer->setCollege($college);
             $guidelineForReviewer->setCreatedAt(new \DateTime());
             $entityManager->persist($guidelineForReviewer);
             $entityManager->flush();
-            return $this->redirectToRoute('college_show', array('prefix' => $college->getPrefix()));
+            return $this->redirectToRoute('college_show', array('id' => $college->getId()));
         }
-    $guideline = new Guidelines();        
+    
+    $guideline =$entityManager->getRepository(Guidelines::class)->findOneBy(['college' => $college ] );
+    if(!$guideline){
+        $guideline = new Guidelines();   
+    }
     $guidelineform = $this->createFormBuilder($guideline)  
          ->add('guideline',   CKEditorType::class,[
             'attr'=>['placeholder'=>'Executive Summary',
@@ -118,7 +150,9 @@ class CollegeController extends AbstractController
 
         if ($guidelineform->isSubmitted() && $guidelineform->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-             $file3 = $guideline->getAttachment();               
+     $file3 = $guidelineform->get('attachment')->getData();  
+           
+            // $file3 = $guideline->getAttachment();               
    if ($file3){ 
    echo ' file not uploaded';
 }   else{
@@ -130,13 +164,13 @@ class CollegeController extends AbstractController
            $guideline->setAttachment($fileName3); 
          }
          
-        if ($guidelineform->isSubmitted() && $guidelineform->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($guideline);
-            $entityManager->flush();
+        // if ($guidelineform->isSubmitted() && $guidelineform->isValid()) {
+        //     $entityManager = $this->getDoctrine()->getManager();
+        //     $entityManager->persist($guideline);
+        //     $entityManager->flush();
 
-            return $this->redirectToRoute('work_unit_show', array('prefix' => $college->getPrefix()));
-        }
+        //     return $this->redirectToRoute('work_unit_show', array('prefix' => $college->getPrefix()));
+        // }
         }
         ///////////////institutiona review board members
     $AllIRBMembers = $entityManager->getRepository(InstitutionalReviewersBoard::class)->findBy(['college' => $college ] );
@@ -152,7 +186,7 @@ $institutionalReviewersBoard= new InstitutionalReviewersBoard() ;
             $entityManager->persist($institutionalReviewersBoard);
             $entityManager->flush();
 
-             return $this->redirectToRoute('college_show', array('prefix' => $college->getPrefix()));
+             return $this->redirectToRoute('college_show', array('id' => $college->getId()));
         } 
         //to be changerd later
             $form = $this->createForm(CollegeType::class, $college);
@@ -161,7 +195,7 @@ $institutionalReviewersBoard= new InstitutionalReviewersBoard() ;
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-             return $this->redirectToRoute('college_show', array('prefix' => $college->getPrefix()));
+             return $this->redirectToRoute('college_show', array('id' => $college->getId()));
         }            
         return $this->render('college/show.html.twig', [
             'college' => $college,
