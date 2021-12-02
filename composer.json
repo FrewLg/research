@@ -23,7 +23,6 @@
         "lexik/form-filter-bundle": "~5.0",
         "lexik/translation-bundle": "~4.0",
         "phpdocumentor/reflection-docblock": "^5.2",
-        "phpoffice/phpspreadsheet": "^1.9",
         "scottharwell/google-charts": "^2.1",
         "sensio/framework-extra-bundle": "^5.1",
         "swiftmailer/swiftmailer": "^6.0",
