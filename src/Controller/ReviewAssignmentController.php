@@ -32,6 +32,7 @@ use App\Entity\InstitutionalReviewersBoard;
 use App\Entity\UserInfo;
 use App\Helper\ReviewHelper;
 use DateTime;
+use Knp\Component\Pager\PaginatorInterface;
 use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
@@ -336,6 +337,52 @@ else{
     }
      
  
+
+
+    /**
+     * @Route("/all", name="allreviewers", methods={"GET","POST"})
+     */
+    public function allreviewers(Request $request , PaginatorInterface $paginator ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $reviewAssignment = $entityManager->getRepository(ReviewAssignment::class)->findAll();
+            ###########
+            $em = $this->getDoctrine()->getManager();
+            $query = $entityManager->createQuery(
+                'SELECT u.email , u.id, pi. last_name , pi.first_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+                FROM App:ReviewAssignment s 
+                JOIN s.reviewer u 
+                JOIN u.userInfo pi 
+                JOIN s.submission b 
+              
+                 
+              
+                GROUP BY u.id
+            ');
+         
+            $recepients = $query->getResult();
+                   
+            // ->setParameter('college', $this->getUser()->getUserInfo()->getCollege()  );
+            // $recepients = $querytwo->getScalarResult();
+// dd($recepients );
+
+$review_assignments = $paginator->paginate(
+    // Doctrine Query, not results
+    $recepients,
+    // Define the page parameter
+    $request->query->getInt('page', 1),
+    // Items per page
+    10
+);
+
+            ########################
+         return $this->render('review_assignment/show.html.twig', [
+            'review_assignments' => $review_assignments,
+         ]);
+    } 
+
 
     /**
      * @Route("/{id}/edit", name="review_assignment_edit", methods={"GET","POST"})
