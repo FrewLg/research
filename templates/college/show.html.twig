@@ -192,7 +192,27 @@
 											<b>{{ guideline_for_reviewer.name }}</b>
 											 <br>{{ guideline_for_reviewer.theGuidelline |raw }} 
 
-											  
+											  <br>
+											  <a class="badge bg-primary" href="{{ asset('files/guidelines/'~ college.guidelineForReviewer.attachment ) }}">
+							Assessment Guideline   PDF
+							<i class="fa fa-download"></i>
+						</a>
+
+						<br>
+						<br>
+
+						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~  college.guidelineForReviewer.evaluationfrom ) }}">
+							Grading Form PDF
+							<i class="fa fa-download"></i>
+						</a>
+	<br>
+<br>
+
+						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~  college.guidelineForReviewer.commentfrom ) }}">
+							Evaluation Report Form PDF
+							<i class="fa fa-download"></i>
+						</a>
+
 									{% else %}
 										 no records found 
 									{% endfor %} 
