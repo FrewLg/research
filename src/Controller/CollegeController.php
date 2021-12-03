@@ -85,7 +85,7 @@ class CollegeController extends AbstractController
       # $thematicArea->setCreatedAt(new \DateTime());
             $entityManager->persist($thematicArea);
             $entityManager->flush(); 
-            return $this->redirectToRoute('college_show');
+            return $this->redirectToRoute('college_details');
         }
 
     $guideline_for_reviewers = $entityManager->getRepository(GuidelineForReviewer::class)->findBy(['college' => $college ] );
@@ -138,7 +138,7 @@ class CollegeController extends AbstractController
             $guidelineForReviewer->setCreatedAt(new \DateTime());
             $entityManager->persist($guidelineForReviewer);
             $entityManager->flush();
-            return $this->redirectToRoute('college_show');
+            return $this->redirectToRoute('college_details');
         }
     
     $guideline =$entityManager->getRepository(Guidelines::class)->findOneBy(['college' => $college ] );
@@ -207,7 +207,7 @@ $institutionalReviewersBoard= new InstitutionalReviewersBoard() ;
             $entityManager->persist($institutionalReviewersBoard);
             $entityManager->flush();
 
-             return $this->redirectToRoute('college_show' );
+             return $this->redirectToRoute('college_details' );
         } 
         //to be changerd later
             $form = $this->createForm(CollegeType::class, $college);
@@ -216,7 +216,7 @@ $institutionalReviewersBoard= new InstitutionalReviewersBoard() ;
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-             return $this->redirectToRoute('college_show' );
+             return $this->redirectToRoute('college_details' );
         }            
         return $this->render('college/show.html.twig', [
             'college' => $college,
