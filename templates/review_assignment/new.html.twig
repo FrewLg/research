@@ -15,10 +15,10 @@
 
 					<div class="panel blank-panel">
 						<div class="panel-heading">
-							<div class="panel-options">
-								<ul class="nav nav-tabs">
+							<div class="panel-options ">
+								<ul class="nav nav-pills nav-justified">
 									<li>
-										<a class="nav-link active" href="#tab-1" data-bs-toggle="tab">
+										<a class="nav-link active " href="#tab-1" data-bs-toggle="tab">
 											Internal Reviewer
 										</a>
 									</li>
@@ -34,25 +34,43 @@
 
 							<div class="tab-content">
 								<div class="tab-pane active" id="tab-1">
-									<h4 class='text-'>Internal reviewer from system</h4>
+									<br>
+									<div class="card">
+										<div class="card-body">
+											<div class="card-header">
+												<h4 class='text-'>Internal reviewer from system</h4>
 
-									{{ form_start(form) }}
-									{{ form_widget(form) }}
-									<button type="submit" class="btn btn-outline-primary btn-sm">
-										Assign Reviewer
-									</button>
-									{{ form_end(form) }}
+											</div>
+<br>
+											{{ form_start(form) }}
+											{{ form_widget(form) }}
+											<button type="submit" class="btn btn-outline-primary btn-sm">
+												Assign Reviewer
+											</button>
+											{{ form_end(form) }}
+										</div>
+									</div>
 								</div>
 								<div class="tab-pane" id="tab-2">
-									<h4 class='text-'>External reviewer from outside the system</h4>
 
-									{{ form_start(externalreviewerform) }}
-									{{ form_widget(externalreviewerform) }}
-									<button type="submit" class="btn btn-outline-primary btn-sm">
-										Assign external reviewer
-									</button>
-									{{ form_end(externalreviewerform) }}
+									<br>
+									<div class="card">
+										<div class="card-body">
+											<div class="card-header">
+												<h4 class='text-'>External reviewer from outside the system</h4>
 
+											</div>
+
+<br>
+											{{ form_start(externalreviewerform) }}
+											{{ form_widget(externalreviewerform) }}
+											<button type="submit" class="btn btn-outline-primary btn-sm">
+												Assign external reviewer
+											</button>
+											{{ form_end(externalreviewerform) }}
+
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -90,11 +108,24 @@
 								{% set selected = selected + 1 %}
 							{% endif %}
 
-							<td>{{ review_assignment.reviewer }}
-								{{ review_assignment.ExternalreviewerName }}
+							<td> 
+							 
+
+<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0     mb-1 align-right'>
+{{ review_assignment.reviewer }}
+								</a>
+
+
+
+								<a href="#" class="avatar-box thumb-xxs align-self-center">
+									<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+										+{{ review_assignment.reviewer.reviewAssignments|length   }}
+									</span>
+								</a>
+
 								{% if review_assignment.ExternalreviewerEmail  %}
-									<span class="badge bg-primary">External</span> 
-									{{review_assignment.reviewer.username}}
+									<span class="badge bg-primary">External</span>
+
 								{% else %}
 									<span class="badge bg-success">Internal</span>
 								{% endif %}
@@ -121,18 +152,16 @@
 									<span class="badge bg-primary">Closed</span>
 								{% elseif  review_assignment.InactiveAssignment == 1 %}
 									<span class="badge bg-primary">InactiveAssignment</span>
-									{% elseif  review_assignment.Declined == 1 %}
+								{% elseif  review_assignment.Declined == 1 %}
 									<span class="badge bg-primary">Declined</span>
 
 
 								{% endif %}
 
 
- 
 							</td>
 							<td nowrap="nowrap">
 								{{ include('review_assignment/_delete_form.html.twig') }}
- 
 
 
 								<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
@@ -140,7 +169,7 @@
 								<script>
 
 									$(document).ready(function () {
-$("#editList                {{ review_assignment.id }}").click(function () {
+$("#editList                 {{ review_assignment.id }}").click(function () {
 $.ajax({
 url: "{{ path('review_assignment_edit', {'id':review_assignment.id}) }}",
 success: function (result) {
@@ -173,9 +202,9 @@ $("#formside_permission").html("Problem");
 					{% else %}
 
 					{# <form method="POST">
-																																																																									<input type="hidden" name="_token" value="{{ csrf_token('assign-selected') }}">
-																																																																										<div class="float-right"><input type="submit" class="btn btn-success" name="assign-selected" value="Assign Selected"></div>
-																																																																									</form> #}
+																																																																														<input type="hidden" name="_token" value="{{ csrf_token('assign-selected') }}">
+																																																																															<div class="float-right"><input type="submit" class="btn btn-success" name="assign-selected" value="Assign Selected"></div>
+																																																																														</form> #}
 				{% endif %}
 			{% endif %}
 		</div>

@@ -33,8 +33,12 @@ class ReviewAssignmentType extends AbstractType
          ))
 
          ->add('file_tobe_reviewed', FileType::class, [
-            'label' => 'Upload document attachment',
-            'mapped' => false,
+            'label' => 'Upload proposal attachment',
+            'mapped' => false,  'attr'=>[
+                'class' => 'form-control     ',
+                         'required' => true,
+        
+        ],
             'required' => true,
             ])
   
@@ -101,6 +105,19 @@ TextType::class, [
     'attr' => ['class' => 'form-control col col-md-12 col-sm-12 col-lg-9 '],
 ])
 
+
+
+->add('file_tobe_reviewed', FileType::class, [
+    'label' => 'Upload proposal attachment',
+    'mapped' => false,
+    'attr'=>[
+        'class' => 'form-control   col-md-12 col-sm-12 col-lg-9  ',
+                 'required' => true,
+    
+    ],
+    'required' => true,
+    ])
+    
 ->add('invitationDueDate', DateType::class, array(
     'placeholder' => [
 'year' => 'Year', 'month' => 'Month', 'day' => 'Day', ],
@@ -114,13 +131,6 @@ TextType::class, [
 'class'=>'form-control',
 )              
 ))
-
-
-->add('file_tobe_reviewed', FileType::class, [
-'label' => 'Upload document attachment',
-'mapped' => false,
-'required' => true,
-])
 
 ->add('duedate', DateType::class, array(
     'placeholder' => [
