@@ -27,9 +27,14 @@
 					<ul class="nav-second-level" aria-expanded="false">
 						{% if is_granted("ROLE_ADMIN") %}
 							<li class="nav-item">
+								<a class="nav-link" href="{{ path('dashboard') }}">
+									<i class="ti-control-record"></i>Dashboard</a>
+							</li>
+							<li class="nav-item">
 								<a class="nav-link" href="{{ path('submission_index') }}">
 									<i class="ti-control-record"></i>Submissions</a>
 							</li>
+							
 							{% endif%}
 
 							<li class="nav-item">
@@ -153,7 +158,7 @@
 						</a>
 						<ul class="nav-second-level" aria-expanded="false">
 							<li class="nav-item">
-								<a class="nav-link" href="{{ path('college_index') }}">
+								<a class="nav-link" href="{{ path('college_details') }}">
 									<i class="ti-control-record"></i>Colleges
 								</a>
 							</li>

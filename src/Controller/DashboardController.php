@@ -148,8 +148,7 @@ class DashboardController extends AbstractController {
     public function index(Request $request, SubmissionRepository $submissionRepository, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
         $em = $this->getDoctrine()->getManager();
-        //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
-        $formFilter = $this->get('form.factory')->create(SubmissionFilterType::class);
+         $formFilter = $this->get('form.factory')->create(SubmissionFilterType::class);
         $formFilter->handleRequest($request);
         $info = 'All';
         $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
@@ -158,19 +157,35 @@ class DashboardController extends AbstractController {
             $lexikFormFilter = $this->get('lexik_form_filter.query_builder_updater');
             $submissionRepository = $filter->filter($request, $formFilter, $em, $lexikFormFilter, 'App:User');
         }
-
-        // Paginate the results of the query
-        $Allsubmissions = $paginator->paginate(
-            // Doctrine Query, not results
-            $submissionRepository,
-            // Define the page parameter
-            $request->query->getInt('page', 1),
-            // Items per page
-            10
+          $Allsubmissions = $paginator->paginate(
+             $submissionRepository,
+             $request->query->getInt('page', 1),
+             10
         );
+        
+        $entityManager = $this->getDoctrine()->getManager(); 
+                #################################           
+                $querytwo = $entityManager->createQuery(
+                               'SELECT      d.id 
+                     FROM App:Submission s  , App:User u 
+                         JOIN u.userInfo i
+                          JOIN i.department d
+                          JOIN d.college c
+                       WHERE   s.complete=:completed and c.id =:college   
+                      ORDER BY  s.author 
+                    '   
+                    ) 
+                               ->setParameter('completed', 'completed' ) 
+                      ->setParameter('college', $this->getUser()->getUserInfo()->getCollege()  );
+                $recepients = $querytwo->getScalarResult();
+             
+                    //   dd($recepients);
+        $submissionbytheme = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $this->getUser()->getUserInfo()->getCollege() ]);
+
         return $this->render('dashboard/dashboard.html.twig', [
             'formFilter' => $formFilter->createView(),
             'submissions' => $Allsubmissions,
+            'bythemes'=>$submissionbytheme,
             'info' => $info,
         ]);
     }  
