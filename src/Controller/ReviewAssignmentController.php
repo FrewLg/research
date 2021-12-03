@@ -57,7 +57,7 @@ class ReviewAssignmentController extends AbstractController
     MailerInterface $mailer,  ReviewAssignmentRepository $reviewAssignmentRepository): Response
     {
 
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
 
         if($submission->getComplete()==''){
          
@@ -344,7 +344,7 @@ else{
      */
     public function allreviewers(Request $request , PaginatorInterface $paginator ): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
 
         $entityManager = $this->getDoctrine()->getManager();
         $reviewAssignment = $entityManager->getRepository(ReviewAssignment::class)->findAll();
@@ -410,7 +410,7 @@ else{
      */
     public function edit(Request $request, ReviewAssignment $reviewAssignment): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
 
         $entityManager = $this->getDoctrine()->getManager();
 #        $subs = $entityManager->getRepository(Submission::class)->findBy(['submission' => $workunit ] );
@@ -436,6 +436,8 @@ else{
      */
     public function unassign(Request $request, ReviewAssignment $reviewAssignment  ): Response
     {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+
         if ($this->isCsrfTokenValid('delete'.$reviewAssignment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             // $entityManager->remove($reviewAssignment);
@@ -455,6 +457,7 @@ else{
      */
     public function delete(ReviewAssignment $reviewAssignment  ): Response
     {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
  
              $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($reviewAssignment);

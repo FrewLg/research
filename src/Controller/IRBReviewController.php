@@ -247,6 +247,8 @@ class IRBReviewController extends AbstractController
      */
     public function declineinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
 	$entityManager = $this->getDoctrine()->getManager();
     $mew= $this->getUser()->getId();
 	$deadline= $reviewAssignment->getDuedate();
@@ -270,6 +272,8 @@ class IRBReviewController extends AbstractController
      */
     public function unassign(Request $request, ReviewAssignment $reviewAssignment  ): Response
     {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+
         if ($this->isCsrfTokenValid('delete'.$reviewAssignment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             // $entityManager->remove($reviewAssignment);
