@@ -84,6 +84,34 @@ class IRBReviewController extends AbstractController
     
 
     /**
+     * @Route("/{id}/myassigned", name="his_assignment", methods={"GET"})
+     */
+    public function allassigned(Request $request, User $user, PaginatorInterface $paginator): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $entityManager = $this->getDoctrine()->getManager();
+         
+        $myassigned = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $user  ]));
+        ////// if no throw exception
+        $myassigneds = $paginator->paginate(
+            // Doctrine Query, not results
+            $myassigned,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            10
+        );
+#################################################
+
+#################################################
+
+        return $this->render('review_assignment/assigned.html.twig', [
+            'user' => $user,
+            'myreviews' => $myassigneds,
+        ]);
+    }
+
+
+    /**
      * @Route("/{id}/revise", name="reviewsubmission", methods={"GET","POST"})
      */
     public function revise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {

@@ -27,11 +27,9 @@
 								<sapn class="text-muted mb-0"> {{co_author.first_name}} {{co_author.last_name}}     </span>
 							</h5>
 						 
-						 
-                        
-
+						  
 							<p class="text-muted mb-0"> Number of Assignment:  
-                             <a href="#" class="avatar-box thumb-xxs align-self-center">
+                             <a href="{{path('his_assignment',{'id':co_author.id})}}" class="avatar-box thumb-xxs align-self-center">
 							<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
 							{{co_author.review_assignment}}
 							</span>
@@ -48,6 +46,7 @@
 							</div>
 
 							<a href='{{path('researcher',{'id':co_author.id})}}' class="btn btn-sm btn-soft-primary">About Reviewer</a>
+							<a href='{{path('his_assignment',{'id':co_author.id})}}' class="btn btn-sm btn-soft-info">Invitations</a>
 
 						</div>
 					</div>
