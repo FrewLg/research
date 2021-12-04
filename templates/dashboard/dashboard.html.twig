@@ -320,7 +320,7 @@
 
 
 	<script src="{{ asset('plugins/chartjs/chart.min.js')}}"></script>
-	<script src="{{ asset('assets/pages/jquery.chartjs.init.js')}}"></script>
+	{# <script src="{{ asset('assets/pages/jquery.chartjs.init.js')}}"></script> #}
  
 
 	<script type="text/javascript">
@@ -357,7 +357,7 @@ data: [{% for theanswer in bythemes %}'{{ theanswer.submissions|length }}',{% en
 },
 options: {
 legend: {
-display: false
+display: true
 },
 title: {
 display: true,
