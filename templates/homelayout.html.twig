@@ -5,22 +5,17 @@
 		<meta charset="utf-8">
 		<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-		<title> {{ app_name}}
+		<title>
+			{{ app_name}}
 			|
 			{%block title%}{%endblock%}
-</title>
+		</title>
 		<meta content="" name="description">
-		<meta
-		content="" name="keywords">
-
-		<!-- Favicons -->
+		<meta content="" name="keywords">
 		<link href="{{ asset('files/site_setting/'~site_logo ) }}" rel="icon">
 		<link href="{{ asset('Anyar/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
-		<!-- Google Fonts -->
-		{# <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet"> #}
-	
-		<!-- Vendor CSS Files -->
+
 		<link href="{{ asset('Anyar/assets/vendor/animate.css/animate.min.css') }}" rel="stylesheet">
 		<link href="{{ asset('Anyar/assets/vendor/aos/aos.css') }}" rel="stylesheet">
 		<link href="{{ asset('Anyar/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -28,28 +23,13 @@
 		<link href="{{ asset('Anyar/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
 		<link href="{{ asset('Anyar/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
 		<link href="{{ asset('Anyar/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-		<link
-		href="{{ asset('Anyar/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+		<link href="{{ asset('Anyar/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
-	<link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}"> 
-		{# <link
-		rel="stylesheet" type="text/css" href="{{ asset('classic/classic_files/font-awesome.css') }}"> #}
-
-		<!-- Template Main CSS File -->
-		<link
-		href="{{ asset('Anyar/assets/css/style.css') }}" rel="stylesheet">
-
-	<!-- =======================================================
-				  * Template Name: Anyar - v4.6.0
-				  * Template URL: https://bootstrapmade.com/Anyar-free-multipurpose-one-page-bootstrap-theme/
-				  * Author: BootstrapMade.com
-				  * License: https://bootstrapmade.com/license/
-				  ======================================================== -->
+		<link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
+		<link href="{{ asset('Anyar/assets/css/style.css') }}" rel="stylesheet">
 	</head>
 
 	<body>
-
-		<!-- ======= Top Bar ======= -->
 		<div id="topbar" class="fixed-top d-flex align-items-center topbar-inner-pages">
 			<div class="container d-flex align-items-center justify-content-center justify-content-md-between">
 				<div class="contact-info d-flex align-items-center">
@@ -58,36 +38,26 @@
 					<i class="bi bi-phone-fill phone-icon"></i>
 					+251-471112453
 				</div>
-				
-				<div class="cta d-none d-md-block">
-					{# ds
-					 #}
-				</div>
+
+				<div class="cta d-none d-md-block"></div>
 			</div>
-			
+
 		</div>
 
-		
-		<!-- ======= Header ======= -->
 		<header id="header" class="fixed-top d-flex align-items-center header-inner-pages" style="background-color:#6f93cd; color:white;">
-			<div class="container d-flex align-items-center justify-content-between" >
+			<div class="container d-flex align-items-center justify-content-between">
 				<a class="home-link" style="color:white" href="{{path('homepage')}}" title="{{app_name}} " rel="home">
 					<img id="logo-img" class="img-center" style='width:30px;height:40px; color:white;' src="{{ asset('files/site_setting/'~site_logo ) }}" alt="{{app_name}} ">
 					<b>{{app_name}}
 					</b>
 				</a>
-				{# <h1 class="logo"><a href="index.html">Anyar</a></h1> #}
-				<!-- Uncomment below if you prefer to use an image logo -->
-				<!-- <a href=index.html" class="logo">
-																	  <img src="{{ asset('Anyar/assets/img/logo.png') }}" alt="" class="img-fluid"></a>-->
-
-					<nav id="navbar" class="navbar"> <ul>
+				<nav id="navbar" class="navbar">
+					<ul>
 						<li>
 							<a class="nav-link scrollto " href="{{path('homepage')}}">Home</a>
 						</li>
 						<li>
-							{# <a class="nav-link scrollto" href="#about">About</a> #}
-			<a href="{{path('call_for_proposal_all')}}"   class="nav-link scrollto">Call for proposals</a>
+							<a href="{{path('call_for_proposal_all')}}" class="nav-link scrollto">Call for proposals</a>
 
 						</li>
 
@@ -97,342 +67,207 @@
 								<i class="bi bi-chevron-down"></i>
 							</a>
 							<ul>
-								<li>
-			<a href="{{ path('scholarship_index') }}" class="">Scholarships</a>
- 								</li>
+								<li><a class=""href="{{path('scholarship_index')}}" class="">Scholarships</a></li>
 
-								 <li>
-			<a href="{{ path('call_for_training') }}" class="">Call For Training </a>
-
-								</li>
+								<li><a class=""href="{{path('call_for_training')}}" class="">Call For Training</a></li>
 
 							</ul>
 						</li>
 						{% if is_granted("ROLE_USER")%}
 
-						<li>
-							<a class="nav-link scrollto" href="{{ path('myreviews') }}">My research</a>
-						</li>
+							<li>
+								<a class="nav-link scrollto" href="{{ path('myreviews') }}">My research</a>
+							</li>
 
-						
+
 							<li class="dropdown">
-								
-								<a href="#"> 
-										<span>
-										
+
+								<a href="#">
+									<span>
+
 										{% if app.user.userInfo and app.user.userInfo.image %}
 
-										{{  app.user.userInfo}}	 
-										
-										<img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="profile-user" class="rounded-circle thumb-xs" style="width:30px;height: 30px;"/>
+											{{  app.user.userInfo}}
+
+											<img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="profile-user" class="rounded-circle thumb-xs" style="width:30px;height: 30px;"/>
 										{% else %}
 
 											<img src="{{ asset('img/defaultuser.png') }}" alt="profile-user" class="rounded-circle thumb-xs" style="width:30px;height: 30px;"/>
 
 										{% endif %}
-										</span>
-										<i class="bi bi-chevron-right"></i>
-									</a>
-									<ul>
- 										<li><a href="{{ path('myreviews') }}"> My Research </a></li>
-										<li><a href="{{path('researchworks')}}"> Profile </a></li>
-										<li><a href="{{path('app_logout')}}"> Logout <i data-feather="power" class="fa fa-cog"></i></a></li>
-										
-									</ul>
-							{#	<a class=" " data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+									</span>
+									<i class="bi bi-chevron-right"></i>
+								</a>
+								<ul>
+									<li><a class=""href="{{path('myreviews')}}">My Research</a></li>
+									<li><a class=""href="{{path('researchworks')}}">Profile</a></li>
+									<li><a class=""href="{{path('app_logout')}}">Logout<i data-feather="power" class="fa fa-cog"></i></a></li>
 
-									<span
-										class="ms-1 nav-user-name hidden-sm">
- 
-										
-									</a>
-									<div class="dropdown-menu  ">
-										<a class="dropdown-item" href="{{path('researchworks')}}">
-											<i data-feather="user" class="align-self-center icon-xs icon-dual me-1 p-10"></i>
-											Profile</a>
-										{% if is_granted("ROLE_ADMIN") %}
-											<a class="dropdown-item" href="{{ path('myreviews') }}">
-												<i data-feather="settings" class="align-self-center icon-xs icon-dual me-1"></i>
-												Dashboard</a>
-										{% endif %}
-										<div class="dropdown-divider mb-0"></div>
-										<a class="dropdown-item" href="{{path('app_logout')}}">
-											<i data-feather="power" class="align-self-center icon-xs icon-dual me-1"></i>
-											Logout</a>
-									</div>#}
-								</li>
+								</ul>
+
 							</li>
-
 						{% else %}
 
-							<a href="{{path('app_login')}}" class="btn   btn-outline btn-primary" style="color:white">
-								{# <i class="fa fa-sign-in"></i> #}
+							<a href="{{path('app_login')}}" class="btn   btn-outlined btn-primary" style="color:white">
 								Login</a>
 						{% endif %}
 					</ul>
-					<i class="bi bi-list mobile-nav-toggle"></i>
-					{# <div class="header_extra d-flex flex-row align-items-center justify-content-end"> #}
 
-
-				{# </div> #}
-
-					{# </div> #}
 				</nav>
 
-
 			</div>
-		</body>
-	</body>
-</html></header><!-- End Header --><main
-id="main">
+		</header>
+		<main id="main">
+			<section id="breadcrumbs" class="breadcrumbs">
+				<div class="container">
 
-<!-- ======= Breadcrumbs ======= -->
-<section id="breadcrumbs" class="breadcrumbs">
-	<div class="container">
-
-		<ol>
-			<li>
-				<a href="{{path('homepage')}}">Home</a>
-			</li>
-		</ol>
-		<h2>
-			{%block pagehead%}
-			{%endblock%}
-		</h2>
-
-	</div>
-</section>
-<!-- End Breadcrumbs -->
-
-<!-- ======= Blog Section ======= -->
-<section id="blog" class="blog">
-	<div class="container" data-aos="fade-up">
-
-		<div class="row">
-
-			<div class="col-lg-8 entries">
-{% for message in app.flashes('success') %}
-				<div class="alert alert-success alert-dismissible fade show border-0 mb-0" role="alert">
-					<strong>Success!
-					</strong>
-					{{ message }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					<ol>
+						<li>
+							<a href="{{path('homepage')}}">Home</a>
+						</li>
+					</ol>
+					<h2>
+						{%block pagehead%}
+						{%endblock%}
+					</h2>
 				</div>
-			{% endfor %}
+			</section>
+			<section id="blog" class="blog">
+				<div class="container" data-aos="fade-up">
 
-			{% for message in app.flashes('danger') %}
-				<div class="alert alert-danger alert-dismissible fade show border-0 mb-0" role="alert">
-					<strong></strong>
-					{{ message }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
-			{% endfor %}
-			{% for message in app.flashes('warning') %}
-				<div class="alert alert-warning alert-dismissible fade show border-0 mb-0" role="alert">
-					<strong>Warning!
-					</strong>
-					{{ message }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
-			{% endfor %}
+					<div class="row">
+
+						<div class="col-lg-8 entries">
+							{% for message in app.flashes('success') %}
+								<div class="alert alert-success alert-dismissible fade show border-0 mb-0" role="alert">
+									<strong>Success!
+									</strong>
+									{{ message }}
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								</div>
+							{% endfor %}
+
+							{% for message in app.flashes('danger') %}
+								<div class="alert alert-danger alert-dismissible fade show border-0 mb-0" role="alert">
+									<strong></strong>
+									{{ message }}
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								</div>
+							{% endfor %}
+							{% for message in app.flashes('warning') %}
+								<div class="alert alert-warning alert-dismissible fade show border-0 mb-0" role="alert">
+									<strong>Warning!
+									</strong>
+									{{ message }}
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								</div>
+							{% endfor %}
 
 
-			{% for message in app.flashes('danger') %}
+							{% for message in app.flashes('danger') %}
 
-				<div class="alert custom-alert custom-alert-danger icon-custom-alert shadow-sm fade show d-flex justify-content-between" role="alert">
-					<div class="media">
-						<i class="la la-exclamation-triangle alert-icon text-primary align-self-center font-30 me-3"></i>
-						<div class="media-body align-self-center">
-							<h5 class="mb-1 fw-bold mt-0"></h5>
-							<span>{{ message }}
-							</span>
+								<div class="alert custom-alert custom-alert-danger icon-custom-alert shadow-sm fade show d-flex justify-content-between" role="alert">
+									<div class="media">
+										<i class="la la-exclamation-triangle alert-icon text-primary align-self-center font-30 me-3"></i>
+										<div class="media-body align-self-center">
+											<h5 class="mb-1 fw-bold mt-0"></h5>
+											<span>{{ message }}
+											</span>
+										</div>
+									</div>
+									<button type="button" class="btn-close align-self-center" data-bs-dismiss="alert" aria-label="Close"></button>
+								</div>
+
+
+							{% endfor %}
+
+							<article class="entry">
+								{% block body%}
+							{% endblock body%}
+
+						</article>
+					</div>
+
+
+					<!-- End blog entries list -->
+					<div class="col-lg-4">
+
+						<div class="sidebar"> {% block aside %}{% endblock %}
+							{% if is_granted("ROLE_USER")%}
+								<aside class="entrytitle">
+									<h4 class="widget-title">Guidelines</h4>
+
+									<hr>
+									<a href='{{ asset('Guidelines.pdf') }}'>Download proposal submission guideline
+										<i data-feather="power" class="fa fa-file-pdf"></i>
+									</a>
+									<hr>
+
+
+									<a href='{{ path('user_feedback_new') }}'>Send us a feedback</a>
+									<hr>
+
+									<h4 class="widget-title">Researche Directorates</h4>
+									<hr>
+									<ul class='nav'>
+										<li>
+											<a href="https://www.ju.edu.et/technology-transfer">Technology Transfer</a>
+											<span></span>
+										</li>
+										<li>
+											<a href="https://www.ju.edu.et/university-industry-linkage">University Industry Linkage
+											</a>
+										</li>
+										<li>
+											<a href="https://www.ju.edu.et/?q=director-research">Senior research directorate
+											</a>
+											<span></span>
+										</li>
+										<li>
+											<a href="https://www.ju.edu.et/?q=director-community-services-and-engagement">Community Service</a>
+											<span></span>
+										</li>
+
+									</ul>
+								</aside>
+
+
+								{% endif%}
+							</div>
+
+
 						</div>
 					</div>
-					<button type="button" class="btn-close align-self-center" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 
-			</div>
+			</section>
+		</main>
 
-		{% endfor %}
+		<footer id="footer" style="background-color:#023b6d;" class='m-10'>
 
-				<article class="entry">
-					{% block body%}
-				{% endblock body%}
-				{# <div class="entry-img">
-																<img src="{{ asset('Anyar/assets/img/blog/blog-1.jpg') }}" alt="" class="img-fluid">
-															</div> #}
-
-			{# <h2 class="entry-title">
-														<a href="blog-single.html">
-														
-						
-														
-														</a>
-													</h2> #}
-
-				{# <div class="entry-meta">
-																<ul>
-																	<li class="d-flex align-items-center">
-																		<i class="bi bi-person"></i>
-																		<a href="blog-single.html">John Doe</a>
-																	</li>
-																	<li class="d-flex align-items-center">
-																		<i class="bi bi-clock"></i>
-																		<a href="blog-single.html">
-																			<time datetime="2020-01-01">Jan 1, 2020</time>
-																		</a>
-																	</li>
-																	<li class="d-flex align-items-center">
-																		<i class="bi bi-chat-dots"></i>
-																		<a href="blog-single.html">12 Comments</a>
-																	</li>
-																</ul>
-															</div> #}
-
-				{# <div class="entry-content">
-																<p>
-								
-																	call detail
-																</p>
-																<div class="read-more">
-																	<a href="blog-single.html">Read More</a>
-																</div>
-															</div> #}
-
-			</article>
-			<!-- End blog entry -->
-
-
-			<div class="blog-pagination"> 
-			 
-			{# {% block pagination%}{% endblock %} #}
+			<div class="container">
+				<div class="copyright">&copy; Copyright
+					<script>
+						document.write(new Date().getFullYear())
+					</script>
+					<strong>
+						<span>{{app_name}}</span>
+					</strong>. All Rights Reserved
 				</div>
-
-			</div>
-			<!-- End blog entries list -->
-
-			<div class="col-lg-4">
-
-				<div class="sidebar"> {% block aside %}{% endblock %}
-					{% if is_granted("ROLE_USER")%}
-						<aside class="widget widget-Categories with-title">
-<h4 class="widget-title">Guidelines</h4>
-						
-<hr>
-							<a href='{{ asset('Guidelines.pdf') }}' >Download proposal submission guideline <i data-feather="power" class="fa fa-file-pdf"></i></a>
-<hr>
-
-							<h4 class="widget-title">Researche Directorates</h4>
-<hr>
-							<ul class='nav'>
-								<li>
-									<a href="https://www.ju.edu.et/technology-transfer">Technology Transfer</a>
-									<span></span>
-								</li>
-								<li>
-									<a href="https://www.ju.edu.et/university-industry-linkage">University Industry Linkage
-									</a>
-								</li>
-								<li>
-									<a href="https://www.ju.edu.et/?q=director-research">Senior research directorate
-									</a>
-									<span></span>
-								</li>
-								<li>
-									<a href="https://www.ju.edu.et/?q=director-community-services-and-engagement">Community Service</a>
-									<span></span>
-								</li>
-
-							</ul>
-						</aside>
-
-
-						{% endif%}
-					</div>
-					<!-- End sidebar -->
-
+				<div class="credits">Designed by<a href="">Jimma University ICT-DO</a>
 				</div>
-				<!-- End blog sidebar -->
-
 			</div>
 
-		</div>
-	</div>
-</section>
-
-<footer id="footer" style="background-color:#023b6d;">{# <div class="footer-newsletter">
-							      <div class="container">
-							        <div class="row">
-							          <div class="col-lg-6">
-							            <h4>Our Newsletter</h4>
-							            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
-							          </div>
-							          <div class="col-lg-6">
-							            <form action="" method="post">
-							              <input type="email" name="email"><input type="submit" value="Subscribe">
-							            </form>
-							          </div>
-							        </div>
-							      </div>
-							    </div> #}{# <div class="footer-top">
-							      <div class="container">
-							        <div class="row">
-							
-							          <div class="col-lg-3 col-md-6 footer-links">
-							            <h4>Useful Links</h4>
-							            <ul>
-							              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-							              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-							              <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-							              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-							              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
-							            </ul>
-							          </div>
-							
-							          <div class="col-lg-3 col-md-6 footer-links">
-							            <h4>Our Services</h4>
-							            <ul>
-							              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-							              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-							              <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-							              <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-							              <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
-							            </ul>
-							          </div>
-							
-							          <div class="col-lg-3 col-md-6 footer-contact">
-							            <h4>Contact Us</h4>
-							            <p>
-							              A108 Adam Street <br>
-							              New York, NY 535022<br>
-							              United States <br><br>
-							              <strong>Phone:</strong> +1 5589 55488 55<br>
-							              <strong>Email:</strong> info@example.com<br>
-							            </p>
-							
-							          </div>
-							
-							          <div class="col-lg-3 col-md-6 footer-info">
-							            <h3>About Anyar</h3>
-							            <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
-							            <div class="social-links mt-3">
-							              <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-							              <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-							              <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-							              <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-							              <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-							            </div>
-							          </div>
-							
-							        </div>
-							      </div>
-							    </div> #}<div class="container"> <div class="copyright">
-&copy; Copyright
-<script>
-                    document.write(new Date().getFullYear())
-                </script>
-<strong>
-	<span>{{app_name}}</span>
-</strong>. All Rights Reserved</div><div class="credits">
-Designed by
-<a href="">Jimma University ICT-DO</a></div></div></footer><!-- End Footer -->{# <div id="preloader"></div> #}<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a><!-- Vendor JS Files --><script src="{{ asset('Anyar/assets/vendor/aos/aos.js') }}"></script><script src="{{ asset('Anyar/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script><script src="{{ asset('Anyar/assets/vendor/glightbox/js/glightbox.min.js') }}"></script><script src="{{ asset('Anyar/assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script><script src="{{ asset('Anyar/assets/vendor/php-email-form/validate.js') }}"></script><script src="{{ asset('Anyar/assets/vendor/swiper/swiper-bundle.min.js') }}"></script><!-- Template Main JS File --><script src="{{ asset('Anyar/assets/js/main.js') }}"></script></body></html>
+		</footer>
+		<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+			<i class="bi bi-arrow-up-short"></i>
+		</a>
+		<script src="{{ asset('Anyar/assets/vendor/aos/aos.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/vendor/php-email-form/validate.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/js/main.js') }}"></script>
+	</body>
+</body></html>

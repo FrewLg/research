@@ -18,10 +18,7 @@
 
 				{% for co_author  in review_assignments %}
 					<div class="col-lg-2 col-md-12 col-sm-12">
-
-
 						<div class="card">
-
 							<div class="card-body text-center">
 								{% if co_author.image   %}
 									<img src="{{ asset('files/profile_pictures/'~ co_author.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">

@@ -33,6 +33,7 @@ use App\Repository\EvaluationFormRepository;
 use DateTime;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Knp\Component\Pager\PaginatorInterface;
+use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface;
 use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -81,10 +82,75 @@ class IRBReviewController extends AbstractController
         ]);
     }
 
-    
+    /**
+     * @Route("/filter/{filter}/", name="submission_filter", methods={"GET"})
+     */
+    public function byfilter(Request $request, $filter, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
+
+        // $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $info = 'All';
+        $em = $this->getDoctrine()->getManager();
+        switch ($filter) {
+
+        case 'al':
+            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
+            break;
+        case 'cp':
+            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['complete' => '1']));
+            $info = 'Complete submission';
+            break;
+        case 'gr':
+            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'grant']));
+            $info = 'Grant';
+            break;
+        case 'cs':
+            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'Community service']));
+            $info = 'Community service';
+            break;
+        case 'mg':
+            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'Mega Research']));
+            $info = 'Technology transfer';
+            break;
+        case 'tt':
+            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'Technology transfer']));
+            $info = 'Technology transfer';
+            break;
+        case 'ps':
+            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['published' => '1']));
+            $info = 'Published';
+            break;
+
+        case 'rv':
+            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'grant']));
+            $info = 'Review assigned';
+            break;
+        case 'ic':
+            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['complete' => '0']));
+            $info = 'Incomplete ';
+            break;
+        default:
+            return $this->redirectToRoute('submission_index');
+#     $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
+        }
+
+        // Paginate the results of the query
+        $Allsubmissions = $paginator->paginate(
+            // Doctrine Query, not results
+            $submissionRepository,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            10
+        );
+        return $this->render('submission/index.html.twig', [
+            'info' => $info,
+            'submissions' => $Allsubmissions,
+        ]);
+    }
+
 
     /**
-     * @Route("/{id}/myassigned", name="his_assignment", methods={"GET"})
+     * @Route("/{id}/assigned", name="his_assignment", methods={"GET"})
      */
     public function allassigned(Request $request, User $user, PaginatorInterface $paginator): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
