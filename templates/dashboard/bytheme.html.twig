@@ -79,7 +79,7 @@
 										</td>
 										<td>
 											{% if submission.sentAt %}
-												{{ submission.sentAt|date() }}
+												{{ submission.sentAt|date('y-m-d h:s a') }}
 											{% endif %}
 										</td>
 										<td nowrap="nowrap">

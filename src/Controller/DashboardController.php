@@ -151,17 +151,8 @@ class DashboardController extends AbstractController {
          $formFilter = $this->get('form.factory')->create(SubmissionFilterType::class);
         $formFilter->handleRequest($request);
         $info = 'All';
-        $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
-        if ($request->query->has($formFilter->getName())) {
-            $filter = new FilterFunctions();
-            $lexikFormFilter = $this->get('lexik_form_filter.query_builder_updater');
-            $submissionRepository = $filter->filter($request, $formFilter, $em, $lexikFormFilter, 'App:User');
-        }
-          $Allsubmissions = $paginator->paginate(
-             $submissionRepository,
-             $request->query->getInt('page', 1),
-             10
-        );
+        $Allsubmissions = array_reverse($em->getRepository('App:Submission')->findAll());
+        
         
         $entityManager = $this->getDoctrine()->getManager(); 
                 #################################           
@@ -179,14 +170,80 @@ class DashboardController extends AbstractController {
                       ->setParameter('college', $this->getUser()->getUserInfo()->getCollege()  );
                 $recepients = $querytwo->getScalarResult();
              
-                    //   dd($recepients);
+                    
+        $submissions = $entityManager->getRepository(Submission::class)->findAll();
         $submissionbytheme = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $this->getUser()->getUserInfo()->getCollege() ]);
+        $allcalls = $entityManager->getRepository(CallForProposal::class)->findBy(['college' => $this->getUser()->getUserInfo()->getCollege() ]);
+        $copis = $entityManager->getRepository(CoAuthor::class)->findall();
+
+        $allcallsp = $paginator->paginate(
+            // Doctrine Query, not results
+            $allcalls,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            10
+        );
+        
+
+
+        $query = $entityManager->createQuery(
+            'SELECT u.email , u.id, pi. last_name , pi.first_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+            FROM App:ReviewAssignment s 
+            JOIN s.reviewer u 
+            JOIN u.userInfo pi 
+            JOIN s.submission b 
+          where  u.is_reviewer  is NULL  GROUP BY u.id
+        ');
+                $recepients = $query->getResult();
+                    
+                #######################
+                $query2 = $entityManager->createQuery(
+                    'SELECT u.email , u.id, pi. last_name , pi.first_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+                    FROM App:ReviewAssignment s 
+                    JOIN s.reviewer u 
+                    JOIN u.userInfo pi 
+                    JOIN s.submission b 
+                  where  u.is_reviewer =:external   GROUP BY u.id
+                ')
+             ->setParameter('external', 1  ); 
+                        $recepientextrnal = $query2->getResult();
+                ################################
+                // $recepients = $querytwo->getScalarResult();
+                $all=count($recepients)  ;
+                $allext=count($recepientextrnal)  ;
+                // dd(count($recepients) );
+
+                $review_assignments = $paginator->paginate(
+                // Doctrine Query, not results
+                $recepients,
+                // Define the page parameter
+                $request->query->getInt('page', 1),
+                // Items per page
+                10
+                );
+
+                $recepientextrnalpa = $paginator->paginate(
+                    // Doctrine Query, not results
+                    $recepientextrnal,
+                    // Define the page parameter
+                    $request->query->getInt('page', 1),
+                    // Items per page
+                    10
+                    );
+
+        ########################
+
 
         return $this->render('dashboard/dashboard.html.twig', [
             'formFilter' => $formFilter->createView(),
             'submissions' => $Allsubmissions,
             'bythemes'=>$submissionbytheme,
-            'info' => $info,
+            'allcalls'=>$allcallsp,
+            'submissions' => $submissions,
+            'copis' => $copis, 
+            'all' =>  $all,
+            'allext' =>  $allext
         ]);
     }  
   
