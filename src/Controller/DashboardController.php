@@ -188,7 +188,7 @@ class DashboardController extends AbstractController {
 
 
         $query = $entityManager->createQuery(
-            'SELECT u.email , u.id, pi. last_name , pi.first_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+            'SELECT    count(b.id) as subs,  count(u.id) as review_assignment
             FROM App:ReviewAssignment s 
             JOIN s.reviewer u 
             JOIN u.userInfo pi 
@@ -199,7 +199,7 @@ class DashboardController extends AbstractController {
                     
                 #######################
                 $query2 = $entityManager->createQuery(
-                    'SELECT u.email , u.id, pi. last_name , pi.first_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+                    'SELECT   count(b.id) as subs,  count(u.id) as review_assignment
                     FROM App:ReviewAssignment s 
                     JOIN s.reviewer u 
                     JOIN u.userInfo pi 
@@ -214,8 +214,8 @@ class DashboardController extends AbstractController {
                 $allext=count($recepientextrnal)  ;
                 // dd(count($recepients) );
 
-                
-                  #######################
+               
+  #######################
                   $query3 = $entityManager->createQuery(
                     'SELECT  s.remark as decision, count(b.id)  as proposals
                     FROM App:Review s 
@@ -223,17 +223,18 @@ class DashboardController extends AbstractController {
                     JOIN s.submission b    GROUP BY s.remark
                 ');
                         $remark = $query3->getScalarResult();
-                 ################################
-
-
+                 ################################ 
                   #######################
                   $query4 = $entityManager->createQuery(
-                    'SELECT  s.remark as decision, count(b.id)  as proposals
-                    FROM App:Review s 
+                    'SELECT  i.gender as Gender, count(s.id)  as Proposals
+                    FROM App:User u 
+                    JOIN u.submissions s 
+                    JOIN u.userInfo i 
                     
-                    JOIN s.submission b    GROUP BY s.remark
+                      GROUP BY i.gender
                 ');
-                        $remark = $query4->getScalarResult();
+                        $remark2 = $query4->getScalarResult();
+                        // dd($remark2 );
                  ################################
 
 
@@ -250,7 +251,7 @@ class DashboardController extends AbstractController {
             'submissions' => $submissions,
             'copis' => $copis, 
             'desision' => $remark, 
-
+            'gender_distribution'=>$remark2,
             'all' =>  $all,
             'allext' =>  $allext
         ]);

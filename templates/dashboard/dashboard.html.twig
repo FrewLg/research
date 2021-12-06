@@ -131,6 +131,8 @@
 				<!--end col-->
 			</div>
 			<!--end row-->
+			
+
 			<div class="card">
 				<div class="card-header">
 					<div class="row align-items-center">
@@ -152,6 +154,28 @@
 					</div>
 				</div>
 			</div>
+			<div class="card">
+				<div class="card-header">
+					<div class="row align-items-center">
+						<div class="col">
+							<h4 class="card-title">Review decisions distribution</h4>
+						</div>
+						<!--end col-->
+					{# ds #}
+						<!--end col-->
+					</div>
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+					<div class="" style="position: relative;">
+						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
+						<canvas id="bar-chart2" width="400" height="200"></canvas>
+
+
+					</div>
+				</div>
+			</div>
+
 		</div>
 		<!--end col-->
 		<div class="col-lg-3">
@@ -227,13 +251,13 @@
 				<div class="card-body">
 
 					<canvas id="doughnut-chart1" width="100" height="100"></canvas>
- 
+
 
 				</div>
 
 			</div>
-
-<div class="card">
+			
+			<div class="card">
 				<div class="card-header">
 					<div class="row align-items-center">
 
@@ -248,7 +272,28 @@
 				<!--end card-header-->
 				<div class="card-body">
 
- 					<canvas id="doughnut-chart2" width="100" height="100"></canvas>
+					<canvas id="doughnut-chart2" width="100" height="100"></canvas>
+
+
+				</div>
+
+			</div>
+			<div class="card">
+				<div class="card-header">
+					<div class="row align-items-center">
+
+						<h4 class="card-title">
+							<b>Gender distibution of proposal submission
+							</b>
+						</h4>
+
+					</div>
+					<!--end row-->
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+
+					<canvas id="doughnut-chart3" width="100" height="100"></canvas>
 
 
 				</div>
@@ -327,6 +372,8 @@
 								<tr>
 									<td>
 										Internal
+
+
 									</td>
 									<td>
 										<a href="#" class="avatar-box thumb-xxs align-self-center">
@@ -374,12 +421,10 @@
 		new Chart(document.getElementById("bar-chart"), {
 type: 'bar',
 data: {
-	labels: [ {% for theanswer in bythemes %} 
-'{{ (theanswer.name|raw |length > 25 ? theanswer.name |raw |slice(0,  25) ~ '..' : theanswer.name |raw ) }}',
-{% endfor %}
- ],
+labels: [{% for theanswer in bythemes %}
+'{{ (theanswer.name|raw |length > 25 ? theanswer.name |raw |slice(0,  25) ~ '..' : theanswer.name |raw ) }}',{% endfor %}],
 datasets: [
-{ 
+{
 
 
 backgroundColor: [
@@ -416,6 +461,7 @@ text: 'Proposals  destribution by thematic areas'
 }
 }
 });
+
 
 new Chart(document.getElementById("doughnut-chart1"), {
 type: 'doughnut',
@@ -462,10 +508,79 @@ text: "Responses "
 new Chart(document.getElementById("doughnut-chart2"), {
 type: 'doughnut',
 data: {
-labels: [{% for theanswer in desision %}'{{ (theanswer.decision|raw |length > 25 ? theanswer.decision |raw |slice(0,  25) ~ '..' : theanswer.decision |raw ) }}',{% endfor %}],
+labels: [{% for theanswer in desision %}'{{ (theanswer.decision ) }}',{% endfor %}],
 datasets: [
 {
 label: "  completion status",
+backgroundColor: [
+"#3e95cd",
+"#8e5ea2",
+"#c45850",
+"#3cba9f",
+"#c45850",
+"#3e95cd",
+"#8e5ea2",
+"#3cba9f",
+"#e8c3b9",
+"#c45850",
+"#3e95cd"
+],
+data: [{% for theanswer in desision %}'{{ theanswer.proposals }}',{% endfor %}]
+}
+]
+},
+options: {
+legend: {
+display: false
+},
+title: {
+display: true,
+text: "Review Decision "
+}
+}
+});
+
+
+new Chart(document.getElementById("doughnut-chart3"), {
+type: 'doughnut',
+data: {
+labels: [{% for theanswer in gender_distribution %}'{{ (theanswer.Gender|raw |length > 25 ? theanswer.Gender |raw |slice(0,  25) ~ '..' : theanswer.Gender |raw ) }}',{% endfor %}],
+datasets: [
+{
+label: "  Gender distribution",
+backgroundColor: [
+ 
+"#3cba9f",
+"#e8c3b9",
+"#c45850",
+"#3e95cd", 
+],
+data: [{% for theanswer in gender_distribution %}'{{ theanswer.Proposals }}',{% endfor %}]
+}
+]
+},
+options: {
+legend: {
+display: false
+},
+title: {
+display: true,
+text: "Responses "
+}
+}
+});
+
+
+
+	new Chart(document.getElementById("bar-chart2"), {
+type: 'bar',
+data: {
+labels: [{% for theanswer in desision %}
+'{{ (theanswer.decision ) }}',{% endfor %}],
+datasets: [
+{
+
+
 backgroundColor: [
 "#3e95cd",
 "#8e5ea2",
@@ -474,17 +589,7 @@ backgroundColor: [
 "#c45850",
 "#3e95cd",
 "#8e5ea2",
-"#3cba9f",
-"#e8c3b9",
-"#c45850",
-"#3e95cd",
-"#8e5ea2",
-"#3cba9f",
-"#e8c3b9",
-"#c45850",
-"#3e95cd",
-"#8e5ea2",
-"#3cba9f"
+"#3cba9f", 
 ],
 data: [{% for theanswer in desision %}'{{ theanswer.proposals  }}',{% endfor %}]
 }
@@ -496,7 +601,7 @@ display: false
 },
 title: {
 display: true,
-text: "Review Decision "
+text: 'Proposals  destribution by thematic areas'
 }
 }
 });

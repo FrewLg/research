@@ -58,10 +58,9 @@ class User implements UserInterface
     private $proposals;
 
     /**
-     * @ORM\OneToMany(targetEntity=Submission::class, mappedBy="co_author")
+     * @ORM\OneToMany(targetEntity=Submission::class, mappedBy="author")
      */
-    private $submissions;
-
+    private $submissions; 
   
  /**
      * @ORM\ManyToOne(targetEntity=Review::class, inversedBy="reviewed_by")
