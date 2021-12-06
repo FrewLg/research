@@ -62,7 +62,7 @@
 												{% endif %}
 											</td>
                                             <td nowrap=nowrap>
-										{{ myreview.Declined }} 
+										 
                                             
 												{% if myreview.acceptedAt %}
 												
@@ -72,11 +72,7 @@
 												
                                                 <span class="badge bg-danger">Rejected at: 	</span> {{ myreview.rejectedAt|date('d-m-y i:sa') }}
 											
-                                            	{% else %}
-                                                <span class="badge bg-warning">Pending</span>
-                                            	{% endif %}
-
-								 	{% if myreview.IsRejected == 1 %}<span class="badge bg-info" title="Invitation not sent"> Rejected</span>
+                                            	  
 								{% elseif  myreview.Closed == 1 %}
 									<span class="badge bg-warning">Review sent</span>
 								{% elseif  myreview.InactiveAssignment == 1 %}
@@ -97,10 +93,16 @@
 	Unassign</a>
 
 								
-								{% if review_assignment.closed %}
+								{% if myreview.closed %}
 
 
-									<a href="{{ path('reassign', {'id': myreview.id}) }}"  class='btn btn-primary btn-xs ' > Re-assign</a>
+									<a href="{{ path('reassign', {'id': myreview.id}) }}"  class='btn btn-info btn-xs ' > Re-assign</a>
+												{% endif %}
+
+												{% if myreview.reassigned %}
+
+
+									<a href="#"  class='btn btn-warning btn-xs ' > Re-assigned</a>
 												{% endif %}
 
 									<a href="{{ path('submission_show', {'id': myreview.submission.id}) }}"  class='btn btn-primary btn-xs ' > Details</a>
