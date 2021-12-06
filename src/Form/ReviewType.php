@@ -45,7 +45,7 @@ class ReviewType extends AbstractType
  
                 'class' => 'form-control',
 
-                'required' => false,
+                'required' => true,
 
             ],
         ])
@@ -58,7 +58,7 @@ class ReviewType extends AbstractType
  
                 'class' => 'form-control',
 
-                'required' => false,
+                'required' => true,
 
             ],
         ])

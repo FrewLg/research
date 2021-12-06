@@ -146,9 +146,9 @@
 
 									{% if review_assignment.IsRejected == 1 %}<span class="badge bg-info" title="Invitation not sent"> Rejected</span>
 								{% elseif  review_assignment.Closed == 1 %}
-									<span class="badge bg-warning">Closed</span>
+									<span class="badge bg-warning">Replied revision</span>
 								{% elseif  review_assignment.InactiveAssignment == 1 %}
-									<span class="badge bg-danger">InactiveAssignment</span>
+									<span class="badge bg-danger">Inactive</span>
 								{% elseif  review_assignment.Declined == 1 %}
 									<span class="badge bg-danger">Declined</span>
 	{% else %}
@@ -156,6 +156,7 @@
 
 
 								{% endif %}
+
 
 
 							</td>
@@ -289,9 +290,7 @@
 									{% endfor %}
 
 
-								</span>
-
-															</div>
+								</span> 
 														</div>
 													</div>
 												</div>

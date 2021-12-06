@@ -62,7 +62,7 @@
 												{% endif %}
 											</td>
                                             <td nowrap=nowrap>
-  {{ myreview.Declined }} 
+										{{ myreview.Declined }} 
                                             
 												{% if myreview.acceptedAt %}
 												
@@ -76,13 +76,36 @@
                                                 <span class="badge bg-warning">Pending</span>
                                             	{% endif %}
 
+								 	{% if myreview.IsRejected == 1 %}<span class="badge bg-info" title="Invitation not sent"> Rejected</span>
+								{% elseif  myreview.Closed == 1 %}
+									<span class="badge bg-warning">Review sent</span>
+								{% elseif  myreview.InactiveAssignment == 1 %}
+									<span class="badge bg-danger">Inactive </span>
+								{% elseif  myreview.Declined == 1 %}
+									<span class="badge bg-danger">Declined</span>
+								{% else %}
+									<span class="badge bg-warning">Pending</span>
+
+
+								{% endif %}
+
+
 											</td>
 											<td nowrap=nowrap>
 
- <a href="{{ path('unassign', {'id': myreview.id}) }}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete  {{myreview.reviewer }} from reviewers list?');">
+ <a href="{{ path('unassign', {'id': myreview.id}) }}" class="btn btn-warning btn-xs" onclick="return confirm('Are you sure you want to delete  {{myreview.reviewer }} from reviewers list?');">
 	Unassign</a>
 
+								
+								{% if review_assignment.closed %}
+
+
+									<a href="{{ path('reassign', {'id': myreview.id}) }}"  class='btn btn-primary btn-xs ' > Re-assign</a>
+												{% endif %}
+
 									<a href="{{ path('submission_show', {'id': myreview.submission.id}) }}"  class='btn btn-primary btn-xs ' > Details</a>
+										
+										
 											</td>
 
 											 

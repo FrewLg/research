@@ -773,7 +773,7 @@
 												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
 
 												{% if review_assignment.reviewer.isReviewer  %}
-													<span class=" btn btn-sm btn-soft-primary">External
+													<span class=" btn btn-xs btn-soft-primary">External
 
 
 														<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
@@ -784,7 +784,7 @@
 														</a>
 													</span>
 												{% else %}
-													<span class="btn btn-sm btn-soft-success">Internal
+													<span class="btn btn-xs btn-soft-success">Internal
 
 														<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
 															<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
@@ -795,12 +795,16 @@
 													</span>
 												{% endif %}
 
-												<button class="btn btn-sm btn-soft-danger">
-													<b>
-														Unassign
-													</b>
-												</button>
+											 
+												<a href="{{ path('unassign', {'id': review_assignment.id}) }}" 
+												class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
+	Unassign</a>
 
+												{% if review_assignment.closed %}
+
+
+									<a href="{{ path('reassign', {'id': review_assignment.id}) }}"  class='btn btn-primary btn-sm ' > Re-assign</a>
+												{% endif %}
 
 											</form>
 

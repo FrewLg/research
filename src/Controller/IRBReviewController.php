@@ -233,6 +233,18 @@ class IRBReviewController extends AbstractController
             );
             return $this->redirectToRoute('myreviews');
         }
+
+        if ($reviewAssignment->getReassigned()==1 ) {
+            ////if you are the author then you can't review it///////
+            $this->addFlash(
+                'warining',
+                'You have been re-assigned!'
+            );
+            return $this->redirectToRoute('rereviewsubmission', array('id' => $reviewAssignment->getId()));
+        }
+
+
+
         $review = new Review();
         $review->setReviewAssignment($reviewAssignment);
         $review->setSubmission($reviewAssignment->getSubmission());
@@ -247,13 +259,172 @@ class IRBReviewController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $reviewfile = $form->get('attachment')->getData();
             if ($reviewfile == "") {
-                $review->setAttachment('');
+                $this->addFlash(
+                    'danger',
+                    'Review file  not uploaded!'
+                );
             } else {
                 $reviewfile = $form->get('attachment')->getData();
                 $Areviewfile = md5(uniqid()) . '.' . $reviewfile->guessExtension();
                 $reviewfile->move($this->getParameter('review_files'), $Areviewfile);
                 $review->setAttachment($Areviewfile);
             }
+            ##########
+            $reviewfile2 = $form->get('evaluation_attachment')->getData();
+            if ($reviewfile2 == "") {
+                $this->addFlash(
+                    'danger',
+                    'Evaluation  file  not uploaded!'
+                );
+            } else {
+                $reviewfile2 = $form->get('evaluation_attachment')->getData();
+                $Areviewfile2 = md5(uniqid()) . '.' . $reviewfile2->guessExtension();
+                $reviewfile2->move($this->getParameter('review_files'), $Areviewfile2);
+                $review->setEvaluationAttachment($Areviewfile2);
+            }
+            ###############
+            $review->setCreatedAt(new \DateTime());
+            $review->setReviewedBy($this->getUser());
+            $reviewAssignment->setClosed(1);
+
+            $entityManager->persist($review);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
+        }
+
+        $editorialDecision = new EditorialDecision();
+        $editorialDecisionform = $this->createFormBuilder($editorialDecision)
+      
+            ->add('feedback', TextareaType::class, array(
+                'attr' => array(
+                    'placeholder' => 'Feedback  for the author',
+                    'required' => true,
+                    'class' => 'form-control',
+                )))
+            ->getForm();
+        $editorialDecisionform->handleRequest($request);
+
+ 
+        $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $reviewAssignment->getSubmission(), 'reviewed_by' => $measareviewer]);
+
+        return $this->render('submission/review_byreviewer.html.twig', [
+            'review_assignment' => $reviewAssignment,
+            'review_assignments' => $reviews,
+            'submission' => $submissions,
+            'editorialDecisions' => $editorialDecisions,
+            'editorialDecisionform' => $editorialDecisionform->createView(),
+            'form' => $form->createView(),
+            'evaluationForms' => $evaluationFormRepository->findBy(['parent' => null]),
+        ]);
+    }
+
+
+
+
+    /**
+     * @Route("/{id}/rerevise", name="rereviewsubmission", methods={"GET","POST"})
+     */
+    public function rerevise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
+        ////Ultimate reviewers page
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $entityManager = $this->getDoctrine()->getManager();
+        $me = $this->getUser()->getId();
+        // $id=  $review->getReviewAssignment()->getId();
+        
+ 
+        $submissionOfreviewer = $entityManager->getRepository(ReviewAssignment::class)->find($reviewAssignment);
+        $metoo = $this->getUser();
+        $me_as_a_reviewer = $submissionOfreviewer->getReviewer()->getId();
+        $submissions = $submissionOfreviewer->getSubmission();
+        $editorialDecisions = $entityManager->getRepository(EditorialDecision::class)->find($submissions);
+        #dd($me_as_a_reviewer.$me);
+        $iamareviewers = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submissions, 'reviewer' => $metoo]);
+
+        // $myassigned =  $entityManager->getRepository(ReviewAssignment::class)->findBy($reviewAssignment);
+        #######################
+        if ($reviewAssignment->getClosed() == 1) {
+            return $this->redirectToRoute('myassigned');
+
+        }
+        #######################
+        foreach ($submissionOfreviewer as $muke) {
+            $dd = $muke->getReviewer()->getId();
+            echo $dd; #=  $muke->getReviewer()->getId();
+
+            $lala = $dd . 'compare' . $me;
+            /////////
+            $me = $this->getUser()->getId();
+            $thereviewerone = $reviewAssignment->getReviewer()->getId();
+            if ($dd == $me) {
+
+                return $this->redirectToRoute('myreviews');
+                $this->addFlash(
+                    'danger',
+                    'Sorry you' . $dd . '//' . $me . ' never been assigned to this submision!'
+
+                );
+
+            }
+
+            /////
+        }
+        $measareviewer = $this->getUser();
+        $author = $submissions->getAuthor();
+        //   $reviews=$entityManager->getRepository(Review::class)->findBy(['submission' => $submissions ] );
+
+        if ($measareviewer == $author) {
+            ////if you are the author then you can't review it///////
+            $this->addFlash(
+                'warining',
+                'You can not see the submission you made in this page!'
+            );
+            return $this->redirectToRoute('myreviews');
+        }
+        // $review = new Review();
+         
+        $reviewid = $entityManager->getRepository(Review::class)->findBy(['reviewAssignment'=>$reviewAssignment->getId(), 'reviewed_by'=> $this->getUser()]);
+        $review = $entityManager->getRepository(Review::class)->find($reviewid);
+
+        $review->setReviewAssignment($reviewAssignment);
+        $review->setSubmission($reviewAssignment->getSubmission());
+        $review->setReviewedBy($measareviewer);
+
+        // $review = new Review();
+        $form = $this->createForm(ReviewType::class, $review);
+        $form->handleRequest($request);
+
+ 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $reviewfile = $form->get('attachment')->getData();
+            if ($reviewfile == "") {
+                $this->addFlash(
+                    'danger',
+                    'Review  file  not uploaded!'
+                );
+            } else {
+                $reviewfile = $form->get('attachment')->getData();
+                $Areviewfile = md5(uniqid()) . '.' . $reviewfile->guessExtension();
+                $reviewfile->move($this->getParameter('review_files'), $Areviewfile);
+                $review->setAttachment($Areviewfile);
+            }
+
+              ##########
+              $reviewfile2 = $form->get('evaluation_attachment')->getData();
+              if ($reviewfile2 == "") {
+                  $this->addFlash(
+                      'danger',
+                      'Evaluation  file  not uploaded!'
+                  );
+              } else {
+                  $reviewfile2 = $form->get('evaluation_attachment')->getData();
+                  $Areviewfile2 = md5(uniqid()) . '.' . $reviewfile2->guessExtension();
+                  $reviewfile2->move($this->getParameter('review_files'), $Areviewfile2);
+                  $review->setEvaluationAttachment($Areviewfile2);
+              }
+              ###############
+
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
             $reviewAssignment->setClosed(1);
@@ -277,22 +448,7 @@ class IRBReviewController extends AbstractController
         $editorialDecisionform->handleRequest($request);
 
 
-        // $editorialDecision = new EditorialDecision();
-        // $editorialDecisionform = $this->createForm(EditorialDecisionType::class, $editorialDecision);
-        // $editorialDecisionform->handleRequest($request);
-
-        // if ($editorialDecisionform->isSubmitted() && $editorialDecisionform->isValid()) {
-        //     $entityManager = $this->getDoctrine()->getManager();
-        //     $editorialDecision->setSubmission($submissions);
-        //     $editorialDecision->setRevisedAt(new \DateTime());
-        //     // $editorialDecision->setCreatedAt(new \DateTime());
-
-        //     $editorialDecision->setEditedBy($this->getUser());
-        //     $entityManager->persist($editorialDecision);
-        //     $entityManager->flush();
-
-        //     return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
-        // }
+       
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $reviewAssignment->getSubmission(), 'reviewed_by' => $measareviewer]);
 
         return $this->render('submission/review_byreviewer.html.twig', [
@@ -345,7 +501,7 @@ class IRBReviewController extends AbstractController
             // $entityManager->remove($reviewAssignment);
             $reviewAssignment->setInactiveAssignment(1);
               $this->addFlash(
-            'info',
+            'success',
             'Reviewer unassigned!'
         ); 
             $entityManager->flush();
@@ -353,6 +509,31 @@ class IRBReviewController extends AbstractController
             return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
  
     }
+
+
+    /**
+     * @Route("/{id}", name="reassign", methods={"DELETE", "GET","POST"})
+     */
+    public function reassign( ReviewAssignment $reviewAssignment  ): Response
+    {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+
+             $entityManager = $this->getDoctrine()->getManager();
+            // $entityManager->remove($reviewAssignment);
+            $reviewAssignment->setInactiveAssignment(NULL);
+            $reviewAssignment->setClosed(NULL);
+            $reviewAssignment->setReassigned(1);
+            
+              $this->addFlash(
+            'success',
+            'Reviewer re assigned successfully!'
+        ); 
+            $entityManager->flush();
+        
+            return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
+ 
+    }
+
 
   
 
@@ -386,6 +567,14 @@ class IRBReviewController extends AbstractController
         // dd();
         return $this->redirectToRoute('myassigned');
 }
+
+if ($reviewAssignment->getIsRejected()){
+    // echo"'dsada'";
+    // dd();
+    return $this->redirectToRoute('rereviewsubmission' );
+}
+
+
         $submission=$reviewAssignment->getSubmission();
                  $workunit=$reviewAssignment->getSubmission();
 	 $guideline_for_reviewers = $entityManager->getRepository(GuidelineForReviewer::class)->findAll()[0];
