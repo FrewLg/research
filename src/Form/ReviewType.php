@@ -38,7 +38,7 @@ class ReviewType extends AbstractType
             
 
         ->add('attachment', FileType::class, [
-            'label' => 'Reviewed document  file',
+            'label' => 'Evaluation Report        file',
             'mapped' => false,
             'required' => true,
             'attr' => [
@@ -51,7 +51,7 @@ class ReviewType extends AbstractType
         ])
 
         ->add('evaluation_attachment', FileType::class, [
-            'label' => 'Evaluation document file',
+            'label' => 'Grading    file',
             'mapped' => false,
             'required' => true,
             'attr' => [
