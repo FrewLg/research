@@ -214,23 +214,30 @@ class DashboardController extends AbstractController {
                 $allext=count($recepientextrnal)  ;
                 // dd(count($recepients) );
 
-                $review_assignments = $paginator->paginate(
-                // Doctrine Query, not results
-                $recepients,
-                // Define the page parameter
-                $request->query->getInt('page', 1),
-                // Items per page
-                10
-                );
+                
+                  #######################
+                  $query3 = $entityManager->createQuery(
+                    'SELECT  s.remark as decision, count(b.id)  as proposals
+                    FROM App:Review s 
+                    
+                    JOIN s.submission b    GROUP BY s.remark
+                ');
+                        $remark = $query3->getScalarResult();
+                 ################################
 
-                $recepientextrnalpa = $paginator->paginate(
-                    // Doctrine Query, not results
-                    $recepientextrnal,
-                    // Define the page parameter
-                    $request->query->getInt('page', 1),
-                    // Items per page
-                    10
-                    );
+
+                  #######################
+                  $query4 = $entityManager->createQuery(
+                    'SELECT  s.remark as decision, count(b.id)  as proposals
+                    FROM App:Review s 
+                    
+                    JOIN s.submission b    GROUP BY s.remark
+                ');
+                        $remark = $query4->getScalarResult();
+                 ################################
+
+
+
 
         ########################
 
@@ -242,6 +249,8 @@ class DashboardController extends AbstractController {
             'allcalls'=>$allcallsp,
             'submissions' => $submissions,
             'copis' => $copis, 
+            'desision' => $remark, 
+
             'all' =>  $all,
             'allext' =>  $allext
         ]);

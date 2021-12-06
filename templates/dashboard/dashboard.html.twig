@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Call for proposal
+{% block title %}Dashboard
 {% endblock %}
 
-{% block pagehead %}Call For Proposal
+{% block pagehead %}Dashboard
 {% endblock %}
 {% block breadcrumb %}
-	<li class="breadcrumb-item active">Call For Proposal</li>
+	<li class="breadcrumb-item active">Dashboard</li>
 {% endblock %}
 {% block body %}
 
@@ -227,6 +227,28 @@
 				<div class="card-body">
 
 					<canvas id="doughnut-chart1" width="100" height="100"></canvas>
+ 
+
+				</div>
+
+			</div>
+
+<div class="card">
+				<div class="card-header">
+					<div class="row align-items-center">
+
+						<h4 class="card-title">
+							<b>Review decision
+							</b>
+						</h4>
+
+					</div>
+					<!--end row-->
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+
+ 					<canvas id="doughnut-chart2" width="100" height="100"></canvas>
 
 
 				</div>
@@ -436,6 +458,50 @@ text: "Responses "
 }
 }
 });
+
+new Chart(document.getElementById("doughnut-chart2"), {
+type: 'doughnut',
+data: {
+labels: [{% for theanswer in desision %}'{{ (theanswer.decision|raw |length > 25 ? theanswer.decision |raw |slice(0,  25) ~ '..' : theanswer.decision |raw ) }}',{% endfor %}],
+datasets: [
+{
+label: "  completion status",
+backgroundColor: [
+"#3e95cd",
+"#8e5ea2",
+"#3cba9f",
+"#e8c3b9",
+"#c45850",
+"#3e95cd",
+"#8e5ea2",
+"#3cba9f",
+"#e8c3b9",
+"#c45850",
+"#3e95cd",
+"#8e5ea2",
+"#3cba9f",
+"#e8c3b9",
+"#c45850",
+"#3e95cd",
+"#8e5ea2",
+"#3cba9f"
+],
+data: [{% for theanswer in desision %}'{{ theanswer.proposals  }}',{% endfor %}]
+}
+]
+},
+options: {
+legend: {
+display: false
+},
+title: {
+display: true,
+text: "Review Decision "
+}
+}
+});
+
+
 	</script>
 
 
