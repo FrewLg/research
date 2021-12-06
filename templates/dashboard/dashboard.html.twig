@@ -131,7 +131,7 @@
 				<!--end col-->
 			</div>
 			<!--end row-->
-			
+
 
 			<div class="card">
 				<div class="card-header">
@@ -154,23 +154,53 @@
 					</div>
 				</div>
 			</div>
-			<div class="card">
-				<div class="card-header">
-					<div class="row align-items-center">
-						<div class="col">
-							<h4 class="card-title">Review decisions distribution</h4>
+
+			<div class="row">
+				<div class="col col-6">
+					<div class="card">
+						<div class="card-header">
+							<div class="row align-items-center">
+								<div class="col">
+									<h4 class="card-title">Review decisions distribution</h4>
+								</div>
+								<!--end col-->
+							{# ds #}
+								<!--end col-->
+							</div>
 						</div>
-						<!--end col-->
-					{# ds #}
-						<!--end col-->
+						<!--end card-header-->
+						<div class="card-body">
+
+							<canvas id="bar-chart2" width="100%" height="50%"></canvas>
+
+
+						</div>
 					</div>
 				</div>
-				<!--end card-header-->
-				<div class="card-body">
-					 
- 						<canvas id="bar-chart2" width="100%" height="50%"></canvas>
 
- 
+				<div class="col col-6">
+
+					<div class="card">
+						<div class="card-header">
+							<div class="row align-items-center">
+
+								<h4 class="card-title">
+									<b>Gender distibution of proposal submission
+									</b>
+								</h4>
+
+							</div>
+							<!--end row-->
+						</div>
+						<!--end card-header-->
+						<div class="card-body">
+
+							<canvas id="doughnut-chart3" width="50" height="25"></canvas>
+
+
+						</div>
+
+					</div>
 				</div>
 			</div>
 
@@ -254,7 +284,7 @@
 				</div>
 
 			</div>
-			
+
 			<div class="card">
 				<div class="card-header">
 					<div class="row align-items-center">
@@ -276,27 +306,7 @@
 				</div>
 
 			</div>
-			<div class="card">
-				<div class="card-header">
-					<div class="row align-items-center">
 
-						<h4 class="card-title">
-							<b>Gender distibution of proposal submission
-							</b>
-						</h4>
-
-					</div>
-					<!--end row-->
-				</div>
-				<!--end card-header-->
-				<div class="card-body">
-
-					<canvas id="doughnut-chart3" width="100" height="100"></canvas>
-
-
-				</div>
-
-			</div>
 
 			<div class="card">
 				<div class="card-header">
@@ -363,40 +373,8 @@
 				<div class="card-body">
 
 					<div class="table-responsive mt-2">
-						<table class="table border-dashed mb-0">
-
-							<tbody>
-
-								<tr>
-									<td>
-										Internal
-
-
-									</td>
-									<td>
-										<a href="#" class="avatar-box thumb-xxs align-self-center">
-											<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-												{{ all}}
-											</span>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										External
-									</td>
-									<td>
-										<a href="#" class="avatar-box thumb-xxs align-self-center">
-											<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-												{{ allext }}
-											</span>
-										</a>
-
-									</td>
-								</tr>
-
-							</tbody>
-						</table>
+						 
+					<canvas id="doughnut-reviewer" width="100" height="50"></canvas>
 
 					</div>
 					<!--end /div-->
@@ -419,8 +397,7 @@
 		new Chart(document.getElementById("bar-chart"), {
 type: 'bar',
 data: {
-labels: [{% for theanswer in bythemes %}
-'{{ (theanswer.name|raw |length > 25 ? theanswer.name |raw |slice(0,  25) ~ '..' : theanswer.name |raw ) }}',{% endfor %}],
+labels: [{% for theanswer in bythemes %}'{{ (theanswer.name|raw |length > 25 ? theanswer.name |raw |slice(0,  25) ~ '..' : theanswer.name |raw ) }}',{% endfor %}],
 datasets: [
 {
 
@@ -450,13 +427,15 @@ data: [{% for theanswer in bythemes %}'{{ theanswer.submissions|length }}',{% en
 ]
 },
 options: {
-	 scales: {
-        yAxes: [{
-            ticks: {
-                beginAtZero: true
-            }
-        }]
-    } ,
+scales: {
+yAxes: [
+{
+ticks: {
+beginAtZero: true
+}
+}
+]
+},
 legend: {
 display: false
 },
@@ -526,7 +505,7 @@ backgroundColor: [
 "#3e95cd",
 "#8e5ea2",
 "#3cba9f",
-"#e8c3b9" 
+"#e8c3b9"
 ],
 data: [{% for theanswer in desision %}'{{ theanswer.proposals }}',{% endfor %}]
 }
@@ -552,11 +531,8 @@ datasets: [
 {
 label: "  Gender distribution",
 backgroundColor: [
- 
-"#3cba9f",
-"#e8c3b9",
-"#c45850",
-"#3e95cd", 
+
+"#3cba9f", "#e8c3b9", "#c45850", "#3e95cd",
 ],
 data: [{% for theanswer in gender_distribution %}'{{ theanswer.Proposals }}',{% endfor %}]
 }
@@ -568,47 +544,44 @@ display: false
 },
 title: {
 display: true,
-text: "Responses "
+text: " Gender Responses distribution "
 }
 }
 });
 
 
-
-	new Chart(document.getElementById("bar-chart2"), {
+new Chart(document.getElementById("bar-chart2"), {
 type: 'bar',
 data: {
-labels: [{% for theanswer in desision %}
-'{{ (theanswer.decision ) }}',{% endfor %}],
+labels: [{% for theanswer in desision %}'{{ (theanswer.decision ) }}',{% endfor %}],
 datasets: [
 {
 
 
 backgroundColor: [
+ 
 "#3e95cd",
 "#8e5ea2",
-"#3cba9f",
-"#e8c3b9",
 "#c45850",
-"#3e95cd",
-"#8e5ea2",
-"#3cba9f", 
+"#3cba9f",
+"#c45850",
 ],
-data: [{% for theanswer in desision %}'{{ theanswer.proposals  }}',{% endfor %}]
+data: [{% for theanswer in desision %}'{{ theanswer.proposals }}',{% endfor %}]
 }
 ]
 },
- 
-   
+
+
 options: {
-	 scales: {
-        yAxes: [{
-            ticks: {
-                beginAtZero: true
-            }
-        }]
-    } 
-	,
+scales: {
+yAxes: [
+{
+ticks: {
+beginAtZero: true
+}
+}
+]
+},
 legend: {
 display: false
 },
@@ -619,6 +592,33 @@ text: 'Review decisions distribution'
 }
 });
 
+
+
+new Chart(document.getElementById("doughnut-reviewer"), {
+type: 'doughnut',
+data: {
+labels: [ "Internal reviewer", "External reviewer" ],
+datasets: [
+{
+label: "  Reviewer distribution",
+backgroundColor: [
+
+"#3cba9f",  "#c45850", "#3e95cd",
+],
+data: [ {{all}} , {{allext}}]
+}
+]
+},
+options: {
+legend: {
+display: false
+},
+title: {
+display: true,
+text: " Reviewer distribution "
+}
+}
+});
 
 	</script>
 
