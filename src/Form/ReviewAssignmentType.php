@@ -35,7 +35,7 @@ class ReviewAssignmentType extends AbstractType
          ->add('file_tobe_reviewed', FileType::class, [
             'label' => 'Upload proposal attachment',
             'mapped' => false,  'attr'=>[
-                'class' => 'form-control     ',
+                'class' => 'form-control  m-0   ',
                          'required' => true,
         
         ],
@@ -51,6 +51,8 @@ class ReviewAssignmentType extends AbstractType
       'format' => 'yyyy-MM-dd',
          'attr' => array(
             'min'=>(new DateTime('now'))->format('Y-m-d'),
+'max'=>$reviewAssignment->getSubmission()->getCallForProposal()->getReviewProcessEnd()->format('Y-m-d'),
+
    'required' => true,
 'class'=>'form-control',
 )              

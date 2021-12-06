@@ -326,12 +326,16 @@ else{
                         return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
          
             }
+            $reviewers  = $entityManager->getRepository(User::class)->findAll();
+
         ////////////////External reviewer
         return $this->render('review_assignment/new.html.twig', [
             'review_assignment' => $reviewAssignment,
             'submission' => $submission,
+            'reviewers' => $reviewers,
             'review_assignments'=>$allreviewersfrom_i_r_b,
             'form' => $form->createView(),
+
             'externalreviewerform'=>$externalreviewerform->createView(),
         ]);
     }
@@ -395,6 +399,7 @@ else{
                         10
                         );
 
+                         
             ########################
          return $this->render('review_assignment/show.html.twig', [
             'review_assignments' => $review_assignments, 
@@ -416,19 +421,34 @@ else{
 #        $subs = $entityManager->getRepository(Submission::class)->findBy(['submission' => $workunit ] );
         $form = $this->createForm(ReviewAssignmentType::class, $reviewAssignment);     
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) { 
+
+            $file3external = $form->get('file_tobe_reviewed')->getData();
+
+            if ($file3external==''){
+                $this->addFlash(
+                    'danger',
+                    'Review file is not uploaded !'
+              ); 
+             }   else{
+              $file3external = $form->get('file_tobe_reviewed')->getData();
+                   $fileName3ext = md5(uniqid()).'.'.$file3external->guessExtension();
+               $file3external->move($this->getParameter('review_files'), $fileName3ext);
+                    $reviewAssignment->setFileTobeReviewed($fileName3ext);
+                  }
+
             $this->getDoctrine()->getManager()->flush();
-         #  return $this->redirectToRoute('submission_index');
+            
          $this->addFlash(
             'success',
-            'Update has been made to the submission successfully!'
-        ); 
+            'Update has been made to the asignment successfully!'  ); 
 
            return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
         }
          return $this->render('review_assignment/edit.html.twig', [
             'review_assignment' => $reviewAssignment,
-            'form' => $form->createView(),
+             'editform'=>$form->createView(),
+
         ]);
     } 
     /**
@@ -460,7 +480,9 @@ else{
         $this->denyAccessUnlessGranted('assn_clg_cntr');
  
              $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($reviewAssignment);
+            // $entityManager->remove($reviewAssignment);
+            $reviewAssignment->setInactiveAssignment(1);
+
             $entityManager->flush() ;
 
          $flashbag = $this->get('session')->getFlashBag();
