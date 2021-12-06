@@ -61,7 +61,7 @@
 													{{ myreview.dueDate|date() }}
 												{% endif %}
 											</td>
-                                            <td>
+                                            <td nowrap=nowrap>
   {{ myreview.Declined }} 
                                             
 												{% if myreview.acceptedAt %}
@@ -77,10 +77,10 @@
                                             	{% endif %}
 
 											</td>
-											<td>
+											<td nowrap=nowrap>
 
- <a href="{{ path('review_assignment_delete', {'id': myreview.id}) }}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete  {{myreview.reviewer }} from reviewers list?');">
-	Delete</a>
+ <a href="{{ path('unassign', {'id': myreview.id}) }}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete  {{myreview.reviewer }} from reviewers list?');">
+	Unassign</a>
 
 									<a href="{{ path('submission_show', {'id': myreview.submission.id}) }}"  class='btn btn-primary btn-xs ' > Details</a>
 											</td>
