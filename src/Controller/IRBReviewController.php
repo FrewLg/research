@@ -383,7 +383,7 @@ class IRBReviewController extends AbstractController
         }
         // $review = new Review();
          
-        $reviewid = $entityManager->getRepository(Review::class)->findBy(['reviewAssignment'=>$reviewAssignment->getId(), 'reviewed_by'=> $this->getUser()]);
+        $reviewid = $entityManager->getRepository(Review::class)->findOneBy(['reviewAssignment'=>$reviewAssignment->getId(), 'reviewed_by'=> $this->getUser()]);
         $review = $entityManager->getRepository(Review::class)->find($reviewid);
 
         $review->setReviewAssignment($reviewAssignment);
