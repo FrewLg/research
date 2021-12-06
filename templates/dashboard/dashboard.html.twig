@@ -137,7 +137,8 @@
 				<div class="card-header">
 					<div class="row align-items-center">
 						<div class="col">
-							<h4 class="card-title">Proposals destribution by thematic areas</h4>
+							<h4 class="card-title">Proposals destribution by thematic areas  <button id="btn-theme" class="btn btn-soft-success btn-sm">
+   <i class="fa fa-download material-icons  "></i></h4>
 						</div>
 						<!--end col-->
 					{# ds #}
@@ -147,7 +148,7 @@
 				<!--end card-header-->
 				<div class="card-body">
 					<div class="" style="position: relative;">
-						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
+						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div> 
 						<canvas id="bar-chart" width="400" height="200"></canvas>
 
 
@@ -161,7 +162,8 @@
 						<div class="card-header">
 							<div class="row align-items-center">
 								<div class="col">
-									<h4 class="card-title">Review decisions distribution</h4>
+									<h4 class="card-title">Review decisions distribution  <button id="btn-revdec-bar" class="btn btn-soft-success btn-sm">
+   <i class="fa fa-download material-icons  "></i></h4>
 								</div>
 								<!--end col-->
 							{# ds #}
@@ -187,6 +189,8 @@
 								<h4 class="card-title">
 									<b>Gender distibution of proposal submission
 									</b>
+									 <button id="btn-gender" class="btn btn-soft-success btn-sm">
+   <i class="fa fa-download material-icons  "></i>
 								</h4>
 
 							</div>
@@ -270,6 +274,8 @@
 						<h4 class="card-title">
 							<b>Call Responses by themes
 							</b>
+							 <button id="btn-call" class="btn btn-soft-success btn-sm">
+   <i class="fa fa-download material-icons  "></i>
 						</h4>
 
 					</div>
@@ -292,6 +298,8 @@
 						<h4 class="card-title">
 							<b>Review decision
 							</b>
+							 <button id="decisions" class="btn btn-soft-success btn-sm">
+   <i class="fa fa-download material-icons  "></i></button>
 						</h4>
 
 					</div>
@@ -364,7 +372,9 @@
 				<div class="card-header">
 					<div class="row align-items-center">
 						<div class="col">
-							<h4 class="card-title">Reviewers assignments</h4>
+							<h4 class="card-title">Reviewers assignments  <button id="btn-download" class="btn btn-soft-success btn-sm">
+   <i class="fa fa-download material-icons  "></i>
+</button></h4> 
 						</div>
 					</div>
 					<!--end row-->
@@ -373,7 +383,7 @@
 				<div class="card-body">
 
 					<div class="table-responsive mt-2">
-						 
+						
 					<canvas id="doughnut-reviewer" width="100" height="50"></canvas>
 
 					</div>
@@ -394,7 +404,8 @@
 
 
 	<script type="text/javascript">
-		new Chart(document.getElementById("bar-chart"), {
+	
+	const myBarChart =	new Chart(document.getElementById("bar-chart"), {
 type: 'bar',
 data: {
 labels: [{% for theanswer in bythemes %}'{{ (theanswer.name|raw |length > 25 ? theanswer.name |raw |slice(0,  25) ~ '..' : theanswer.name |raw ) }}',{% endfor %}],
@@ -447,7 +458,7 @@ text: 'Proposals  destribution by thematic areas'
 });
 
 
-new Chart(document.getElementById("doughnut-chart1"), {
+const myDonChart = new Chart(document.getElementById("doughnut-chart1"), {
 type: 'doughnut',
 data: {
 labels: [{% for theanswer in bythemes %}'{{ (theanswer.name|raw |length > 25 ? theanswer.name |raw |slice(0,  25) ~ '..' : theanswer.name |raw ) }}',{% endfor %}],
@@ -489,7 +500,7 @@ text: "Responses "
 }
 });
 
-new Chart(document.getElementById("doughnut-chart2"), {
+const myDon2Chart = new Chart(document.getElementById("doughnut-chart2"), {
 type: 'doughnut',
 data: {
 labels: [{% for theanswer in desision %}'{{ (theanswer.decision ) }}',{% endfor %}],
@@ -523,7 +534,7 @@ text: "Review Decision "
 });
 
 
-new Chart(document.getElementById("doughnut-chart3"), {
+const myChart =  new Chart(document.getElementById("doughnut-chart3"), {
 type: 'doughnut',
 data: {
 labels: [{% for theanswer in gender_distribution %}'{{ (theanswer.Gender|raw |length > 25 ? theanswer.Gender |raw |slice(0,  25) ~ '..' : theanswer.Gender |raw ) }}',{% endfor %}],
@@ -550,7 +561,9 @@ text: " Gender Responses distribution "
 });
 
 
-new Chart(document.getElementById("bar-chart2"), {
+
+
+const myBar2Chart = new Chart(document.getElementById("bar-chart2"), {
 type: 'bar',
 data: {
 labels: [{% for theanswer in desision %}'{{ (theanswer.decision ) }}',{% endfor %}],
@@ -594,7 +607,7 @@ text: 'Review decisions distribution'
 
 
 
-new Chart(document.getElementById("doughnut-reviewer"), {
+const myDonRChart = new Chart(document.getElementById("doughnut-reviewer"), {
 type: 'doughnut',
 data: {
 labels: [ "Internal reviewer", "External reviewer" ],
@@ -619,6 +632,84 @@ text: " Reviewer distribution "
 }
 }
 });
+
+// Get the chart's base64 image string
+var image = myChart.toBase64Image();
+console.log(image);
+
+document.getElementById('btn-download').onclick = function() {
+  // Trigger the download
+  var a = document.createElement('a');
+  a.href = myChart.toBase64Image();
+  a.download = 'reviewer-dist.png';
+  a.click();
+}
+
+// Get the chart's base64 image string
+var image = myBarChart.toBase64Image();
+console.log(image);
+
+document.getElementById('btn-theme').onclick = function() {
+  // Trigger the download
+  var a = document.createElement('a');
+  a.href = myBarChart.toBase64Image();
+  a.download = 'theme.png';
+  a.click();
+}
+
+
+// Get the chart's base64 image string
+var image = myBar2Chart.toBase64Image();
+console.log(image);
+
+document.getElementById('btn-revdec-bar').onclick = function() {
+  // Trigger the download
+  var a = document.createElement('a');
+  a.href = myBar2Chart.toBase64Image();
+  a.download = 'review-decition.png';
+  a.click();
+}
+
+
+
+// Get the chart's base64 image string
+var image = myDonRChart.toBase64Image();
+console.log(image);
+
+document.getElementById('btn-gender').onclick = function() {
+  // Trigger the download
+  var a = document.createElement('a');
+  a.href = myDonRChart.toBase64Image();
+  a.download = 'gender-decition.png';
+  a.click();
+}
+
+// Get the chart's base64 image string
+var image = myDon2Chart.toBase64Image();
+console.log(image);
+
+document.getElementById('decisions').onclick = function() {
+  // Trigger the download
+  var a = document.createElement('a');
+  a.href = myDon2Chart.toBase64Image();
+  a.download = 'reviewer decision ditribution.png';
+  a.click();
+}
+
+
+// Get the chart's base64 image string
+var image = myDonChart.toBase64Image();
+console.log(image);
+
+document.getElementById('btn-call').onclick = function() {
+  // Trigger the download
+  var a = document.createElement('a');
+  a.href = myDonChart.toBase64Image();
+  a.download = 'call response-s.png';
+  a.click();
+}
+
+
 
 	</script>
 
