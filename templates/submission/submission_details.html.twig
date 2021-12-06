@@ -806,6 +806,12 @@
 									<a href="{{ path('reassign', {'id': review_assignment.id}) }}"  class='btn btn-primary btn-sm ' > Re-assign</a>
 												{% endif %}
 
+{% if review_assignment.reassigned %}
+
+
+									<a href="#"  class='btn btn-warning btn-xs ' > Re-assigned</a>
+												{% endif %}
+
 											</form>
 
 											{# <script src="{{ asset('ui/js/jquery.min.js') }}"></script> #}
