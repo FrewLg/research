@@ -69,7 +69,7 @@
 									</li>
 									<li>
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
-									</li> 
+									</li>
 									{% if submission.copyedit is  not empty %}
 										<li>
 											<a class="nav-link" href="#copyedit" data-bs-toggle="tab">Progress report</a>
@@ -159,21 +159,21 @@
 
 
 												{# <div class="accordion-item">
-																																																																																																																																																																																																																																																																																																																																																													<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
-																																																																																																																																																																																																																																																																																																																																																														<button class="accordion-button fw-semibold collapsed" 
-																																																																																																																																																																																																																																																																																																																																																														type="button" data-bs-toggle="collapse" 
-																																																																																																																																																																																																																																																																																																																																																														data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
-																																																																																																																																																																																																																																																																																																																																																															Background And Rationale
-																																																																																																																																																																																																																																																																																																																																																														</button>
-																																																																																																																																																																																																																																																																																																																																																													</h5>
-																																																																																																																																																																																																																																																																																																																																																													<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
-																																																																																																																																																																																																																																																																																																																																																														<div class="accordion-body">
-																																																																																																																																																																																																																																																																																																																																																
-																																																																																																																																																																																																																																																																																																																																																															{{ submission.BackgroundAndRationale |raw}}
-																																																																																																																																																																																																																																																																																																																																																
-																																																																																																																																																																																																																																																																																																																																																														</div>
-																																																																																																																																																																																																																																																																																																																																																													</div>
-																																																																																																																																																																																																																																																																																																																																																												</div> #}
+																																																																																																																																																																																																																																																																																																																																																																									<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
+																																																																																																																																																																																																																																																																																																																																																																										<button class="accordion-button fw-semibold collapsed" 
+																																																																																																																																																																																																																																																																																																																																																																										type="button" data-bs-toggle="collapse" 
+																																																																																																																																																																																																																																																																																																																																																																										data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
+																																																																																																																																																																																																																																																																																																																																																																											Background And Rationale
+																																																																																																																																																																																																																																																																																																																																																																										</button>
+																																																																																																																																																																																																																																																																																																																																																																									</h5>
+																																																																																																																																																																																																																																																																																																																																																																									<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
+																																																																																																																																																																																																																																																																																																																																																																										<div class="accordion-body">
+																																																																																																																																																																																																																																																																																																																																																												
+																																																																																																																																																																																																																																																																																																																																																																											{{ submission.BackgroundAndRationale |raw}}
+																																																																																																																																																																																																																																																																																																																																																												
+																																																																																																																																																																																																																																																																																																																																																																										</div>
+																																																																																																																																																																																																																																																																																																																																																																									</div>
+																																																																																																																																																																																																																																																																																																																																																																								</div> #}
 
 												<div class="accordion-item">
 													<h5 class="accordion-header m-0" id="Objectives">
@@ -231,7 +231,11 @@
 													<div id="collepaselast" class="accordion-collapse collapse" aria-labelledby="headingLastTwo" data-bs-parent="#accordionExample" style="">
 														<div class="accordion-body">
 
-															{{  submission.actionplan |raw }}
+															<div class="table table-responsive">
+																{{  submission.actionplan |raw }}
+															</div>
+
+
 															<h5 class='text-'>Budget breakdown</h5>
 															<table class="table table-striped">
 																<thead>
@@ -447,7 +451,7 @@
 
 										<h3>
 											<a href="#" class="text-navy">
-												Comments  and revisions  
+												Comments  and revisions
 											</a>
 										</h3>
 
@@ -489,21 +493,28 @@
 																	</a>
 																{% else %}
 																	<span class="badge bg-danger">
-																		{% trans %} No evaluation file found{% endtrans %}
+																		{% trans %}
+																		No evaluation file found{% endtrans %}
 																	</span>
 																{% endif %}
 															</div>
 														</td>
 														<td width="65" nowrap="nowrap">
 															<h5 class='text-default'>
-																Review :
-																{{ loop.index }}
+																	{% if review.ReviewedBy.isReviewer %}
+															<span class="text-primary">
+																External reviewer
+															{% else %}
+																<span class="text-success">
+																	Internal reviewer
+																</span>
+															{% endif %}
 															</h5>
-															 <h4 class='text-primary'>
-																 
+															<h4 class='text-primary'>
+
 																{{ review.remark |raw}}
 															</h4>
- 
+
 															<hr>
 															{% if review.AllowToView=='' %}
 
@@ -541,12 +552,12 @@
 								</div>
 							</div>
 							{# <div class="tab-pane" id="copyedit">
-																																																																																																																																																															{{ submission.abstract|raw }}
-																																																																																																																																																														</div>
-																																																																																																																																																														<div class="tab-pane" id="progress-report">
-																																																																																																																																																															{{ submission.title }}
-																																																																																																																																																														</div>
-																																																																																																																																																														<div class="tab-pane" id="terminal-report"></div> #}
+																																																																																																																																																																						{{ submission.abstract|raw }}
+																																																																																																																																																																					</div>
+																																																																																																																																																																					<div class="tab-pane" id="progress-report">
+																																																																																																																																																																						{{ submission.title }}
+																																																																																																																																																																					</div>
+																																																																																																																																																																					<div class="tab-pane" id="terminal-report"></div> #}
 						</div>
 					</div>
 
@@ -560,13 +571,13 @@
 				<div class="float-end">
 					<div
 						class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="##" role="button" aria-haspopup="false" aria-expanded="false">
-																																																																																																											<i class="las la-ellipsis-v font-24 text-muted"></i>
-																																																																																																											</a>
-																																																																																																											<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
-																																																																																																											<a class="dropdown-item" href="##">Open Project</a>
-																																																																																																											<a class="dropdown-item" href="##">Edit Card</a>
-																																																																																																											<a class="dropdown-item" href="##">Delete</a>
-																																																																																																											</div> #}
+																																																																																																																		<i class="las la-ellipsis-v font-24 text-muted"></i>
+																																																																																																																		</a>
+																																																																																																																		<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
+																																																																																																																		<a class="dropdown-item" href="##">Open Project</a>
+																																																																																																																		<a class="dropdown-item" href="##">Edit Card</a>
+																																																																																																																		<a class="dropdown-item" href="##">Delete</a>
+																																																																																																																		</div> #}
 					</div>
 				</div>
 				<div class="media align-items-center">
@@ -712,7 +723,7 @@
 								</span>
 								<br>
 								<span class="text-dark">
-									  Invitaion  response:
+									Invitaion  response:
 									{% if  review_assignment.Declined %}
 										<span class="text-danger">
 											Declined</span>
@@ -724,9 +735,10 @@
 
 										<span class="text-primary">
 											Closed</span>
-{% elseif  review_assignment.InactiveAssignment == 1 %}
-																	<span class="badge bg-danger">Inactive  </span>
-																	<br>
+									{% elseif  review_assignment.InactiveAssignment == 1 %}
+										<span class="badge bg-danger">Inactive
+										</span>
+										<br>
 
 									{% else   %}
 
@@ -761,23 +773,25 @@
 												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
 
 												{% if review_assignment.reviewer.isReviewer  %}
-													<span class=" btn btn-sm btn-soft-primary">External  
-													
-													
-													<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
-																		<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
-																		+	{{review_assignment.reviewer.reviewAssignments|length}}
-																		</span>
-																	</a>
+													<span class=" btn btn-sm btn-soft-primary">External
+
+
+														<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+																+
+																{{review_assignment.reviewer.reviewAssignments|length}}
+															</span>
+														</a>
 													</span>
 												{% else %}
-													<span class="btn btn-sm btn-soft-success">Internal 
-													
-													<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
-																		<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-																		+	{{review_assignment.reviewer.reviewAssignments|length}}
-																		</span>
-																	</a>
+													<span class="btn btn-sm btn-soft-success">Internal
+
+														<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+																+
+																{{review_assignment.reviewer.reviewAssignments|length}}
+															</span>
+														</a>
 													</span>
 												{% endif %}
 
@@ -795,7 +809,7 @@
 										</div>
 									</div>
 								</div>
-							</div>	
+							</div>
 						</div>
 					</div>
 					{% else %}No reviewers has been assigned yet

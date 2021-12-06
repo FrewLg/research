@@ -46,6 +46,13 @@ class Review
      */
     private $createdAt;
 
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $allowed_at;
+
+
     /**
      * @ORM\Column(type="string", length=255 , nullable=true)
      */
@@ -149,6 +156,20 @@ class Review
 
         return $this;
     }
+
+    public function getAllowedAt(): ?\DateTimeInterface
+    {
+        return $this->allowed_at;
+    }
+
+    public function setAllowedAt(\DateTimeInterface $allowed_at): self
+    {
+        $this->allowed_at = $allowed_at;
+
+        return $this;
+    }
+
+    
 
     public function getRemark(): ?string
     {

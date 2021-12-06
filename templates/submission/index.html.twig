@@ -82,38 +82,68 @@
 										<td nowrap="nowrap">
 
 											{% if   submission.reviewAssignments|length>0  %}
- 												
+
 												<a href="#" class="avatar-box thumb-xxs align-self-center">
-												<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
-												 R{{submission.reviewAssignments|length}} 
-												</span>
-											 
-											</a>
+													<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+														R{{submission.reviewAssignments|length}}
+													</span>
+
+												</a>
 
 											{% endif %}
 
+											{% set count = 0 %}
+											{% for  confirmation in submission.reviewAssignments('closed') %}
+												{% set count = count + 1 %}
+
+												{% if  confirmation.closed()|length==0  %}
+
+													<a href="#" class="avatar-box thumb-xxs align-self-center">
+
+														<span class='avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal'>
+															{{count}}
+															{% if count==0 %}
+
+																{% elseif count<=1 %}
+																	<sup>st</sup>
+																{% elseif count<=2%}
+																	<sup>nd</sup>
+																{% elseif count<=3%}
+																	<sup>rd</sup>
+																{% elseif count>=4%}
+																	<sup>th</sup>
+															{% endif %}
+														</span>
+													</a>
+
+												{% endif %}
+
+
+											{% endfor %}
+
+
 											{% if app.user.id==submission.author.id  %}
 												<span class="badge bg-success">You are the author</span>
-												<a href="{{ path('submission_status', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>
+												<a href="{{ path('submission_status', {'id': submission.id}) }}" class='btn btn-primary btn-xs '>
 													Status</a>
 
 											</a>
 
 										{% else %}
-											<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Assign Reviewer</a>
+											<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='btn btn-primary btn-xs '>Assign Reviewer</a>
 
 
 											{% if   submission.complete=='' %}
-												<a href="{{ path('submission_show', {'id': submission.id}) }}" class='badge bg-danger   mb-1'>Incomplete
+												<a href="{{ path('submission_show', {'id': submission.id}) }}" class='badge bg-danger   '>Incomplete
 												</a>
 											{% else %}
 
-												<a href="{{ path('submission_show', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Show</a>
+												<a href="{{ path('submission_show', {'id': submission.id}) }}" class='btn btn-info btn-xs '>Show</a>
 											{% endif %}
 
 										{% endif %}
 										{% if app.user.id==submission.author.id and submission.complete=='' %}
-											<a href="{{ path('submission_firststep_edit', {'id': submission.id}) }}" class='btn btn-primary btn-xs mb-1'>Finish
+											<a href="{{ path('submission_firststep_edit', {'id': submission.id}) }}" class='btn btn-primary btn-xs '>Finish
 											</a>
 										{% endif %}
 									</tr>
@@ -135,52 +165,64 @@
 		</div>
 		<div class="col-lg-2">
 			<div class="card ">
-				<div class="card-header container">
-					Quick Filter
+				<div class="card-header  ">
+					<b>Quick Filter</b>
 				</div>
 
 				<div class="card-body container ">
+					<div class="row ">
 
-					<a href="{{ path('theme') }}" class='btn btn-primary btn-sm   btn-block'>
-						All by theme
-					</a>
-					<hr>
-					<a href="{{ path('research_theams') }}" class='btn btn-warning  btn-sm btn-block'>
-						Researchers
+						<a href="{{ path('theme') }}" class='btn btn-primary btn-sm   btn-block'>
+							All by theme
+						</a>
+						<hr>
+						<a href="{{ path('research_theams') }}" class='btn btn-warning  btn-sm btn-block'>
+							Researchers
 
-					</a>
-					<hr>
+						</a>
+						<hr>
 
-					<a href="{{ path('allreviewers') }}" class='btn btn-info  btn-sm btn-block'>
-						Reviewers
+						<a href="{{ path('allreviewers') }}" class='btn btn-info  btn-sm btn-block'>
+							Reviewers
 
-					</a>
+						</a>
 
-					<hr>
+						<hr>
+						<a href="{{ path('alert') }}" class='btn btn-warning btn-sm btn-block' onclick="return confirm('Are you sure you want to submit message ?');">
+							Co-PI Reminder</a>
+						<hr>
 
-					{# <a href="{{ path('submission_filter', {'filter': 'al'}) }}" class='btn btn-primary btn-xs mb-1 btn-block'>All
-																																											</a>
-																																											<a href="{{ path('submission_filter', {'filter': 'cp'}) }}" class='btn btn-primary btn-xs mb-1 btn-block'>Complete
-																																											</a>
-																																											<a href="{{ path('submission_filter', {'filter': 'mg'}) }}" class='btn btn-warning btn-xs mb-1 btn-block'>Mega</a>
-																																											<a href="{{ path('submission_filter', {'filter': 'cs'}) }}" class='btn btn-primary btn-xs mb-1 btn-block'>Community
-																																											</a>
-																																											
-																																											<a href="{{ path('submission_filter', {'filter': 'gr'}) }}" class='btn btn-primary btn-xs mb-1 btn-block'>Grant
-																																											</a>
-																																											<a href="{{ path('submission_filter', {'filter': 'tt'}) }}" class='btn btn-primary btn-xs mb-1 btn-block'>TT
-																																											</a>
-																																											<a href="{{ path('submission_filter', {'filter': 'ps'}) }}" class='btn btn-primary btn-xs mb-1 btn-block'>Published
-																																											</a>
-																																											<a href="{{ path('submission_filter', {'filter': 'ap'}) }}" class='btn btn-info btn-xs mb-1 btn-block'>Approved
-																																											</a>
-																																											<a href="{{ path('submission_filter', {'filter': 'ap'}) }}" class='btn btn-danger btn-xs mb-1 btn-block'>Rejected
-																																											</a>
-																																											<a href="{{ path('submission_filter', {'filter': 'rv'}) }}" class='btn btn-warning btn-xs mb-1 btn-block'>Review assigned</a>
-																																																																																																																			#}
-					<a href="{{ path('alert') }}" class='btn btn-warning btn-sm btn-block' onclick="return confirm('Are you sure you want to submit message ?');">
-						Co-PI Reminder</a>
+						<a href="{{ path('submission_filter', {'filter': 'al'}) }}" class='btn btn-primary btn-xs  btn-block'>All
+						</a>
+						<hr>
+						<a href="{{ path('submission_filter', {'filter': 'cp'}) }}" class='btn btn-primary btn-xs  btn-block'>Complete
+						</a>
+						<hr>
+						<a href="{{ path('submission_filter', {'filter': 'mg'}) }}" class='btn btn-warning btn-xs  btn-block'>Mega</a>
+						<hr>
+						<a href="{{ path('submission_filter', {'filter': 'cs'}) }}" class='btn btn-primary btn-xs  btn-block'>Community
+						</a>
 
+						<hr>
+						<a href="{{ path('submission_filter', {'filter': 'gr'}) }}" class='btn btn-primary btn-xs  btn-block'>Grant
+						</a>
+						<hr>
+						<a href="{{ path('submission_filter', {'filter': 'tt'}) }}" class='btn btn-primary btn-xs  btn-block'>TT
+						</a>
+						<hr>
+						<a href="{{ path('submission_filter', {'filter': 'ps'}) }}" class='btn btn-primary btn-xs  btn-block'>Published
+						</a>
+						<hr>
+						<a href="{{ path('submission_filter', {'filter': 'ap'}) }}" class='btn btn-info btn-xs  btn-block'>Approved
+						</a>
+						<hr>
+						<a href="{{ path('submission_filter', {'filter': 'ap'}) }}" class='btn btn-danger btn-xs  btn-block'>Rejected
+						</a>
+						<hr>
+						<a href="{{ path('submission_filter', {'filter': 'rv'}) }}" class='btn btn-warning btn-xs  btn-block'>Review assigned</a>
+
+
+					</div>
 
 				</div>
 			</div>
