@@ -150,7 +150,9 @@
 								{% elseif  review_assignment.InactiveAssignment == 1 %}
 									<span class="badge bg-danger">InactiveAssignment</span>
 								{% elseif  review_assignment.Declined == 1 %}
-									<span class="badge bg-primary">Declined</span>
+									<span class="badge bg-danger">Declined</span>
+	{% else %}
+									<span class="badge bg-warning">Pending</span>
 
 
 								{% endif %}
