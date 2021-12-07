@@ -235,10 +235,7 @@ class DashboardController extends AbstractController {
                 ');
                         $remark2 = $query4->getScalarResult();
                         // dd($remark2 );
-                 ################################
-
-
-
+        ################################ 
 
         ########################
 
@@ -299,6 +296,172 @@ class DashboardController extends AbstractController {
          return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
          
     }
+     /**
+     * @Route("/rejecteds", name="allrejected", methods={"GET","POST"})
+     */
+    public function allrejected(  Request $request,   PaginatorInterface $paginator )
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
+        $entityManager = $this->getDoctrine()->getManager();  
+           #######################
+           $query3 = $entityManager->createQuery(
+            'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+            FROM App:Review s 
+            JOIN s.submission b     
+            
+            JOIN b.author a
+            JOIN a.userInfo i
+
+            WHERE s.remark=:remark
+        ') 
+
+                ->setParameter('remark', 'Declined' ) ;
+
+                $rejecteds = $query3->getResult();
+
+         ################################ 
+                 $Allsubmissions = $paginator->paginate(
+                  // Doctrine Query, not results
+                  $rejecteds,
+                  // Define the page parameter
+                  $request->query->getInt('page', 1),
+                  // Items per page
+                  10
+              );
+              $info='All rejected';
+         ################################
+         return $this->render('dashboard/submissions.html.twig', [
+           'submissions' => $Allsubmissions,
+          'info' => $info,
+      ]);
+         
+    }
+
+
+     /**
+     * @Route("/minor-rev", name="minor_rev", methods={"GET","POST"})
+     */
+    public function minorrev(  Request $request,   PaginatorInterface $paginator )
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
+        $entityManager = $this->getDoctrine()->getManager();  
+           #######################
+           $query3 = $entityManager->createQuery(
+            'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+            FROM App:Review s 
+            JOIN s.submission b     
+            
+            JOIN b.author a
+            JOIN a.userInfo i
+
+            WHERE s.remark=:remark
+        ') 
+                ->setParameter('remark', 'Accepted with minor revision' ) ;
+
+                $rejecteds = $query3->getResult();
+
+         ################################ 
+                 $Allsubmissions = $paginator->paginate(
+                  // Doctrine Query, not results
+                  $rejecteds,
+                  // Define the page parameter
+                  $request->query->getInt('page', 1),
+                  // Items per page
+                  10
+              );
+              $info='All Accepted with minor revision';
+         ################################
+         return $this->render('dashboard/submissions.html.twig', [
+           'submissions' => $Allsubmissions,
+          'info' => $info,
+      ]);
+         
+    }
+
+
+
+     /**
+     * @Route("/allaccepted", name="allaccepted", methods={"GET","POST"})
+     */
+    public function allaccepted(  Request $request,   PaginatorInterface $paginator )
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
+        $entityManager = $this->getDoctrine()->getManager();  
+           #######################
+           $query3 = $entityManager->createQuery(
+            'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+            FROM App:Review s 
+            JOIN s.submission b     
+            
+            JOIN b.author a
+            JOIN a.userInfo i
+
+            WHERE s.remark=:remark
+        ') 
+                ->setParameter('remark', 'Accepted' ) ;
+
+                $rejecteds = $query3->getResult();
+
+         ################################ 
+                 $Allsubmissions = $paginator->paginate(
+                  // Doctrine Query, not results
+                  $rejecteds,
+                  // Define the page parameter
+                  $request->query->getInt('page', 1),
+                  // Items per page
+                  10
+              );
+              $info='All Accepted';
+         ################################
+         return $this->render('dashboard/submissions.html.twig', [
+           'submissions' => $Allsubmissions,
+          'info' => $info,
+      ]);
+         
+    }
+
+
+
+     /**
+     * @Route("/all-minor", name="all_minor", methods={"GET","POST"})
+     */
+    public function allminor(  Request $request,   PaginatorInterface $paginator )
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
+        $entityManager = $this->getDoctrine()->getManager();  
+           #######################
+           $query3 = $entityManager->createQuery(
+            'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+            FROM App:Review s 
+            JOIN s.submission b     
+            
+            JOIN b.author a
+            JOIN a.userInfo i
+
+            WHERE s.remark=:remark
+        ') 
+                ->setParameter('remark', 'Accepted with major revision' ) ;
+
+                $rejecteds = $query3->getResult();
+
+         ################################ 
+                 $Allsubmissions = $paginator->paginate(
+                  // Doctrine Query, not results
+                  $rejecteds,
+                  // Define the page parameter
+                  $request->query->getInt('page', 1),
+                  // Items per page
+                  10
+              );
+              $info='All Accepted with minor revision';
+         ################################
+         return $this->render('dashboard/submissions.html.twig', [
+           'submissions' => $Allsubmissions,
+          'info' => $info,
+      ]);
+         
+    }
+
  
      /**
      * @Route("/participant", name="exportexcelparticipant", methods={"GET","POST"})
