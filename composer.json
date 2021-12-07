@@ -12,6 +12,7 @@
         "composer/package-versions-deprecated": "1.11.99.1",
         "craue/formflow-bundle": "^3.5",
         "doctrine/annotations": "^1.0",
+        "doctrine/dbal": "^2.0",
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
