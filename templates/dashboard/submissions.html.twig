@@ -36,9 +36,8 @@
 										<td>{{ loop.index  }}</td>
 										<td>{{ submission.title }}</td>
 										<td>{{ submission.firstName }}
-											<a href="#" class="avatar-box thumb-xxs align-self-center">
-												 
-											</a>
+											 {{ submission.midle_name }}
+											 {{ submission.last_name }} 
 										</td>
 										<td>
 											{% if submission.sentAt %}
