@@ -423,7 +423,7 @@ class DashboardController extends AbstractController {
 
 
      /**
-     * @Route("/all-minor", name="all_minor", methods={"GET","POST"})
+     * @Route("/major-rev", name="all_minor", methods={"GET","POST"})
      */
     public function allminor(  Request $request,   PaginatorInterface $paginator )
     {
@@ -431,21 +431,25 @@ class DashboardController extends AbstractController {
         $entityManager = $this->getDoctrine()->getManager();  
            #######################
            $query3 = $entityManager->createQuery(
-            'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+            'SELECT  b.id ,    b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
             FROM App:Review s 
             JOIN s.submission b     
             
             JOIN b.author a
             JOIN a.userInfo i
+            
+            WHERE   s.remark=:remark 
+            -- HAVING     s.remark=:remarktwo
 
-            WHERE s.remark=:remark
-        ') 
-                ->setParameter('remark', 'Accepted with major revision' ) ;
+        ')  
+                // ->setParameter('remarktwo', "Accepted with minor revision" )  
+                ->setParameter('remark', 'Accepted with major revision' ) 
+                ;
 
                 $rejecteds = $query3->getResult();
 
          ################################ 
-                 $Allsubmissions = $paginator->paginate(
+                 $Allsubmissions = $paginator->paginate( 
                   // Doctrine Query, not results
                   $rejecteds,
                   // Define the page parameter
@@ -453,7 +457,7 @@ class DashboardController extends AbstractController {
                   // Items per page
                   10
               );
-              $info='All Accepted with minor revision';
+              $info='All Accepted with major revision';
          ################################
          return $this->render('dashboard/submissions.html.twig', [
            'submissions' => $Allsubmissions,

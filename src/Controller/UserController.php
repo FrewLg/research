@@ -700,13 +700,13 @@ $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'
             // return $this->redirectToRoute('change_pasxsword');              }
 
             $user->setPassword(
-                $passwordEncoder->encodePassword( $user, $form->get('newpassword')->getData()
+                $passwordEncoder->encodePassword( $user, $form->get('plainPassword')->getData()
                 )
             ); 
  
             $entityManager->flush();  
             $this->addFlash('success', "Password has been changed successfully!   ");
-            return $this->redirectToRoute('change_pasxsword');
+            return $this->redirectToRoute('homepage');
        
         } 
         return $this->render('user/change-password.html.twig', [
