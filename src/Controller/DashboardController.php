@@ -466,7 +466,7 @@ class DashboardController extends AbstractController {
      /**
      * @Route("/participant", name="exportexcelparticipant", methods={"GET","POST"})
      */
-    public function participant(  )
+    public function trainingparticipant(  )
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 

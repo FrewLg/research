@@ -101,9 +101,12 @@
 
 												{% if myreview.reassigned %}
 
-
-									<a href="#"  class='btn btn-warning btn-xs ' > Re-assigned</a>
-												{% endif %}
+									<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+											Re
+										</span>
+									</a>
+								{% endif %}
 
 									<a href="{{ path('submission_show', {'id': myreview.submission.id}) }}"  class='btn btn-primary btn-xs ' > Details</a>
 										

@@ -128,6 +128,15 @@
 									<span class="badge bg-success">Internal</span>
 								{% endif %}
 
+	{% if review_assignment.reassigned %}
+
+									<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+											Re
+										</span>
+									</a>
+								{% endif %}
+								
 							</td>
 							<td>{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}</td>
 							<td>{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}</td>
@@ -227,6 +236,15 @@
 																		<a href="#" class="me-3 text-success">Internal Reviewer</a>
 
 																	{% endif %}
+
+	{% if review_assignment.reassigned %}
+
+									<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+											Re
+										</span>
+									</a>
+								{% endif %}
 
 																</div>
 																<br>

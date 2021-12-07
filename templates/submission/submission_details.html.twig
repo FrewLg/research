@@ -159,21 +159,21 @@
 
 
 												{# <div class="accordion-item">
-																																																																																																																																																																																																																																																																																																																																																																									<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
-																																																																																																																																																																																																																																																																																																																																																																										<button class="accordion-button fw-semibold collapsed" 
-																																																																																																																																																																																																																																																																																																																																																																										type="button" data-bs-toggle="collapse" 
-																																																																																																																																																																																																																																																																																																																																																																										data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
-																																																																																																																																																																																																																																																																																																																																																																											Background And Rationale
-																																																																																																																																																																																																																																																																																																																																																																										</button>
-																																																																																																																																																																																																																																																																																																																																																																									</h5>
-																																																																																																																																																																																																																																																																																																																																																																									<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
-																																																																																																																																																																																																																																																																																																																																																																										<div class="accordion-body">
-																																																																																																																																																																																																																																																																																																																																																												
-																																																																																																																																																																																																																																																																																																																																																																											{{ submission.BackgroundAndRationale |raw}}
-																																																																																																																																																																																																																																																																																																																																																												
-																																																																																																																																																																																																																																																																																																																																																																										</div>
-																																																																																																																																																																																																																																																																																																																																																																									</div>
-																																																																																																																																																																																																																																																																																																																																																																								</div> #}
+																																																																																																																																																																																																																																																																																																																																																																																					<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
+																																																																																																																																																																																																																																																																																																																																																																																						<button class="accordion-button fw-semibold collapsed" 
+																																																																																																																																																																																																																																																																																																																																																																																						type="button" data-bs-toggle="collapse" 
+																																																																																																																																																																																																																																																																																																																																																																																						data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
+																																																																																																																																																																																																																																																																																																																																																																																							Background And Rationale
+																																																																																																																																																																																																																																																																																																																																																																																						</button>
+																																																																																																																																																																																																																																																																																																																																																																																					</h5>
+																																																																																																																																																																																																																																																																																																																																																																																					<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
+																																																																																																																																																																																																																																																																																																																																																																																						<div class="accordion-body">
+																																																																																																																																																																																																																																																																																																																																																																								
+																																																																																																																																																																																																																																																																																																																																																																																							{{ submission.BackgroundAndRationale |raw}}
+																																																																																																																																																																																																																																																																																																																																																																								
+																																																																																																																																																																																																																																																																																																																																																																																						</div>
+																																																																																																																																																																																																																																																																																																																																																																																					</div>
+																																																																																																																																																																																																																																																																																																																																																																																				</div> #}
 
 												<div class="accordion-item">
 													<h5 class="accordion-header m-0" id="Objectives">
@@ -501,36 +501,37 @@
 														</td>
 														<td width="65" nowrap="nowrap">
 															<h5 class='text-default'>
-																	{% if review.ReviewedBy.isReviewer %}
-															<span class="text-primary">
-																External reviewer
-															{% else %}
-																<span class="text-success">
-																	Internal reviewer
-																</span>
-															{% endif %}
-															</h5>
-															<h4 class='text-primary'>
+																{% if review.ReviewedBy.isReviewer %}
+																	<span class="text-primary">
+																		External reviewer
+																	{% else %}
+																		<span class="text-success">
+																			Internal reviewer
+																		</span>
+																	{% endif %}
+																</h5>
+																<h4 class='text-primary'>
 
-																{{ review.remark |raw}}
-															</h4>
+																	{{ review.remark |raw}}
+																</h4>
 
-															<hr>
-															{% if review.AllowToView=='' %}
+																<hr>
+																{% if review.AllowToView=='' %}
 
-																<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-primary" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
-																	Send   comment to PI</a>
+																	<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-primary" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
+																		Send   comment to PI</a>
 
 
-															{% elseif review.AllowToView=='1'  %}
-																<a class="btn btn-success">
-																	Comment sent to PI</a>
-																{% else %}
+																{% elseif review.AllowToView=='1'  %}
+																	<a class="btn btn-success">
+																		Comment sent to PI</a>
+																	{% else %}
 
-															{% endif %}
+																{% endif %}
 
-															<hr>
-															{# {{editorialDecisions.decision}} #}
+																<hr>
+																{# {{editorialDecisions.decision}} #}
+															</td>
 														</td>
 													</tr>
 												</tbody>
@@ -552,12 +553,12 @@
 								</div>
 							</div>
 							{# <div class="tab-pane" id="copyedit">
-																																																																																																																																																																						{{ submission.abstract|raw }}
-																																																																																																																																																																					</div>
-																																																																																																																																																																					<div class="tab-pane" id="progress-report">
-																																																																																																																																																																						{{ submission.title }}
-																																																																																																																																																																					</div>
-																																																																																																																																																																					<div class="tab-pane" id="terminal-report"></div> #}
+																																																																																																																																																																													{{ submission.abstract|raw }}
+																																																																																																																																																																												</div>
+																																																																																																																																																																												<div class="tab-pane" id="progress-report">
+																																																																																																																																																																													{{ submission.title }}
+																																																																																																																																																																												</div>
+																																																																																																																																																																												<div class="tab-pane" id="terminal-report"></div> #}
 						</div>
 					</div>
 
@@ -571,13 +572,13 @@
 				<div class="float-end">
 					<div
 						class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="##" role="button" aria-haspopup="false" aria-expanded="false">
-																																																																																																																		<i class="las la-ellipsis-v font-24 text-muted"></i>
-																																																																																																																		</a>
-																																																																																																																		<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
-																																																																																																																		<a class="dropdown-item" href="##">Open Project</a>
-																																																																																																																		<a class="dropdown-item" href="##">Edit Card</a>
-																																																																																																																		<a class="dropdown-item" href="##">Delete</a>
-																																																																																																																		</div> #}
+																																																																																																																									<i class="las la-ellipsis-v font-24 text-muted"></i>
+																																																																																																																									</a>
+																																																																																																																									<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
+																																																																																																																									<a class="dropdown-item" href="##">Open Project</a>
+																																																																																																																									<a class="dropdown-item" href="##">Edit Card</a>
+																																																																																																																									<a class="dropdown-item" href="##">Delete</a>
+																																																																																																																									</div> #}
 					</div>
 				</div>
 				<div class="media align-items-center">
@@ -701,9 +702,18 @@
 
 							<h4 class="m-0 fw-semibold text-dark font-16 mt-2">
 								{{ loop.index }}.
-								<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0     mb-1 align-right'>{{ review_assignment.reviewer }}
-								</a>
+								<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0
+																	  mb-1 align-right'>{{ review_assignment.reviewer }}
 
+								</a>
+								{% if review_assignment.reassigned %}
+
+									<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+											Re
+										</span>
+									</a>
+								{% endif %}
 							</h4>
 							<br>
 							<p class="text-muted  mb-0 font-13">
@@ -795,22 +805,17 @@
 													</span>
 												{% endif %}
 
-											 
-												<a href="{{ path('unassign', {'id': review_assignment.id}) }}" 
-												class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
-	Unassign</a>
+
+												<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
+													Unassign</a>
 
 												{% if review_assignment.closed %}
 
 
-									<a href="{{ path('reassign', {'id': review_assignment.id}) }}"  class='btn btn-primary btn-sm ' > Re-assign</a>
+													<a href="{{ path('reassign', {'id': review_assignment.id}) }}" class='btn btn-primary btn-sm '>
+														Re-assign</a>
 												{% endif %}
 
-{% if review_assignment.reassigned %}
-
-
-									<a href="#"  class='btn btn-warning btn-xs ' > Re-assigned</a>
-												{% endif %}
 
 											</form>
 
