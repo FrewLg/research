@@ -276,14 +276,15 @@ class DashboardController extends AbstractController {
         $spreadsheet = new Spreadsheet(); 
         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
 
-        
+
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'No.');
         $sheet->setCellValue('B1', 'Title.');
         $sheet->setCellValue('C1', 'PI');
         $sheet->setCellValue('D1', 'Co-PI (s)');
         $sheet->setCellValue('E1', 'PI\'s Institute');
-        $sheet->setCellValue('F1', 'PI\'s College');
+        $sheet->setCellValue('F1', 'Not confirmed');
+        $sheet->setCellValue('G1', 'PI\'s Department');
         $sheet->setTitle("Researcher"); 
         $counter = 2;
         foreach ($submissions as $phoneNumber) {
@@ -293,13 +294,23 @@ class DashboardController extends AbstractController {
             ########################
             $sheet->setCellValue('C' . $counter, $phoneNumber->getAuthor()->getUserInfo());
             $sheet->setCellValue('E' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getCollege());
-            $sheet->setCellValue('F' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getDepartment());
+            $sheet->setCellValue('G' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getDepartment());
              foreach ($phoneNumber->getCoAuthors() as $CoAuthors) {
              $sheet->setCellValue('D' . $counter, $CoAuthors->getResearcher()->getUserInfo());
+
+             if ( $CoAuthors->getConfirmed() == NULL ){
+              $sheet->setCellValue('F' . $counter, $CoAuthors->getResearcher()->getUserInfo());
+              // $counter++;
+            //  $counter2++; 
+               }
+
              $counter++;
             $counter2++; 
        
      }
+    
+
+
                    
 ############################
           $counter++;
