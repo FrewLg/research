@@ -217,7 +217,7 @@ class DashboardController extends AbstractController {
                
   #######################
                   $query3 = $entityManager->createQuery(
-                    'SELECT  s.remark as decision, count(b.id)  as proposals
+                    'SELECT DISTINCT s.remark as decision, count(b.id)  as proposals
                     FROM App:Review s 
                     
                     JOIN s.submission b    GROUP BY s.remark
@@ -333,7 +333,7 @@ class DashboardController extends AbstractController {
         $entityManager = $this->getDoctrine()->getManager();  
            #######################
            $query3 = $entityManager->createQuery(
-            'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+            'SELECT DISTINCT b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
             FROM App:Review s 
             JOIN s.submission b     
             
@@ -460,7 +460,7 @@ class DashboardController extends AbstractController {
         $entityManager = $this->getDoctrine()->getManager();  
            #######################
            $query3 = $entityManager->createQuery(
-            'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+            'SELECT  DISTINCT b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
             FROM App:Review s 
             JOIN s.submission b     
             
@@ -502,7 +502,7 @@ class DashboardController extends AbstractController {
         $entityManager = $this->getDoctrine()->getManager();  
            #######################
            $query3 = $entityManager->createQuery(
-            'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+            'SELECT DISTINCT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
             FROM App:Review s 
             JOIN s.submission b     
             
@@ -546,7 +546,7 @@ class DashboardController extends AbstractController {
        
          #######################
          $query3 = $entityManager->createQuery(
-          'SELECT  b.id ,    b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+          'SELECT DISTINCT  b.id ,    b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
           FROM App:Review s 
           JOIN s.submission b     
           
