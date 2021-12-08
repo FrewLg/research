@@ -237,6 +237,22 @@ class DashboardController extends AbstractController {
                         // dd($remark2 );
         ################################ 
 
+             $query3 = $entityManager->createQuery(
+            'SELECT     count(s.remark) as remark,  count(t.id) as theme  
+            FROM App:Review s 
+            JOIN s.submission b     
+            JOIN b.thematic_area t   
+            
+            GROUP BY  t.name
+        ')  ;
+                //  ->setParameter('remark', 'Accepted with major revision' ) 
+                // ;
+
+                $rejecteds = $query3->getScalarResult();
+                        // dd($rejecteds );
+
+         ################################
+
         ########################
 
 
@@ -430,25 +446,28 @@ class DashboardController extends AbstractController {
         $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
         $entityManager = $this->getDoctrine()->getManager();  
            #######################
-           $query3 = $entityManager->createQuery(
-            'SELECT  b.id ,    b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
-            FROM App:Review s 
-            JOIN s.submission b     
-            
-            JOIN b.author a
-            JOIN a.userInfo i
-            
-            WHERE   s.remark=:remark 
-            -- HAVING     s.remark=:remarktwo
+       
+         #######################
+         $query3 = $entityManager->createQuery(
+          'SELECT  b.id ,    b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+          FROM App:Review s 
+          JOIN s.submission b     
+          
+          JOIN b.author a
+          JOIN a.userInfo i
+          
+          WHERE   s.remark=:remark 
+          -- HAVING     s.remark=:remarktwo
 
-        ')  
-                // ->setParameter('remarktwo', "Accepted with minor revision" )  
-                ->setParameter('remark', 'Accepted with major revision' ) 
-                ;
+      ')  
+              // ->setParameter('remarktwo', "Accepted with minor revision" )  
+              ->setParameter('remark', 'Accepted with major revision' ) 
+              ;
 
-                $rejecteds = $query3->getResult();
+              $rejecteds = $query3->getResult();
 
-         ################################ 
+       ################################ 
+
                  $Allsubmissions = $paginator->paginate( 
                   // Doctrine Query, not results
                   $rejecteds,
