@@ -355,13 +355,32 @@ else{
             ###########
             $em = $this->getDoctrine()->getManager();
             $query = $entityManager->createQuery(
-                'SELECT    u.email , u.id, pi.last_name ,pi.midle_name , pi.first_name,  pi.image ,   count(b.id) as subs,  count(u.id) as review_assignment
+                'SELECT u.email , u.id, pi. last_name , pi.first_name, pi.midle_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
                 FROM App:ReviewAssignment s 
                 JOIN s.reviewer u 
                 JOIN u.userInfo pi 
                 JOIN s.submission b 
-              where  u.is_reviewer  is NULL  ');
-                    $recepients = $query->getScalarResult();  
+              where  u.is_reviewer  is NULL  GROUP BY u.id
+            ');
+                    $recepients = $query->getResult();
+                        
+                    #######################
+                    $query2 = $entityManager->createQuery(
+                        'SELECT u.email , u.id, pi.last_name ,pi.midle_name , pi.first_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+                        FROM App:ReviewAssignment s 
+                        JOIN s.reviewer u 
+                        JOIN u.userInfo pi 
+                        JOIN s.submission b 
+                      where  u.is_reviewer =:external   GROUP BY u.id
+                    ')
+                 ->setParameter('external', 1  ); 
+                            $recepientextrnal = $query2->getResult();
+                    ################################
+                    // $recepients = $querytwo->getScalarResult();
+                    $all=count($recepients)  ;
+                    $allext=count($recepientextrnal)  ;
+                    // dd(count($recepients) );
+
                     $review_assignments = $paginator->paginate(
                     // Doctrine Query, not results
                     $recepients,
@@ -370,15 +389,29 @@ else{
                     // Items per page
                     10
                     );
- 
-                    $info="Internal reviewers";
+
+                    $recepientextrnalpa = $paginator->paginate(
+                        // Doctrine Query, not results
+                        $recepientextrnal,
+                        // Define the page parameter
+                        $request->query->getInt('page', 1),
+                        // Items per page
+                        10
+                        );
+
+                        $info="Internal reviewers";
                          
             ########################
          return $this->render('review_assignment/show.html.twig', [
-             'info' => $info, 
-             'review_assignments' => $review_assignments,  
+            'review_assignments' => $review_assignments, 
+            'review_assignmentsext' => $recepientextrnalpa, 
+            'all' =>  $all,
+            'info' => $info, 
+
+            'allext' =>  $allext
          ]);
     } 
+
 
 
 
