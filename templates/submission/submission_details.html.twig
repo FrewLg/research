@@ -441,7 +441,9 @@
 
 													</div>
 												</div>
+
 											</div>
+											
 										</div>
 
 									</div>
@@ -551,6 +553,9 @@
 
 									</div>
 								</div>
+<br>
+											<br>
+											<br>
 							</div>
 							{# <div class="tab-pane" id="copyedit">
 																																																																																																																																																																													{{ submission.abstract|raw }}
@@ -571,14 +576,8 @@
 			<div class="card-body">
 				<div class="float-end">
 					<div
-						class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="##" role="button" aria-haspopup="false" aria-expanded="false">
-																																																																																																																									<i class="las la-ellipsis-v font-24 text-muted"></i>
-																																																																																																																									</a>
-																																																																																																																									<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
-																																																																																																																									<a class="dropdown-item" href="##">Open Project</a>
-																																																																																																																									<a class="dropdown-item" href="##">Edit Card</a>
-																																																																																																																									<a class="dropdown-item" href="##">Delete</a>
-																																																																																																																									</div> #}
+						class="dropdown d-inline-block">
+						
 					</div>
 				</div>
 				<div class="media align-items-center">
@@ -655,8 +654,11 @@
 
 				</div>
 				<hr class="hr-dashed my-4"></div><!--end card-body--></div><!--end card-->{# </div> #}<div class="card">
-			<div class="card-body ">
-				<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
+				<div class="card-header ">
+							<h4 class="font-18 m-0 fw-bold">Attachments</h4> 
+
+		</div>
+			<div class="card-body "> 
 				{% for submissionattachment in submission.submissionAttachements %}
 					<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
 						{{submissionattachment.name}}
@@ -669,8 +671,12 @@
 			</div>
 		</div>
 		<div class="card">
+			<div class="card-header ">
+							<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4> 
+
+		</div>
+
 			<div class="card-body ">
-				<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
 
 
 				{% for member in submission.coAuthors %}
@@ -690,22 +696,59 @@
 			</div>
 		</div>
 		<div class="card">
+			<div class="card-header ">
+			<h5 class="font-18 m-0 fw-bold">Reviewers ({{review_assignments|length}})
+					<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
+					Add  Reviewer</a>
+				</h5> 
+		</div>
+
 			<div class="card-body ">
-				<h5 class="font-18 m-0 fw-bold">Reviewers ({{review_assignments|length}})
-					<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>Assign New  Reviewer</a>
-				</h5><hr>
+				
 
 				{% for review_assignment in review_assignments %}
 
 					<div class="card">
 						<div class="card-body ">
+						 <div class="media align-items-center">
 
-							<h4 class="m-0 fw-semibold text-dark font-16 mt-2">
-								{{ loop.index }}.
-								<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0
+					{% if review_assignment.reviewer.userInfo and review_assignment.reviewer.userInfo.image %}
+
+<img src="{{ asset('files/profile_pictures/'~review_assignment.reviewer.userInfo.image ) }}" alt="" class="rounded-circle thumb-xs">
+					{% else %}
+
+						<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle thumb-xs"> 
+					{% endif %} 
+					<div class="media-body ms-3 align-self-center">
+						<h4 class="team-leader m-0"> 
+						
+						<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0
 																	  mb-1 align-right'>{{ review_assignment.reviewer }}
 
 								</a>
+								</h4>
+						<p class="text-muted font-12 mb-0"> 
+						{% if review_assignment.reviewer.isReviewer  %}
+													<span class="text-soft-primary">External 
+													</span>
+
+												{% else %}
+													<span class="text-soft-success">Internal
+
+														 
+													</span>
+												{% endif %}
+						</p>
+					</div>
+				</div>
+
+					 
+						<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-dark rounded-circle font-10 font-weight-normal">
+											 {{loop.index}}
+										</span>
+									</a>
+						 
 								{% if review_assignment.reassigned %}
 
 									<a href="#" class="avatar-box thumb-xxs align-self-center">
@@ -714,8 +757,8 @@
 										</span>
 									</a>
 								{% endif %}
-							</h4>
-							<br>
+							 
+							 
 							<p class="text-muted  mb-0 font-13">
 								<span class="text-dark">
 									Invitation Sent :
@@ -757,13 +800,20 @@
 
 
 									{% endif   %}
-
+ 
 									{% for review in review_assignment.reviews %}
-										<h4>
-											{{    review.remark }}</h4>
-										{{review.AllowToView}}
+<hr>
+								 <h5 class='text-primary'>   Decision:
+											{{    review.remark }}</h5>
+																		{% if  review.AllowToView  %}
+
+										<small class="text-info">
+											Comment sent</small>
+
+									{% endif   %}
 
 									{% endfor %}
+<hr>
 
 
 								</span>

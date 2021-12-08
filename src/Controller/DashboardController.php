@@ -300,8 +300,7 @@ class DashboardController extends AbstractController {
 
              if ( $CoAuthors->getConfirmed() == NULL ){
               $sheet->setCellValue('F' . $counter, $CoAuthors->getResearcher()->getUserInfo());
-              // $counter++;
-            //  $counter2++; 
+               
                }
 
              $counter++;
@@ -322,6 +321,51 @@ class DashboardController extends AbstractController {
          return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
          
     }
+
+
+
+     /**
+     * @Route("/allassigned-rev", name="allassigned", methods={"GET","POST"})
+     */
+    public function allassigned(  Request $request,   PaginatorInterface $paginator )
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
+        $entityManager = $this->getDoctrine()->getManager();  
+           #######################
+           $query3 = $entityManager->createQuery(
+            'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+            FROM App:Review s 
+            JOIN s.submission b     
+            
+            JOIN b.author a
+            JOIN a.userInfo i
+
+            WHERE s.remark=:remark
+        ') 
+                ->setParameter('remark', 'Accepted with minor revision' ) ;
+
+                $rejecteds = $query3->getResult();
+
+         ################################ 
+                 $Allsubmissions = $paginator->paginate(
+                  // Doctrine Query, not results
+                  $rejecteds,
+                  // Define the page parameter
+                  $request->query->getInt('page', 1),
+                  // Items per page
+                  10
+              );
+              $info='All Accepted with minor revision';
+         ################################
+         return $this->render('dashboard/submissions.html.twig', [
+           'submissions' => $Allsubmissions,
+          'info' => $info,
+      ]);
+         
+    }
+
+
+
      /**
      * @Route("/rejecteds", name="allrejected", methods={"GET","POST"})
      */
@@ -330,48 +374,63 @@ class DashboardController extends AbstractController {
         $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
         $entityManager = $this->getDoctrine()->getManager();  
            #######################
-        //    $query3 = $entityManager->createQuery(
-        //     'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
-        //     FROM App:Review s 
-        //     JOIN s.submission b     
+           $query3 = $entityManager->createQuery(
+            'SELECT DISTINCT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+            FROM App:Review s 
+            JOIN s.submission b     
             
-        //     JOIN b.author a
-        //     JOIN a.userInfo i
+            JOIN b.author a
+            JOIN a.userInfo i
 
-        //     WHERE s.remark=:remark
-        // ') 
+            WHERE s.remark=:remark AND  NOT s.remark=:remark1 AND NOT s.remark=:remark2 
 
-        //         ->setParameter('remark', 'Declined' ) ;
+        ') 
 
-        //         $rejecteds = $query3->getResult();
+                ->setParameter('remark', 'Declined' )  
+               ->setParameter('remark1', 'Accepted' )  
+              ->setParameter('remark2', '	Accepted with minor revision' )  
+             ;
+
+                $rejecteds = $query3->getResult();
 
                  
 
          ################################ 
 
-         $query3 = $entityManager->createQuery(
-          'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
-          FROM App:Review s 
-          JOIN s.submission b     
+//          $query3 = $entityManager->createQuery(
+//           'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+//           FROM App:Review s 
+//           JOIN s.submission b     
           
-          JOIN b.author a
-          JOIN a.userInfo i
+//           JOIN b.author a
+//           JOIN a.userInfo i
 
-          WHERE   EXISTS
+//           WHERE   EXISTS
           
-        (SELECT r.id FROM App:Review r
+//         (SELECT   r.id FROM App:Review r
 
-          JOIN r.submission n  
+//           JOIN r.submission n  
 
-          WHERE n.id = b.id AND  NOT r.remark=:remark2  AND s.remark=:remark3  AND   s.remark=:remark4  AND NOT s.remark=:remark )  
-                ') 
+//           -- WHERE n.id = b.id  OR    r.remark=:remark  OR s.remark=:remark1  OR   s.remark=:remark2  AND  NOT   s.remark=:remark3  OR  r.remark=:remark4)  
 
-              ->setParameter('remark2', 'Accepted' )  
-              ->setParameter('remark3', 'Declined' )  
-              ->setParameter('remark4', 'Accepted with major revision' )  
-              ->setParameter('remark', 'Accepted with minor revision' ) ;
+//           WHERE       EXISTS
+          
+//         (SELECT   rs.id FROM App:Review rs
 
-              $rejecteds = $query3->getResult();
+//           JOIN rs.submission ns  
+
+//           WHERE ns.id = b.id  OR    rs.remark=:remark  OR s.remark=:remark1  OR   s.remark=:remark2  AND  NOT   s.remark=:remark3  OR  rs.remark=:remark4 )   
+                 
+// )
+//                 ') 
+
+//               ->setParameter('remark', '	Declined' )   
+//               ->setParameter('remark1', '	Declined' )  
+//               ->setParameter('remark2', '	Declined' )  
+//               ->setParameter('remark3', '	Accepted' )  
+//               ->setParameter('remark4', '	Accepted' )  
+// ;
+//               $rejecteds = $query3->getResult();
 
          ######################
                  $Allsubmissions = $paginator->paginate(
