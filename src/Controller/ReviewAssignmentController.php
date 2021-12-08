@@ -439,6 +439,7 @@ else{
                             $recepientextrnal = $query2->getResult();
                     ################################
                     
+                    $allext=count($recepientextrnal)  ;
 
                     $recepientextrnalpa = $paginator->paginate(
                         // Doctrine Query, not results
@@ -454,6 +455,7 @@ else{
          return $this->render('review_assignment/show.html.twig', [
              'review_assignments' => $recepientextrnalpa, 
              'info' => $info, 
+             'all' =>  $allext
             
          ]);
     } 
