@@ -237,19 +237,14 @@ class DashboardController extends AbstractController {
                         // dd($remark2 );
         ################################ 
 
-             $query3 = $entityManager->createQuery(
-            'SELECT     count(s.remark) as remark,  count(t.id) as theme  
-            FROM App:Review s 
-            JOIN s.submission b     
-            JOIN b.thematic_area t   
-            
-            GROUP BY  t.name
-        ')  ;
-                //  ->setParameter('remark', 'Accepted with major revision' ) 
-                // ;
-
-                $rejecteds = $query3->getScalarResult();
-                        // dd($rejecteds );
+//         $rejecteds = $entityManager->createQuery(
+//           'SELECT  i.gender as Gender, count(s.id)  as Proposals
+//           FROM App:User u 
+//           JOIN u.submissions s 
+//           JOIN u.userInfo i 
+//           WHERE EXISTS
+// (SELECT column_name FROM table_name WHERE condition); 
+//                         dd($rejecteds );
 
          ################################
 
@@ -320,22 +315,50 @@ class DashboardController extends AbstractController {
         $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
         $entityManager = $this->getDoctrine()->getManager();  
            #######################
-           $query3 = $entityManager->createQuery(
-            'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
-            FROM App:Review s 
-            JOIN s.submission b     
+        //    $query3 = $entityManager->createQuery(
+        //     'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+        //     FROM App:Review s 
+        //     JOIN s.submission b     
             
-            JOIN b.author a
-            JOIN a.userInfo i
+        //     JOIN b.author a
+        //     JOIN a.userInfo i
 
-            WHERE s.remark=:remark
-        ') 
+        //     WHERE s.remark=:remark
+        // ') 
 
-                ->setParameter('remark', 'Declined' ) ;
+        //         ->setParameter('remark', 'Declined' ) ;
 
-                $rejecteds = $query3->getResult();
+        //         $rejecteds = $query3->getResult();
+
+                 
 
          ################################ 
+
+         $query3 = $entityManager->createQuery(
+          'SELECT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+          FROM App:Review s 
+          JOIN s.submission b     
+          
+          JOIN b.author a
+          JOIN a.userInfo i
+
+          WHERE   EXISTS
+          
+        (SELECT r.id FROM App:Review r
+
+          JOIN r.submission n  
+
+          WHERE n.id = b.id AND  NOT r.remark=:remark2  AND s.remark=:remark3  AND   s.remark=:remark4  AND NOT s.remark=:remark )  
+                ') 
+
+              ->setParameter('remark2', 'Accepted' )  
+              ->setParameter('remark3', 'Declined' )  
+              ->setParameter('remark4', 'Accepted with major revision' )  
+              ->setParameter('remark', 'Accepted with minor revision' ) ;
+
+              $rejecteds = $query3->getResult();
+
+         ######################
                  $Allsubmissions = $paginator->paginate(
                   // Doctrine Query, not results
                   $rejecteds,
