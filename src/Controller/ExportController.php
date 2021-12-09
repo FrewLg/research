@@ -196,7 +196,7 @@ class    ExportController   extends AbstractController {
     } 
 
     /**
-     * @Route("/external-rev", name="alexternal_rev", methods={"GET","POST"})
+     * @Route("/    ", name="alexternal_rev", methods={"GET","POST"})
      */
     public function externalreviewers(Request $request , PaginatorInterface $paginator ): Response
     {
@@ -216,7 +216,7 @@ class    ExportController   extends AbstractController {
     $recepientextrnal = $query2->getResult();
       ######################## 
 
-      dd($recepientextrnal);
+    //   dd($recepientextrnal);
             $spreadsheet = new Spreadsheet();
            /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
           $sheet = $spreadsheet->getActiveSheet();
