@@ -221,17 +221,25 @@ class    ExportController   extends AbstractController {
            /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
           $sheet = $spreadsheet->getActiveSheet();
           $sheet->setCellValue('A1', 'No.');
-        //   $sheet->setCellValue('B1', 'Full name');
-        //    $sheet->setCellValue('C1', 'Participant\'s Institute');
-        //   $sheet->setCellValue('D1', 'Participant\'s College');
+          $sheet->setCellValue('B1', 'Full name');
+           $sheet->setCellValue('C1', 'Email ');
+          $sheet->setCellValue('D1', 'Number of assignments');
+          $sheet->setCellValue('E1', 'Submissions');
+          $sheet->setCellValue('F1', 'Staff Membership');
           $sheet->setTitle("External reviewers");
    
           $counter = 2;
           foreach ($recepientextrnal as $phoneNumber) {
-              $sheet->setCellValue('A' . $counter, $phoneNumber['email']); 
-            //   $sheet->setCellValue('B' . $counter, $phoneNumber->get('first_name'));
-            //   $sheet->setCellValue('C' . $counter, $phoneNumber->getParticipant()->getUserInfo()->getCollege());
-            //   $sheet->setCellValue('D' . $counter, $phoneNumber->getParticipant()->getUserInfo()->getDepartment()); 
+              $sheet->setCellValue('A' . $counter, $phoneNumber['id']); 
+              $sheet->setCellValue('B' . $counter, $phoneNumber['first_name'].$phoneNumber['midle_name'].$phoneNumber['last_name']); 
+              $sheet->setCellValue('C' . $counter, $phoneNumber['email']);
+              $sheet->setCellValue('D' . $counter, $phoneNumber['review_assignment']);
+              $sheet->setCellValue('E' . $counter, $phoneNumber['subs']);
+              if($phoneNumber['is_reviewer']==1){
+
+                $sheet->setCellValue('F' . $counter, "Internal reviewer");
+
+              }
             $counter++;
           }
            $writer = new Xlsx($spreadsheet);
@@ -245,5 +253,61 @@ class    ExportController   extends AbstractController {
     } 
 
 
+    /**
+     * @Route("/internal-rev", name="internal_rev", methods={"GET","POST"})
+     */
+    public function internalreviewers(Request $request , PaginatorInterface $paginator ): Response
+    {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+
+        $entityManager = $this->getDoctrine()->getManager(); 
+        #######################
+        $query2 = $entityManager->createQuery(
+            'SELECT  u.email , u.id, pi.last_name , pi.first_name, pi.midle_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+            FROM App:ReviewAssignment s 
+            JOIN s.reviewer u 
+            JOIN u.userInfo pi 
+            JOIN s.submission b 
+            where  u.is_reviewer is NULL    GROUP BY u.id
+        ');
+        // ->setParameter('external', 1  ); 
+    $recepientextrnal = $query2->getResult();
+      ######################## 
+
+    //   dd($recepientextrnal);
+            $spreadsheet = new Spreadsheet();
+           /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+          $sheet = $spreadsheet->getActiveSheet();
+          $sheet->setCellValue('A1', 'No.');
+          $sheet->setCellValue('B1', 'Full name');
+           $sheet->setCellValue('C1', 'Email ');
+          $sheet->setCellValue('D1', 'Number of assignments');
+          $sheet->setCellValue('E1', 'Submissions');
+          $sheet->setCellValue('F1', 'Staff Membership');
+          $sheet->setTitle("Internal reviewers");
+   
+          $counter = 2;
+          foreach ($recepientextrnal as $phoneNumber) {
+              $sheet->setCellValue('A' . $counter, $phoneNumber['id']); 
+              $sheet->setCellValue('B' . $counter, $phoneNumber['first_name'].$phoneNumber['midle_name'].$phoneNumber['last_name']); 
+              $sheet->setCellValue('C' . $counter, $phoneNumber['email']);
+              $sheet->setCellValue('D' . $counter, $phoneNumber['review_assignment']);
+              $sheet->setCellValue('E' . $counter, $phoneNumber['subs']);
+              if($phoneNumber['is_reviewer']==NULL){
+
+                $sheet->setCellValue('F' . $counter, "Internal reviewer");
+
+              }
+            $counter++;
+          }
+           $writer = new Xlsx($spreadsheet);
+           $fileName = 'External reviewers.xlsx';
+          $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+          
+           $writer->save($temp_file);
+          
+           return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+
+    } 
 
 }
