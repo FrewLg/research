@@ -93,7 +93,7 @@ class CallForProposalController extends AbstractController {
      * @Route("/new", name="call_for_proposal_new", methods={"GET","POST"})
      */
     public function new (Request $request, MailerInterface $mailer): Response {
-        //    $this->denyAccessUnlessGranted('ROLE_ADMIN');
+           $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $callForProposal = new CallForProposal();
         $form = $this->createFormBuilder($callForProposal)
             ->add('research_type', ChoiceType::class, [

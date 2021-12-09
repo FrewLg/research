@@ -44,6 +44,11 @@ class CallForTrainingController extends AbstractController
     public function foradmin(CallForTrainingRepository $callForTrainingRepository , PaginatorInterface $paginator): Response
     {
 
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $em = $this->getDoctrine()->getManager();
+
+
         $callForTraining = array_reverse($em->getRepository(CallForTraining::class)->findAll());
  
         
@@ -67,6 +72,7 @@ class CallForTrainingController extends AbstractController
     public function new(Request $request ,    EntityManagerInterface $entityManager): Response
     {
 
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         $callForTraining = new CallForTraining();
         $form = $this->createForm(CallForTrainingType::class, $callForTraining);
@@ -132,6 +138,8 @@ class CallForTrainingController extends AbstractController
     #[Route('/{id}/edit', name: 'call_for_training_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request,  CallForTraining $callForTraining, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(CallForTrainingType::class, $callForTraining);
         $form->handleRequest($request);
 
