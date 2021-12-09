@@ -21,7 +21,8 @@ class CallForTrainingController extends AbstractController
     {
 
         $em = $this->getDoctrine()->getManager();
-        $callForTraining = array_reverse($em->getRepository(CallForTraining::class)->findAll());
+        $callForTraining = array_reverse($em->getRepository(CallForTraining::class)->findBy(array('approved' => 1)));
+ 
         $info = 'All';
 
         // Paginate the results of the query
@@ -40,10 +41,25 @@ class CallForTrainingController extends AbstractController
     }
 
     #[Route('/adm', name: 'call_for_training_index', methods: ['GET'])]
-    public function foradmin(CallForTrainingRepository $callForTrainingRepository): Response
+    public function foradmin(CallForTrainingRepository $callForTrainingRepository , PaginatorInterface $paginator): Response
     {
+
+        $callForTraining = array_reverse($em->getRepository(CallForTraining::class)->findAll());
+ 
+        
+
+        // Paginate the results of the query
+        $alltraining = $paginator->paginate(
+            // Doctrine Query, not results
+            $callForTraining,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            10
+        );
+
         return $this->render('call_for_training/index.html.twig', [
-            'call_for_trainings' => $callForTrainingRepository->findAll(),
+            'call_for_trainings' => $alltraining ,
         ]);
     }
 

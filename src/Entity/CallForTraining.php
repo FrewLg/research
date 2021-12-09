@@ -49,6 +49,11 @@ class CallForTraining
      */
     private $trainingParticipants;
 
+        /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -81,6 +86,19 @@ class CallForTraining
         return $this;
     }
 
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+    
     public function getDescription(): ?string
     {
         return $this->description;

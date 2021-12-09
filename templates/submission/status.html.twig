@@ -424,7 +424,7 @@
 
 													<div class="m-t-sm">
 
-														{# {% if review.attachment %}
+														{% if review.attachment %}
 															<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="btn btn-info btn-xs float-right">
 																Download reviewed   file
 																<i class="fa fa-download material-icons warning"></i>
@@ -433,7 +433,7 @@
 															<span class="label label-danger">
 																{% trans %}No attachement found{% endtrans %}
 															</span>
-														{% endif %} #}
+														{% endif %}
 													</div>
 												</td>
 												<td width="65" nowrap="nowrap">
