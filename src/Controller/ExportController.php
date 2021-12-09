@@ -228,8 +228,8 @@ class    ExportController   extends AbstractController {
    
           $counter = 2;
           foreach ($recepientextrnal as $phoneNumber) {
-              $sheet->setCellValue('A' . $counter, $phoneNumber->getId()); 
-              $sheet->setCellValue('B' . $counter, $phoneNumber->getFirstName());
+              $sheet->setCellValue('A' . $counter, $phoneNumber->get('email')); 
+              $sheet->setCellValue('B' . $counter, $phoneNumber->get('first_name'));
             //   $sheet->setCellValue('C' . $counter, $phoneNumber->getParticipant()->getUserInfo()->getCollege());
             //   $sheet->setCellValue('D' . $counter, $phoneNumber->getParticipant()->getUserInfo()->getDepartment()); 
             $counter++;
