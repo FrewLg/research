@@ -41,7 +41,7 @@ class CallForTrainingController extends AbstractController
     }
 
     #[Route('/adm', name: 'call_for_training_index', methods: ['GET'])]
-    public function foradmin(CallForTrainingRepository $callForTrainingRepository , PaginatorInterface $paginator): Response
+    public function foradmin(Request $request ,  CallForTrainingRepository $callForTrainingRepository , PaginatorInterface $paginator): Response
     {
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
