@@ -86,75 +86,7 @@ class    ExportController   extends AbstractController {
          return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
          
     } 
-
-     /**
-     * @Route("/allassigned-rev", name="allassigned", methods={"GET","POST"})
-     */
-    public function allassigned(  Request $request,   PaginatorInterface $paginator )
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
-        $entityManager = $this->getDoctrine()->getManager();  
-           #######################
-           $query3 = $entityManager->createQuery(
-            'SELECT DISTINCT b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
-            FROM App:Review s 
-            JOIN s.submission b     
-            
-            JOIN b.author a
-            JOIN a.userInfo i
-
-            WHERE s.remark=:remark
-        ') 
-                ->setParameter('remark', 'Accepted with minor revision' ) ;
-
-                $rejecteds = $query3->getResult();
-
-         ################################ 
-         $spreadsheet = new Spreadsheet(); 
-         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
  
- 
-         $sheet = $spreadsheet->getActiveSheet();
-         $sheet->setCellValue('A1', 'No.');
-         $sheet->setCellValue('B1', 'Title.');
-         $sheet->setCellValue('C1', 'PI');
-         $sheet->setCellValue('D1', 'Co-PI (s)');
-         $sheet->setCellValue('E1', 'PI\'s Institute');
-         $sheet->setCellValue('F1', 'Not confirmed');
-         $sheet->setCellValue('G1', 'PI\'s Department');
-         $sheet->setTitle("Researcher"); 
-         $counter = 2;
-         foreach ($rejecteds as $phoneNumber) {
-             $sheet->setCellValue('A' . $counter, $phoneNumber->getId());
-             $sheet->setCellValue('B' . $counter, $phoneNumber->getTitle());
-             $counter2 = 2; 
-             ########################
-             $sheet->setCellValue('C' . $counter, $phoneNumber->getAuthor()->getUserInfo());
-             $sheet->setCellValue('E' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getCollege());
-             $sheet->setCellValue('G' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getDepartment());
-              foreach ($phoneNumber->getCoAuthors() as $CoAuthors) {
-              $sheet->setCellValue('D' . $counter, $CoAuthors->getResearcher()->getUserInfo());
- 
-              if ( $CoAuthors->getConfirmed() == NULL ){
-               $sheet->setCellValue('F' . $counter, $CoAuthors->getResearcher()->getUserInfo());
-                
-                } 
-              $counter++;
-             $counter2++;  
-      } 
-                    
- ############################
-           $counter++;
-         }
-          $writer = new Xlsx($spreadsheet);
-          $fileName = 'rejecteds.xlsx';
-         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
-          $writer->save($temp_file);
-          return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
-          
-         
-    }
-
 
   
  
@@ -198,7 +130,7 @@ class    ExportController   extends AbstractController {
     /**
      * @Route("/external-rev", name="alexternal_rev", methods={"GET","POST"})
      */
-    public function externalreviewers(Request $request , PaginatorInterface $paginator ): Response
+    public function externalreviewers(  ): Response
     {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
@@ -210,19 +142,16 @@ class    ExportController   extends AbstractController {
             JOIN s.reviewer u 
             JOIN u.userInfo pi 
             JOIN s.submission b 
-            where  u.is_reviewer =:external    GROUP BY u.id
+            where  u.is_reviewer =:external    GROUP BY u.id ORDER BY  pi.first_name
         ')
         ->setParameter('external', 1  ); 
-    $recepientextrnal = $query2->getResult();
-      ######################## 
-
-    //   dd($recepientextrnal);
-            $spreadsheet = new Spreadsheet();
+        $recepientextrnal = $query2->getResult();
+        $spreadsheet = new Spreadsheet();
            /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
           $sheet = $spreadsheet->getActiveSheet();
           $sheet->setCellValue('A1', 'No.');
           $sheet->setCellValue('B1', 'Full name');
-           $sheet->setCellValue('C1', 'Email ');
+          $sheet->setCellValue('C1', 'Email');
           $sheet->setCellValue('D1', 'Number of assignments');
           $sheet->setCellValue('E1', 'Staff Membership');
           $sheet->setTitle("External reviewers");
@@ -234,8 +163,7 @@ class    ExportController   extends AbstractController {
               $sheet->setCellValue('B' . $counter, $phoneNumber['first_name'].$phoneNumber['midle_name'].$phoneNumber['last_name']); 
               $sheet->setCellValue('C' . $counter, $phoneNumber['email']);
               $sheet->setCellValue('D' . $counter, $phoneNumber['review_assignment']);
-               if($phoneNumber['is_reviewer']==1){
-
+           if($phoneNumber['is_reviewer']==1){ 
                 $sheet->setCellValue('E' . $counter, "External reviewer");
 
               }
@@ -257,7 +185,7 @@ class    ExportController   extends AbstractController {
     /**
      * @Route("/internal-rev", name="internal_rev", methods={"GET","POST"})
      */
-    public function internalreviewers(Request $request , PaginatorInterface $paginator ): Response
+    public function internalreviewers( ): Response
     {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
@@ -269,7 +197,7 @@ class    ExportController   extends AbstractController {
             JOIN s.reviewer u 
             JOIN u.userInfo pi 
             JOIN s.submission b 
-            where  u.is_reviewer is NULL    GROUP BY u.id
+            where  u.is_reviewer is NULL    GROUP BY u.id ORDER BY  pi.first_name
         ');
         // ->setParameter('external', 1  ); 
     $recepientextrnal = $query2->getResult();

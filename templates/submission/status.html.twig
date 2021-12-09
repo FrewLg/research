@@ -13,13 +13,13 @@
 			</h4>
 
 			{{ include('submission/progress.html.twig') }}
-
+<br>
 			<div class="row m-t-sm">
 				<div class="col-lg-12">
 					<div class="panel blank-panel">
 						<div class="panel-heading">
 							<div class="panel-options">
-								<ul class="nav nav-tabs">
+								<ul class="nav nav-pills nav-justified">
 									<li>
 										<a class="nav-link active" href="#tab-1" data-bs-toggle="tab">Metadata</a>
 									</li>
@@ -122,24 +122,7 @@
 															</div>
 														</div>
 
-
-														{# <div class="accordion-item">
-																																																																																																											<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
-																																																																																																												<button class="accordion-button fw-semibold collapsed" 
-																																																																																																												type="button" data-bs-toggle="collapse" 
-																																																																																																												data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
-																																																																																																													Background And Rationale
-																																																																																																												</button>
-																																																																																																											</h5>
-																																																																																																											<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
-																																																																																																												<div class="accordion-body">
-																																																																																														
-																																																																																																													{{ submission.BackgroundAndRationale |raw}}
-																																																																																														
-																																																																																																												</div>
-																																																																																																											</div>
-																																																																																																										</div> #}
-
+ 
 														<div class="accordion-item">
 															<h5 class="accordion-header m-0" id="Objectives">
 																<button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoo" aria-expanded="false" aria-controls="collapseTwoo">
@@ -441,7 +424,7 @@
 
 													<div class="m-t-sm">
 
-														{% if review.attachment %}
+														{# {% if review.attachment %}
 															<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="btn btn-info btn-xs float-right">
 																Download reviewed   file
 																<i class="fa fa-download material-icons warning"></i>
@@ -450,7 +433,7 @@
 															<span class="label label-danger">
 																{% trans %}No attachement found{% endtrans %}
 															</span>
-														{% endif %}
+														{% endif %} #}
 													</div>
 												</td>
 												<td width="65" nowrap="nowrap">
@@ -470,7 +453,10 @@
 															Review:
 															{{ loop.index }}
 														</h4>
+														
+														<h4 class='text-info'>
 														{{ review.remark |raw}}
+														</h4>
 
 														<hr></td>
 												</td>

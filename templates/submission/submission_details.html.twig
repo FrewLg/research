@@ -507,8 +507,16 @@
 
 
 																{% elseif review.AllowToView=='1'  %}
-																	<a class="btn btn-success">
-																		Comment sent to PI</a>
+																
+																<h4 class='text-success'>
+
+																	Comment sent
+																</h4>
+
+																	 
+																	<a href="{{ path('undo_allocomment', {'id': review.id}) }}" class="btn btn-danger">
+																		Unsend comment to PI</a>
+																		
 																	{% else %}
 
 																{% endif %}

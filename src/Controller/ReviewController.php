@@ -102,6 +102,28 @@ class ReviewController extends AbstractController
 
 
     /**
+     * @Route("/{id}/undo-allocomment", name="undo_allocomment", methods={"GET","POST"})
+     */
+    public function undoallocomment(Review $review): Response
+    {
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $review->setAllowToView(NULL);
+        $review->setAllowedAt(new \DateTime());
+
+          $this->getDoctrine()->getManager()->flush();
+          $flashbag = $this->get('session')->getFlashBag();
+          $flashbag->add("success", "The comment show to PI has been  undone   !");
+           
+          return $this->redirectToRoute('submission_show', array('id' =>$review->getSubmission()->getId()));
+
+     }
+
+
+
+
+    /**
      * @Route("/{id}", name="review_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Review $review): Response

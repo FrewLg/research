@@ -1223,7 +1223,11 @@ return $this->redirectToRoute('submission_index');
             }
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
- 
+           ######################
+            $review->setFromDirector(1);
+            $review->setAllowToView(1);
+           ######################
+            
             $entityManager->persist($review);
             $entityManager->flush();
 

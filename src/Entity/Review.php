@@ -75,7 +75,11 @@ class Review
      */
     private $allow_to_view;
 
-    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $from_director;
+
 
     public function getId(): ?int
     {
@@ -207,6 +211,17 @@ class Review
         return $this;
     }
  
+    public function getFromDirector(): ?bool
+    {
+        return $this->from_director;
+    }
 
+    public function setFromDirector(?bool $from_director): self
+    {
+        $this->from_director = $from_director;
+
+        return $this;
+    }
+    
 
 }
