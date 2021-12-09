@@ -265,62 +265,7 @@ class DashboardController extends AbstractController {
         ]);
     }  
   
-     /**
-     * @Route("/theam", name="exportexcel", methods={"GET","POST"})
-     */
-    public function theams(   )
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
-        $em = $this->getDoctrine()->getManager();  
-         $submissions = $em->getRepository(Submission::class)->findAll(); 
-        $spreadsheet = new Spreadsheet(); 
-        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
-
-
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'No.');
-        $sheet->setCellValue('B1', 'Title.');
-        $sheet->setCellValue('C1', 'PI');
-        $sheet->setCellValue('D1', 'Co-PI (s)');
-        $sheet->setCellValue('E1', 'PI\'s Institute');
-        $sheet->setCellValue('F1', 'Not confirmed');
-        $sheet->setCellValue('G1', 'PI\'s Department');
-        $sheet->setTitle("Researcher"); 
-        $counter = 2;
-        foreach ($submissions as $phoneNumber) {
-            $sheet->setCellValue('A' . $counter, $phoneNumber->getId());
-            $sheet->setCellValue('B' . $counter, $phoneNumber->getTitle());
-            $counter2 = 2; 
-            ########################
-            $sheet->setCellValue('C' . $counter, $phoneNumber->getAuthor()->getUserInfo());
-            $sheet->setCellValue('E' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getCollege());
-            $sheet->setCellValue('G' . $counter, $phoneNumber->getAuthor()->getUserInfo()->getDepartment());
-             foreach ($phoneNumber->getCoAuthors() as $CoAuthors) {
-             $sheet->setCellValue('D' . $counter, $CoAuthors->getResearcher()->getUserInfo());
-
-             if ( $CoAuthors->getConfirmed() == NULL ){
-              $sheet->setCellValue('F' . $counter, $CoAuthors->getResearcher()->getUserInfo());
-               
-               }
-
-             $counter++;
-            $counter2++; 
-       
-     }
-    
-
-
-                   
-############################
-          $counter++;
-        }
-         $writer = new Xlsx($spreadsheet);
-         $fileName = 'Researchers.xlsx';
-        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
-         $writer->save($temp_file);
-         return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
-         
-    }
+     
 
 
 
@@ -582,44 +527,7 @@ class DashboardController extends AbstractController {
          
     }
 
- 
-     /**
-     * @Route("/participant", name="exportexcelparticipant", methods={"GET","POST"})
-     */
-    public function trainingparticipant(  )
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
-        $em = $this->getDoctrine()->getManager();
- 
-          $submissions = $em->getRepository(TrainingParticipant::class)->findAll();
-         $spreadsheet = new Spreadsheet();
-         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'No.');
-        $sheet->setCellValue('B1', 'Full name');
-         $sheet->setCellValue('C1', 'Participant\'s Institute');
-        $sheet->setCellValue('D1', 'Participant\'s College');
-        $sheet->setTitle("Participants");
- 
-        $counter = 2;
-        foreach ($submissions as $phoneNumber) {
-            $sheet->setCellValue('A' . $counter, $phoneNumber->getId()); 
-            $sheet->setCellValue('B' . $counter, $phoneNumber->getParticipant()->getUserInfo());
-            $sheet->setCellValue('C' . $counter, $phoneNumber->getParticipant()->getUserInfo()->getCollege());
-            $sheet->setCellValue('D' . $counter, $phoneNumber->getParticipant()->getUserInfo()->getDepartment()); 
-          $counter++;
-        }
-         $writer = new Xlsx($spreadsheet);
-         $fileName = 'Traninig participant.xlsx';
-        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
-        
-         $writer->save($temp_file);
-        
-         return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
-         
-    }
-
+  
 
  /**
      * @Route("/research-theams", name="research_theams", methods={"GET","POST"})
