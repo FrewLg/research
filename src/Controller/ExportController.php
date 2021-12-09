@@ -221,15 +221,15 @@ class    ExportController   extends AbstractController {
            /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
           $sheet = $spreadsheet->getActiveSheet();
           $sheet->setCellValue('A1', 'No.');
-          $sheet->setCellValue('B1', 'Full name');
+        //   $sheet->setCellValue('B1', 'Full name');
         //    $sheet->setCellValue('C1', 'Participant\'s Institute');
         //   $sheet->setCellValue('D1', 'Participant\'s College');
           $sheet->setTitle("External reviewers");
    
           $counter = 2;
           foreach ($recepientextrnal as $phoneNumber) {
-              $sheet->setCellValue('A' . $counter, $phoneNumber->get('email')); 
-              $sheet->setCellValue('B' . $counter, $phoneNumber->get('first_name'));
+              $sheet->setCellValue('A' . $counter, $phoneNumber['email']); 
+            //   $sheet->setCellValue('B' . $counter, $phoneNumber->get('first_name'));
             //   $sheet->setCellValue('C' . $counter, $phoneNumber->getParticipant()->getUserInfo()->getCollege());
             //   $sheet->setCellValue('D' . $counter, $phoneNumber->getParticipant()->getUserInfo()->getDepartment()); 
             $counter++;
