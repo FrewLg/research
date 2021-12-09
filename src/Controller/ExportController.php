@@ -224,20 +224,18 @@ class    ExportController   extends AbstractController {
           $sheet->setCellValue('B1', 'Full name');
            $sheet->setCellValue('C1', 'Email ');
           $sheet->setCellValue('D1', 'Number of assignments');
-          $sheet->setCellValue('E1', 'Submissions');
-          $sheet->setCellValue('F1', 'Staff Membership');
+          $sheet->setCellValue('E1', 'Staff Membership');
           $sheet->setTitle("External reviewers");
    
           $counter = 2;
           foreach ($recepientextrnal as $phoneNumber) {
-              $sheet->setCellValue('A' . $counter, $phoneNumber['id']); 
+              $sheet->setCellValue('A' . $counter, $counter); 
               $sheet->setCellValue('B' . $counter, $phoneNumber['first_name'].$phoneNumber['midle_name'].$phoneNumber['last_name']); 
               $sheet->setCellValue('C' . $counter, $phoneNumber['email']);
               $sheet->setCellValue('D' . $counter, $phoneNumber['review_assignment']);
-              $sheet->setCellValue('E' . $counter, $phoneNumber['subs']);
-              if($phoneNumber['is_reviewer']==1){
+               if($phoneNumber['is_reviewer']==1){
 
-                $sheet->setCellValue('F' . $counter, "Internal reviewer");
+                $sheet->setCellValue('E' . $counter, "Internal reviewer");
 
               }
             $counter++;
@@ -282,20 +280,18 @@ class    ExportController   extends AbstractController {
           $sheet->setCellValue('B1', 'Full name');
            $sheet->setCellValue('C1', 'Email ');
           $sheet->setCellValue('D1', 'Number of assignments');
-          $sheet->setCellValue('E1', 'Submissions');
-          $sheet->setCellValue('F1', 'Staff Membership');
+          $sheet->setCellValue('E1', 'Staff Membership');
           $sheet->setTitle("Internal reviewers");
    
           $counter = 2;
           foreach ($recepientextrnal as $phoneNumber) {
-              $sheet->setCellValue('A' . $counter, $phoneNumber['id']); 
+              $sheet->setCellValue('A' . $counter, $counter); 
               $sheet->setCellValue('B' . $counter, $phoneNumber['first_name'].$phoneNumber['midle_name'].$phoneNumber['last_name']); 
               $sheet->setCellValue('C' . $counter, $phoneNumber['email']);
               $sheet->setCellValue('D' . $counter, $phoneNumber['review_assignment']);
-              $sheet->setCellValue('E' . $counter, $phoneNumber['subs']);
-              if($phoneNumber['is_reviewer']==NULL){
+               if($phoneNumber['is_reviewer']==NULL){
 
-                $sheet->setCellValue('F' . $counter, "Internal reviewer");
+                $sheet->setCellValue('E' . $counter, "Internal reviewer");
 
               }
             $counter++;
