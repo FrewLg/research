@@ -226,18 +226,21 @@ class    ExportController   extends AbstractController {
           $sheet->setCellValue('D1', 'Number of assignments');
           $sheet->setCellValue('E1', 'Staff Membership');
           $sheet->setTitle("External reviewers");
+          $idcounter = 1;
    
           $counter = 2;
           foreach ($recepientextrnal as $phoneNumber) {
-              $sheet->setCellValue('A' . $counter, $counter); 
+              $sheet->setCellValue('A' . $counter, $idcounter); 
               $sheet->setCellValue('B' . $counter, $phoneNumber['first_name'].$phoneNumber['midle_name'].$phoneNumber['last_name']); 
               $sheet->setCellValue('C' . $counter, $phoneNumber['email']);
               $sheet->setCellValue('D' . $counter, $phoneNumber['review_assignment']);
                if($phoneNumber['is_reviewer']==1){
 
-                $sheet->setCellValue('E' . $counter, "Internal reviewer");
+                $sheet->setCellValue('E' . $counter, "External reviewer");
 
               }
+              
+            $idcounter++;
             $counter++;
           }
            $writer = new Xlsx($spreadsheet);
@@ -283,9 +286,10 @@ class    ExportController   extends AbstractController {
           $sheet->setCellValue('E1', 'Staff Membership');
           $sheet->setTitle("Internal reviewers");
    
+          $idcounter = 1;
           $counter = 2;
           foreach ($recepientextrnal as $phoneNumber) {
-              $sheet->setCellValue('A' . $counter, $counter); 
+              $sheet->setCellValue('A' . $counter, $idcounter); 
               $sheet->setCellValue('B' . $counter, $phoneNumber['first_name'].$phoneNumber['midle_name'].$phoneNumber['last_name']); 
               $sheet->setCellValue('C' . $counter, $phoneNumber['email']);
               $sheet->setCellValue('D' . $counter, $phoneNumber['review_assignment']);
@@ -295,9 +299,10 @@ class    ExportController   extends AbstractController {
 
               }
             $counter++;
+            $idcounter++;
           }
            $writer = new Xlsx($spreadsheet);
-           $fileName = 'External reviewers.xlsx';
+           $fileName = 'Internal reviewers.xlsx';
           $temp_file = tempnam(sys_get_temp_dir(), $fileName);
           
            $writer->save($temp_file);
