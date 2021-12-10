@@ -22,7 +22,20 @@
 
 							<div class="card">
 								<div class="card-header">
-									<h4 class="card-title">All active invitations  ({{myreviews|length}})</h4>
+									<h4 class="card-title">All active invitations 
+												{% if myreviews|length>0%}
+									
+									<a href="#" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+																 {{myreviews|length}}
+																 
+															</span>
+														</a> 
+												{% else %}
+
+												{% endif %}
+														
+														</h4>
 									<p class="text-muted mb-0">
 										All active and under review process
 									</p>
@@ -86,7 +99,20 @@ No records found  under this section
 
 							<div class="card">
 								<div class="card-header">
-									<h4 class="card-title">Closed Invitations ({{closeds|length}})</h4>
+									<h4 class="card-title">Closed Invitations  
+									{% if closeds|length>0%}
+									<a href="#" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+																 {{closeds|length}}
+																 
+															</span>
+														</a>
+												{% else %}
+
+												{% endif %}
+
+
+									</h4>
 									<p class="text-muted mb-0">
 										Closed  and inactive review invitations
 									</p>
