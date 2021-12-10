@@ -646,17 +646,6 @@ text: " Reviewer distribution "
 });
 
 // Get the chart's base64 image string
-var image = myChart.toBase64Image();
-console.log(image);
-
-document.getElementById('btn-download').onclick = function () { // Trigger the download
-var a = document.createElement('a');
-a.href = myChart.toBase64Image();
-a.download = 'reviewer-dist.png';
-a.click();
-}
-
-// Get the chart's base64 image string
 var image = myBarChart.toBase64Image();
 console.log(image);
 
@@ -681,13 +670,25 @@ a.click();
 
 
 // Get the chart's base64 image string
-var image = myDonRChart.toBase64Image();
+var image = myChart.toBase64Image();
 console.log(image);
 
 document.getElementById('btn-gender').onclick = function () { // Trigger the download
 var a = document.createElement('a');
-a.href = myDonRChart.toBase64Image();
+a.href = myChart.toBase64Image();
 a.download = 'gender-distribution.png';
+a.click();
+}
+
+
+// Get the chart's base64 image string
+var image = myDonRChart.toBase64Image();
+console.log(image);
+
+document.getElementById('btn-download').onclick = function () { // Trigger the download
+var a = document.createElement('a');
+a.href = myDonRChart.toBase64Image();
+a.download = 'reviewer-dist.png';
 a.click();
 }
 
