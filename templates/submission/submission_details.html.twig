@@ -515,7 +515,7 @@
 
 																	 
 																	<a href="{{ path('undo_allocomment', {'id': review.id}) }}" class="btn btn-danger">
-																		Unsend comment to PI</a>
+																		Unsend comment from PI</a>
 																		
 																	{% else %}
 
@@ -793,9 +793,10 @@
  
 									{% for review in review_assignment.reviews %}
 <hr>
-								 <h5 class='text-primary'>   Decision:
+								 <h5 class='text-primary'>  
+								  Decision:
 											{{    review.remark }}</h5>
-																		{% if  review.AllowToView  %}
+											{% if  review.AllowToView  %}
 
 										<small class="text-info">
 											Comment sent</small>

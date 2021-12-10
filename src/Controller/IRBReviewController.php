@@ -74,10 +74,26 @@ class IRBReviewController extends AbstractController
         );
 #################################################
 
+$all = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me]));
+$closedones = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => 1 , 'inactive_assignment' => NULL ]));
+////// if no throw exception
+$closeds = $paginator->paginate(
+    // Doctrine Query, not results
+    $closedones,
+    // Define the page parameter
+    $request->query->getInt('page', 1),
+    // Items per page
+    10
+);
+
+#################################################
+
+
 #################################################
 
         return $this->render('submission/myassigned.html.twig', [
-            'submissions' => $myassigneds,
+            'closeds' => $closeds,
+            'all'=>$all,
             'myreviews' => $myassigneds,
         ]);
     }
@@ -289,7 +305,10 @@ class IRBReviewController extends AbstractController
 
             $entityManager->persist($review);
             $entityManager->flush();
-
+            $this->addFlash(
+                'success',
+                'You have  completed a revision successfully!'
+            );
             return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
         }
 
@@ -431,7 +450,10 @@ class IRBReviewController extends AbstractController
 
             $entityManager->persist($review);
             $entityManager->flush();
-
+            $this->addFlash(
+                'success',
+                'You have  completed a revision successfully!'
+            );
             return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
         }
 
@@ -526,7 +548,7 @@ class IRBReviewController extends AbstractController
             
               $this->addFlash(
             'success',
-            'Reviewer re assigned successfully!'
+            'Reviewer allowed to edit the review  successfully!'
         ); 
             $entityManager->flush();
         
@@ -601,10 +623,7 @@ if ($reviewAssignment->getIsRejected()){
 	'review_assignment' => $reviewAssignment,
 	'guideline' => $guideline_for_reviewers,
         ]);
-    } 
-
-  
-
+    }  
 }
  
  
