@@ -287,7 +287,7 @@ class DashboardController extends AbstractController {
 
             WHERE s.remark=:remark
         ') 
-                ->setParameter('remark', 'Accepted with minor revision' ) ;
+                ->setParameter('remark', 3) ;
 
                 $rejecteds = $query3->getResult();
 
@@ -331,9 +331,9 @@ class DashboardController extends AbstractController {
 
         ') 
 
-                ->setParameter('remark', 'Declined' )  
-               ->setParameter('remark1', 'Accepted' )  
-              ->setParameter('remark2', 'Accepted with minor revision' )  
+                ->setParameter('remark', 1 )  
+               ->setParameter('remark1', 4 )  
+              ->setParameter('remark2', 3 )  
              ;
 
                 $rejecteds = $query3->getResult();
@@ -414,7 +414,7 @@ class DashboardController extends AbstractController {
 
             WHERE s.remark=:remark
         ') 
-                ->setParameter('remark', 'Accepted with minor revision' ) ;
+                ->setParameter('remark', 3 ) ;
 
                 $rejecteds = $query3->getResult();
 
@@ -446,6 +446,9 @@ class DashboardController extends AbstractController {
         $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
         $entityManager = $this->getDoctrine()->getManager();  
            #######################
+
+          //  select submission_id from review where remark in ('Accepted','Declined') group by submission_id having count(remark) >1; 
+
         //    $query3 = $entityManager->createQuery(
         //     'SELECT DISTINCT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
         //     FROM App:Review s 
@@ -456,7 +459,7 @@ class DashboardController extends AbstractController {
         // SELECT submission_id FROM review WHERE remark="Accepted" and (SELECT count(submission_id) as count from review where submission_id=3 group by submission_id)=1 group BY submission_id
         //     WHERE s.remark=:remark
         // ') 
-        //         ->setParameter('remark', 'Accepted' ) ;
+        //         ->setParameter('remark', <2 and  >3  ) ;
 
         //         $rejecteds = $query3->getResult();
         $status=$request->query->get("status");
@@ -504,7 +507,7 @@ class DashboardController extends AbstractController {
 
       ')  
               // ->setParameter('remarktwo', "Accepted with minor revision" )  
-              ->setParameter('remark', 'Accepted with major revision' ) 
+              ->setParameter('remark', 2) 
               ;
 
               $rejecteds = $query3->getResult();

@@ -40,17 +40,58 @@ class SubmissionRepository extends ServiceEntityRepository
     }
     
 
+    // public function getSubmissions($status=null)
+    // {
+    //     $qb= $this->createQueryBuilder('s');
+    //     if(isset($status)){
+            
+    //         $qb->leftJoin("App:Review","r","with","s.id=r.submission");
+    //         $qb->andWhere("r.remark= :remark")
+    //         ->setParameter("remark",$status);
+            
+    //     }
+    //     $qb->groupBy("s.id")->andHaving("count(s)>1"); 
+    //       return  $qb->orderBy('s.id', 'ASC')
+    //         ->getQuery();
+
+    //     ;
+    // }
+    
+    // select submission_id from review where remark in ('Accepted','Declined') group by submission_id having count(remark) >1; 
+
     public function getSubmissions($status=null)
     {
         $qb= $this->createQueryBuilder('s');
         if(isset($status)){
             
             $qb->leftJoin("App:Review","r","with","s.id=r.submission");
-            $qb->andWhere("r.remark= :remark")
+            $qb->andWhere("r.remark in  (:remark)")
             ->setParameter("remark",$status);
             
         }
-        $qb->groupBy("s.id")->andHaving("count(s)>1");
+        $qb->groupBy("s.id")->andHaving("count(r.remark)>1"); 
+          return  $qb->orderBy('s.id', 'ASC')
+            ->getQuery();
+
+        ;
+    }
+    
+
+
+
+
+
+
+    public function getOneofItIsAccepted($status=null)
+    {
+        $qb= $this->createQueryBuilder('s');
+        if(isset($status)){
+            
+            $qb->leftJoin("App:Review","r","with","s.id=r.submission");
+            $qb->andWhere("r.remark >3"); 
+            
+        }
+        $qb->groupBy("s.id")->andHaving("count(s)>=1");
  
 // dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());
           return  $qb->orderBy('s.id', 'ASC')
