@@ -786,14 +786,14 @@
 									{% if  review_assignment.Declined %}
 										<span class="text-danger ">
 											Declined</span>
-									{% elseif  review_assignment.IsAccepted %}
-
-										<span class="text-info">
-											Reviewing</span>
 									{% elseif  review_assignment.Closed %}
 
 										<span class="text-primary">
 											Closed</span>
+									{% elseif  review_assignment.IsAccepted %}
+
+										<span class="text-info">
+											Reviewing</span>
 									{% elseif  review_assignment.InactiveAssignment == 1 %}
 										<span class="badge bg-danger">Inactive
 										</span>
