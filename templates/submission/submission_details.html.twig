@@ -766,30 +766,30 @@
 							 
 							 
 							<p class="text-muted  mb-0 font-13">
-								<span class="text-dark">
+								<span class="text-dark text-muted">
 									Invitation Sent :
 									{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
 								</span>
 								<br>
-								<span class="text-dark">
+								<span class="text-dark text-muted">
 									Invitaion duedate:
 									{{ review_assignment.InvitationDueDate ? review_assignment.InvitationDueDate|date('Y-m-d') : '' }}
 								</span>
 								<br>
-								<span class="text-dark">
+								<span class="text-dark text-muted">
 									Review duedate:
 									{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
 								</span>
 								<br>
-								<span class="text-dark">
+								<span class="text-dark text-muted">
 									Invitaion  response:
 									{% if  review_assignment.Declined %}
-										<span class="text-danger">
+										<span class="text-danger ">
 											Declined</span>
 									{% elseif  review_assignment.IsAccepted %}
 
-										<span class="text-success">
-											Accepted</span>
+										<span class="text-info">
+											Reviewing</span>
 									{% elseif  review_assignment.Closed %}
 
 										<span class="text-primary">
