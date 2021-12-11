@@ -516,7 +516,23 @@ text: "Responses "
 const myDon2Chart = new Chart(document.getElementById("doughnut-chart2"), {
 type: 'doughnut',
 data: {
-labels: [{% for theanswer in desision %}'{{ (theanswer.decision ) }}',{% endfor %}],
+labels: [{% for theanswer in desision %}
+
+
+{% if  theanswer.decision==1 %}
+											 'Declined'
+											{% elseif  theanswer.decision==2 %}
+										 
+											'Accepted with major revision '
+											{% elseif   theanswer.decision==3 %}
+ 
+	'Accepted with minor revision'  
+											{% elseif  theanswer.decision==4 %}
+ 
+	'Accepted'   
+										 
+									{% endif   %}
+,{% endfor %}],
 datasets: [
 {
 label: "  completion status",
@@ -577,7 +593,24 @@ text: "Responses by Gender "
 const myBar2Chart = new Chart(document.getElementById("bar-chart2"), {
 type: 'bar',
 data: {
-labels: [{% for theanswer in desision %}'{{ (theanswer.decision ) }}',{% endfor %}],
+labels: [{% for theanswer in desision %}
+
+{% if  theanswer.decision==1 %}
+											 'Declined'
+											{% elseif  theanswer.decision==2 %}
+										 
+											'Accepted with major revision '
+											{% elseif   theanswer.decision==3 %}
+ 
+	'Accepted with minor revision'  
+											{% elseif  theanswer.decision==4 %}
+ 
+	'Accepted'   
+										 
+									{% endif   %}
+
+
+,{% endfor %}],
 datasets: [
 {
 
