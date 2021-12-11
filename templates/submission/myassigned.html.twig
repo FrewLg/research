@@ -22,20 +22,20 @@
 
 							<div class="card">
 								<div class="card-header">
-									<h4 class="card-title">All active invitations 
-												{% if myreviews|length>0%}
-									
-									<a href="#" class="avatar-box thumb-xxs align-self-center">
-															<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
-																 {{myreviews|length}}
-																 
-															</span>
-														</a> 
-												{% else %}
+									<h4 class="card-title">All active invitations
+										{% if myreviews|length>0%}
 
-												{% endif %}
-														
-														</h4>
+											<a href="#" class="avatar-box thumb-xxs align-self-center">
+												<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+													{{myreviews|length}}
+
+												</span>
+											</a>
+											{% else %}
+
+										{% endif %}
+
+									</h4>
 									<p class="text-muted mb-0">
 										All active and under review process
 									</p>
@@ -84,8 +84,8 @@
 															</a>
 														</td>
 													</tr>
-													{% else %}
-No records found  under this section
+												{% else %}
+													No records found  under this section
 												{% endfor %}
 
 											</tbody>
@@ -95,23 +95,18 @@ No records found  under this section
 								</div>
 								<!--end card-body-->
 							</div>
-
-
 							<div class="card">
 								<div class="card-header">
-									<h4 class="card-title">Closed Invitations  
-									{% if closeds|length>0%}
-									<a href="#" class="avatar-box thumb-xxs align-self-center">
-															<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
-																 {{closeds|length}}
-																 
-															</span>
-														</a>
-												{% else %}
+									<h4 class="card-title">Closed Invitations
+										{% if closeds|length>0%}
+											<a href="#" class="avatar-box thumb-xxs align-self-center">
+												<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+													{{closeds|length}}
 
-												{% endif %}
-
-
+												</span>
+											</a>
+											{% else %}
+										{% endif %}
 									</h4>
 									<p class="text-muted mb-0">
 										Closed  and inactive review invitations
@@ -122,16 +117,10 @@ No records found  under this section
 									<div class="table-responsive-sm">
 										<table class="table table-bordered table-sm mb-0">
 											<thead class="thead-light">
-
-
 												{% if closeds|length>0%}
-
 													<tr>
-
 														<th>#</th>
-														<th>Thematic area</th>
-
-
+														<th>Title</th>
 														<th>Invitation sent date</th>
 														<th>Review due date</th>
 														<th>Invitation Response</th>
@@ -141,7 +130,7 @@ No records found  under this section
 												{% for myreview in closeds %}
 													<tr>
 														<td>{{ loop.index }}</td>
-														<td>{{ myreview.submission.thematicArea }}</td>
+														<td>{{ myreview.submission.title }}</td>
 
 														<td>
 															{% if myreview.InvitationSentAt %}
@@ -172,22 +161,16 @@ No records found  under this section
 																	<span class="badge badge-boxed  badge-outline-danger">Inactive
 																	</span>
 																	<br>
-
 																{% else   %}
-
 																	<spanclass="badgebadge-boxedbadge-outline-warning">
 																		Pending</span>
-
-
 																{% endif   %}
-
-
 															</span>
 
 														</td>
 													</tr>
-													{% else %}
-No records found  under this section
+												{% else %}
+													No records found  under this section
 
 												{% endfor %}
 											</thead>
@@ -198,17 +181,9 @@ No records found  under this section
 							</div>
 							<!--end card-body-->
 						</div>
-
-
 					</div>
-
 				</div>
-				<!--end row-->
-
-
 			</div>
-
-
 		</div>
 	</div>
 {% endblock %}
