@@ -809,8 +809,8 @@
  
 									{% for review in review_assignment.reviews %}
 <hr>
-								 <h5 class='text-default'>  
-								  Decision:	</h5>
+								 <h5  >  
+								  Decision:
 											 
 											{% if   review.remark==1 %}
 											<span class="text-danger">
@@ -832,7 +832,7 @@
 
 									{% endif   %}
 
-										
+											</h5>
 											{% if  review.AllowToView  %}
 
 										<small class="text-info">
@@ -884,13 +884,13 @@
 												{% endif %}
 
 
-												<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
+												<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-sm btn-soft-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
 													Unassign</a>
 
 												{% if review_assignment.closed %}
 
 
-													<a href="{{ path('reassign', {'id': review_assignment.id}) }}" class='btn btn-primary btn-sm '>
+													<a href="{{ path('reassign', {'id': review_assignment.id}) }}" class='btn btn-sm btn-soft-primary btn-sm '>
 														Re-assign</a>
 												{% endif %}
 
