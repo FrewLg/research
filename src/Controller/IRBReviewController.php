@@ -288,9 +288,7 @@ $entityManager = $this->getDoctrine()->getManager();
 
         // $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
-        $form->handleRequest($request);
-
- 
+        $form->handleRequest($request); 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $reviewfile = $form->get('attachment')->getData();

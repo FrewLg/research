@@ -481,9 +481,7 @@ class DashboardController extends AbstractController {
          
     }
 
-
-
-     /**
+    /**
      * @Route("/major-rev", name="all_minor", methods={"GET","POST"})
      */
     public function allminor(  Request $request,   PaginatorInterface $paginator )

@@ -24,8 +24,7 @@ class UserType extends AbstractType
             "President" => Constants::PRESIDENT,
              "Vice President" => Constants::VICE_PRESIDENT,
               "Directorate" => Constants::ROLE_DIRECTORATE,
-               "College Coordinator" =>
-               Constants::ROLE_COLLEGECOORDINATOR,
+               "College Coordinator" => Constants::ROLE_COLLEGECOORDINATOR,
                 "Work Unit" => Constants::ROLE_WORK_UNIT,
                 "Reviewer" => Constants::ROLE_REVIEWER,
         ];

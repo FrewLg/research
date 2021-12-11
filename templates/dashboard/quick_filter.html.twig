@@ -25,20 +25,41 @@
 <hr>
 
 
-<a href="{{ path('allaccepted', {'status': 'Accepted'}) }}" class='btn btn-success btn-xs  btn-block'>Accepted
+<a href="{{ path('allaccepted', {'status': 4}) }}" class='btn btn-success btn-xs  btn-block'>Accepted
 </a>
 <hr>
 
-<a href="{{ path('allaccepted' , {'status': 'Accepted with minor revision'}) }}" class='btn btn-info btn-xs  btn-block'>Accepted with minor revision
+<a href="{{ path('allaccepted' , {'status': 3}) }}" class='btn btn-info btn-xs  btn-block'>Accepted with minor revision
 </a>
 <hr>
 
-<a href="{{ path('allaccepted' , {'status': 'Accepted with major revision'}) }}" class='btn btn-primary btn-xs  btn-block'>Accepted with major revision
+<a href="{{ path('allaccepted' , {'status': 2}) }}" class='btn btn-warning btn-xs  btn-block'>Accepted with major revision
+</a>
+<hr> 
+
+
+<a href="{{ path('allaccepted' , {'status': 1}) }}" class='btn btn-danger btn-xs  btn-block'>Declined
+</a>
+<hr> 
+
+
+{# 
+<a href="{{ path('allaccepted') }}" class='btn btn-success btn-xs  btn-block'>Accepted
 </a>
 <hr>
-<a href="{{ path('allaccepted' , {'status': 'Declined'}) }}" class='btn btn-danger btn-xs  btn-block'>Declined 
+
+<a href="{{ path('minor_rev') }}" class='btn btn-info btn-xs  btn-block'>Accepted with minor revision
 </a>
 <hr>
+
+<a href="{{ path('all_minor') }}" class='btn btn-primary btn-xs  btn-block'>Accepted with major revision
+</a>
+<hr> #}
+
+
+{# <a href="{{ path('allrejected' ) }}" class='btn btn-danger btn-xs  btn-block'>Declined and Accepted
+</a>
+<hr> #}
 <a href="{{ path('submission_filter', {'filter': 'al'}) }}" class='btn btn-primary btn-xs  btn-block'>All
 </a>
 <hr>

@@ -435,13 +435,13 @@
 
 										<h3>
 											<a href="#" class="text-navy">
-												Comments  and revisions
+												Responses   and revisions
 											</a>
 										</h3>
 
 										{% for review in reviews %}
 
-											<table class="table shoping-cart-table">
+											<table class="table table-bordered table-striped">
 
 												<tbody>
 													<tr>
@@ -461,24 +461,24 @@
 															<div class="m-t-sm">
 
 																{% if review.attachment %}
-																	<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="font-16 m-0   btn btn-sm btn-soft-primary">
-																		Download review file
+																	<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="font-14 m-0   btn btn-xs btn-soft-primary">
+																			Evaluation Report  
 																		<i class="fa fa-download material-icons  "></i>
 																	</a>
 																{% else %}
-																	<span class="label label-danger">
-																		{% trans %}No attachement found{% endtrans %}
+																	<span class="badge badge-boxed  badge-outline-danger">
+																		{% trans %}No Evaluation  Report found{% endtrans %}
 																	</span>
 																{% endif %}
 																{% if review.EvaluationAttachment %}
-																	<a href="{{ asset('/files/proposals/review_files/'~ review.EvaluationAttachment ) }}" class="font-16 m-0   btn btn-sm btn-soft-primary">
-																		Download evaluation file
+																	<a href="{{ asset('/files/proposals/review_files/'~ review.EvaluationAttachment ) }}" class="font-14 m-0   btn btn-xs btn-soft-primary">
+																		 Grading   PDF
 																		<i class="fa fa-download material-icons  "></i>
 																	</a>
 																{% else %}
-																	<span class="badge bg-danger">
+																	<span class="badge badge-boxed  badge-outline-danger">
 																		{% trans %}
-																		No evaluation file found{% endtrans %}
+																		No grading file found{% endtrans %}
 																	</span>
 																{% endif %}
 															</div>
@@ -486,35 +486,51 @@
 														<td width="65" nowrap="nowrap">
 															<h5 class='text-default'>
 																{% if review.ReviewedBy.isReviewer %}
-																	<span class="text-primary">
-																		External reviewer
+ 																		
+																		<span class="badge badge-boxed  badge-outline-primary">
+																		External reviewer</span>
+
 																	{% else %}
 																		<span class="text-success">
-																			Internal reviewer
+																			
 																		</span>
+																		<span class="badge badge-boxed  badge-outline-success">
+																		Internal reviewer</span>
+
+
 																	{% endif %}
 																</h5>
-																<h4 class='text-primary'>
+																{# <h4 class='text-primary'> #}
 
-																	{{ review.remark |raw}}
-																</h4>
+																	{# {{ review.remark |raw}} #}
+																	<b>
+																	{% if   review.remark==1 %}
+											<span class="text-danger">
+											Declined</span>
+
+											{% elseif   review.remark==2 %}
+											<span class="text-warning">
+											Accepted with major revision</span>
+											{% elseif   review.remark==3 %}
+	<span class="text-warning">
+	Accepted with minor revision </span>
+											{% elseif   review.remark==4 %}
+
+ 	<span class="text-success">
+	Accepted   </span>
+ {% endif   %}
+
+															</b>	{# </h4> #}
 
 																<hr>
 																{% if review.AllowToView=='' %}
 
-																	<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-primary" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
-																		Send   comment to PI</a>
-
-
+																	<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-soft-primary btn-xs  mt-1" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
+																		Send   comment to PI</a> 
 																{% elseif review.AllowToView=='1'  %}
-																
-																<h4 class='text-success'>
-
-																	Comment sent
-																</h4>
-
-																	 
-																	<a href="{{ path('undo_allocomment', {'id': review.id}) }}" class="btn btn-danger">
+																   <span class="badge badge-boxed  badge-outline-success">
+																		Comment sent</span><br>
+																	<a href="{{ path('undo_allocomment', {'id': review.id}) }}" class="btn btn-soft-danger btn-xs  mt-1">
 																		Unsend comment from PI</a>
 																		
 																	{% else %}
@@ -793,9 +809,30 @@
  
 									{% for review in review_assignment.reviews %}
 <hr>
-								 <h5 class='text-primary'>  
-								  Decision:
-											{{    review.remark }}</h5>
+								 <h5 class='text-default'>  
+								  Decision:	</h5>
+											 
+											{% if   review.remark==1 %}
+											<span class="text-danger">
+											Declined</span>
+
+											{% elseif   review.remark==2 %}
+											<span class="text-warning">
+											Accepted with major revision</span>
+											{% elseif   review.remark==3 %}
+	<span class="text-warning">
+	Accepted with minor revision </span>
+											{% elseif   review.remark==4 %}
+
+ 	<span class="text-success">
+	Accepted   </span>
+
+
+										
+
+									{% endif   %}
+
+										
 											{% if  review.AllowToView  %}
 
 										<small class="text-info">
