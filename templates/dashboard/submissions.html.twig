@@ -26,7 +26,7 @@
 {# </div> #}
 <div class="col-2 ">
 <button type="submit" class="btn btn-info">Filter</button>
-<button type="submit" name='export' class=" btn btn-info">Export</button>
+{# <button type="submit" name='export' class=" btn btn-info">Export</button> #}
 
 </div>
 </div>
@@ -51,7 +51,9 @@
 									<tr {% if submission.complete=='completed' %} class='text-' {% elseif submission.complete==''%} class='text-danger' {% endif %}>
 										<td>{{ loop.index  }}</td>
 										<td>{{ submission.title }}</td>
-										{# <td>{{ submission.firstName }}
+										<td>
+										{{ submission.author }}
+										{# 
 											 {{ submission.midle_name }}
 											 {{ submission.last_name }}  #}
 										</td>
