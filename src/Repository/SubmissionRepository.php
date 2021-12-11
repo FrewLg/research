@@ -40,6 +40,26 @@ class SubmissionRepository extends ServiceEntityRepository
     }
     
 
+    public function getSubmissions($status=null)
+    {
+        $qb= $this->createQueryBuilder('s');
+        if(isset($status)){
+            
+            $qb->leftJoin("App:Review","r","with","s.id=r.submission");
+            $qb->andWhere("r.remark= :remark")
+            ->setParameter("remark",$status);
+            
+        }
+        $qb->groupBy("s.id")->andHaving("count(s)>1");
+ 
+// dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());
+          return  $qb->orderBy('s.id', 'ASC')
+            ->getQuery();
+
+        ;
+    }
+    
+
     // public function findBySubmissionByUser($value): ?Submission
     // {
     //     $qb= $this->createQueryBuilder('s');

@@ -75,18 +75,38 @@ class IRBReviewController extends AbstractController
 #################################################
 
 $all = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me]));
-$closedones = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => 1 , 'inactive_assignment' => NULL ]));
-////// if no throw exception
-$closeds = $paginator->paginate(
-    // Doctrine Query, not results
-    $closedones,
-    // Define the page parameter
-    $request->query->getInt('page', 1),
-    // Items per page
-    10
-);
+// $closedones = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => 1 , 'inactive_assignment' => NULL ]));
+// ////// if no throw exception
+// $closeds = $paginator->paginate(
+//     // Doctrine Query, not results
+//     $closedones,
+//     // Define the page parameter
+//     $request->query->getInt('page', 1),
+//     // Items per page
+//     10
+// );
+
 
 #################################################
+
+$entityManager = $this->getDoctrine()->getManager();  
+#######################
+
+        #######################
+        $query3 = $entityManager->createQuery(
+        'SELECT    b.id , ass.invitation_sent_at as InvitationSentAt,     ass.Declined as Declined,  b.title , s.createdAt  , ass.duedate  as dueDate
+        FROM App:Review s 
+        JOIN s.submission b     
+        JOIN s.reviewAssignment ass      
+        WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed
+        -- HAVING     s.remark=:remarktwo
+
+        ')  
+        ->setParameter('closed', 1 )  
+        ->setParameter('reviewer', $this_is_me   ) 
+        ;
+
+        $closeds = $query3->getResult();
 
 
 #################################################

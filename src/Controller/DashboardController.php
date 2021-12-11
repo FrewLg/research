@@ -446,28 +446,31 @@ class DashboardController extends AbstractController {
         $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
         $entityManager = $this->getDoctrine()->getManager();  
            #######################
-           $query3 = $entityManager->createQuery(
-            'SELECT DISTINCT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
-            FROM App:Review s 
-            JOIN s.submission b     
+        //    $query3 = $entityManager->createQuery(
+        //     'SELECT DISTINCT  b.id ,  b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+        //     FROM App:Review s 
+        //    INNER  JOIN s.submission as b on s.submisstion_id=b.id      
             
-            JOIN b.author a
-            JOIN a.userInfo i
+        //    INNER  JOIN b.author a
+        //    INNER  JOIN a.userInfo i
+        // SELECT submission_id FROM review WHERE remark="Accepted" and (SELECT count(submission_id) as count from review where submission_id=3 group by submission_id)=1 group BY submission_id
+        //     WHERE s.remark=:remark
+        // ') 
+        //         ->setParameter('remark', 'Accepted' ) ;
 
-            WHERE s.remark=:remark
-        ') 
-                ->setParameter('remark', 'Accepted' ) ;
+        //         $rejecteds = $query3->getResult();
 
-                $rejecteds = $query3->getResult();
+      $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions("Accepted");
 
+      // dd($submissions->getResult());
          ################################ 
                  $Allsubmissions = $paginator->paginate(
                   // Doctrine Query, not results
-                  $rejecteds,
+                  $submissions,
                   // Define the page parameter
                   $request->query->getInt('page', 1),
                   // Items per page
-                  10
+                  10,array('wrap-queries'=>true)
               );
               $info='All Accepted';
          ################################

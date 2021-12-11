@@ -35,9 +35,9 @@
 									<tr {% if submission.complete=='completed' %} class='text-' {% elseif submission.complete==''%} class='text-danger' {% endif %}>
 										<td>{{ loop.index  }}</td>
 										<td>{{ submission.title }}</td>
-										<td>{{ submission.firstName }}
+										{# <td>{{ submission.firstName }}
 											 {{ submission.midle_name }}
-											 {{ submission.last_name }} 
+											 {{ submission.last_name }}  #}
 										</td>
 										<td>
 											{% if submission.sentAt %}

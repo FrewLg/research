@@ -68,7 +68,7 @@
 														<td>{{ myreview.submission.title }}</td>
 
 														<td>
-															{% if myreview.InvitationSentAt%}
+															{% if myreview.InvitationSentAt %}
 																{{  myreview.InvitationSentAt|date('d, M Y h:i a') }}
 															{% endif %}
 														</td>
@@ -123,6 +123,7 @@
 														<th>Title</th>
 														<th>Invitation sent date</th>
 														<th>Review due date</th>
+														<th>Closed at</th>
 														<th>Invitation Response</th>
 													</tr>
 												{% endif %}
@@ -130,7 +131,7 @@
 												{% for myreview in closeds %}
 													<tr>
 														<td>{{ loop.index }}</td>
-														<td>{{ myreview.submission.title }}</td>
+														<td>{{ myreview.title }}</td>
 
 														<td>
 															{% if myreview.InvitationSentAt %}
@@ -143,13 +144,26 @@
 															{% endif %}
 														</td>
 														<td>
+															
+																{% if myreview.createdAt %}
+ 																{{ myreview.createdAt|date('d, M Y h:i a') }}
+															{% endif %}
+
+														{# {% for review in myreview.reviews %}
+														{% if review.createdAt %}
+
+																{{ review.createdAt|date('d, M Y h:i a') }}
+															{% endif %}
+ {% endfor %} #}
+														</td> 
+														<td>
 
 															<span class="text-dark">
 
-																{% if  myreview.Declined %}
+																{# {% if  myreview.Declined %}
 																	<span class="badge badge-boxed  badge-outline-danger">
 																		Declined invitation</span>
-																{% elseif  myreview.IsAccepted %}
+																{% elseif  myreview.acceptedAt %}
 
 																	<span class="badge badge-boxed  badge-outline-success">
 																		Responded</span>
@@ -164,7 +178,7 @@
 																{% else   %}
 																	<spanclass="badgebadge-boxedbadge-outline-warning">
 																		Pending</span>
-																{% endif   %}
+																{% endif   %} #}
 															</span>
 
 														</td>
