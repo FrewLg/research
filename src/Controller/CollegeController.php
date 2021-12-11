@@ -60,6 +60,180 @@ class CollegeController extends AbstractController
         ]);
     }
 
+
+        /**
+     * @Route("/details", name="college_details", methods={"GET","POST"})
+     */
+
+    public function showdetail( Request $request       ): Response
+    {
+
+    $this->denyAccessUnlessGranted('assn_clg_cntr');
+
+    $college=$this->getUser()->getUserInfo()->getCollege();
+
+    $entityManager = $this->getDoctrine()->getManager();
+    $thematicAreas = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $college ] );
+    $guidelines = $entityManager->getRepository(Guidelines::class)->findBy(['college' => $college ] );
+    $thematicArea = new ThematicArea();
+            $thematicAreaform = $this->createForm(ThematicAreaType::class, $thematicArea);
+        $thematicAreaform->handleRequest($request); 
+        if ($thematicAreaform->isSubmitted() && $thematicAreaform->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            // dd();
+           $thematicArea->setCollege($college);
+      # $thematicArea->setCreatedAt(new \DateTime());
+            $entityManager->persist($thematicArea);
+            $entityManager->flush(); 
+            return $this->redirectToRoute('college_details');
+        }
+
+    $guideline_for_reviewers = $entityManager->getRepository(GuidelineForReviewer::class)->findBy(['college' => $college ] );
+  $guidelineForReviewer =$entityManager->getRepository(GuidelineForReviewer::class)->findOneBy(['college' => $college ] );
+ if(!$guidelineForReviewer){
+    $guidelineForReviewer= new GuidelineForReviewer();
+ }
+        $formGuidelineForReviewer = $this->createForm(GuidelineForReviewerType::class, $guidelineForReviewer);
+        $formGuidelineForReviewer->handleRequest($request);
+
+        if ($formGuidelineForReviewer->isSubmitted() && $formGuidelineForReviewer->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $file3 = $formGuidelineForReviewer->get('attachment')->getData();  
+            if (!$file3){ 
+            echo ' file not uploaded';
+         }   else{
+              $file3 = $formGuidelineForReviewer->get('attachment')->getData();  
+                   $fileName3 = 'Assessment Guideline  file'.md5(uniqid()).'.'.$file3->guessExtension();  
+               $file3->move($this->getParameter('college_guidelines'), $fileName3);  
+                $guidelineForReviewer->setAttachment($fileName3); 
+                  }
+            $evaluationfromf = $formGuidelineForReviewer->get('evaluationfrom')->getData();  
+                  if (!$evaluationfromf){ 
+                  echo 'File not uploaded';
+        }   
+        else{
+        $evaluationfromf = $formGuidelineForReviewer->get('evaluationfrom')->getData();  
+                $file_name = 'Grading Form '.md5(uniqid()).'.'.$evaluationfromf->guessExtension();  
+            $evaluationfromf->move($this->getParameter('college_guidelines'), $file_name);  
+            $guidelineForReviewer->setEvaluationfrom($file_name); 
+            }
+#########
+            $commentfrom = $formGuidelineForReviewer->get('commentfrom')->getData();  
+            if (!$commentfrom){ 
+            echo 'File not uploaded';
+  }   
+  else{
+  $commentfrom = $formGuidelineForReviewer->get('commentfrom')->getData();  
+          $file_name2 = 'Evaluation Report Form '.md5(uniqid()).'.'.$commentfrom->guessExtension();  
+      $commentfrom->move($this->getParameter('college_guidelines'), $file_name2);  
+      $guidelineForReviewer->setCommentfrom($file_name2); 
+      }
+
+###########
+            
+
+
+            $guidelineForReviewer->setCollege($college);
+            $guidelineForReviewer->setCreatedAt(new \DateTime());
+            $entityManager->persist($guidelineForReviewer);
+            $entityManager->flush();
+            return $this->redirectToRoute('college_details');
+        }
+    
+    $guideline =$entityManager->getRepository(Guidelines::class)->findOneBy(['college' => $college ] );
+    if(!$guideline){
+        $guideline = new Guidelines();   
+    }
+    $guidelineform = $this->createFormBuilder($guideline)  
+         ->add('guideline',   CKEditorType::class,[
+            'attr'=>['placeholder'=>'The guideline ',
+            'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                         'required' => false,
+        
+        ],]) 
+ 
+
+           ->add('attachment', FileType::class, [
+                'label' => 'Guideline for PI  attachment  file',
+                'attr'=>[
+                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                             'required' => true,
+            
+            ],
+                'mapped' => false, 
+                'required' => false,
+               
+            ])
+         ->getForm(); 
+        $guidelineform->handleRequest($request);
+
+
+        if ($guidelineform->isSubmitted() && $guidelineform->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+     $file3 = $guidelineform->get('attachment')->getData();  
+           
+            // $file3 = $guideline->getAttachment();               
+   if ($file3){ 
+   echo ' file not uploaded';
+}   else{
+     $file3 = $guidelineform->get('attachment')->getData();  
+          $fileName3 = md5(uniqid()).'.'.$file3->guessExtension();  
+      $file3->move($this->getParameter('college_guidelines'), $fileName3);  
+     $guideline->setCollege($college);
+      $guideline->setCreatedAt(new \DateTime());
+           $guideline->setAttachment($fileName3); 
+         }
+         
+        // if ($guidelineform->isSubmitted() && $guidelineform->isValid()) {
+        //     $entityManager = $this->getDoctrine()->getManager();
+        //     $entityManager->persist($guideline);
+        //     $entityManager->flush();
+
+        //     return $this->redirectToRoute('work_unit_show', array('prefix' => $college->getPrefix()));
+        // }
+        }
+        ///////////////institutiona review board members
+    $AllIRBMembers = $entityManager->getRepository(InstitutionalReviewersBoard::class)->findBy(['college' => $college ] );
+#dd($institutionalReviewersBoard); 
+$institutionalReviewersBoard= new InstitutionalReviewersBoard() ;
+        #$form = $this->createForm(WorkUnitType::class, $workUnit);
+    $i_r_b_form = $this->createForm(InstitutionalReviewersBoardType::class, $institutionalReviewersBoard);
+        $i_r_b_form->handleRequest($request);
+
+        if ($i_r_b_form->isSubmitted() && $i_r_b_form->isValid()) {
+           # $this->getDoctrine()->getManager()->flush();
+    $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($institutionalReviewersBoard);
+            $entityManager->flush();
+
+             return $this->redirectToRoute('college_details' );
+        } 
+        //to be changerd later
+            $form = $this->createForm(CollegeType::class, $college);
+     $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+             return $this->redirectToRoute('college_details' );
+        }            
+        return $this->render('college/show.html.twig', [
+            'college' => $college,
+         'guidelines' => $guidelines,
+         'guideline_for_reviewers' => $guideline_for_reviewers,
+         'formguidelineforReviewer' => $formGuidelineForReviewer->createView(),
+         'form' => $form->createView(),
+         'institutional_reviewers_boards'=> $AllIRBMembers,
+         'guidelineform'=>$guidelineform->createView(),
+         'thematicAreaform'=> $thematicAreaform->createView(),
+             'thematic_areas' => $thematicAreas,
+        ]);
+        
+    }
+
+
+
         /**
      * @Route("/{id}/", name="college_show", methods={"GET","POST"})
      */
@@ -100,7 +274,7 @@ class CollegeController extends AbstractController
          }   else{
               $file3 = $formGuidelineForReviewer->get('attachment')->getData();  
                    $fileName3 = $formGuidelineForReviewer->get('name')->getData().'-'.md5(uniqid()).'.'.$file3->guessExtension();  
-               $file3->move($this->getParameter('review_files'), $fileName3);  
+               $file3->move($this->getParameter('college_guidelines'), $fileName3);  
                 $guidelineForReviewer->setAttachment($fileName3); 
                   }
 
@@ -110,12 +284,24 @@ class CollegeController extends AbstractController
         }   
         else{
         $evaluationfromf = $formGuidelineForReviewer->get('evaluationfrom')->getData();  
-                $file_name = 'Eval-'.md5(uniqid()).'.'.$evaluationfromf->guessExtension();  
-            $evaluationfromf->move($this->getParameter('review_files'), $file_name);  
+                $file_name = 'Evaluation-form-'.md5(uniqid()).'.'.$evaluationfromf->guessExtension();  
+            $evaluationfromf->move($this->getParameter('college_guidelines'), $file_name);  
             $guidelineForReviewer->setEvaluationfrom($file_name); 
             }
+#########
+            $commentfrom = $formGuidelineForReviewer->get('commentfrom')->getData();  
+            if (!$commentfrom){ 
+            echo 'File not uploaded';
+  }   
+  else{
+  $commentfrom = $formGuidelineForReviewer->get('commentfrom')->getData();  
+          $file_name2 = 'Com-'.md5(uniqid()).'.'.$commentfrom->guessExtension();  
+      $commentfrom->move($this->getParameter('college_guidelines'), $file_name2);  
+      $guidelineForReviewer->setCommentfrom($file_name2); 
+      }
 
-                  
+###########
+            
 
 
             $guidelineForReviewer->setCollege($college);
@@ -131,20 +317,25 @@ class CollegeController extends AbstractController
     }
     $guidelineform = $this->createFormBuilder($guideline)  
          ->add('guideline',   CKEditorType::class,[
-            'attr'=>['placeholder'=>'Executive Summary',
+            'attr'=>['placeholder'=>'The guideline ',
             'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
                          'required' => false,
         
         ],]) 
  
+
            ->add('attachment', FileType::class, [
-                'label' => 'Guideline attachment  file',
- 
+                'label' => 'Guideline for PI  attachment  file',
+                'attr'=>[
+                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                             'required' => true,
+            
+            ],
                 'mapped' => false, 
                 'required' => false,
                
             ])
-                    ->getForm(); 
+         ->getForm(); 
         $guidelineform->handleRequest($request);
 
 
@@ -158,7 +349,7 @@ class CollegeController extends AbstractController
 }   else{
      $file3 = $guidelineform->get('attachment')->getData();  
           $fileName3 = md5(uniqid()).'.'.$file3->guessExtension();  
-      $file3->move($this->getParameter('review_files'), $fileName3);  
+      $file3->move($this->getParameter('college_guidelines'), $fileName3);  
      $guideline->setCollege($college);
       $guideline->setCreatedAt(new \DateTime());
            $guideline->setAttachment($fileName3); 

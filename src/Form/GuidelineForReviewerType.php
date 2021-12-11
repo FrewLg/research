@@ -23,20 +23,40 @@ class GuidelineForReviewerType extends AbstractType
             ],]) 
             
             ->add('attachment', FileType::class, [
-                'label' => 'Guideline attachment  file',
- 
+                'label' => 'Assessment Guideline  file',
+                'attr'=>[
+                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                             'required' => true,
+            
+            ],
                 'mapped' => false, 
-                'required' => false,
+                'required' => true,
                
             ])
 
             ->add('evaluationfrom', FileType::class, [
-                'label' => 'Evaluation from  file',
- 
+                'label' => 'Grading Form ',
+                'attr'=>[
+                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                             'required' => true,
+            
+            ],
                 'mapped' => false, 
                 'required' => false,
                
             ])
+            ->add('commentfrom', FileType::class, [
+                'label' => ' Evaluation Report Form ',
+                'attr'=>[
+                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                             'required' => true,
+            
+            ],
+                'mapped' => false, 
+                'required' => false,
+               
+            ])
+            
 
         ;
     }

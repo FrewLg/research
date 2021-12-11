@@ -302,12 +302,14 @@ a {
 
 You have been   invited to review a mega research proposal submission entitled " {{ title}}  ".
 
-Please find the invitation URL below.
 
-
+                                       {{ body|raw }}<br>
+ 
+ 
+                                     <br>
 
                                          
- <a href="{{app_url}}/{{reviewerinvitation_URL}}"  target="_blank">   Review invitation URL </a>
+ <a href="{{app_url}}/{{reviewerinvitation_URL}}"  target="_blank">  Here is review invitation URL </a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -316,6 +318,7 @@ Please find the invitation URL below.
                                 <tr>
                                      <td>
                                      Thank you!
+                                     <br>
                                      <br>
                                      {{college}} ,<br>
                                      Research and Innovation Director Office.

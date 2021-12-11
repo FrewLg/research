@@ -330,8 +330,8 @@ class College
     public function setGuidelineForReviewer(GuidelineForReviewer $guidelineForReviewer): self
     {
         // set the owning side of the relation if necessary
-        if ($guidelineForReviewer->getUser() !== $this) {
-            $guidelineForReviewer->setUser($this);
+        if ($guidelineForReviewer->getCollege() !== $this) {
+            $guidelineForReviewer->setCollege($this);
         }
 
         $this->guidelineForReviewer = $guidelineForReviewer;

@@ -39,145 +39,102 @@
 					</dl>
 				</div>
 			</div>
-			<div class="row m-t-sm">
+			{# <div class="row m-t-sm"> #}
 
-				<div
-					class="card-body">
-					<!-- Nav tabs -->
-					<ul class="nav nav-tabs" role="tablist">
-						<li class="nav-item">
-							<a class="nav-link active" data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-bs-toggle="tab" href="#evaluation" role="tab" aria-selected="false">Evaluation</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
-						</li>
-					</ul>
+			<div
+				class="card-body">
+				<!-- Nav tabs -->
+				<ul class="nav nav-pills nav-justified" role="tablist">
+					<li class="nav-item  waves-effect waves-light">
+						<a class="nav-link " data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
+					</li>
+					{# <li class="nav-item  waves-effect waves-light">
+																																							<a class="nav-link" data-bs-toggle="tab" href="#evaluation" role="tab" aria-selected="false">Evaluation</a>
+																																						</li> #}
+					<li class="nav-item  waves-effect waves-light">
+						<a class="nav-link active" data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
+					</li>
+				</ul>
 
-					<!-- Tab panes -->
-					<div class="tab-content">
-						<div class="tab-pane p-3 active" id="home" role="tabpanel">
-							<div class="table-responsive">
-								<table class="table shoping-cart-table">
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane p-3  " id="home" role="tabpanel">
+						<div class="table-responsive">
+							<table class="table shoping-cart-table">
 
-									<tbody>
-										<tr>
+								<tbody>
+									<tr>
 
-											<td class="desc">
-												<h3>
-													<a href="#" class="text-navy">
-														Abstract
-													</a>
-												</h3>
-												<p class="medium">
+										<td class="desc">
+											<h3>
+												<a href="#" class="text-navy">
+													Abstract
+												</a>
+											</h3>
+											<p class="medium">
 
-													{{ submission.abstract | raw }}
-												</p>
-												<h3>
-													Background
-												</h3>
-												<p class="medium">
+												{{ submission.abstract | raw }}
+											</p>
+											<h3>
+												Background
+											</h3>
+											<p class="medium">
 
-													{{ submission.BackgroundAndRationale |raw}}
-												</p>
+												{{ submission.BackgroundAndRationale |raw}}
+											</p>
 
-												<h3>
-													Methodology
-												</h3>
-												<p class="medium">
+											<h3>
+												Methodology
+											</h3>
+											<p class="medium">
 
-													{{ submission.methodology |raw}}
-												</p>
-												<h3>
-													Research Outcome
-												</h3>
-												<p class="medium">
+												{{ submission.methodology |raw}}
+											</p>
+											<h3>
+												Research Outcome
+											</h3>
+											<p class="medium">
 
-													{{ submission.ResearchOutcome |raw}}
-												</p>
+												{{ submission.ResearchOutcome |raw}}
+											</p>
 
-												<h3>
-													Reference
-												</h3>
-												<p class="medium">
+											<h3>
+												Reference
+											</h3>
+											<p class="medium">
 
-													{{ submission.Reference |raw}}
-												</p>
+												{{ submission.Reference |raw}}
+											</p>
 
-												{% for submissionattachment in submission.submissionAttachements %}
-													<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-														{{submissionattachment.name}}
-														-
-														{# {{ submission.componentType }} #}
-														<i class="fa fa-download material-icons warning"></i>
-													</a>
-												{% else %}
-													<span class="label label-danger">
-														{% trans %}No attachement found{% endtrans %}
-													</span>
-												{% endfor %}
 
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
-						<div class="tab-pane p-3" id="evaluation" role="tabpanel">
-							<form method="post" action="{{ path('evaluation_form_option_new', {'id': submission.id}) }}">
-								<ol type="I" class="list">
-									{% for evaluationForm in evaluationForms %}
-										<li class="parent">
-											<div class="col-12">
-												<p class="mb-2">
-													{{ evaluationForm.name }}({{ evaluationForm.percent }}%)</p>
-												<ol type="a">
-													{% for item in evaluationForm.childs %}
-														<li class="parent">
-															<p class="mb-2">
-																{{ item.name }}({{ item.percent }}%)</p>
-															<div class="col-md-9 mb-1">
-																{% for i in item.evaluationFormOptions %}
-
-
-																	<div class="form-check">
-																		<input class="form-check-input" data-max="{{ i.max }}" data-min="{{ i.min }}" name="p{{ item.id }}" type="radio" value="" id="flexCheckDefault">
-																		<label class="form-check-label" for="flexCheckDefault">
-																			{{ i.name }}
-																			({{ i.value }})
-																		</label>
-																	</div>
-
-
-																{% endfor %}
-
-															</div>
-															<div
-																class="mb-3 row">
-																{# <label for="example-text-input" class="col-sm-2 form-label align-self-center mb-lg-0 text-end">Score</label> #}
-																<div class="col-sm-10 col-md-6">
-																	<input class="form-control col-6 score" type="text" placeholder="Score">
-																</div>
-															</div>
-
-														</li>
-
-													{% endfor %}
-													{% if evaluationForm.childs | length == 0 %}
-														<div class="col-md-9">
-															{% for item in evaluationForm.evaluationFormOptions %}
-
-
+					</div>
+					<div class="tab-pane p-3 " id="evaluation" role="tabpanel">
+						<form method="post" action="{{ path('evaluation_form_option_new', {'id': submission.id}) }}">
+							<ol type="I" class="list">
+								{% for evaluationForm in evaluationForms %}
+									<li class="parent">
+										<div class="col-12">
+											<p class="mb-2">
+												{{ evaluationForm.name }}({{ evaluationForm.percent }}%)</p>
+											<ol type="a">
+												{% for item in evaluationForm.childs %}
+													<li class="parent">
+														<p class="mb-2">
+															{{ item.name }}({{ item.percent }}%)</p>
+														<div class="col-md-9 mb-1">
+															{% for i in item.evaluationFormOptions %}
 																<div class="form-check">
-																	<input class="form-check-input" data-max="{{ item.max }}" data-min="{{ item.min }}" name="c{{ evaluationForm.id }}" type="radio" value="" id="flexCheckDefault">
+																	<input class="form-check-input" data-max="{{ i.max }}" data-min="{{ i.min }}" name="p{{ item.id }}" type="radio" value="" id="flexCheckDefault">
 																	<label class="form-check-label" for="flexCheckDefault">
-																		{{ item.name }}
-																		({{ item.value }})
+																		{{ i.name }}
+																		({{ i.value }})
 																	</label>
 																</div>
-
 															{% endfor %}
 
 														</div>
@@ -188,172 +145,148 @@
 																<input class="form-control col-6 score" type="text" placeholder="Score">
 															</div>
 														</div>
-													{% endif %}
 
-												</ol>
-											</div>
+													</li>
+
+												{% endfor %}
+												{% if evaluationForm.childs | length == 0 %}
+													<div class="col-md-9">
+														{% for item in evaluationForm.evaluationFormOptions %}
 
 
-										</li>
+															<div class="form-check">
+																<input class="form-check-input" data-max="{{ item.max }}" data-min="{{ item.min }}" name="c{{ evaluationForm.id }}" type="radio" value="" id="flexCheckDefault">
+																<label class="form-check-label" for="flexCheckDefault">
+																	{{ item.name }}
+																	({{ item.value }})
+																</label>
+															</div>
 
-									{% endfor %}
-								</ol>
-								<button class="btn btn-primary">{{ button_label|default('Submit evaluation') }}</button>
+														{% endfor %}
 
-							</form>
-						</div>
-						<div class="tab-pane p-3" id="profile" role="tabpanel">
-							<h3>
-								<a href="#" class="text-navy">
-									Comments from reviewer
-								</a>
-							</h3>
-							{% for review in review_assignments %}
+													</div>
+													<div
+														class="mb-3 row">
+														{# <label for="example-text-input" class="col-sm-2 form-label align-self-center mb-lg-0 text-end">Score</label> #}
+														<div class="col-sm-10 col-md-6">
+															<input class="form-control col-6 score" type="text" placeholder="Score">
+														</div>
+													</div>
+												{% endif %}
 
-								<table class="table shoping-cart-table">
+											</ol>
+										</div>
 
-									<tbody>
-										<tr>
-											<td class="desc">
 
-												<p class="small">
-
-													{{ review.comment |raw}}
-												</p>
-												<dl class="small m-b-none">
-													<dt>Revised at
-														{{ review.CreatedAt ?
-                                                        review.CreatedAt|date('Y-m-d H') : '' }}
-													</dt>
-												</dl>
-
-												<div class="m-t-sm">
-
-													{% if review.attachment %}
-														<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="btn btn-info btn-xs float-right">
-															Download attachment
-															<i class="fa fa-download material-icons warning"></i>
-														</a>
-													{% else %}
-														<span class="label label-danger">
-															{% trans %}No attachement found{% endtrans %}
-														</span>
-													{% endif %}
-												</div>
-											</td>
-											<td width="65" nowrap="nowrap">
-												<h4 class='text-primary'>
-													Review Round:
-													{{ loop.index }}
-												</h4>
-												{{ review.remark |raw}}
-
-												<hr>
-												{# {{editorialDecisions.decision}} #}
-											</td>
-										</tr>
-									</tbody>
-									{% else %}
+									</li>
 
 								{% endfor %}
-							</table>
-							<hr>
+							</ol>
+							<button class="btn btn-primary">{{ button_label|default('Submit evaluation') }}</button>
 
-							{{ form_start(form) }}
-							{{ form_widget(form) }}
-							<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
-							{{ form_end(form) }}
-						</div>
-
+						</form>
 					</div>
+					<div class="tab-pane p-2	 active" id="profile" role="tabpanel">
+
+						<div class="card">
+							<div class="card-header">
+								<h5>Revise
+								</h5>
+							</div>
+							<div class="card-body">
+
+								{{ form_start(form) }}
+								{{ form_widget(form) }}
+								<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
+								{{ form_end(form) }}
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
+			{# </div> #}
 		</div>
 		<div class="col-lg-3">
 
 
 			<div class="card">
 				<div class="card-header">
-					<h5>Review info:<h5></div>
-						<!--end card-header-->
+					<h5>Review info</h5>
+				</div>
+				<!--end card-header-->
 
-						<div class="card-body ">
-							<div
-								class="text-">
-								{# {{ review_assignment.submission.callForProposal}} #}
-								 
-								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.attachment ) }}">
-									Review guideline PDF
-									<i class="fa fa-download"></i>
-								</a>
+				<div class="card-body ">
+					<div
+						class="text-">
+						{# {{ review_assignment.submission.callForProposal}} #}
 
-								<br>
-								<br>
-								 
-								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.evaluationfrom ) }}">
-									Review evaluation from PDF
-									<i class="fa fa-download"></i>
-								</a>
-								
-								<br>
+						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.attachment ) }}">
+							Assessment Guideline   PDF
+							<i class="fa fa-download"></i>
+						</a>
 
+						<br>
+						<br>
 
-								{# <h4 class="m-0 fw-semibold text-dark font-16 mt-3">
-									Thematic area:
-									{{submission.thematicArea}}
-								</h4> #}
-								<br>
-								<p class="text-muted  mb-0 font-13">
-									<span class="text-dark">
+						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.evaluationfrom ) }}">
+							Grading Form PDF
+							<i class="fa fa-download"></i>
+						</a>
 
-										Invitation Sent At:
-										{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
 <br>
-										Review duedate:
-										{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
 
-									</span>
-
-									{# <span class="text-dark">
-										<h5>Keywords:</h5>
-										<ul class="tag-list" style="padding: 0">
-											{{submission.keywords}}
-										</ul>
-									</span> #}
-
-								</p>
-							</div>
-							<div class="row mt-2 d-flex align-items-center">
-								<div
-									class="col">
-									{# <h5 class="font-16 m-0 fw-bold">1</h5> #}
-									<p class="mb-0 text-muted">
-
-										<h5>Attachment files</h5>
-
-										<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
-											Submission file PDF
-											<i class="fa fa-download"></i>
-										</a>
+						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.commentfrom ) }}">
+							Evaluation Report Form PDF
+							<i class="fa fa-download"></i>
+						</a>
+						
+						
+						<br>
 
 
-									</p><hr>
+						<br>
+						<p class="text-muted  mb-0 font-13">
+							<span class="text-dark">
+
+								Invitation Sent At:
+								{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+								<br>
+								Review duedate:
+								{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+
+							</span>
 
 
-									<script src="/ui/js/jquery.min.js"></script>
-									<p></p>
-								</div>
-							</div>
+						</p>
+					</div>
+					<div class="row mt-2 d-flex align-items-center">
+						<div
+							class="col">
+							{# <h5 class="font-16 m-0 fw-bold">1</h5> #}
+							<p class="mb-0 text-muted">
+
+								<h5>Attachment files</h5>
+
+								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
+									Proposal  file PDF
+									<i class="fa fa-download"></i>
+								</a>
+
+
+							</p><hr>
+
+
+							{# <script src="/ui/js/jquery.min.js"></script> #}
+
 						</div>
 					</div>
-
-
 				</div>
 			</div>
+
+
 		</div>
 	</div>
-
-	{# {% include "submission/modal.html.twig" %} #}
 {% endblock %}
 {% block javascript  %}
 	<script>

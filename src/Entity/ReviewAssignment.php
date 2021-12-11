@@ -50,10 +50,31 @@ class ReviewAssignment
      */
     private $external_reviewer_name;
 
+     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $middle_name;
+
+
+     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $last_name;
+
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $Declined;
+
+
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reassigned;
+
 
 
     /**
@@ -167,6 +188,19 @@ class ReviewAssignment
     }
 
 
+    public function getReassigned(): ?string
+    {
+        return $this->reassigned;
+    }
+    public function setReassigned(?string $reassigned): self
+    {
+        $this->reassigned = $reassigned;
+
+        return $this;
+    }
+
+
+    
     public function getFileTobeReviewedeclined(): ?string
     {
         return $this->file_tobe_reviewed;
@@ -204,6 +238,37 @@ class ReviewAssignment
 
         return $this;
     }
+
+    
+    
+    public function getMiddleName(): ?string
+    {
+        return $this->middle_name;
+    }
+    
+    public function setMiddleName(?string $middle_name): self
+    {
+        $this->middle_name = $middle_name;
+
+        return $this;
+    }
+    
+
+
+    
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+    
+    public function setLastName(?string $last_name): self
+    {
+        $this->last_name = $last_name;
+
+        return $this;
+    }
+    
+
     public function getInvitationDueDate(): ?\DateTimeInterface
     {
         return $this->invitationDueDate;

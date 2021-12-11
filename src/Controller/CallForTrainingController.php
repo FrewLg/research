@@ -21,7 +21,8 @@ class CallForTrainingController extends AbstractController
     {
 
         $em = $this->getDoctrine()->getManager();
-        $callForTraining = array_reverse($em->getRepository(CallForTraining::class)->findAll());
+        $callForTraining = array_reverse($em->getRepository(CallForTraining::class)->findBy(array('approved' => 1)));
+ 
         $info = 'All';
 
         // Paginate the results of the query
@@ -40,10 +41,30 @@ class CallForTrainingController extends AbstractController
     }
 
     #[Route('/adm', name: 'call_for_training_index', methods: ['GET'])]
-    public function foradmin(CallForTrainingRepository $callForTrainingRepository): Response
+    public function foradmin(Request $request ,  CallForTrainingRepository $callForTrainingRepository , PaginatorInterface $paginator): Response
     {
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        $callForTraining = array_reverse($em->getRepository(CallForTraining::class)->findAll());
+ 
+        
+
+        // Paginate the results of the query
+        $alltraining = $paginator->paginate(
+            // Doctrine Query, not results
+            $callForTraining,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            10
+        );
+
         return $this->render('call_for_training/index.html.twig', [
-            'call_for_trainings' => $callForTrainingRepository->findAll(),
+            'call_for_trainings' => $alltraining ,
         ]);
     }
 
@@ -51,6 +72,7 @@ class CallForTrainingController extends AbstractController
     public function new(Request $request ,    EntityManagerInterface $entityManager): Response
     {
 
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         $callForTraining = new CallForTraining();
         $form = $this->createForm(CallForTrainingType::class, $callForTraining);
@@ -116,6 +138,8 @@ class CallForTrainingController extends AbstractController
     #[Route('/{id}/edit', name: 'call_for_training_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request,  CallForTraining $callForTraining, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(CallForTrainingType::class, $callForTraining);
         $form->handleRequest($request);
 

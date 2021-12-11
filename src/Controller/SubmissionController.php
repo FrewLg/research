@@ -17,6 +17,7 @@ use App\Filter\Type\FilterFunctions;
 use App\Filter\Type\SubmissionFilterType;
 use App\Form\EditorialDecisionType;
 use App\Form\ReviewType;
+use App\Form\ReviewDecisionType;
 use App\Form\SubmissionType;
 use App\Message\SendEmailMessage;
 use App\Repository\CallForProposalRepository;
@@ -108,72 +109,7 @@ class SubmissionController extends AbstractController {
             'info' => $info,
         ]);
     }
-    /**
-     * @Route("/filter/{filter}/", name="submission_filter", methods={"GET"})
-     */
-    public function byfilter(Request $request, $filter, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
-
-        // $this->denyAccessUnlessGranted('assn_clg_cntr');
-        $info = 'All';
-        $em = $this->getDoctrine()->getManager();
-        switch ($filter) {
-
-        case 'al':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
-            break;
-        case 'cp':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['complete' => '1']));
-            $info = 'Complete submission';
-            break;
-        case 'gr':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'grant']));
-            $info = 'Grant';
-            break;
-        case 'cs':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'Community service']));
-            $info = 'Community service';
-            break;
-        case 'mg':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'Mega Research']));
-            $info = 'Technology transfer';
-            break;
-        case 'tt':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'Technology transfer']));
-            $info = 'Technology transfer';
-            break;
-        case 'ps':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['published' => '1']));
-            $info = 'Published';
-            break;
-
-        case 'rv':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'grant']));
-            $info = 'Review assigned';
-            break;
-        case 'ic':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['complete' => '0']));
-            $info = 'Incomplete ';
-            break;
-        default:
-            return $this->redirectToRoute('submission_index');
-#     $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
-        }
-
-        // Paginate the results of the query
-        $Allsubmissions = $paginator->paginate(
-            // Doctrine Query, not results
-            $submissionRepository,
-            // Define the page parameter
-            $request->query->getInt('page', 1),
-            // Items per page
-            10
-        );
-        return $this->render('submission/index.html.twig', [
-            'info' => $info,
-            'submissions' => $Allsubmissions,
-        ]);
-    }
-
+    
 
     /**
      * @Route("/alert/", name="alert", methods={"GET","POST"})
@@ -376,9 +312,9 @@ return $this->redirectToRoute('submission_index');
                 $em = $this->getDoctrine()->getManager();
                 $query = $entityManager->createQuery(
                     'SELECT u.email ,  u.username
-	    FROM App:CoAuthor s
-	    JOIN s.researcher u
- 	    WHERE s.submission = :submission')
+                    FROM App:CoAuthor s
+                    JOIN s.researcher u
+                    WHERE s.submission = :submission')
                     ->setParameter('submission', $submission);
                 $recepients = $query->getResult();
                 $em = $this->getDoctrine()->getManager();
@@ -1256,7 +1192,7 @@ return $this->redirectToRoute('submission_index');
             ->getQuery()
         ;
         $Overall_budger_request = $qb->getOneOrNullResult();
-        $reviewers = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission]));
+        $reviewers =  $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission]) ;
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $submission]);
         ################ Admin Revision#########################
 
@@ -1270,7 +1206,7 @@ return $this->redirectToRoute('submission_index');
 
 //////allow reviewer if he is only assigned to this submission
         // $form = $this->createFormBuilder($review)
-        $form = $this->createForm(ReviewType::class, $review);
+        $form = $this->createForm(ReviewDecisionType::class, $review);
 
         $form->handleRequest($request);
 
@@ -1287,8 +1223,11 @@ return $this->redirectToRoute('submission_index');
             }
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
-            // $review->setClosed(1);
-
+           ######################
+            $review->setFromDirector(1);
+            $review->setAllowToView(1);
+           ######################
+            
             $entityManager->persist($review);
             $entityManager->flush();
 

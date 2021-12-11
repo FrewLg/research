@@ -90,7 +90,7 @@ class UserProfileType extends AbstractType
              ],
             'expanded'=>true,
             'attr' => [
-                    'class' => 'form-control  col-md-3',
+                    'class' => 'form-horizontal  col-md-3',
                   'required' => true,
                 'multiple'=>false,
                    ] ,            
@@ -137,6 +137,7 @@ class UserProfileType extends AbstractType
                     "class"=>"select2 college",
                 ]
             ])
+            
             
         // ->add('department',EntityType::class,[
         //     'placeholder' => '---Select Department---',

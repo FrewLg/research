@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Review;
 use App\Form\ReviewType;
 use App\Repository\ReviewRepository;
+use CMEN\GoogleChartsBundle\GoogleCharts\Data;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,6 +89,8 @@ class ReviewController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $review->setAllowToView(1);
+        $review->setAllowedAt(new \DateTime());
+
           $this->getDoctrine()->getManager()->flush();
           $flashbag = $this->get('session')->getFlashBag();
           $flashbag->add("success", "The PI  has been allowed to see reviewer comment  !");
@@ -94,6 +98,28 @@ class ReviewController extends AbstractController
           return $this->redirectToRoute('submission_show', array('id' =>$review->getSubmission()->getId()));
 
      }
+
+
+
+    /**
+     * @Route("/{id}/undo-allocomment", name="undo_allocomment", methods={"GET","POST"})
+     */
+    public function undoallocomment(Review $review): Response
+    {
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $review->setAllowToView(NULL);
+        $review->setAllowedAt(new \DateTime());
+
+          $this->getDoctrine()->getManager()->flush();
+          $flashbag = $this->get('session')->getFlashBag();
+          $flashbag->add("success", "The comment show to PI has been  undone   !");
+           
+          return $this->redirectToRoute('submission_show', array('id' =>$review->getSubmission()->getId()));
+
+     }
+
 
 
 

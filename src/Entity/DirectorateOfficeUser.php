@@ -24,7 +24,7 @@ class DirectorateOfficeUser
     private $directorateOffice;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="directorateOfficeUsers")
      * @ORM\JoinColumn(nullable=true)
      */
     private $directorate;

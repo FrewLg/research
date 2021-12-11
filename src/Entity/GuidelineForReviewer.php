@@ -35,8 +35,12 @@ class GuidelineForReviewer
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $evaluationfrom;
+ 
 
-
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $commentfrom;
     /**
      * @ORM\ManyToOne(targetEntity=WorkUnit::class, inversedBy="guidelineForReviewers")
      */
@@ -53,7 +57,7 @@ class GuidelineForReviewer
     private $created_at;
 
     /**
-     * @ORM\OneToOne(targetEntity=College::class, inversedBy="guidelineForReviewers", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=College::class, inversedBy="guidelineForReviewer", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $college;
@@ -101,6 +105,18 @@ class GuidelineForReviewer
         return $this;
     }
 
+    public function getCommentfrom(): ?string
+    {
+        return $this->commentfrom;
+    }
+
+    public function setCommentfrom(?string $commentfrom): self
+    {
+        $this->commentfrom = $commentfrom;
+
+        return $this;
+    }
+    
     public function getWorkunit(): ?WorkUnit
     {
         return $this->workunit;

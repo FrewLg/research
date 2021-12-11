@@ -24,6 +24,12 @@ class Review
      */
     private $attachment;
 
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $evaluation_attachment;
+
     /**
      * @ORM\Column(type="text", nullable=true)
      */
@@ -39,6 +45,13 @@ class Review
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $allowed_at;
+
 
     /**
      * @ORM\Column(type="string", length=255 , nullable=true)
@@ -62,7 +75,11 @@ class Review
      */
     private $allow_to_view;
 
-    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $from_director;
+
 
     public function getId(): ?int
     {
@@ -92,6 +109,21 @@ class Review
 
         return $this;
     }
+
+    public function getEvaluationAttachment(): ?string
+    {
+        return $this->evaluation_attachment;
+    }
+
+    public function setEvaluationAttachment(?string $evaluation_attachment): self
+    {
+        $this->evaluation_attachment = $evaluation_attachment;
+
+        return $this;
+    }
+
+
+    
 
     public function getComment(): ?string
     {
@@ -129,6 +161,20 @@ class Review
         return $this;
     }
 
+    public function getAllowedAt(): ?\DateTimeInterface
+    {
+        return $this->allowed_at;
+    }
+
+    public function setAllowedAt(\DateTimeInterface $allowed_at): self
+    {
+        $this->allowed_at = $allowed_at;
+
+        return $this;
+    }
+
+    
+
     public function getRemark(): ?string
     {
         return $this->remark;
@@ -165,6 +211,17 @@ class Review
         return $this;
     }
  
+    public function getFromDirector(): ?bool
+    {
+        return $this->from_director;
+    }
 
+    public function setFromDirector(?bool $from_director): self
+    {
+        $this->from_director = $from_director;
+
+        return $this;
+    }
+    
 
 }

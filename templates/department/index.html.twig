@@ -8,7 +8,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Name</th>
                 <th>actions</th>
             </tr>
@@ -16,7 +16,7 @@
         <tbody>
         {% for department in departments %}
             <tr>
-                <td>{{ department.id }}</td>
+                <td>{{ loop.index }}</td>
                 <td>{{ department.name }}</td>
                 <td>
                     <a href="{{ path('department_show', {'id': department.id}) }}">show</a>
