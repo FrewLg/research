@@ -333,7 +333,7 @@ class DashboardController extends AbstractController {
 
                 ->setParameter('remark', 'Declined' )  
                ->setParameter('remark1', 'Accepted' )  
-              ->setParameter('remark2', '	Accepted with minor revision' )  
+              ->setParameter('remark2', 'Accepted with minor revision' )  
              ;
 
                 $rejecteds = $query3->getResult();
@@ -459,8 +459,8 @@ class DashboardController extends AbstractController {
         //         ->setParameter('remark', 'Accepted' ) ;
 
         //         $rejecteds = $query3->getResult();
-
-      $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions("Accepted");
+        $status=$request->query->get("status");
+      $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions($status);
 
       // dd($submissions->getResult());
          ################################ 
