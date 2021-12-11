@@ -23,7 +23,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Reader\Html;
  use Knp\Component\Pager\PaginatorInterface;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface; 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController; 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response; 
 use Symfony\Component\Routing\Annotation\Route;
@@ -182,6 +183,122 @@ class    ExportController   extends AbstractController {
     } 
 
 
+     /**
+     * @Route("/allaccepted", name="allaccepted", methods={"GET","POST"})
+     */
+    public function allaccepted(  Request $request,   PaginatorInterface $paginator )
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
+        $entityManager = $this->getDoctrine()->getManager();
+        $filterform=$this->createFormBuilder()->add("status",ChoiceType::class,[
+          "multiple"=>true,
+          "required"=>true,
+          "expanded"=>true,
+           
+          "choices"=>[
+            "Accepted"=>Constants::SUBMISSION_STATUS_ACCEPTED,
+            "Accepted with major revision"=>Constants::SUBMISSION_STATUS_ACCEPTED_WITH_MAJOR_REVISION,
+            "Accepted with minor revision"=>Constants::SUBMISSION_STATUS_ACCEPTED_WITH_MINOR_REVISION,
+            "Decline"=>Constants::SUBMISSION_STATUS_DECLINED,
+          ]
+          ])->getForm();
+          $status=$request->query->get("status");
+       
+          $filterform->handleRequest($request);
+          if($filterform->isSubmitted() && $filterform->isValid()){
+            
+            $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions($filterform->getData()['status']);
+            if ($request->query->get("export")){
+              $spreadsheet = new Spreadsheet();
+              /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+             $sheet = $spreadsheet->getActiveSheet();
+             $sheet->setCellValue('A1', 'No.');
+             $sheet->setCellValue('B1', 'Title');
+              $sheet->setCellValue('C1', 'Decision '); 
+             $sheet->setTitle("Editorial decisions");
+      
+             $idcounter = 1;
+             $counter = 2;
+             foreach ($submissions as $phoneNumber) {
+                 $sheet->setCellValue('A' . $counter, $idcounter); 
+                 $sheet->setCellValue('B' . $counter, $phoneNumber['title']); 
+                 $sheet->setCellValue('C' . $counter, $phoneNumber['remark']);
+                 
+               $counter++;
+               $idcounter++;
+             }
+              $writer = new Xlsx($spreadsheet);
+              $fileName = 'Editorial decisions.xlsx';
+             $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+             
+              $writer->save($temp_file);
+             
+              return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+   
+            }
+        } else{
+            $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions();
+
+          } 
+       
+                 $Allsubmissions = $paginator->paginate(
+                  // Doctrine Query, not results
+                  $submissions,
+                  // Define the page parameter
+                  $request->query->getInt('page', 1),
+                  // Items per page
+                  10,array('wrap-queries'=>true)
+              );
+              $info='All Accepted';
+         ################################
+         return $this->render('dashboard/submissions.html.twig', [
+           'submissions' => $Allsubmissions,
+          'info' => $info,
+          'filterform'=>$filterform->createView(),
+      ]);
+         
+    }
+
+    public function exportall($query){
+      
+      $spreadsheet = new Spreadsheet();
+     /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+    $sheet = $spreadsheet->getActiveSheet();
+    $sheet->setCellValue('A1', 'No.');
+    $sheet->setCellValue('B1', 'Full name');
+     $sheet->setCellValue('C1', 'Email ');
+    $sheet->setCellValue('D1', 'Number of assignments');
+    $sheet->setCellValue('E1', 'Staff Membership');
+    $sheet->setTitle("Internal reviewers");
+
+    $idcounter = 1;
+    $counter = 2;
+    foreach ($$query as $phoneNumber) {
+        $sheet->setCellValue('A' . $counter, $idcounter); 
+        $sheet->setCellValue('B' . $counter, $phoneNumber['first_name'].$phoneNumber['midle_name'].$phoneNumber['last_name']); 
+        $sheet->setCellValue('C' . $counter, $phoneNumber['email']);
+        $sheet->setCellValue('D' . $counter, $phoneNumber['review_assignment']);
+         if($phoneNumber['is_reviewer']==NULL){
+
+          $sheet->setCellValue('E' . $counter, "Internal reviewer");
+
+        }
+      $counter++;
+      $idcounter++;
+    }
+     $writer = new Xlsx($spreadsheet);
+     $fileName = 'Internal reviewers.xlsx';
+    $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+    
+     $writer->save($temp_file);
+    
+     return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+
+} 
+
+
+    
+
     /**
      * @Route("/internal-rev", name="internal_rev", methods={"GET","POST"})
      */
@@ -200,10 +317,10 @@ class    ExportController   extends AbstractController {
             where  u.is_reviewer is NULL    GROUP BY u.id ORDER BY  pi.first_name
         ');
         // ->setParameter('external', 1  ); 
-    $recepientextrnal = $query2->getResult();
+        $recepientextrnal = $query2->getResult();
       ######################## 
 
-    //   dd($recepientextrnal);
+       //   dd($recepientextrnal);
             $spreadsheet = new Spreadsheet();
            /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
           $sheet = $spreadsheet->getActiveSheet();

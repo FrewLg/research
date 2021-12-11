@@ -23,7 +23,9 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Reader\Html;
  use Knp\Component\Pager\PaginatorInterface;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface; 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController; 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response; 
 use Symfony\Component\Routing\Annotation\Route;
@@ -439,12 +441,37 @@ class DashboardController extends AbstractController {
 
 
      /**
-     * @Route("/allaccepted", name="allaccepted", methods={"GET","POST"})
+     * @Route("/allaccepteds", name="allaccssepted", methods={"GET","POST"})
      */
     public function allaccepted(  Request $request,   PaginatorInterface $paginator )
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
-        $entityManager = $this->getDoctrine()->getManager();  
+        $entityManager = $this->getDoctrine()->getManager();
+        $filterform=$this->createFormBuilder()->add("status",ChoiceType::class,[
+          "multiple"=>true,
+          "required"=>true,
+          "expanded"=>true,
+           
+          "choices"=>[
+            "Accepted"=>Constants::SUBMISSION_STATUS_ACCEPTED,
+            "Accepted with major revision"=>Constants::SUBMISSION_STATUS_ACCEPTED_WITH_MAJOR_REVISION,
+            "Accepted with minor revision"=>Constants::SUBMISSION_STATUS_ACCEPTED_WITH_MINOR_REVISION,
+            "Decline"=>Constants::SUBMISSION_STATUS_DECLINED,
+          ]
+          ])->getForm();
+          $status=$request->query->get("status");
+         
+          $filterform->handleRequest($request);
+          if($filterform->isSubmitted() && $filterform->isValid()){
+            
+            $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions($filterform->getData()['status']);
+            if ($request->query->get("export")){
+
+            }
+        } else{
+            $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions();
+
+          } 
            #######################
 
           //  select submission_id from review where remark in ('Accepted','Declined') group by submission_id having count(remark) >1; 
@@ -462,9 +489,6 @@ class DashboardController extends AbstractController {
         //         ->setParameter('remark', <2 and  >3  ) ;
 
         //         $rejecteds = $query3->getResult();
-        $status=$request->query->get("status");
-        // dd($status);
-      $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions($status);
 
       // dd($submissions->getResult());
          ################################ 
@@ -481,6 +505,7 @@ class DashboardController extends AbstractController {
          return $this->render('dashboard/submissions.html.twig', [
            'submissions' => $Allsubmissions,
           'info' => $info,
+          'filterform'=>$filterform->createView(),
       ]);
          
     }

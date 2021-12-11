@@ -17,8 +17,24 @@
 
 				<div class="card-body container ">
 
+{{form_start(filterform,{"attr":{"class":"form-inline"}})}} 
+<div class=" well well">
 
+
+{{form_row(filterform.status)}}
+ 
+{# </div> #}
+<div class="col-2 ">
+<button type="submit" class="btn btn-info">Filter</button>
+<button type="submit" name='export' class=" btn btn-info">Export</button>
+
+</div>
+</div>
+{{ form_end(filterform) }}
 					<div class="table-responsive">
+
+
+
 
 						<table class="table  table-bordered  table-responsive">
 							<thead>
@@ -90,3 +106,20 @@
 	</div>
 
 {% endblock %}  
+{% block script %}
+<script>
+$('#form_status').addClass('row');
+$('.form-check').addClass('col-2');
+
+$('[type="checkbox"]').change(function(){
+
+    if(this.checked && $(':checked').length == 2){
+        $('[type="checkbox"]').not(':checked').prop('disabled',true);
+    }
+	else
+        $('[type="checkbox"]').not(':checked').prop('disabled',false);
+	
+});
+
+</script>
+{% endblock %}

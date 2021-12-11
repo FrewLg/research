@@ -62,9 +62,9 @@ class SubmissionRepository extends ServiceEntityRepository
     public function getSubmissions($status=null)
     {
         $qb= $this->createQueryBuilder('s');
-        if(isset($status)){
+        $qb->leftJoin("App:Review","r","with","s.id=r.submission");
+        if(isset($status) and sizeof($status)>0){
             
-            $qb->leftJoin("App:Review","r","with","s.id=r.submission");
             $qb->andWhere("r.remark in  (:remark)")
             ->setParameter("remark",$status);
             
