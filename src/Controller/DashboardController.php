@@ -463,6 +463,7 @@ class DashboardController extends AbstractController {
 
         //         $rejecteds = $query3->getResult();
         $status=$request->query->get("status");
+        // dd($status);
       $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions($status);
 
       // dd($submissions->getResult());

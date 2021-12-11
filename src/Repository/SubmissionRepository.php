@@ -56,7 +56,7 @@ class SubmissionRepository extends ServiceEntityRepository
 
     //     ;
     // }
-    
+    // sET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY','')); 
     // select submission_id from review where remark in ('Accepted','Declined') group by submission_id having count(remark) >1; 
 
     public function getSubmissions($status=null)
