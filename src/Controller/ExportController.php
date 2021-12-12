@@ -193,12 +193,11 @@ class    ExportController   extends AbstractController {
         $filterform=$this->createFormBuilder()->add("status",ChoiceType::class,[
           "multiple"=>true,
           "required"=>true,
-          "expanded"=>true,
-           
+          "expanded"=>true, 
           "choices"=>[
             "Accepted"=>Constants::SUBMISSION_STATUS_ACCEPTED,
-            "Accepted with major revision"=>Constants::SUBMISSION_STATUS_ACCEPTED_WITH_MAJOR_REVISION,
             "Accepted with minor revision"=>Constants::SUBMISSION_STATUS_ACCEPTED_WITH_MINOR_REVISION,
+            "Accepted with major revision"=>Constants::SUBMISSION_STATUS_ACCEPTED_WITH_MAJOR_REVISION,
             "Decline"=>Constants::SUBMISSION_STATUS_DECLINED,
           ]
           ])->getForm();
@@ -241,13 +240,14 @@ class    ExportController   extends AbstractController {
 
           } 
        
+          
                  $Allsubmissions = $paginator->paginate(
                   // Doctrine Query, not results
                   $submissions,
                   // Define the page parameter
                   $request->query->getInt('page', 1),
                   // Items per page
-                  10,array('wrap-queries'=>true)
+                  25,array('wrap-queries'=>true)
               );
               $info='All Accepted';
          ################################
@@ -258,6 +258,8 @@ class    ExportController   extends AbstractController {
       ]);
          
     }
+
+ 
 
     public function exportall($query){
       
