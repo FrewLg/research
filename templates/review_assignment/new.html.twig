@@ -322,7 +322,27 @@
 
 									{% for review in review_assignment.reviews %}
 										<h4>
-											{{    review.remark }}</h4>
+									
+									{% if   review.remark==1 %}
+											<span class="text-danger">
+											Declined</span>
+
+											{% elseif   review.remark==2 %}
+											<span class="text-warning">
+											Accepted with major revision</span>
+											{% elseif   review.remark==3 %}
+	<span class="text-warning">
+	Accepted with minor revision </span>
+											{% elseif   review.remark==4 %}
+
+ 	<span class="text-success">
+	Accepted   </span>
+
+
+										
+
+									{% endif   %}
+									</h4>
 										{{review.AllowToView}}
 										{% endfor %}  
 									</span> 
