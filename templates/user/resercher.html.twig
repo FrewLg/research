@@ -96,7 +96,10 @@
 
 
 											{{ user.userInfo.suffix   }}
-											({{ user.userInfo.educationLevel   }})
+										 
+											{% if user.userInfo.educationLevel %}	( {{ user.userInfo.educationLevel }} )
+											{% endif %}
+											
 											{{ user.userInfo.academicRank   }},
 											{% if user.userInfo.department  is defined %}
 												Department of
@@ -144,9 +147,8 @@
 											Affiliation:
 
 										</b>
-										(
-										{{ user.userInfo.educationLevel }}
-										)
+									{% if user.userInfo.educationLevel %}	( {{ user.userInfo.educationLevel }} )
+											{% endif %}
 
 										{{  user.userInfo.academicRank }},
 										{{ user.userInfo.department}}
@@ -178,12 +180,11 @@
 									<!--end col-->
 									<div class="col-auto">
 										<button type="button" class="btn btn-soft-info btn-icon-circle btn-icon-circle-sm mb-2">
-											<i class="fab fa-twitter"></i>
+											<i class="fab fa-book"></i>
 										</button>
-										{# <p class="mb-0 fw-semibold">Publications</p>
-																																																																																										<h4 class="m-0 fw-bold">58k
-																																																																																											<span class="text-muted font-12 fw-normal">Proceedings</span>
-																																																																																										</h4> #}
+										<p class="mb-0 fw-semibold">Trainings</p>
+ 
+											 
 									</div>
 									<!--end col-->
 								</div>
