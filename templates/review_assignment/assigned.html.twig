@@ -66,11 +66,11 @@
                                             
 												{% if myreview.acceptedAt %}
 												
-                                                <span class="badge bg-success">Accepted </span> at:	 {{ myreview.acceptedAt|date('d-m-y i:sa') }} 
+                                                <span class="badge bg-success">Reviewing </span>  
 											 
                                                 	{% elseif myreview.rejectedAt %}
 												
-                                                <span class="badge bg-danger">Rejected at: 	</span> {{ myreview.rejectedAt|date('d-m-y i:sa') }}
+                                                <span class="badge bg-danger">Rejected invitation at: 	</span> {{ myreview.rejectedAt|date('d-m-y i:sa') }}
 											
                                             	  
 								{% elseif  myreview.Closed == 1 %}
@@ -106,7 +106,7 @@
 	<input type="hidden" name="_method" value="DELETE">
 	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ myreview.id) }}">
 
-	<button class="btn btn-warning btn-xs">
+	<button class="btn btn-danger btn-xs">
 		Unassign
 	</button>
                     
