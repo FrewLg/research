@@ -336,7 +336,7 @@ class    ExportController   extends AbstractController {
 
 
  /**
-     * @Route("/rev-result", name="result", methods={"GET","POST"})
+     * @Route("/rev-result", name="review_result", methods={"GET","POST"})
      */
   
     
@@ -357,87 +357,64 @@ class    ExportController   extends AbstractController {
       $sheet->setCellValue('D1', 'Reviewer');
         $sheet->setTitle("Research review result "); 
 
-        // #######################
-        // $entityManager = $this->getDoctrine()->getManager(); 
-        // $query2 = $entityManager->createQuery(
-        //     'SELECT  u.email , u.id, pi.last_name , pi.first_name, pi.midle_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
-        //     FROM App:ReviewAssignment s 
-        //     JOIN s.reviewer u 
-        //     JOIN u.userInfo pi 
-        //     JOIN s.submission b 
-        //     where  u.is_reviewer is NULL    GROUP BY u.id ORDER BY  pi.first_name
-        // ');
-        // // ->setParameter('external', 1  ); 
-        // $recepientextrnal = $query2->getResult();
-        //   ########################
-
-
-      $counter = 2;
-      $counternumber = 1;
-      $counter3 = 2; 
-
-      foreach ($submissions as $phoneNumber) {
-          $sheet->setCellValue('A' . $counter, $counternumber);
-          $sheet->setCellValue('B' . $counter, $phoneNumber->getTitle());
-          ########################
-          // $sheet->setCellValue('C' . $counter, $phoneNumber->getAuthor()->getUserInfo());
-          
-          foreach ($phoneNumber->getReviews() as $CoAuthors) {
-            // $sheet->setCellValue('E' . $counter, $CoAuthors->getAuthor()->getUserInfo()->getCollege());
-          //  $counter++; 
-          if($CoAuthors->getRemark()==1){
-            $remark='Declined';
-          $sheet->setCellValue('C' . $counter, $remark);
-
-          }
-          elseif($CoAuthors->getRemark()==2){
-            $remark='Accepted with major revision';
-          $sheet->setCellValue('C' . $counter, $remark);
-
-          }
-
-          elseif($CoAuthors->getRemark()==3){
-            $remark='Accepted with minor revision';
-          $sheet->setCellValue('C' . $counter, $remark);
-
-          }
-          elseif($CoAuthors->getRemark()==4){
-            $remark='Accepted ';
-          $sheet->setCellValue('C' . $counter, $remark);
-
-          }
-
-          if($CoAuthors->getReviewedBy()->getIsReviewer()==1){
-            $reviewer='External  ';
-            $sheet->setCellValue('D' . $counter3, $reviewer);  
- 
-          }
-          elseif($CoAuthors->getReviewedBy()->getIsReviewer() == ""){
-            $reviewer='interternal  ';
-          $sheet->setCellValue('D' . $counter3, $reviewer);  
-
-          }
-
-
-          // $sheet->setCellValue('D' . $counter3, $reviewer);  
-
-          // $counternumber++;   
-          // $counter++;
-          // $counter3++;  
-           } 
-          $counternumber++;   
-          $counter++;
-          $counter3++;  
-                 
-############################
-        // $counter++;
-      }
-       $writer = new Xlsx($spreadsheet);
-       $fileName = 'Researchers.xlsx';
-      $temp_file = tempnam(sys_get_temp_dir(), $fileName);
-       $writer->save($temp_file);
-       return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
        
+        $counter = 2;
+        foreach ($submissions as $phoneNumber) {
+            $sheet->setCellValue('A' . $counter, $phoneNumber->getId());
+            $sheet->setCellValue('B' . $counter, $phoneNumber->getTitle());
+            $counter2 = 2; 
+            ########################
+            // $sheet->setCellValue('C' . $counter, $phoneNumber->getAuthor()->getUserInfo()); 
+             foreach ($phoneNumber->getReviews() as $CoAuthors) {
+
+            //  $sheet->setCellValue('C' . $counter, $CoAuthors->getReviewedBy()->getIsReviewer());
+
+             if($CoAuthors->getRemark()==1){
+                             
+            $sheet->setCellValue('C' . $counter, "Declined");
+  
+            }
+            elseif($CoAuthors->getRemark()==2){
+              $sheet->setCellValue('C' . $counter, "Accepted with major revision");
+  
+            }
+  
+            elseif($CoAuthors->getRemark()==3){
+              $sheet->setCellValue('C' . $counter, "Accepted with minor revision");
+  
+            }
+            elseif($CoAuthors->getRemark()==4){
+              $sheet->setCellValue('C' . $counter, "Accepted");
+  
+            }
+
+
+             if ( $CoAuthors->getReviewedBy()->getIsReviewer()== NULL ){
+              $sheet->setCellValue('D' . $counter, "External");
+               
+               } 
+               elseif($CoAuthors->getReviewedBy()->getIsReviewer()== 1){
+                $sheet->setCellValue('D' . $counter, "Internal");
+
+               }
+             $counter++;
+            $counter2++;  
+     } 
+                   
+############################
+          $counter++;
+        }
+
+
+
+        $counter = 2;
+   
+         $writer = new Xlsx($spreadsheet);
+         $fileName = 'Researchers.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+         $writer->save($temp_file);
+         return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+        
          
     }
 
