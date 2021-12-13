@@ -128,7 +128,7 @@
 									<span class="badge bg-success">Internal</span>
 								{% endif %}
 
-	{% if review_assignment.reassigned %}
+								{% if review_assignment.reassigned %}
 
 									<a href="#" class="avatar-box thumb-xxs align-self-center">
 										<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
@@ -136,7 +136,7 @@
 										</span>
 									</a>
 								{% endif %}
-								
+
 							</td>
 							<td>{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}</td>
 							<td>{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}</td>
@@ -144,42 +144,47 @@
 								{# <span class="badge  bg-success ">active</span> #}
 
 								{# {% if review_assignment.status == 1 %}
-																	<span class="badge bg-info" title="Invitation not sent">Selected</span>
-																{% elseif  review_assignment.status == 2 %}
-																	<span class="badge bg-primary">Invitation Sent</span>
-																{% elseif  review_assignment.status == 3 %}
-																	<span class="badge bg-primary">Reviewing</span>
-								
-																{% endif %} #}
+																																									<span class="badge bg-info" title="Invitation not sent">Selected</span>
+																																								{% elseif  review_assignment.status == 2 %}
+																																									<span class="badge bg-primary">Invitation Sent</span>
+																																								{% elseif  review_assignment.status == 3 %}
+																																									<span class="badge bg-primary">Reviewing</span>
+																																
+																																								{% endif %} #}
 
 
-									{# {% if review_assignment.IsRejected == 1 %}<span class="badge bg-info" title="Invitation not sent"> Rejected</span>
-								{% elseif  review_assignment.Closed == 1 %}
-									<span class="badge bg-warning">Replied revision</span>
-								{% elseif  review_assignment.InactiveAssignment == 1 %}
-									<span class="badge bg-danger">Inactive</span>
-								{% elseif  review_assignment.Declined == 1 %}
-									<span class="badge bg-danger">Declined</span>
-	{% else %}
-									<span class="badge bg-warning">Pending</span>
+								{# {% if review_assignment.IsRejected == 1 %}<span class="badge bg-info" title="Invitation not sent"> Rejected</span>
+																																{% elseif  review_assignment.Closed == 1 %}
+																																	<span class="badge bg-warning">Replied revision</span>
+																																{% elseif  review_assignment.InactiveAssignment == 1 %}
+																																	<span class="badge bg-danger">Inactive</span>
+																																{% elseif  review_assignment.Declined == 1 %}
+																																	<span class="badge bg-danger">Declined</span>
+																									{% else %}
+																																	<span class="badge bg-warning">Pending</span>
+																								
+																								
+																																{% endif %} #}
 
 
-								{% endif %} #}
+									{% if review_assignment.acceptedAt %}
+										<span class="badge bg-success"> Accepted
+									</span>
+									at:
+									{{ review_assignment.acceptedAt|date('d-m-y i:sa') }}
+
+								{% elseif review_assignment.rejectedAt %}
+
+									<span class="badge bg-danger">Rejected at:
+									</span>
+									{{ review_assignment.rejectedAt|date('d-m-y i:sa') }}
 
 
-{% if review_assignment.acceptedAt %}
-												
-                                                <span class="badge bg-success">Accepted </span> at:	 {{ review_assignment.acceptedAt|date('d-m-y i:sa') }} 
-											 
-                                                	{% elseif review_assignment.rejectedAt %}
-												
-                                                <span class="badge bg-danger">Rejected at: 	</span> {{ review_assignment.rejectedAt|date('d-m-y i:sa') }}
-											
-                                            	  
 								{% elseif  review_assignment.Closed == 1 %}
 									<span class="badge bg-warning">Review sent</span>
 								{% elseif  review_assignment.InactiveAssignment == 1 %}
-									<span class="badge bg-danger">Inactive </span>
+									<span class="badge bg-danger">Inactive
+									</span>
 								{% elseif  review_assignment.Declined == 1 %}
 									<span class="badge bg-danger">Declined</span>
 								{% else %}
@@ -195,7 +200,7 @@
 
 
 								<div class="modal fade  " id="showDetailsModal{{ review_assignment.id}}" tabindex="-1" role="dialog" aria-labelledby="showDetailsModalTitle{{ review_assignment.id}}" aria-hidden="true">
-									<div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+									<div class="modal-dialog modal-dialog modal-lg" role="document">
 										<div class="modal-content">
 											<div class="modal-header">
 												<h6 class="modal-title m-0" id="showDetailsModalTitle{{ review_assignment.id}}">Reviewer assignment details</h6>
@@ -206,7 +211,14 @@
 
 
 												<div class="row">
-												{{ review_assignment.submission.title}}
+													<div class="card">
+														<div class="card-body">
+
+
+															{{ review_assignment.submission.title}}
+														</div>
+													</div>
+
 													<div class="col-lg-6 col-md-12 col-sm-12">
 
 														<div class="card">
@@ -227,7 +239,8 @@
 																	Number of Assignment:
 																	<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
 																		<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-																		+	{{review_assignment.reviewer.reviewAssignments|length}}
+																			+
+																			{{review_assignment.reviewer.reviewAssignments|length}}
 																		</span>
 																	</a>
 																</p>
@@ -239,14 +252,14 @@
 
 																	{% endif %}
 
-	{% if review_assignment.reassigned %}
+																	{% if review_assignment.reassigned %}
 
-									<a href="#" class="avatar-box thumb-xxs align-self-center">
-										<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
-											Re
-										</span>
-									</a>
-								{% endif %}
+																		<a href="#" class="avatar-box thumb-xxs align-self-center">
+																			<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+																				Re
+																			</span>
+																		</a>
+																	{% endif %}
 
 																</div>
 																<br>
@@ -297,71 +310,71 @@
 																{% endif %}
 
 
-<br>
+																<br>
 
-<span class="text-dark">
-									  Invitaion  response:
-									{% if  review_assignment.Declined %}
-										<span class="text-danger">
-											Declined</span>
-									{% elseif  review_assignment.IsAccepted %}
+																Invitaion  response:
+																{% if  review_assignment.Declined %}
+																	<span class="text-danger">
+																		Declined</span>
+																{% elseif  review_assignment.IsAccepted %}
 
-										<span class="text-success">
-											Accepted</span>
-									{% elseif  review_assignment.Closed %}
+																	<span class="text-success">
+																		Accepted</span>
+																{% elseif  review_assignment.Closed %}
 
-										<span class="text-primary">
-											Closed</span>
-
-
-									{% else   %}
-
-										<span class="text-warning">
-											Pending</span>
+																	<span class="text-primary">
+																		Closed</span>
 
 
-									{% endif   %}
+																{% else   %}
 
-									{% for review in review_assignment.reviews %}
-										<h4>Review decision:
-
-									
-									{% if   review.remark==1 %}
-											<span class="text-danger">
-											Declined</span>
-
-											{% elseif   review.remark==2 %}
-											<span class="text-warning">
-											Accepted with major revision</span>
-											{% elseif   review.remark==3 %}
-	<span class="text-warning">
-	Accepted with minor revision </span>
-											{% elseif   review.remark==4 %}
-
- 	<span class="text-success">
-	Accepted   </span>
+																	<span class="text-warning">
+																		Pending</span>
 
 
-										
+																{% endif   %}
 
-									{% endif   %}
-									</h4>
-										{{review.AllowToView}}
-										{% endfor %}  
-									</span> 
+																{% for review in review_assignment.reviews %}
+																	<h4>Review decision:
+
+
+																		{% if   review.remark==1 %}
+																			<span class="text-danger">
+																				Declined</span>
+
+																		{% elseif   review.remark==2 %}
+																			<span class="text-warning">
+																				Accepted with major revision</span>
+																		{% elseif   review.remark==3 %}
+																			<span class="text-warning">
+																				Accepted with minor revision
+																			</span>
+																		{% elseif   review.remark==4 %}
+
+																			<span class="text-success">
+																				Accepted
+																			</span>
+
+
+																		{% endif   %}
+																	</h4>
+																	{{review.AllowToView}}
+																{% endfor %}
+
+															</div>
 														</div>
 													</div>
 												</div>
+
+
 											</div>
-
-
+											<!--end modal-body-->
+											<!--end modal-footer-->
 										</div>
-										<!--end modal-body-->
-										<!--end modal-footer-->
+										<!--end modal-content-->
 									</div>
-									<!--end modal-content-->
-								</div>
-								<!--end modal-dialog-->
+									<!--end modal-dialog-->
+								</td>
 							</td>
 						</tr>
 					</div>
@@ -372,7 +385,7 @@
 					<script>
 
 						$(document).ready(function () {
-$("#editList                           {{ review_assignment.id }}").click(function () {
+$("#editList                              {{ review_assignment.id }}").click(function () {
 $.ajax({
 url: "{{ path('review_assignment_edit', {'id':review_assignment.id}) }}",
 success: function (result) {
@@ -390,11 +403,21 @@ $("#formside_permission").html("Problem");
 				</tbody>
 			</td>
 		</tr>
-	</td>
-</tbody></td></tr>{% else %}<tr><td colspan="3">no records found</td></tr>{% endfor %}</tbody></table>{% if selected  %}{% if selected < app.request.server.get('MIN_REVIEWER') %}<div class="badge badge-danger">To send invitation you need to select at least{{ app.request.server.get('MIN_REVIEWER') }}Reviewer</div>{% else %}{# <form method="POST">
-																																																																																																								<input type="hidden" name="_token" value="{{ csrf_token('assign-selected') }}">
-																																																																																																									<div class="float-right"><input type="submit" class="btn btn-success" name="assign-selected" value="Assign Selected"></div>
-																																																																																																								</form> #}{% endif %}{% endif %}</div>{% include "review_assignment/modal.html.twig" %}<script src="{{ asset('ui/js/jquery.min.js') }}"></script>{% endblock %}{% block javascript  %}<script>$(document).ready(function () {
+	{% else %}
+		<tr>
+			<td colspan="3">no records found</td>
+		</tr>
+	{% endfor %}
+
+</tbody></table>{# {% if selected  %}{% if selected < app.request.server.get('MIN_REVIEWER') %}
+		<div class="badge badge-danger">To send invitation you need to select at least{{ app.request.server.get('MIN_REVIEWER') }}
+		Reviewer</div>{% else %} #}{# <form method="POST">
+		<input type="hidden" name="_token" value="{{ csrf_token('assign-selected') }}">
+			<div class="float-right"><input type="submit" class="btn btn-success" name="assign-selected" value="Assign Selected"></div>
+		</form> #}{# {% endif %}
+		{% endif %} #}{# </div> #}{# {% include "review_assignment/modal.html.twig" %} #}{# <script src="{{ asset('ui/js/jquery.min.js') }}"></script> #}{% endblock %}{% block javascript  %}
+<script>
+$(document).ready(function () {
 
 $('#review_assignment_reviewer').select2({
 ajax: {
