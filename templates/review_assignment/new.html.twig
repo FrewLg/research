@@ -144,27 +144,27 @@
 								{# <span class="badge  bg-success ">active</span> #}
 
 								{# {% if review_assignment.status == 1 %}
-																																									<span class="badge bg-info" title="Invitation not sent">Selected</span>
-																																								{% elseif  review_assignment.status == 2 %}
-																																									<span class="badge bg-primary">Invitation Sent</span>
-																																								{% elseif  review_assignment.status == 3 %}
-																																									<span class="badge bg-primary">Reviewing</span>
-																																
-																																								{% endif %} #}
+																																																																									<span class="badge bg-info" title="Invitation not sent">Selected</span>
+																																																																								{% elseif  review_assignment.status == 2 %}
+																																																																									<span class="badge bg-primary">Invitation Sent</span>
+																																																																								{% elseif  review_assignment.status == 3 %}
+																																																																									<span class="badge bg-primary">Reviewing</span>
+																																																																
+																																																																								{% endif %} #}
 
 
 								{# {% if review_assignment.IsRejected == 1 %}<span class="badge bg-info" title="Invitation not sent"> Rejected</span>
-																																{% elseif  review_assignment.Closed == 1 %}
-																																	<span class="badge bg-warning">Replied revision</span>
-																																{% elseif  review_assignment.InactiveAssignment == 1 %}
-																																	<span class="badge bg-danger">Inactive</span>
-																																{% elseif  review_assignment.Declined == 1 %}
-																																	<span class="badge bg-danger">Declined</span>
-																									{% else %}
-																																	<span class="badge bg-warning">Pending</span>
-																								
-																								
-																																{% endif %} #}
+																																																																{% elseif  review_assignment.Closed == 1 %}
+																																																																	<span class="badge bg-warning">Replied revision</span>
+																																																																{% elseif  review_assignment.InactiveAssignment == 1 %}
+																																																																	<span class="badge bg-danger">Inactive</span>
+																																																																{% elseif  review_assignment.Declined == 1 %}
+																																																																	<span class="badge bg-danger">Declined</span>
+																																																									{% else %}
+																																																																	<span class="badge bg-warning">Pending</span>
+																																																								
+																																																								
+																																																																{% endif %} #}
 
 
 									{% if review_assignment.acceptedAt %}
@@ -211,17 +211,7 @@
 
 
 												<div class="row">
-													<div class="col-lg-12 col-md-12 col-sm-12">
 
-
-														<div class="card">
-															<div class="card-body">
-
-
-																{{ review_assignment.submission.title|raw}}
-															</div>
-														</div>
-													</div>
 
 													<div class="col-lg-6 col-md-12 col-sm-12">
 
@@ -339,7 +329,7 @@
 																{% endif   %}
 
 																{% for review in review_assignment.reviews %}
-																	<h4>Review decision:
+																	<h4>Review decision:<br>
 
 
 																		{% if   review.remark==1 %}
@@ -377,19 +367,25 @@
 										</div>
 										<!--end modal-content-->
 									</div>
-									<!--end modal-dialog-->
-								</td>
+								</div>
+								<!--end modal-dialog-->
 							</td>
 						</tr>
-					</div>
-					<!--end modal-->
+					{% else %}
+						<tr>
+							<td colspan="3">no records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<!--end modal-->
 
-					{# <script src="{{ asset('ui/js/jquery.min.js') }}"></script> #}
+			{# <script src="{{ asset('ui/js/jquery.min.js') }}"></script> #}
 
-					<script>
+			<script>
 
-						$(document).ready(function () {
-$("#editList                              {{ review_assignment.id }}").click(function () {
+				$(document).ready(function () {
+$("#editList                                  {{ review_assignment.id }}").click(function () {
 $.ajax({
 url: "{{ path('review_assignment_edit', {'id':review_assignment.id}) }}",
 success: function (result) {
@@ -403,24 +399,19 @@ $("#formside_permission").html("Problem");
 });
 });
 });
-					</script>
-				</tbody>
-			</td>
-		</tr>
-	{% else %}
-		<tr>
-			<td colspan="3">no records found</td>
-		</tr>
-	{% endfor %}
+			</script>
 
-</tbody></table>{# {% if selected  %}{% if selected < app.request.server.get('MIN_REVIEWER') %}
-		<div class="badge badge-danger">To send invitation you need to select at least{{ app.request.server.get('MIN_REVIEWER') }}
-		Reviewer</div>{% else %} #}{# <form method="POST">
-		<input type="hidden" name="_token" value="{{ csrf_token('assign-selected') }}">
-			<div class="float-right"><input type="submit" class="btn btn-success" name="assign-selected" value="Assign Selected"></div>
-		</form> #}{# {% endif %}
-		{% endif %} #}{# </div> #}{# {% include "review_assignment/modal.html.twig" %} #}{# <script src="{{ asset('ui/js/jquery.min.js') }}"></script> #}{% endblock %}{% block javascript  %}
-<script>
+			{# {% if selected  %}{% if selected < app.request.server.get('MIN_REVIEWER') %}
+								<div class="badge badge-danger">To send invitation you need to select at least{{ app.request.server.get('MIN_REVIEWER') }}
+								Reviewer</div>{% else %} #}
+		{# <form method="POST">
+							<input type="hidden" name="_token" value="{{ csrf_token('assign-selected') }}">
+								<div class="float-right"><input type="submit" class="btn btn-success" name="assign-selected" value="Assign Selected"></div>
+							</form> #}{# {% endif %}
+								{% endif %} #}{# </div> #}{# {% include "review_assignment/modal.html.twig" %} #}{# <script src="{{ asset('ui/js/jquery.min.js') }}"></script> #}
+		{% endblock %}
+			{% block javascript  %}
+				<script>
 $(document).ready(function () {
 
 $('#review_assignment_reviewer').select2({
@@ -470,4 +461,6 @@ return $container;
 function formatRepoSelection(repo) {
 return repo.name;
 }
-});</script>{% endblock %}
+});
+		</script>
+	{% endblock %}
