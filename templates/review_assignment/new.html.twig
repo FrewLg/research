@@ -206,7 +206,9 @@
 
 
 												<div class="row">
+												{{ review_assignment.submission.title}}
 													<div class="col-lg-6 col-md-12 col-sm-12">
+
 														<div class="card">
 															<div class="card-body text-center">
 																{% if review_assignment.reviewer.userInfo.image   %}
@@ -321,7 +323,8 @@
 									{% endif   %}
 
 									{% for review in review_assignment.reviews %}
-										<h4>
+										<h4>Review decision:
+
 									
 									{% if   review.remark==1 %}
 											<span class="text-danger">
