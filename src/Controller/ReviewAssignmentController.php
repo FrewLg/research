@@ -542,6 +542,63 @@ else{
       
         return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
     }
+
+        /**
+     * @Route("/{id}/updatedate", name="updatedate", methods={  "GET","POST"})
+     */
+    public function updatedate(Request $request, ReviewAssignment $reviewAssignment  ): Response
+    {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+ 
+       
+    $form = $this->createFormBuilder($reviewAssignment)
+    ->add('invitationDueDate', DateType::class, array(
+        'placeholder' => [
+'year' => 'Year', 'month' => 'Month', 'day' => 'Day', ],
+'label' => 'Invitation response duedate',
+     
+'widget' => 'single_text',
+      'format' => 'yyyy-MM-dd',
+         'attr' => array(
+            'min'=>(new DateTime('now'))->format('Y-m-d'),
+'max'=>$reviewAssignment->getSubmission()->getCallForProposal()->getReviewProcessEnd()->format('Y-m-d'),
+
+   'required' => true,
+'class'=>'form-control',
+)              
+  ))
+  ->add('duedate', DateType::class, array(
+    'placeholder' => [
+'year' => 'Year', 'month' => 'Month', 'day' => 'Day', ],
+    'label' => 'Review duedate',
+    'widget' => 'single_text',
+  'format' => 'yyyy-MM-dd',
+     'attr' => array(
+'min'=>(new DateTime('now'))->format('Y-m-d'), 
+'max'=>$reviewAssignment->getSubmission()->getCallForProposal()->getReviewProcessEnd()->format('Y-m-d'),
+'required' => true,
+'class'=>'form-control',
+)              
+))
+    ->getForm();
+$form->handleRequest($request);
+if ($form->isSubmitted() && $form->isValid()) {
+
+    $this->getDoctrine()->getManager()->flush();
+            
+    $this->addFlash(
+       'success',
+       'Update has been made to the asignment successfully!'  ); 
+
+      return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
+   }
+    return $this->render('review_assignment/edit.html.twig', [
+       'review_assignment' => $reviewAssignment,
+        'editform'=>$form->createView(),
+
+   ]);
+  
+}
 }
  
  
