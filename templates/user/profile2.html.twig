@@ -119,15 +119,28 @@
 											{% endif %}
 											
 											
-											{{ user.userInfo.academicRank   }},
+										 
+
+{% if user.userInfo.academicRank %}	  {{ user.userInfo.academicRank }}  ,
+											{% endif %}
+
+ 
+
+
 											{% if user.userInfo.department  is defined %}
 												Department of
 
 												{{ user.userInfo.department   }}
 												{% else %}
 											{% endif %}
-											,
-											{{ user.userInfo.college  }}
+											 
+											
+ 
+
+{% if user.userInfo.college %}	at  {{ user.userInfo.college }}  
+											{% endif %}
+
+ 
 										</a>
 									</li>
 								</ul>
@@ -145,7 +158,7 @@
 									<!--end col-->
 									<div class="col-auto">
 										<button type="button" class="btn btn-soft-info btn-icon-circle btn-icon-circle-sm mb-2">
-											<i class="fab fa-book"></i>
+											<i class="fa fa-book"></i>
 										</button>
 										<p class="mb-0 fw-semibold">Trainings</p>
  
