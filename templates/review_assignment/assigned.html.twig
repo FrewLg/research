@@ -93,7 +93,11 @@
 
  	{% if myreview.closed %}
 
-{% else %}
+
+
+									<a href="{{ path('reassign', {'id': myreview.id}) }}"  class='btn btn-warning btn-xs ' > Allow updating</a>
+											
+											{% else %}
                     <a href="{{ path('updatedate', {'id': myreview.id}) }}" class="btn btn-info btn-xs" >Change date</a>
 
 							<form method="post" action="{{ path('unassign', {'id': myreview.id}) }}"
@@ -109,9 +113,6 @@
 
 
 </form>
-
-
-									<a href="{{ path('reassign', {'id': myreview.id}) }}"  class='btn btn-warning btn-xs ' > Allow updating</a>
 												{% endif %}
 
 												{% if myreview.reassigned %}
