@@ -259,7 +259,188 @@ class    ExportController   extends AbstractController {
          
     }
 
+ /**
+     * @Route("/theme", name="allbythemeex", methods={"GET","POST"})
+     */
+    public function allbythemeex(   )
+    {
+      $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
+      $em = $this->getDoctrine()->getManager();  
+       $submissions = $em->getRepository(ThematicArea::class)->findAll(); 
+      #######################################
+      $entityManager = $this->getDoctrine()->getManager(); 
+
+      $query2 = $entityManager->createQuery(
+        'SELECT  t.name as ThematicArea, pi.last_name as piLastName, pi.first_name as piFirstName, pi.midle_name as PIMiddleName, 
+         s.title as title
+        FROM App:CoAuthor c 
+        JOIN c.submission s 
+        JOIN s.thematic_area t 
+        JOIN s.author u 
+        JOIN u.userInfo pi   
+        GROUP BY  s.title  ORDER BY  t.id
+    ');
+    // ->setParameter('external', 1  ); 
+    $recepientextrnal = $query2->getResult();
  
+// foreach ($submissions as $ds){
+//   $ds ->getThematicArea()->getName() ;
+//    dd($ds);
+// }
+
+
+
+       ####################################
+      $spreadsheet = new Spreadsheet(); 
+      /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+
+
+      $sheet = $spreadsheet->getActiveSheet();
+      $sheet->setCellValue('A1', 'No.');
+      $sheet->setCellValue('B1', 'Thematic area.');
+      $sheet->setCellValue('C1', 'Title');
+      $sheet->setCellValue('D1', 'PI');
+      $sheet->setCellValue('E1', 'PI\'s Institute');  
+       $sheet->setTitle("Researchs by Thematic areas "); 
+      $counter = 2;
+      foreach ($submissions as $phoneNumber) {
+          $sheet->setCellValue('A' . $counter, $counter);
+          $sheet->setCellValue('B' . $counter, $phoneNumber->getName());
+          $counter2 = 2; 
+          ########################
+          // $sheet->setCellValue('C' . $counter, $phoneNumber->getAuthor()->getUserInfo());
+          
+          foreach ($phoneNumber->getSubmissions() as $CoAuthors) {
+            $sheet->setCellValue('C' . $counter, $CoAuthors->getTitle());
+            $sheet->setCellValue('D' . $counter, $CoAuthors->getAuthor()->getUserInfo());  
+            $sheet->setCellValue('E' . $counter, $CoAuthors->getAuthor()->getUserInfo()->getCollege());
+          //  $counter++; 
+          $counter2++;  
+          
+
+        $counter++;
+        $counter2++;  
+           } 
+                 
+############################
+        $counter++;
+      }
+       $writer = new Xlsx($spreadsheet);
+       $fileName = 'Researchers.xlsx';
+      $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+       $writer->save($temp_file);
+       return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+       
+         
+    }
+
+
+ /**
+     * @Route("/rev-result", name="result", methods={"GET","POST"})
+     */
+  
+    
+    public function results(   )
+    {
+      $this->denyAccessUnlessGranted('ROLE_ADMIN'); 
+      $em = $this->getDoctrine()->getManager();  
+       $submissions = $em->getRepository(Submission::class)->findAll(); 
+      
+      $spreadsheet = new Spreadsheet(); 
+      /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+
+
+      $sheet = $spreadsheet->getActiveSheet();
+      $sheet->setCellValue('A1', 'No.');
+      $sheet->setCellValue('B1', 'Title');
+      $sheet->setCellValue('C1', 'Review decision');
+      $sheet->setCellValue('D1', 'Reviewer');
+        $sheet->setTitle("Research review result "); 
+
+        // #######################
+        // $entityManager = $this->getDoctrine()->getManager(); 
+        // $query2 = $entityManager->createQuery(
+        //     'SELECT  u.email , u.id, pi.last_name , pi.first_name, pi.midle_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+        //     FROM App:ReviewAssignment s 
+        //     JOIN s.reviewer u 
+        //     JOIN u.userInfo pi 
+        //     JOIN s.submission b 
+        //     where  u.is_reviewer is NULL    GROUP BY u.id ORDER BY  pi.first_name
+        // ');
+        // // ->setParameter('external', 1  ); 
+        // $recepientextrnal = $query2->getResult();
+        //   ########################
+
+
+      $counter = 2;
+      $counternumber = 1;
+      $counter3 = 2; 
+
+      foreach ($submissions as $phoneNumber) {
+          $sheet->setCellValue('A' . $counter, $counternumber);
+          $sheet->setCellValue('B' . $counter, $phoneNumber->getTitle());
+          ########################
+          // $sheet->setCellValue('C' . $counter, $phoneNumber->getAuthor()->getUserInfo());
+          
+          foreach ($phoneNumber->getReviews() as $CoAuthors) {
+            // $sheet->setCellValue('E' . $counter, $CoAuthors->getAuthor()->getUserInfo()->getCollege());
+          //  $counter++; 
+          if($CoAuthors->getRemark()==1){
+            $remark='Declined';
+          $sheet->setCellValue('C' . $counter, $remark);
+
+          }
+          elseif($CoAuthors->getRemark()==2){
+            $remark='Accepted with major revision';
+          $sheet->setCellValue('C' . $counter, $remark);
+
+          }
+
+          elseif($CoAuthors->getRemark()==3){
+            $remark='Accepted with minor revision';
+          $sheet->setCellValue('C' . $counter, $remark);
+
+          }
+          elseif($CoAuthors->getRemark()==4){
+            $remark='Accepted ';
+          $sheet->setCellValue('C' . $counter, $remark);
+
+          }
+
+          if($CoAuthors->getReviewedBy()->getIsReviewer()==1){
+            $reviewer='External  ';
+            $sheet->setCellValue('D' . $counter3, $reviewer);  
+ 
+          }
+          elseif($CoAuthors->getReviewedBy()->getIsReviewer() == ""){
+            $reviewer='interternal  ';
+          $sheet->setCellValue('D' . $counter3, $reviewer);  
+
+          }
+
+
+          // $sheet->setCellValue('D' . $counter3, $reviewer);  
+
+          // $counternumber++;   
+          // $counter++;
+          // $counter3++;  
+           } 
+          $counternumber++;   
+          $counter++;
+          $counter3++;  
+                 
+############################
+        // $counter++;
+      }
+       $writer = new Xlsx($spreadsheet);
+       $fileName = 'Researchers.xlsx';
+      $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+       $writer->save($temp_file);
+       return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+       
+         
+    }
+
 
     public function exportall($query){
       
