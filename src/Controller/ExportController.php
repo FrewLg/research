@@ -355,8 +355,7 @@ class    ExportController   extends AbstractController {
       $sheet->setCellValue('B1', 'Title');
       $sheet->setCellValue('C1', 'Review decision');
       $sheet->setCellValue('D1', 'Reviewer');
-        $sheet->setTitle("Research review result "); 
-
+        $sheet->setTitle("Research review result ");  
        
         $counter = 2;
         foreach ($submissions as $phoneNumber) {
@@ -390,11 +389,11 @@ class    ExportController   extends AbstractController {
 
 
              if ( $CoAuthors->getReviewedBy()->getIsReviewer()== NULL ){
-              $sheet->setCellValue('D' . $counter, "External");
+              $sheet->setCellValue('D' . $counter, "Internal");
                
                } 
                elseif($CoAuthors->getReviewedBy()->getIsReviewer()== 1){
-                $sheet->setCellValue('D' . $counter, "Internal");
+                $sheet->setCellValue('D' . $counter, "External");
 
                }
              $counter++;
@@ -404,13 +403,9 @@ class    ExportController   extends AbstractController {
 ############################
           $counter++;
         }
-
-
-
-        $counter = 2;
-   
-         $writer = new Xlsx($spreadsheet);
-         $fileName = 'Researchers.xlsx';
+    $counter = 2;
+      $writer = new Xlsx($spreadsheet);
+         $fileName = 'Review result.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
          $writer->save($temp_file);
          return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
