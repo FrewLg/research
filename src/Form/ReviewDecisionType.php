@@ -19,8 +19,8 @@ class ReviewDecisionType extends AbstractType
             'placeholder' => '--Select Editorial decision--',
             'choices' => [
                 'Accepted' => 4,
-                'Accepted with minor revision' =>3, 
-                'Accepted with major revision' => 2,
+                // 'Accepted with minor revision' =>3, 
+                // 'Accepted with major revision' => 2,
                 'Declined' => 1,
 
             ],
@@ -40,7 +40,7 @@ class ReviewDecisionType extends AbstractType
         ->add('attachment', FileType::class, [
             'label' => 'Reviewed document  file',
             'mapped' => false,
-            'required' => true,
+            'required' => false,
             'attr' => [
  
                 'class' => 'form-control',

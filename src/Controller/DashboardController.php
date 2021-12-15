@@ -520,27 +520,38 @@ class DashboardController extends AbstractController {
            #######################
        
          #######################
-         $query3 = $entityManager->createQuery(
-          'SELECT DISTINCT  b.id ,    b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
-          FROM App:Review s 
-          JOIN s.submission b     
+      //    $query3 = $entityManager->createQuery(
+      //     'SELECT DISTINCT  b.id ,    b.title   ,b.sent_at as sentAt, b.complete, i.first_name as firstName, i.midle_name, i.last_name
+      //     FROM App:Review s 
+      //     JOIN s.submission b     
           
-          JOIN b.author a
-          JOIN a.userInfo i
+      //     JOIN b.author a
+      //     JOIN a.userInfo i
           
-          WHERE   s.remark=:remark 
-          -- HAVING     s.remark=:remarktwo
+      //     WHERE   s.remark=:remark 
+      //     -- HAVING     s.remark=:remarktwo
 
-      ')  
-              // ->setParameter('remarktwo', "Accepted with minor revision" )  
-              ->setParameter('remark', 2) 
-              ;
-
-              $rejecteds = $query3->getResult();
+      // ')  
+      //         // ->setParameter('remarktwo', "Accepted with minor revision" )  
+      //         ->setParameter('remark', 2) 
+      //         ;
+              // $rejecteds = $query3->getResult();
 
        ################################ 
 
-                 $Allsubmissions = $paginator->paginate( 
+       $allrej = $entityManager->createQuery(
+            "SELECT DISTINCT     b.id from App:Review r 
+            JOIN r.submission b     
+            
+            where r.remark in ('1','4')
+            
+            group by b.id having count(r.remark) >=1 
+")  
+                //  ->setParameter('remark', 2) 
+                ;
+                $rejecteds = $allrej->getResult();
+                dd( $rejecteds );
+                $Allsubmissions = $paginator->paginate( 
                   // Doctrine Query, not results
                   $rejecteds,
                   // Define the page parameter

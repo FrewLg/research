@@ -1159,7 +1159,7 @@ return $this->redirectToRoute('submission_index');
      * @Route("/{id}/details", name="submission_show",  methods={"GET","POST"})
      */
     public function directorshow(Request $request, Submission $submission, ReviewRepository $reviewRepository, 
-    MailerInterface $email): Response {
+    MailerInterface $mailer): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
         ################### Are you the one? #################################
@@ -1215,6 +1215,7 @@ return $this->redirectToRoute('submission_index');
             $reviewfile = $form->get('attachment')->getData();
             if ($reviewfile == "") {
                 $review->setAttachment('');
+
             } else {
                 $reviewfile = $form->get('attachment')->getData();
                 $Areviewfile = md5(uniqid()) . '.' . $reviewfile->guessExtension();
@@ -1227,29 +1228,64 @@ return $this->redirectToRoute('submission_index');
             $review->setFromDirector(1);
             $review->setAllowToView(1);
            ######################
+           ###########Let us mail it ###########
+             
+            if ($form->get('remark')->getData()==4){
+
+               $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'EMAIL_KEY_SUBMISSION_STATUS_ACCEPTED']);
+            }
+            elseif($form->get('remark')->getData()==1){
+                $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'EMAIL_KEY_SUBMISSION_STATUS_DECLINED']);
+
+            }
+
+           $applicantsubject = $applicantmessages->getSubject();
+           $applicantbody = $applicantmessages->getBody();
+
+           $submission_url = 'submission/' . $submission->getId() . '/status';
+           $applicant = $submission->getAuthor()->getEmail();
+           $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
+           $emailtwo = (new TemplatedEmail())
+               ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+               ->to($applicant)
+               ->subject($applicantsubject)
+               ->htmlTemplate('emails/application_ack.html.twig')
+               ->context([
+                   'subject' => $applicantsubject,
+                   'body' => $applicantbody,
+                   'title' => $submission->getTitle(),
+                   'submission_url' => $submission_url,
+                   'name' => $applicantname,
+                   'Authoremail' => $applicant])
+           ;
+
+           $mailer->send($emailtwo);
+
+           ###########Let us mail it ###########
             
             $entityManager->persist($review);
             $entityManager->flush();
-
+             $flashbag = $this->get('session')->getFlashBag();
+            $flashbag->add("success", "Decision sent successfully!");
             return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
         }
 
-        $editorialDecision = new EditorialDecision();
-        $editorialDecisionform = $this->createForm(EditorialDecisionType::class, $editorialDecision);
+        // $editorialDecision = new EditorialDecision();
+        // $editorialDecisionform = $this->createForm(EditorialDecisionType::class, $editorialDecision);
 
-        $editorialDecisionform->handleRequest($request);
-        if ($editorialDecisionform->isSubmitted() && $editorialDecisionform->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $editorialDecision->setSubmission($submission);
-            $editorialDecision->setRevisedAt(new \DateTime());
-            // $editorialDecision->setCreatedAt(new \DateTime());
+        // $editorialDecisionform->handleRequest($request);
+        // if ($editorialDecisionform->isSubmitted() && $editorialDecisionform->isValid()) {
+        //     $entityManager = $this->getDoctrine()->getManager();
+        //     $editorialDecision->setSubmission($submission);
+        //     $editorialDecision->setRevisedAt(new \DateTime());
+        //     // $editorialDecision->setCreatedAt(new \DateTime());
 
-            $editorialDecision->setEditedBy($this->getUser());
-            $entityManager->persist($editorialDecision);
-            $entityManager->flush();
+        //     $editorialDecision->setEditedBy($this->getUser());
+        //     $entityManager->persist($editorialDecision);
+        //     $entityManager->flush();
 
-            return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
-        }
+        //     return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
+        // }
 
         ################ Admin Revision#########################
 

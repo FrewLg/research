@@ -65,7 +65,7 @@ class CollegeController extends AbstractController
      * @Route("/details", name="college_details", methods={"GET","POST"})
      */
 
-    public function showdetail( Request $request       ): Response
+    public function showdetail( Request $request  ): Response
     {
 
     $this->denyAccessUnlessGranted('assn_clg_cntr');

@@ -426,13 +426,11 @@
 
 														{% if review.attachment %}
 															<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="btn btn-info btn-xs float-right">
-																Download reviewed   file
+																Download evaluation  report 
 																<i class="fa fa-download material-icons warning"></i>
 															</a>
 														{% else %}
-															<span class="label label-danger">
-																{% trans %}No attachement found{% endtrans %}
-															</span>
+														 
 														{% endif %}
 													</div>
 												</td>
@@ -441,21 +439,39 @@
 
 
 														{% if review.ReviewedBy.isReviewer %}
-															<span class="text-primary">
-																External reviewer
+															<span class="badge badge-boxed  badge-outline-primary">
+																		External reviewer</span>
 															{% else %}
-																<span class="text-success">
-																	Internal reviewer
-																</span>
+																<span class="badge badge-boxed  badge-outline-success">
+																		Internal reviewer
+																		</span>
+														{% if review.fromDirector %}
+														<span class="badge badge-boxed  badge-outline-success">
+																		Research co-ordinator
+																		</span>
 															{% endif %}
+																{% endif %}
+
 														</h4>
-														<h4 class='text-'>
-															Review:
-															{{ loop.index }}
-														</h4>
+														 
 														
-														<h4 class='text-info'>
-														{{ review.remark |raw}}
+														<h4 class='text-'>
+														 {% if   review.remark==1 %}
+											<span class="text-danger">
+											Declined</span>
+
+											{% elseif   review.remark==2 %}
+											<span class="text-warning">
+											Accepted with major revision</span>
+											{% elseif   review.remark==3 %}
+	<span class="text-warning">
+	Accepted with minor revision </span>
+											{% elseif   review.remark==4 %}
+
+ 	<span class="text-success">
+	Accepted   </span>
+ {% endif   %}
+
 														</h4>
 
 														<hr></td>
