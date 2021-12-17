@@ -1194,11 +1194,7 @@ return $this->redirectToRoute('submission_index');
         $Overall_budger_request = $qb->getOneOrNullResult();
         $reviewers =  $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission]) ;
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $submission]);
-        ################ Admin Revision#########################
-
-        // $adminvevision = new Review();
-        // $adminvevisionform = $this->createForm(ReviewType::class, $adminvevision);
-        // $adminvevisionform->handleRequest($request);
+        ################ Admin Revision######################### 
 
         $review = new Review();
         $review->setSubmission($submission);
@@ -1241,7 +1237,6 @@ return $this->redirectToRoute('submission_index');
 
            $applicantsubject = $applicantmessages->getSubject();
            $applicantbody = $applicantmessages->getBody();
-
            $submission_url = 'submission/' . $submission->getId() . '/status';
            $applicant = $submission->getAuthor()->getEmail();
            $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
@@ -1261,7 +1256,7 @@ return $this->redirectToRoute('submission_index');
 
            $mailer->send($emailtwo);
 
-           ###########Let us mail it ###########
+           ########### End Let us mail it ###########
             
             $entityManager->persist($review);
             $entityManager->flush();
