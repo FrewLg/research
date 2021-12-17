@@ -467,7 +467,7 @@
 																	</a>
 																{% else %}
 																	<span class="badge badge-boxed  badge-outline-danger">
-																		{% trans %}No Evaluation  Report found{% endtrans %}
+																	==
 																	</span>
 																{% endif %}
 																{% if review.EvaluationAttachment %}
@@ -476,15 +476,16 @@
 																		<i class="fa fa-download material-icons  "></i>
 																	</a>
 																{% else %}
-																 
+																	<span class="badge badge-boxed  badge-outline-danger">
+																		==
+																	</span>
 																{% endif %}
 
 																{% if review.fromDirector %}
-														<span class="badge badge-boxed  badge-outline-info">
-																		{{review.ReviewedBy}}
+														<span class="badge badge-boxed  badge-outline-success">
+{{ review.ReviewedBy.isReviewer }}																		
 																		</span>
 															{% endif %}
-																{% endif %}
 
 															</div>
 														</td>
@@ -504,14 +505,13 @@
 
 
 																	{% endif %}
+																	
 																	{% if review.fromDirector %}
 														<span class="badge badge-boxed  badge-outline-success">
 																		Research co-ordinator
 																		
 																		</span>
 															{% endif %}
-																{% endif %}
-
 
 																</h5>
 																{# <h4 class='text-primary'> #}
