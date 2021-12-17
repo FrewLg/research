@@ -48,7 +48,7 @@
 										<td>{{ submission.author.userInfo }}
 										 
 											<a href="#" class="avatar-box thumb-xxs align-self-center">
-													<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+													<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
 														+ {{ submission.coAuthors|length   }}
 													</span>
 
@@ -90,17 +90,45 @@
 											{% endif %}
 										</td>
 										<td nowrap="nowrap">
-
-											{% if   submission.reviewAssignments|length>0  %}
+ {% if   submission.reviewAssignments|length>0  %}
 
 												<a href="#" class="avatar-box thumb-xxs align-self-center">
-													<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
-														R{{submission.reviewAssignments|length}}
+													<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+														 {{submission.reviewAssignments|length}}R
 													</span>
 
 												</a>
 
 											{% endif %}
+
+											{% set count = 0 %}
+											{% for  confirmation in submission.reviewAssignments('closed') %}
+												{% set count = count + 1 %}
+
+												{% if  confirmation.closed()|length==0  %}
+
+													<a href="#" class="avatar-box thumb-xxs align-self-center">
+
+														<span class='avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal'>
+															{{count}}
+															{% if count==0 %}
+
+																{% elseif count<=1 %}
+																	<sup>st</sup>
+																{% elseif count<=2%}
+																	<sup>nd</sup>
+																{% elseif count<=3%}
+																	<sup>rd</sup>
+																{% elseif count>=4%}
+																	<sup>th</sup>
+															{% endif %}
+														</span>
+													</a>
+
+												{% endif %}
+
+
+											{% endfor %}
 
 											{% if app.user.id==submission.author.id  %}
 												<span class="badge bg-success">You are the author</span>
