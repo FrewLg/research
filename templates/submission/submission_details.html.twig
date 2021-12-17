@@ -476,11 +476,16 @@
 																		<i class="fa fa-download material-icons  "></i>
 																	</a>
 																{% else %}
-																	<span class="badge badge-boxed  badge-outline-danger">
-																		{% trans %}
-																		No grading file found{% endtrans %}
-																	</span>
+																 
 																{% endif %}
+
+																{% if review.fromDirector %}
+														<span class="badge badge-boxed  badge-outline-info">
+																		{{review.ReviewedBy}}
+																		</span>
+															{% endif %}
+																{% endif %}
+
 															</div>
 														</td>
 														<td width="65" nowrap="nowrap">
@@ -499,6 +504,15 @@
 
 
 																	{% endif %}
+																	{% if review.fromDirector %}
+														<span class="badge badge-boxed  badge-outline-success">
+																		Research co-ordinator
+																		
+																		</span>
+															{% endif %}
+																{% endif %}
+
+
 																</h5>
 																{# <h4 class='text-primary'> #}
 
