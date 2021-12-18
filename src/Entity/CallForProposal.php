@@ -150,6 +150,10 @@ class CallForProposal
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $is_call_from_center;
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ResearchReportPhase", mappedBy="applicationCall", cascade={"persist", "remove"})
+     */
+    private $researchReportPhase;
 
  
 
@@ -501,6 +505,22 @@ class CallForProposal
     public function setIsCallFromCenter(?bool $is_call_from_center): self
     {
         $this->is_call_from_center = $is_call_from_center;
+
+        return $this;
+    }
+    public function getResearchReportPhase(): ?ResearchReportPhase
+    {
+        return $this->researchReportPhase;
+    }
+
+    public function setUserInfo(ResearchReportPhase $researchReportPhase): self
+    {
+        $this->researchReportPhase = $researchReportPhase;
+
+        // set the owning side of the relation if necessary
+        if ($researchReportPhase->getApplicationCall() !== $this) {
+            $researchReportPhase->setApplicationCall($this);
+        }
 
         return $this;
     }

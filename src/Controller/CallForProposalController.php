@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\CallForProposal;
+use App\Entity\ResearchReportPhase;
 use App\Form\CallForProposalType;
+use App\Form\ResearchReportPhaseType;
 use App\Repository\CallForProposalRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -271,6 +274,30 @@ return $this->redirectToRoute('call__details', array('id' => $callForProposal->g
 
         return $this->render('call_for_proposal/new.html.twig', [
             'call_for_proposal' => $callForProposal,
+            'form' => $form->createView(),
+        ]);
+    }
+    #[Route('/{id}/research_report_phase_show', name: 'call_research_report_phase', methods: ['GET',"POST"])]
+    public function show(CallForProposal $call_for_proposal,EntityManagerInterface $entityManager,Request $request): Response
+    {
+       
+       
+        $researchReportPhase=   $call_for_proposal->getResearchReportPhase()?:  new ResearchReportPhase();
+        $form = $this->createForm(ResearchReportPhaseType::class, $researchReportPhase);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $researchReportPhase->setApplicationCall($call_for_proposal);
+            $researchReportPhase->setCreatedBy($this->getUser());
+            $entityManager->persist($researchReportPhase);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('call_research_report_phase', ["id"=>$call_for_proposal->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('call_for_proposal/research_phase.html.twig', [
+            'call_for_proposal' => $call_for_proposal,
+            'research_report_phase' => $researchReportPhase,
             'form' => $form->createView(),
         ]);
     }
