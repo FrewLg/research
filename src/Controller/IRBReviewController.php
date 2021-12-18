@@ -30,6 +30,7 @@ use App\Repository\UserRepository;
 use App\Entity\InstitutionalReviewersBoard;
 use App\Helper\ReviewHelper;
 use App\Repository\EvaluationFormRepository;
+use App\Utils\Constants;
 use DateTime;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Knp\Component\Pager\PaginatorInterface;
@@ -62,7 +63,7 @@ class IRBReviewController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
-        $myassigned = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => NULL , 'Declined' => NULL ]));
+        $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => NULL , 'Declined' => NULL ],["id"=>"DESC"]);
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results
@@ -74,7 +75,7 @@ class IRBReviewController extends AbstractController
         );
 #################################################
 
-$all = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me]));
+$all = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me],["id"=>"DESC"]);
 // $closedones = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => 1 , 'inactive_assignment' => NULL ]));
 // ////// if no throw exception
 // $closeds = $paginator->paginate(
@@ -121,53 +122,52 @@ $entityManager = $this->getDoctrine()->getManager();
     /**
      * @Route("/filter/{filter}/", name="submission_filter", methods={"GET"})
      */
-    public function byfilter(Request $request, $filter, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
+    public function byfilter(Request $request, SubmissionRepository $submissionRepository, $filter, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
 
         // $this->denyAccessUnlessGranted('assn_clg_cntr');
         $info = 'All';
-        $em = $this->getDoctrine()->getManager();
         switch ($filter) {
 
         case 'al':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
+            $submissionRepository = $submissionRepository->getSubmissions();
             break;
         case 'cp':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['complete' => '1']));
+            $submissionRepository = $submissionRepository->getSubmissions(['complete' => '1']);
             $info = 'Complete submission';
             break;
         case 'gr':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'grant']));
+            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' => 'grant']);
             $info = 'Grant';
             break;
         case 'cs':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'Community service']));
+            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' => Constants::RESEARCH_TYPE_COMMUNITY_SERVICE]);
             $info = 'Community service';
             break;
         case 'mg':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'Mega Research']));
+         
+            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' => Constants::RESEARCH_TYPE_MEGA]);
             $info = 'Technology transfer';
             break;
         case 'tt':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'Technology transfer']));
+            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' =>Constants::RESEARCH_TYPE_TECHNOLOGY_TRANSFER]);
             $info = 'Technology transfer';
             break;
         case 'ps':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['published' => '1']));
+            $submissionRepository = $submissionRepository->getSubmissions(['published' => '1']);
             $info = 'Published';
             break;
 
         case 'rv':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['submission_type' => 'grant']));
+            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' => 'grant']);
             $info = 'Review assigned';
             break;
         case 'ic':
-            $submissionRepository = array_reverse($em->getRepository('App:Submission')->findBy(['complete' => '0']));
+            $submissionRepository = $submissionRepository->getSubmissions(['complete' => '0']);
             $info = 'Incomplete ';
             break;
         default:
             return $this->redirectToRoute('submission_index');
-#     $submissionRepository = array_reverse($em->getRepository('App:Submission')->findAll());
-        }
+     }
 
         // Paginate the results of the query
         $Allsubmissions = $paginator->paginate(
@@ -192,7 +192,7 @@ $entityManager = $this->getDoctrine()->getManager();
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
          
-        $myassigned = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $user  ]));
+        $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $user  ],["id"=>"DESC"]);
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results
@@ -586,15 +586,15 @@ $entityManager = $this->getDoctrine()->getManager();
 
     $entityManager = $this->getDoctrine()->getManager();
     if($this->getUser() != $reviewAssignment->getReviewer()){
-        $flashbag = $this->get('session')->getFlashBag();
-        $flashbag->add("danger", "Sorry you are not allowed for this service !" );
+        
+        $this->addFlash("danger", "Sorry you are not allowed for this service !" );
         return $this->redirectToRoute('myassigned');
     }
    
     if(  $reviewAssignment->getDeclined()==1){
        
-        $flashbag = $this->get('session')->getFlashBag();
-        $flashbag->add("danger", "Sorry invitation has declined !" );
+        
+        $this->addFlash("danger", "Sorry invitation has declined !" );
 
         return $this->redirectToRoute('myassigned');
     }
@@ -623,8 +623,8 @@ if ($reviewAssignment->getIsRejected()){
 	$today= new \DateTime();
 	$message='';
  	if ($deadline<=$today){
-        $flashbag = $this->get('session')->getFlashBag();
-        $flashbag->add("danger", "Sorry Invitation overdue !" );
+        
+        $this->addFlash("danger", "Sorry Invitation overdue !" );
 
         //  $this->addFlash('error',"!!");
         return $this->redirectToRoute('myassigned');

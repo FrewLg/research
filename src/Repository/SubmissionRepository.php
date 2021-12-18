@@ -58,27 +58,39 @@ class SubmissionRepository extends ServiceEntityRepository
     // sET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY','')); 
     // select submission_id from review where remark in ('Accepted','Declined') group by submission_id having count(remark) >1; 
 
-    public function getSubmissions($status = null)
+    public function getSubmissions($filter=[])
     {
         $qb = $this->createQueryBuilder('s');
-        $qb->innerJoin("App:Review", "r", "with", "s.id=r.submission");
-        if (isset($status) and sizeof($status) > 0) {
+        if (isset($filter['status']) and sizeof($filter['status']) > 0) {
+            $qb->leftJoin("App:Review", "r", "with", "s.id=r.submission");
 
 
             $qb->andWhere("r.remark in  (:remark)")
-                ->setParameter("remark", $status);
+                ->setParameter("remark", $filter['status']);
+            if (isset($filter['status']) and sizeof($filter['status']) == 1) {
+
+
+                $qb->groupBy("s.id")
+                    ->andHaving("count(r.remark)>1");
+            } else
+                $qb->groupBy("s.id")->andHaving("count(distinct(r.remark))>1");
         }
-        if (isset($status) and sizeof($status) == 1) {
-
-
-            $qb->groupBy("s.id")
-                ->andHaving("count(r.remark)>1");
-        } else
-            $qb->groupBy("s.id")->andHaving("count(distinct(r.remark))>1");
+        if (isset($filter['submission_type'])) {
+            $qb->andWhere("s.submission_type =  :submission_type")
+                ->setParameter("submission_type", $filter['submission_type']);
+        }
+        if (isset($filter['complete'])) {
+            $qb->andWhere("s.complete =  :complete")
+                ->setParameter("complete", $filter['complete']);
+        }
+        if (isset($filter['callForProposal'])) {
+            $qb->andWhere("s.callForProposal =  :callForProposal")
+                ->setParameter("callForProposal", $filter['callForProposal']);
+        }
 
         //    dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());
         return  $qb->orderBy('s.id', 'ASC')
-            ->getQuery();;
+            ->getQuery();
     }
 
 

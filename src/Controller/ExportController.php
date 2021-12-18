@@ -206,7 +206,7 @@ class    ExportController   extends AbstractController {
           $filterform->handleRequest($request);
           if($filterform->isSubmitted() && $filterform->isValid()){
             
-            $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions($filterform->getData()['status']);
+            $submissions=$this->getDoctrine()->getRepository(Submission::class)->getSubmissions(["status"=>$filterform->getData()['status']]);
             if ($request->query->get("export")){
               $spreadsheet = new Spreadsheet();
               /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
