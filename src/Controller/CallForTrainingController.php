@@ -16,22 +16,18 @@ use Knp\Component\Pager\PaginatorInterface;
 class CallForTrainingController extends AbstractController
 {
     #[Route('/', name: 'call_for_training', methods: ['GET'])]
-    public function index(Request $request, CallForTrainingRepository $callForTrainingRepository , PaginatorInterface $paginator): Response 
-    
+    public function index(Request $request, CallForTrainingRepository $callForTrainingRepository, PaginatorInterface $paginator): Response
+
     {
 
         $em = $this->getDoctrine()->getManager();
-        $callForTraining = array_reverse($em->getRepository(CallForTraining::class)->findBy(array('approved' => 1)));
- 
+        $callForTraining = $callForTrainingRepository->findBy(array('approved' => 1), ["id" => "DESC"]);
+
         $info = 'All';
 
-        // Paginate the results of the query
         $alltraining = $paginator->paginate(
-            // Doctrine Query, not results
             $callForTraining,
-            // Define the page parameter
             $request->query->getInt('page', 1),
-            // Items per page
             10
         );
 
@@ -41,7 +37,7 @@ class CallForTrainingController extends AbstractController
     }
 
     #[Route('/adm', name: 'call_for_training_index', methods: ['GET'])]
-    public function foradmin(Request $request ,  CallForTrainingRepository $callForTrainingRepository , PaginatorInterface $paginator): Response
+    public function foradmin(Request $request,  CallForTrainingRepository $callForTrainingRepository, PaginatorInterface $paginator): Response
     {
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -50,8 +46,8 @@ class CallForTrainingController extends AbstractController
 
 
         $callForTraining = array_reverse($em->getRepository(CallForTraining::class)->findAll());
- 
-        
+
+
 
         // Paginate the results of the query
         $alltraining = $paginator->paginate(
@@ -64,16 +60,16 @@ class CallForTrainingController extends AbstractController
         );
 
         return $this->render('call_for_training/index.html.twig', [
-            'call_for_trainings' => $alltraining ,
+            'call_for_trainings' => $alltraining,
         ]);
     }
 
     #[Route('/new', name: 'call_for_training_new', methods: ['GET', 'POST'])]
-    public function new(Request $request ,    EntityManagerInterface $entityManager): Response
+    public function new(Request $request,    EntityManagerInterface $entityManager): Response
     {
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        
+
         $callForTraining = new CallForTraining();
         $form = $this->createForm(CallForTrainingType::class, $callForTraining);
         $form->handleRequest($request);
@@ -81,9 +77,8 @@ class CallForTrainingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $callForTraining->setCreatedAt(new \Datetime());
             $callForTraining->setCollege($this->getUser()->getUserInfo()->getCollege());
-              $file3 = $form->get('document_attachment')->getData();
-             if ($file3 == "") {
-
+            $file3 = $form->get('document_attachment')->getData();
+            if ($file3 == "") {
             } else {
                 $file3 = $form->get('document_attachment')->getData();
                 $fileName3 = md5(uniqid()) . '.' . $file3->guessExtension();
@@ -94,7 +89,7 @@ class CallForTrainingController extends AbstractController
             $entityManager->persist($callForTraining);
             $entityManager->flush();
 
-            
+
             $this->addFlash("success", "Training has been created successfully !");
 
 
@@ -112,12 +107,12 @@ class CallForTrainingController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $em = $this->getDoctrine()->getManager();     
-        $user = $this->getUser();  
-       
-        $ifexists = $em->getRepository('App:TrainingParticipant')->findBy(['participant'=>$user, 'training'=>$callForTraining] );
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
 
-         
+        $ifexists = $em->getRepository('App:TrainingParticipant')->findBy(['participant' => $user, 'training' => $callForTraining]);
+
+
 
         return $this->render('call_for_training/show.html.twig', [
             'call_for_training' => $callForTraining,
@@ -144,20 +139,19 @@ class CallForTrainingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-           
-           
+
+
             $callForTraining->setCollege($this->getUser()->getUserInfo()->getCollege());
             $file3 = $form->get('document_attachment')->getData();
-           if ($file3 == "") {
+            if ($file3 == "") {
+            } else {
+                $file3 = $form->get('document_attachment')->getData();
+                $fileName3 = md5(uniqid()) . '.' . $file3->guessExtension();
+                $file3->move($this->getParameter('review_files'), $fileName3);
+                $callForTraining->setDocumentAttachment($fileName3);
+            }
 
-          } else {
-              $file3 = $form->get('document_attachment')->getData();
-              $fileName3 = md5(uniqid()) . '.' . $file3->guessExtension();
-              $file3->move($this->getParameter('review_files'), $fileName3);
-              $callForTraining->setDocumentAttachment($fileName3);
-          }
 
-          
             $entityManager->flush();
 
             return $this->redirectToRoute('call_for_training_index', [], Response::HTTP_SEE_OTHER);
@@ -172,7 +166,7 @@ class CallForTrainingController extends AbstractController
     #[Route('/{id}', name: 'call_for_training_delete', methods: ['POST'])]
     public function delete(Request $request, CallForTraining $callForTraining, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$callForTraining->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $callForTraining->getId(), $request->request->get('_token'))) {
             $entityManager->remove($callForTraining);
             $entityManager->flush();
         }

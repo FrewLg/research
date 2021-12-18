@@ -55,7 +55,6 @@ class CallForProposalRepository extends ServiceEntityRepository
         }
         return $qb
             ->orderBy("c.id", "DESC")
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 }

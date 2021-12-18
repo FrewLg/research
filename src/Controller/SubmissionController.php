@@ -55,16 +55,11 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/", name="submission_index", methods={"GET","POST"})
      */
-    public function index(
-        Request $request,
-        SubmissionRepository $submissionRepository,
-        PaginatorInterface $paginator,
-        FilterBuilderUpdaterInterface $query_builder_updater
-    ): Response {
+    public function index(Request $request,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater ): Response {
         // $this->denyAccessUnlessGranted('assn_clg_cntr');
         $em = $this->getDoctrine()->getManager();
         //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
-        $formFilter = $this->get('form.factory')->create(SubmissionFilterType::class);
+        $formFilter = $this->createForm(SubmissionFilterType::class);
         $formFilter->handleRequest($request);
         $info = 'All';
         $submissionRepository = $submissionRepository->getSubmissions();
@@ -104,11 +99,10 @@ class SubmissionController extends AbstractController
 
         // Paginate the results of the query
         $submissions = $paginator->paginate(
-            // Doctrine Query, not results
+         
             $submissionRepository,
-            // Define the page parameter
             $request->query->getInt('page', 1),
-            // Items per page
+          
             10
         );
         return $this->render('submission/index.html.twig', [
@@ -205,7 +199,7 @@ link below before the deadline of the call.';
             $mailer->send($email);
         }
         ##########
-        
+
         $this->addFlash("success", "Alert sent to Co-PI s successffully  !");
 
         return $this->redirectToRoute('submission_index');
@@ -220,12 +214,11 @@ link below before the deadline of the call.';
 
         #######################
         $em  = $this->getDoctrine()->getManager();
-        $lastdate = $em->getRepository('App:CallForProposal')->find($callForProposal);
-
-        $deadline = $lastdate->getDeadline();
+      
+        $deadline = $callForProposal->getDeadline();
         $today = new \DateTime('');
         if ($deadline <= $today) {
-            
+
             $this->addFlash("danger", "Sorry! Call has expired!  Thank you!");
             return $this->redirectToRoute('myreviews');
         }
@@ -244,7 +237,7 @@ link below before the deadline of the call.';
             $userdetails->getCollege() == '' ||
             $userdetails->getEducationLevel() == '' || $userdetails->getAcademicRank() == ''
         ) {
-            
+
             $this->addFlash("danger", "Please complete your profile first before you submit the proposal  !");
 
             return $this->redirectToRoute('myprofile');
@@ -255,7 +248,7 @@ link below before the deadline of the call.';
         $p_i_college = $this->getUser()->getUserInfo()->getCollege();
 
         if (!$p_i_college == $callForProposal->getCollege()) {
-            
+
             $this->addFlash("danger", "You are not allowed make a submission from" . $p_i_college . " !");
 
             return $this->redirectToRoute('researchworks');
@@ -486,7 +479,7 @@ link below before the deadline of the call.';
         $myapplications = $em->getRepository(Submission::class)->find($submission);
         $requesteduser = $myapplications->getAuthor();
         if ($requesteduser !== $thisUser) {
-            
+
             $this->addFlash("danger", "Sorry you are not allowed for this service ! Thank you!");
             return $this->redirectToRoute('myreviews');
         }
@@ -559,7 +552,7 @@ link below before the deadline of the call.';
         $myapplications = $em->getRepository(Submission::class)->find($submission);
         $requesteduser = $myapplications->getAuthor();
         if ($requesteduser !== $thisUser) {
-            
+
             $this->addFlash("danger", "Sorry you are not allowed for this service ! Thank you!");
             return $this->redirectToRoute('myreviews');
         }
@@ -664,7 +657,7 @@ link below before the deadline of the call.';
             }
             ////// check if there is publication has
             if ($entityManager->getRepository(PublishedSubmission::class)->findBy(['submission' => $submission, 'attachement_type' => $published->getAttachementType()])) {
-                
+
                 $this->addFlash("danger", "Sorry you have already uploaded '" . $fileName3 . "' file is the same attachment , please change  instead !");
                 return $this->redirectToRoute('submission_status', array('id' => $submission->getId()));
             }
@@ -681,7 +674,7 @@ link below before the deadline of the call.';
         $entityManager = $this->getDoctrine()->getManager();
         $publicationstatus = $entityManager->getRepository(PublishedSubmission::class)->findBy(['submission' => $submission]);
         $Expenses = $entityManager->getRepository(SubmissionBudget::class)->findBy(['submission' => $submission]);
-        $reviewsatge = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission]));
+        $reviewsatge = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission],["id"=>"DESC"]);
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $submission, 'allow_to_view' => 1]);
         $contributors = $entityManager->getRepository(CoAuthor::class)->find($submission);
         return $this->render('submission/status.html.twig', [
@@ -821,7 +814,7 @@ link below before the deadline of the call.';
         $thisUser = $this->getUser();
         $requesteduser = $submission->getAuthor();
         if ($requesteduser == $thisUser) {
-            
+
             $this->addFlash("danger", "Sorry you are not allowed for this service ! Thank you!");
             return $this->redirectToRoute('myreviews');
         }
@@ -876,10 +869,10 @@ link below before the deadline of the call.';
             ######################
             $review->setFromDirector(1);
             $review->setAllowToView(1);
-           ######################
-           ########### Let us mail it ########### 
-             
-        
+            ######################
+            ########### Let us mail it ########### 
+
+
             if ($form->get('remark')->getData() == 4) {
 
                 $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'EMAIL_KEY_SUBMISSION_STATUS_ACCEPTED']);
@@ -887,39 +880,39 @@ link below before the deadline of the call.';
                 $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'EMAIL_KEY_SUBMISSION_STATUS_DECLINED']);
             }
 
-           $applicantsubject = $applicantmessages->getSubject();
-           $applicantbody = $applicantmessages->getBody();
-           $submission_url = 'submission/' . $submission->getId() . '/status';
-           $applicant = $submission->getAuthor()->getEmail();
-           $applicantcc = $submission->getAuthor()->getUserInfo()->getAlternativeEmail();
-           $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
-           $emailtwo = (new TemplatedEmail())
-               ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
-               ->cc(new Address($applicantcc, $$$applicantname)) 
-               ->to($applicant)
-               ->subject($applicantsubject)
-               ->htmlTemplate('emails/application_ack.html.twig')
-               ->context([
-                   'subject' => $applicantsubject,
-                   'body' => $applicantbody,
-                   'title' => $submission->getTitle(),
-                   'submission_url' => $submission_url,
-                   'name' => $applicantname,
-                   'Authoremail' => $applicant])
-           ;
+            $applicantsubject = $applicantmessages->getSubject();
+            $applicantbody = $applicantmessages->getBody();
+            $submission_url = 'submission/' . $submission->getId() . '/status';
+            $applicant = $submission->getAuthor()->getEmail();
+            $applicantcc = $submission->getAuthor()->getUserInfo()->getAlternativeEmail();
+            $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
+            $emailtwo = (new TemplatedEmail())
+                ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+                ->cc(new Address($applicantcc, $applicantname))
+                ->to($applicant)
+                ->subject($applicantsubject)
+                ->htmlTemplate('emails/application_ack.html.twig')
+                ->context([
+                    'subject' => $applicantsubject,
+                    'body' => $applicantbody,
+                    'title' => $submission->getTitle(),
+                    'submission_url' => $submission_url,
+                    'name' => $applicantname,
+                    'Authoremail' => $applicant
+                ]);
 
-           $mailer->send($emailtwo);
+            $mailer->send($emailtwo);
 
-           ########### End Let us mail it ###########
-            
+            ########### End Let us mail it ###########
+
             $entityManager->persist($review);
             $entityManager->flush();
-            
+
             $this->addFlash("success", "Decision sent successfully!");
             return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
         }
 
-     
+
 
         ################ Admin Revision#########################
 
@@ -944,18 +937,14 @@ link below before the deadline of the call.';
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
-        $me = $this->getUser()->getId();
-
+       
         $myemail = $this->getUser();
         // $membership = $entityManager->getRepository(CoAuthor::class)->findBy(['email' => $this_is_me]);
-        $myresearches = array_reverse($entityManager->getRepository(CoAuthor::class)->findBy(['researcher' => $myemail]));
+        $myresearches = $entityManager->getRepository(CoAuthor::class)->findBy(['researcher' => $myemail],["id"=>"DESC"]);
         ////// if no throw exception
         $Allmyresearches = $paginator->paginate(
-            // Doctrine Query, not results
             $myresearches,
-            // Define the page parameter
             $request->query->getInt('page', 1),
-            // Items per page
             10
         );
 
@@ -979,7 +968,7 @@ link below before the deadline of the call.';
         $user = $this->getUser();
         if (!$researcher == $user) {
 
-            
+
             $this->addFlash("danger", "Sorry the link bronek!");
             return $this->redirectToRoute('membership');
         }
@@ -997,7 +986,7 @@ link below before the deadline of the call.';
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
-        $myresearches = $entityManager->getRepository(Submission::class)->findBy(['author' => $me],["id"=>"DESC"]);
+        $myresearches = $entityManager->getRepository(Submission::class)->findBy(['author' => $me], ["id" => "DESC"]);
         $Assignment_id = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me]);
         ////// if no throw exception
         $Allmyresearches = $paginator->paginate(

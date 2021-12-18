@@ -63,7 +63,7 @@ class IRBReviewController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
-        $myassigned = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => NULL , 'Declined' => NULL ]));
+        $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => NULL , 'Declined' => NULL ],["id"=>"DESC"]);
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results
@@ -75,7 +75,7 @@ class IRBReviewController extends AbstractController
         );
 #################################################
 
-$all = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me]));
+$all = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me],["id"=>"DESC"]);
 // $closedones = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => 1 , 'inactive_assignment' => NULL ]));
 // ////// if no throw exception
 // $closeds = $paginator->paginate(
@@ -192,7 +192,7 @@ $entityManager = $this->getDoctrine()->getManager();
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
          
-        $myassigned = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $user  ]));
+        $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $user  ],["id"=>"DESC"]);
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results

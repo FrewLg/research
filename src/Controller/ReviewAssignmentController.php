@@ -103,7 +103,7 @@ class ReviewAssignmentController extends AbstractController
 //  $submission=$entityManager->getRepository(Submission::class)->findBy(['id'=>$submission->getId()]);
     
  ///// check if the submission is completed or not 
-   	$allreviewersfrom_i_r_b =  array_reverse($reviewAssignmentRepository->findBy(['submission' => $submission] ));
+   	$allreviewersfrom_i_r_b =  $reviewAssignmentRepository->findBy(['submission' => $submission],["id"=>"DESC"] );
         $reviewAssignment = new ReviewAssignment();
         $reviewAssignment->setStatus(1);
         $reviewAssignment->setSubmission($submission);
