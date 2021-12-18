@@ -18,12 +18,13 @@ use Symfony\Component\Mime\NamedAddress;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+
 /**
  * @Route("/announce")
  */
 class AnnouncementController extends AbstractController
 {
-      
+
     /**
      * @Route("/", name="announcement_index", methods={"GET"})
      */
@@ -34,15 +35,15 @@ class AnnouncementController extends AbstractController
         ]);
     }
 
-    
+
     /**
      * @Route("/new", name="announcement_new", methods={"GET","POST"})
      */
     public function new(Request $request, AnnouncementRepository $announcementRepository, MailerInterface $mailer,  PaginatorInterface $paginator): Response
     {
-	$this->denyAccessUnlessGranted('ROLE_USER');
-	$user=$this->getUser();
-	$em = $this->getDoctrine()->getManager();
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
         $announcement = new Announcement();
         $form = $this->createForm(AnnouncementType::class, $announcement);
         $form->handleRequest($request);
@@ -52,71 +53,71 @@ class AnnouncementController extends AbstractController
             $announcement->setPostedBy($user);
             $entityManager->persist($announcement);
             $entityManager->flush();
-	///////////// Let us email subscribed users to announcements
-	$messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
-	$subject=$messages->getSubject();
-	$body=$messages->getBody();
-	$em = $this->getDoctrine()->getManager();
-	$query = $entityManager->createQuery(
-   	 'SELECT u.email , u.first_name, u.username
+            ///////////// Let us email subscribed users to announcements
+            $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
+            $subject = $messages->getSubject();
+            $body = $messages->getBody();
+            $em = $this->getDoctrine()->getManager();
+            $query = $entityManager->createQuery(
+                'SELECT u.email , u.first_name, u.username
 	    FROM App:Subscription s
 	    JOIN s.user u
-	    WHERE s.announcement = :subscribed')
-    ->setParameter('subscribed', '1');
-	$recepients = $query->getResult();
-	 ///////////////Email for those who subscribed to website/////////
-	$em = $this->getDoctrine()->getManager();
-	$qb = $em->createQueryBuilder();
-  	$messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'NEWS_NOTIFICATION']);
-	$fl = $em->getRepository('App:User')->findAll();
- 	$subject=$messages->getSubject();
- 	$body=$messages->getBody();
- foreach ($recepients as $row ) {
-  $theEmails[]=   $row['email'].' ';
-  $theNames[]=   $row['username'].' ';
-  $theFirstNames[]=   $row['first_name'].' ';
-  }  
+	    WHERE s.announcement = :subscribed'
+            )
+                ->setParameter('subscribed', '1');
+            $recepients = $query->getResult();
+            ///////////////Email for those who subscribed to website/////////
+            $em = $this->getDoctrine()->getManager();
+            $qb = $em->createQueryBuilder();
+            $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'NEWS_NOTIFICATION']);
+            $fl = $em->getRepository('App:User')->findAll();
+            $subject = $messages->getSubject();
+            $body = $messages->getBody();
+            foreach ($recepients as $row) {
+                $theEmails[] =   $row['email'] . ' ';
+                $theNames[] =   $row['username'] . ' ';
+                $theFirstNames[] =   $row['first_name'] . ' ';
+            }
 
 
- ////////////
-  $length = count($recepients);
-for ($i = 0; $i < $length; $i++) {
-/////////////// 
-$theFirstName=$theFirstNames[$i];
-if($theFirstName==''){
-$theFirstName= $theNames[$i];
-dd($theFirstName);
-}
-$theEmail=$theEmails[$i];
- $email = (new TemplatedEmail())
-   ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research  Office'))
-//    ->to($theEmails)
-    ->to(new Address($theEmails[$i], $theFirstNames[$i]))
-    ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
-    ->subject($subject) 
-    ->htmlTemplate('emails/news.html.twig')
-    ->context([
-        'subject' => $subject, 
-        'body' => $body,
-        'name' => $theFirstName,
-        'Authoremail' => $theEmail,  
-    ]) 
-    ;
-    $mailer->send($email);
-} 
-  $flashbag = $this->get('session')->getFlashBag();
-         $flashbag->add("success", "Email sent!" );
-	//////////////////////////// end emailing ///////////////////////
-        return $this->redirectToRoute('announcement_index');
+            ////////////
+            $length = count($recepients);
+            for ($i = 0; $i < $length; $i++) {
+                /////////////// 
+                $theFirstName = $theFirstNames[$i];
+                if ($theFirstName == '') {
+                    $theFirstName = $theNames[$i];
+                    dd($theFirstName);
+                }
+                $theEmail = $theEmails[$i];
+                $email = (new TemplatedEmail())
+                    ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research  Office'))
+                    //    ->to($theEmails)
+                    ->to(new Address($theEmails[$i], $theFirstNames[$i]))
+                    ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
+                    ->subject($subject)
+                    ->htmlTemplate('emails/news.html.twig')
+                    ->context([
+                        'subject' => $subject,
+                        'body' => $body,
+                        'name' => $theFirstName,
+                        'Authoremail' => $theEmail,
+                    ]);
+                $mailer->send($email);
+            }
+
+            $this->addFlash("success", "Email sent!");
+            //////////////////////////// end emailing ///////////////////////
+            return $this->redirectToRoute('announcement_index');
         }
- 	$announcements = array_reverse($announcementRepository->findAll());
-        $paginatedannouncements = $paginator->paginate($announcements, $request->query->getInt('page', 1), 10  ); 
+        $announcements = $announcementRepository->getData()->getResult();
+        $paginatedannouncements = $paginator->paginate($announcements, $request->query->getInt('page', 1), 10);
         return $this->render('announcement/new.html.twig', [
-            'announcements'=> $paginatedannouncements,
+            'announcements' => $paginatedannouncements,
             'form' => $form->createView(),
         ]);
     }
-    
+
     /**
      * @Route("/{id}", name="announcement_show", methods={"GET"})
      */
@@ -152,8 +153,8 @@ $theEmail=$theEmails[$i];
     {
         $this->denyAccessUnlessGranted('ANNOUNCEMENT_EDIT', $announcement);
 
-        
-        if ($this->isCsrfTokenValid('delete'.$announcement->getId(), $request->request->get('_token'))) {
+
+        if ($this->isCsrfTokenValid('delete' . $announcement->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($announcement);
             $entityManager->flush();

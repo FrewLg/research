@@ -4,13 +4,13 @@
 {% endblock %}
 
 {% block body %}
-	<h1>College</h1>
+	<h1>{{college.name}}</h1>
 	<div class="row">
 		<div class="col-lg-12">
 
 			<div class="card">
 				<div class="card-header">
-					<h4 class="card-title">College</h4>
+					<h4 class="card-title">{{college.name}}</h4>
 					<p class="text-muted mb-0">
 						details</p>
 				</div>
@@ -42,31 +42,27 @@
 									<tbody>
 										<tr>
 											<td class="desc">
-												<h3>
-													<a href="#" class="text-navy">
-														{{ college.name }}
-													</a>
-												</h3>
+												 
 												<p class="medium">
 													{{ college.description |raw}}
 												</p>
 												<p class="medium">
-													<h4 class='text:success'>
+													<h4 class='text:default'>
 														Principal Contact:</h4>
 													{{ college.PrincipalContact |raw }}
-													<h4 class='text:success'>
+													<h4 class='text:default'>
 														Description:</h4>
 													{{ college.description |raw}}
 												</p>
-												<h4 class='text-success'>
+												<h4 class='text-default'>
 													Identification  Code</h4>
 												{{ college.identificationCode }}
 												<p>
-													<h4 class='text-success'>
+													<h4 class='text-default'>
 														Objective</h4>
 													{{ college.Objective }}
 
-													<h4 class='text-success'>
+													<h4 class='text-default'>
 														Institutional Reviewers Board
 													</h4>
 
@@ -140,21 +136,21 @@
 								</tbody>
 							</table>
 							<hr>
-							<h3 class='text-success'>New Thematic area</h3>
+							<h3 class='text-default'>New Thematic area</h3>
 							{{ form_start(thematicAreaform) }}
 							{{ form_widget(thematicAreaform) }}
-							<button class="btn">{{ button_label|default('Save') }}</button>
+							<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 							{{ form_end(thematicAreaform) }}
 						</div>
 						<div class="tab-pane p-3  " id="settings-1" role="tabpanel">
-							<h4 class='text-success'>
-								Guideline For Authors
+							<h4 class='text-primary'>
+								Guideline For PI researcher
 							</h4>
 
 							<table class="table table-striped">
 								<thead>
 									<tr>
-										<th>Id</th>
+										<th>#</th>
 										<th>Guideline body</th>
 
 
@@ -164,7 +160,7 @@
 								<tbody>
 									{% for guideline in guidelines %}
 										<tr>
-											<td>{{ guideline.id }}</td>
+											<td>{{ loop.index }}</td>
 											<td>{{ guideline.guideline|raw }}</td>
 											<td>
 												<a href="{{ path('guidelines_show', {'id': guideline.id}) }}">show</a>
@@ -178,52 +174,53 @@
 									{% endfor %}
 								</tbody>
 							</table>
-							<h4 class='text-success'>
-								New Guideline For Authors
+							<
+							<h4 class='text-primary'>
+								  Guideline For PI
 							</h4>
 							{{ form_start(guidelineform) }}
 							{{ form_widget(guidelineform) }}
-							<button class="btn">{{ button_label|default('Save') }}</button>
+							<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 							{{ form_end(guidelineform) }}
 
-							<h4 class='text-success'>
-								Guideline For reviewers
+							<h4 class='text-primary'>
+								Guideline For Reviewers
 							</h4>
-							<table class="table">
-								<thead>
-									<tr>
-										<th>#</th>
-										<th>Name</th>
-										<th>The guidellines body
-										</th>
-
-										<th>actions</th>
-									</tr>
-								</thead>
-								<tbody>
+							 
 									{% for guideline_for_reviewer in guideline_for_reviewers %}
-										<tr>
-											<td>{{ loop.index }}</td>
-											<td>{{ guideline_for_reviewer.name }}</td>
-											<td>{{ guideline_for_reviewer.theGuidelline |raw }}</td>
+										 
+											<b>{{ guideline_for_reviewer.name }}</b>
+											 <br>{{ guideline_for_reviewer.theGuidelline |raw }} 
 
-											<td>
-												<a href="{{ path('guideline_for_reviewer_show', {'id': guideline_for_reviewer.id}) }}">show</a>
-												<a href="{{ path('guideline_for_reviewer_edit', {'id': guideline_for_reviewer.id}) }}">edit</a>
-											</td>
-										</tr>
+											  <br>
+											  <a class="badge bg-primary" href="{{ asset('files/guidelines/'~ college.guidelineForReviewer.attachment ) }}">
+							Assessment Guideline   PDF
+							<i class="fa fa-download"></i>
+						</a>
+
+						<br>
+						<br>
+
+						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~  college.guidelineForReviewer.evaluationfrom ) }}">
+							Grading Form PDF
+							<i class="fa fa-download"></i>
+						</a>
+	<br>
+<br>
+
+						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~  college.guidelineForReviewer.commentfrom ) }}">
+							Evaluation Report Form PDF
+							<i class="fa fa-download"></i>
+						</a>
+
 									{% else %}
-										<tr>
-											<td colspan="5">no records found</td>
-										</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-							<h4 class='text-success'>New  Guideline For reviewers
+										 no records found 
+									{% endfor %} 
+							<h4 class='text-primary'>New  Guideline For reviewers
 							</h4>
 							{{ form_start(formguidelineforReviewer) }}
 							{{ form_widget(formguidelineforReviewer) }}
-							<button class="btn">{{ button_label|default('Save') }}</button>
+							<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 							{{ form_end(formguidelineforReviewer) }}
 
 						</div>
@@ -241,20 +238,7 @@
 			<!--end card-->
 		</div>
 
-
-		<!--      <div class="col-lg-3">
-		                <div class="wrapper wrapper-content project-manager">
-		                    <h4>Guidelines</h4>
-		 
-		                   
-		                    <h5>IRBs</h5>
-		                    <ul class="list-unstyled project-files">
-		                         
-		 dd
-		                    </ul>
-		                    
-		                </div>
-		            </div> -->
+ 
 	</div>
 
 

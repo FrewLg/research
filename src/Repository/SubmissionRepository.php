@@ -22,23 +22,98 @@ class SubmissionRepository extends ServiceEntityRepository
     // /**
     //  * @return Submission[] Returns an array of Submission objects
     //  */
-  
-    public function getCount($filter=[])
-    {
-        $qb= $this->createQueryBuilder('s')->select("count(s.id)");
-        if(isset($filter["submisstion_type"] ) && sizeof($filter["submisstion_type"] )>0 )
-           $qb ->andWhere('s.submission_type in (:submission_type)')
-            ->setParameter('submission_type', $filter["submisstion_type"]);
-        if(isset($filter["author"] ) )
-           $qb ->andWhere('s.author = :author')
-            ->setParameter('author', $filter["author"]);
 
-          return  $qb->orderBy('s.id', 'ASC')
+    public function getCount($filter = [])
+    {
+        $qb = $this->createQueryBuilder('s')->select("count(s.id)");
+        if (isset($filter["submisstion_type"]) && sizeof($filter["submisstion_type"]) > 0)
+            $qb->andWhere('s.submission_type in (:submission_type)')
+                ->setParameter('submission_type', $filter["submisstion_type"]);
+        if (isset($filter["author"]))
+            $qb->andWhere('s.author = :author')
+                ->setParameter('author', $filter["author"]);
+
+        return  $qb->orderBy('s.id', 'ASC')
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
-    
+
+
+    // public function getSubmissions($status=null)
+    // {
+    //     $qb= $this->createQueryBuilder('s');
+    //     if(isset($status)){
+
+    //         $qb->leftJoin("App:Review","r","with","s.id=r.submission");
+    //         $qb->andWhere("r.remark= :remark")
+    //         ->setParameter("remark",$status);
+
+    //     }
+    //     $qb->groupBy("s.id")->andHaving("count(s)>1"); 
+    //       return  $qb->orderBy('s.id', 'ASC')
+    //         ->getQuery();
+
+    //     ;
+    // }
+    // sET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY','')); 
+    // select submission_id from review where remark in ('Accepted','Declined') group by submission_id having count(remark) >1; 
+
+    public function getSubmissions($filter=[])
+    {
+        $qb = $this->createQueryBuilder('s');
+        if (isset($filter['status']) and sizeof($filter['status']) > 0) {
+            $qb->leftJoin("App:Review", "r", "with", "s.id=r.submission");
+
+
+            $qb->andWhere("r.remark in  (:remark)")
+                ->setParameter("remark", $filter['status']);
+            if (isset($filter['status']) and sizeof($filter['status']) == 1) {
+
+
+                $qb->groupBy("s.id")
+                    ->andHaving("count(r.remark)>1");
+            } else
+                $qb->groupBy("s.id")->andHaving("count(distinct(r.remark))>1");
+        }
+        if (isset($filter['submission_type'])) {
+            $qb->andWhere("s.submission_type =  :submission_type")
+                ->setParameter("submission_type", $filter['submission_type']);
+        }
+        if (isset($filter['complete'])) {
+            $qb->andWhere("s.complete =  :complete")
+                ->setParameter("complete", $filter['complete']);
+        }
+        if (isset($filter['callForProposal'])) {
+            $qb->andWhere("s.callForProposal =  :callForProposal")
+                ->setParameter("callForProposal", $filter['callForProposal']);
+        }
+
+        //    dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());
+        return  $qb->orderBy('s.id', 'ASC')
+            ->getQuery();
+    }
+
+
+
+
+
+
+
+    public function getOneofItIsAccepted($status = null)
+    {
+        $qb = $this->createQueryBuilder('s');
+        if (isset($status)) {
+
+            $qb->leftJoin("App:Review", "r", "with", "s.id=r.submission");
+            $qb->andWhere("r.remark >3");
+        }
+        $qb->groupBy("s.id")->andHaving("count(s)>=1");
+
+        // dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());
+        return  $qb->orderBy('s.id', 'ASC')
+            ->getQuery();;
+    }
+
 
     // public function findBySubmissionByUser($value): ?Submission
     // {
@@ -68,23 +143,23 @@ class SubmissionRepository extends ServiceEntityRepository
     //             ->getResult()
     //         ;
     //     }
-        
-// public function findBySStatus(): ?Submission
-//     {
-//     $em = $this->getDoctrine()->getManager();
-//     $query = $em->createQuery(
-//         'SELECT u.email , p.id,    u.username,  p.complete, p.title  , ui.first_name
-// FROM App:CoAuthor s
-// JOIN s.researcher u
-// JOIN u.userInfo ui
-// JOIN s.submission p
-// WHERE  
-// p.complete is NULL');
-//         // ->setParameter('submission', $submission) 
-//         // ->setParameter('cstatus', 'completed' );
-//     $recepients = $query->getResult();
- 
-//         return   $recepients 
-//         ;
-//     }   
+
+    // public function findBySStatus(): ?Submission
+    //     {
+    //     $em = $this->getDoctrine()->getManager();
+    //     $query = $em->createQuery(
+    //         'SELECT u.email , p.id,    u.username,  p.complete, p.title  , ui.first_name
+    // FROM App:CoAuthor s
+    // JOIN s.researcher u
+    // JOIN u.userInfo ui
+    // JOIN s.submission p
+    // WHERE  
+    // p.complete is NULL');
+    //         // ->setParameter('submission', $submission) 
+    //         // ->setParameter('cstatus', 'completed' );
+    //     $recepients = $query->getResult();
+
+    //         return   $recepients 
+    //         ;
+    //     }   
 }

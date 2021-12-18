@@ -16,12 +16,12 @@ class ReviewDecisionType extends AbstractType
     {
         $builder
         ->add('remark', ChoiceType::class, [
-            'placeholder' => 'Select Editorial decision',
+            'placeholder' => '--Select Editorial decision--',
             'choices' => [
-                'Declined' => 'Declined',
-                'Accepted with major revision' => 'Accepted with major revision',
-                'Accepted with minor revision' => 'Accepted with minor revision',
-                'Accepted' => 'Accepted',
+                'Accepted' => 4,
+                // 'Accepted with minor revision' =>3, 
+                // 'Accepted with major revision' => 2,
+                'Declined' => 1,
 
             ],
             'attr' => [
@@ -40,7 +40,7 @@ class ReviewDecisionType extends AbstractType
         ->add('attachment', FileType::class, [
             'label' => 'Reviewed document  file',
             'mapped' => false,
-            'required' => true,
+            'required' => false,
             'attr' => [
  
                 'class' => 'form-control',

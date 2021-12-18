@@ -115,16 +115,32 @@
 												{% else %}
 											{% endif %}
 											{{ user.userInfo.suffix   }}
-											({{ user.userInfo.educationLevel   }})
-											{{ user.userInfo.academicRank   }},
+										 {% if user.userInfo.educationLevel %}	( {{ user.userInfo.educationLevel }} )
+											{% endif %}
+											
+											
+										 
+
+{% if user.userInfo.academicRank %}	  {{ user.userInfo.academicRank }}  ,
+											{% endif %}
+
+ 
+
+
 											{% if user.userInfo.department  is defined %}
 												Department of
 
 												{{ user.userInfo.department   }}
 												{% else %}
 											{% endif %}
-											,
-											{{ user.userInfo.college  }}
+											 
+											
+ 
+
+{% if user.userInfo.college %}	at  {{ user.userInfo.college }}  
+											{% endif %}
+
+ 
 										</a>
 									</li>
 								</ul>
@@ -135,16 +151,18 @@
 								<div class="row">
 									<div class="col-auto text-end border-end">
 										<button type="button" class="btn btn-soft-primary btn-icon-circle btn-icon-circle-sm mb-2">
-											<i class="fab fa-facebook-f"></i>
+											<i class="fa fa-book"></i>
 										</button>
 										<p class="mb-0 fw-semibold">Publications</p>
-
 									</div>
 									<!--end col-->
 									<div class="col-auto">
 										<button type="button" class="btn btn-soft-info btn-icon-circle btn-icon-circle-sm mb-2">
-											<i class="fab fa-twitter"></i>
+											<i class="fa fa-book"></i>
 										</button>
+										<p class="mb-0 fw-semibold">Trainings</p>
+ 
+											 
 									</div>
 									<!--end col-->
 								</div>

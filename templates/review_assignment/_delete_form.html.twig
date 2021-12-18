@@ -1,18 +1,31 @@
-{# <form method="post" action="{{ path('unassign', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign {{review_assignment.reviewer }} from reviewers list?');"> #}
-<form method="post" action="{{ path('unassign', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+ 
+
+
+ 	{% if review_assignment.closed %}
+
+
+
+									<a href="{{ path('reassign', {'id': review_assignment.id}) }}"  class='btn btn-warning btn-xs ' > Allow updating</a>
+											
+											{% else %}
+                    <a href="{{ path('updatedate', {'id': review_assignment.id}) }}" class="btn btn-purple btn-xs" >Change date</a>
+
+							<form method="post" action="{{ path('unassign', {'id': review_assignment.id}) }}"
+ onsubmit="return confirm('Are you sure you want to delete this item?');">
 
 	<input type="hidden" name="_method" value="DELETE">
 	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
-	<button class="btn btn-warning btn-xs">
+                    <a href="{{ path('review_assignment_edit', {'id': review_assignment.id}) }}" class="btn btn-info btn-xs" >Edit</a>
+
+	<button class="btn btn-danger btn-xs">
 		Unassign
 	</button>
-
-	 
+                    
 
 
 </form>
-{# <form method="post" action="{{ path('unassign', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');"> #}
-                    <a href="{{ path('review_assignment_edit', {'id': review_assignment.id}) }}" class="btn btn-info btn-xs" >Edit</a>
+												{% endif %}
 
-<a href="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
-	Delete</a>
+ <button type="button" class="btn btn-outline-primary btn-xs" data-bs-toggle="modal" data-bs-target="#showDetailsModal{{review_assignment.id}}">
+									Details
+								</button>

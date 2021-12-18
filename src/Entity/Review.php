@@ -46,6 +46,13 @@ class Review
      */
     private $createdAt;
 
+
+    /**
+     * @ORM\Column(type="datetime" , nullable=true)
+     */
+    private $allowed_at;
+
+
     /**
      * @ORM\Column(type="string", length=255 , nullable=true)
      */
@@ -68,7 +75,11 @@ class Review
      */
     private $allow_to_view;
 
-    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $from_director;
+
 
     public function getId(): ?int
     {
@@ -150,6 +161,20 @@ class Review
         return $this;
     }
 
+    public function getAllowedAt(): ?\DateTimeInterface
+    {
+        return $this->allowed_at;
+    }
+
+    public function setAllowedAt(\DateTimeInterface $allowed_at): self
+    {
+        $this->allowed_at = $allowed_at;
+
+        return $this;
+    }
+
+    
+
     public function getRemark(): ?string
     {
         return $this->remark;
@@ -186,6 +211,17 @@ class Review
         return $this;
     }
  
+    public function getFromDirector(): ?bool
+    {
+        return $this->from_director;
+    }
 
+    public function setFromDirector(?bool $from_director): self
+    {
+        $this->from_director = $from_director;
+
+        return $this;
+    }
+    
 
 }

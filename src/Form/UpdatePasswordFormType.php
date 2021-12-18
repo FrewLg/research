@@ -17,18 +17,18 @@ class UpdatePasswordFormType extends AbstractType
     {
         $builder
         
-        ->add('password', PasswordType::class, [
-            'label'=>"Old password",
-            'attr' => ['autocomplete' => 'new-password'],
+        // ->add('password', PasswordType::class, [
+        //     'label'=>"Old password",
+        //     'attr' => ['autocomplete' => 'new-password'],
             
-            'mapped' => false,
+        //     'mapped' => false,
              
-            'required' => true,  
-        ])
+        //     'required' => true,  
+        // ])
         
         ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-            // 'attr' => ['autocomplete' => 'new-password'],
+            'attr' => ['autocomplete' => 'new-password'],
 
                 'first_options' => [
                     'constraints' => [

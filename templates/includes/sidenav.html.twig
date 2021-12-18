@@ -27,9 +27,14 @@
 					<ul class="nav-second-level" aria-expanded="false">
 						{% if is_granted("ROLE_ADMIN") %}
 							<li class="nav-item">
+								<a class="nav-link" href="{{ path('dashboard') }}">
+									<i class="ti-control-record"></i>Dashboard</a>
+							</li>
+							<li class="nav-item">
 								<a class="nav-link" href="{{ path('submission_index') }}">
 									<i class="ti-control-record"></i>Submissions</a>
 							</li>
+							
 							{% endif%}
 
 							<li class="nav-item">
@@ -72,13 +77,9 @@
 							</span>
 						</a>
 						<ul class="nav-second-level" aria-expanded="false">
+							
 							<li class="nav-item">
-								<a class="nav-link" href="{{ path('announcement_new') }}">
-									<i class="ti-control-record"></i>
-									Announcement</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('collcall') }}">
+								<a class="nav-link" href="{{ path('all_calls') }}">
 									<i class="ti-control-record"></i>
 									Call for proposals
 
@@ -153,7 +154,7 @@
 						</a>
 						<ul class="nav-second-level" aria-expanded="false">
 							<li class="nav-item">
-								<a class="nav-link" href="{{ path('college_index') }}">
+								<a class="nav-link" href="{{ path('college_details') }}">
 									<i class="ti-control-record"></i>Colleges
 								</a>
 							</li>
@@ -171,6 +172,45 @@
 						</ul>
 					</li>
 				{% endif %}
+				
+
+				{% if is_granted("ROLE_ADMIN") %}
+
+					<li>
+						<a
+							href="javascript: void(0);">
+							<!-- <i data-feather="home" class="align-self-center menu-icon"></i> -->
+							<i class="fas fa-align-justify align-self-center menu-icon"></i>
+							<span>Services</span>
+							<span class="menu-arrow">
+								<i class="mdi mdi-chevron-right"></i>
+							</span>
+						</a>
+						<ul class="nav-second-level" aria-expanded="false">
+						
+						<li class="nav-item">
+								<a class="nav-link" href="{{ path('announcement_new') }}">
+									<i class="ti-control-record"></i>
+									Announcement</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('user_feedback_index') }}">
+									<i class="ti-control-record"></i>User feedback
+								</a>
+							</li>
+						 
+
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('user_feedback_index') }}">
+									<i class="ti-control-record"></i>IRB Requests
+								</a>
+							</li>
+						</ul>
+					</li>
+				{% endif %}
+				 
+				
 				{% if is_granted("assn_clg_cntr") %}
 
 					<li>
@@ -285,7 +325,7 @@
 							</li>
 						</ul>
 					</li>
-	{% endif %}
+				{% endif %}
 
 				</ul>
 

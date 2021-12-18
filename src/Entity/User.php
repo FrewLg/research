@@ -58,10 +58,9 @@ class User implements UserInterface
     private $proposals;
 
     /**
-     * @ORM\OneToMany(targetEntity=Submission::class, mappedBy="co_author")
+     * @ORM\OneToMany(targetEntity=Submission::class, mappedBy="author")
      */
-    private $submissions;
-
+    private $submissions; 
   
  /**
      * @ORM\ManyToOne(targetEntity=Review::class, inversedBy="reviewed_by")
@@ -164,7 +163,12 @@ class User implements UserInterface
      */
     private $trainingParticipants;
 
-    
+ 
+      /**
+     * @ORM\OneToMany(targetEntity=DirectorateOfficeUser::class, mappedBy="directorate" , orphanRemoval=true,cascade={"persist"})
+     */
+    private $directorateOfficeUsers;
+
 
      
     public function __construct()
@@ -177,7 +181,7 @@ class User implements UserInterface
         $this->institutionalReviewersBoards = new ArrayCollection();
         $this->reviewAssignments = new ArrayCollection();
         $this->i_r_b_member = new ArrayCollection();
-      
+        $this->directorateOfficeUsers = new ArrayCollection();
         $this->permissions = new ArrayCollection();
         $this->editorialDecisions = new ArrayCollection();
         $this->callForProposals = new ArrayCollection();
@@ -188,6 +192,36 @@ class User implements UserInterface
         $this->trainingParticipants = new ArrayCollection();
      }
   
+
+      /**
+     * @return Collection|Review[]
+     */
+    public function getDirectorateOfficeUsers(): Collection
+    {
+        return $this->directorateOfficeUsers;
+    }
+
+    public function addDirectorateOfficeUser(DirectorateOfficeUser $directorateOfficeUser): self
+    {
+        if (!$this->directorateOfficeUsers->contains($directorateOfficeUser)) {
+            $this->directorateOfficeUsers[] = $directorateOfficeUser;
+            $directorateOfficeUser->setDirectorate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDirectorateOfficeUser(DirectorateOfficeUser $directorateOfficeUser): self
+    {
+        if ($this->directorateOfficeUsers->removeElement($directorateOfficeUser)) {
+            // set the owning side to null (unless already changed)
+            if ($directorateOfficeUser->getDirectorate() === $this) {
+                $directorateOfficeUser->setDirectorate(null);
+            }
+        }
+
+        return $this;
+    }
 
     public function getLastLoginAgo()
     {

@@ -22,10 +22,13 @@ class ChangePasswordFormType extends AbstractType
                 'attr' => ['autocomplete' => 'new-password'], 
                 'required' => true,  
             ]) 
-            ->add('newpassword', RepeatedType::class, [
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
-                'options' => ['attr' => ['class' => 'password-field']],
+                'options' => ['attr' => ['class' => 'password-field',
+                'autocomplete' => 'new-password'
+                ]]   ,
+           
               
                 'mapped' => false,
                 'required' => true,

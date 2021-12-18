@@ -68,6 +68,15 @@ class ReviewAssignment
     private $Declined;
 
 
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reassigned;
+
+
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -179,6 +188,19 @@ class ReviewAssignment
     }
 
 
+    public function getReassigned(): ?string
+    {
+        return $this->reassigned;
+    }
+    public function setReassigned(?string $reassigned): self
+    {
+        $this->reassigned = $reassigned;
+
+        return $this;
+    }
+
+
+    
     public function getFileTobeReviewedeclined(): ?string
     {
         return $this->file_tobe_reviewed;

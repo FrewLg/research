@@ -57,8 +57,8 @@ class TrainingParticipantController extends AbstractController
             $userdetails->getLastName() == '' ||
             $userdetails->getCollege() == ''  
              ) {
-            $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("danger", "Please complete your profile first before you  register for participation  !");
+            
+            $this->addFlash("danger", "Please complete your profile first before you  register for participation  !");
 
             return $this->redirectToRoute('myprofile');
         }
@@ -67,8 +67,8 @@ class TrainingParticipantController extends AbstractController
 
         if($ifexists){
 
-            $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("warning", "You have already been registered! Thank you");
+            
+            $this->addFlash("warning", "You have already been registered! Thank you");
             return $this->redirectToRoute('homepage');
 
         }
@@ -76,8 +76,8 @@ class TrainingParticipantController extends AbstractController
         $p_i_college = $this->getUser()->getUserInfo()->getCollege();
 
         if (!$p_i_college == $callForTraining->getCollege()) {
-            $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("danger", "You are not allowed to apply from" . $p_i_college . " !");
+            
+            $this->addFlash("danger", "You are not allowed to apply from" . $p_i_college . " !");
 
             return $this->redirectToRoute('researchworks');
         }
@@ -89,8 +89,8 @@ class TrainingParticipantController extends AbstractController
         $entityManager->persist($trainingParticipant);
         $entityManager->flush(); 
             
-        $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("success", "You have been successfully registered for training. Thank You!");
+        
+            $this->addFlash("success", "You have been successfully registered for training. Thank You!");
  
             $applicantmessages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUCCESSFUL_TRAINING_PARTICIPATION']);
                 $applicantsubject = $applicantmessages->getSubject();
@@ -138,7 +138,7 @@ class TrainingParticipantController extends AbstractController
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         $pdfOptions->set('isRemoteEnabled', true);
-        $pdfOptions->set('tempDir', '/home/ghost/Desktop/pdf-export/tmp');
+        $pdfOptions->set('tempDir', '/tmp');
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
         $dompdf->set_option("isPhpEnabled", true);
@@ -163,8 +163,8 @@ class TrainingParticipantController extends AbstractController
         ob_end_clean();
         $filename = $submission->getParticipant();
 
-        $dompdf->stream($filename . "file.pdf", [
-            "Attachment" => false,
+        $dompdf->stream($filename . "- certificate.pdf", [
+            "Attachment" => true,
         ]);
     }
 
@@ -201,6 +201,8 @@ class TrainingParticipantController extends AbstractController
   
    public function attended(Request $request, CallForTraining $callForTraining )
    {
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
       $em = $this->getDoctrine()->getManager();     
       $defaultData= $em->getRepository('App:TrainingParticipant')->findBy(['training'=>$callForTraining]);  
                $form = $this->createFormBuilder($defaultData);
@@ -251,6 +253,8 @@ class TrainingParticipantController extends AbstractController
     #[Route('/{id}', name: 'training_participant_show', methods: ['GET'])]
     public function show(TrainingParticipant $trainingParticipant): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         return $this->render('training_participant/show.html.twig', [
             'training_participant' => $trainingParticipant,
         ]);
@@ -259,6 +263,8 @@ class TrainingParticipantController extends AbstractController
     #[Route('/{id}/edit', name: 'training_participant_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, TrainingParticipant $trainingParticipant, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(TrainingParticipantType::class, $trainingParticipant);
         $form->handleRequest($request);
 
@@ -277,6 +283,8 @@ class TrainingParticipantController extends AbstractController
     #[Route('/{id}', name: 'training_participant_delete', methods: ['POST'])]
     public function delete(Request $request, TrainingParticipant $trainingParticipant, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete'.$trainingParticipant->getId(), $request->request->get('_token'))) {
             $entityManager->remove($trainingParticipant);
             $entityManager->flush();

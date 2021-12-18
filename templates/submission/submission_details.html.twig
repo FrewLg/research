@@ -157,25 +157,7 @@
 													</div>
 												</div>
 
-
-												{# <div class="accordion-item">
-																																																																																																																																																																																																																																																																																																																																																													<h5 class="accordion-header m-0" id="BackgroundheadingTwo">
-																																																																																																																																																																																																																																																																																																																																																														<button class="accordion-button fw-semibold collapsed" 
-																																																																																																																																																																																																																																																																																																																																																														type="button" data-bs-toggle="collapse" 
-																																																																																																																																																																																																																																																																																																																																																														data-bs-target="#Background" aria-expanded="false" aria-controls="Background">
-																																																																																																																																																																																																																																																																																																																																																															Background And Rationale
-																																																																																																																																																																																																																																																																																																																																																														</button>
-																																																																																																																																																																																																																																																																																																																																																													</h5>
-																																																																																																																																																																																																																																																																																																																																																													<div id="Background" class="accordion-collapse collapse" aria-labelledby="BackgroundheadingTwo" data-bs-parent="#accordionExample" style="">
-																																																																																																																																																																																																																																																																																																																																																														<div class="accordion-body">
-																																																																																																																																																																																																																																																																																																																																																
-																																																																																																																																																																																																																																																																																																																																																															{{ submission.BackgroundAndRationale |raw}}
-																																																																																																																																																																																																																																																																																																																																																
-																																																																																																																																																																																																																																																																																																																																																														</div>
-																																																																																																																																																																																																																																																																																																																																																													</div>
-																																																																																																																																																																																																																																																																																																																																																												</div> #}
-
-												<div class="accordion-item">
+ 	<div class="accordion-item">
 													<h5 class="accordion-header m-0" id="Objectives">
 														<button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoo" aria-expanded="false" aria-controls="collapseTwoo">
 															Objectives
@@ -231,7 +213,11 @@
 													<div id="collepaselast" class="accordion-collapse collapse" aria-labelledby="headingLastTwo" data-bs-parent="#accordionExample" style="">
 														<div class="accordion-body">
 
-															{{  submission.actionplan |raw }}
+															<div class="table table-responsive">
+																{{  submission.actionplan |raw }}
+															</div>
+
+
 															<h5 class='text-'>Budget breakdown</h5>
 															<table class="table table-striped">
 																<thead>
@@ -437,7 +423,9 @@
 
 													</div>
 												</div>
+
 											</div>
+											
 										</div>
 
 									</div>
@@ -447,13 +435,13 @@
 
 										<h3>
 											<a href="#" class="text-navy">
-												Comments  and revisions  
+												Responses   and revisions
 											</a>
 										</h3>
 
 										{% for review in reviews %}
 
-											<table class="table shoping-cart-table">
+											<table class="table table-bordered table-striped">
 
 												<tbody>
 													<tr>
@@ -473,53 +461,93 @@
 															<div class="m-t-sm">
 
 																{% if review.attachment %}
-																	<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="font-16 m-0   btn btn-sm btn-soft-primary">
-																		Download review file
+																	<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="font-14 m-0   btn btn-xs btn-soft-primary">
+																			Evaluation Report  
 																		<i class="fa fa-download material-icons  "></i>
 																	</a>
-																{% else %}
-																	<span class="label label-danger">
-																		{% trans %}No attachement found{% endtrans %}
-																	</span>
+																 
 																{% endif %}
 																{% if review.EvaluationAttachment %}
-																	<a href="{{ asset('/files/proposals/review_files/'~ review.EvaluationAttachment ) }}" class="font-16 m-0   btn btn-sm btn-soft-primary">
-																		Download evaluation file
+																	<a href="{{ asset('/files/proposals/review_files/'~ review.EvaluationAttachment ) }}" class="font-14 m-0   btn btn-xs btn-soft-primary">
+																		 Grading report
 																		<i class="fa fa-download material-icons  "></i>
 																	</a>
-																{% else %}
-																	<span class="badge bg-danger">
-																		{% trans %} No evaluation file found{% endtrans %}
-																	</span>
+																  
 																{% endif %}
+
+																{% if review.fromDirector %}
+														<span class="badge badge-boxed  badge-outline-purple">
+{{ review.ReviewedBy.userInfo }}																		
+																		</span>
+															{% endif %}
+
 															</div>
 														</td>
 														<td width="65" nowrap="nowrap">
 															<h5 class='text-default'>
-																Review :
-																{{ loop.index }}
-															</h5>
-															 <h4 class='text-primary'>
-																 
-																{{ review.remark |raw}}
-															</h4>
- 
-															<hr>
-															{% if review.AllowToView=='' %}
+																{% if review.ReviewedBy.isReviewer %}
+ 																		
+																		<span class="badge badge-boxed  badge-outline-primary">
+																		External reviewer</span>
 
-																<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-primary" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
-																	Send   comment to PI</a>
+																	{% else %}
+																		<span class="text-success">
+																			
+																		</span>
+																		<span class="badge badge-boxed  badge-outline-success">
+																		Internal reviewer</span>
 
 
-															{% elseif review.AllowToView=='1'  %}
-																<a class="btn btn-success">
-																	Comment sent to PI</a>
-																{% else %}
-
+																	{% endif %}
+																	<br>
+																	{% if review.fromDirector %}
+														<span class="badge badge-boxed  badge-outline-info mt-2">
+																		Research Co-ordinator
+																		
+																		</span>
 															{% endif %}
 
-															<hr>
-															{# {{editorialDecisions.decision}} #}
+																</h5>
+																{# <h4 class='text-primary'> #}
+
+																	{# {{ review.remark |raw}} #}
+																	<b>
+																<h5>	{% if   review.remark==1 %}
+											<span class="text-danger">
+											Declined</span>
+
+											{% elseif   review.remark==2 %}
+											<span class="text-warning">
+											Accepted with major revision</span>
+											{% elseif   review.remark==3 %}
+	<span class="text-warning">
+	Accepted with minor revision </span>
+											{% elseif   review.remark==4 %}
+
+ 	<span class="text-success">
+	Accepted   </span>
+ {% endif   %} </h5>
+
+															</b>	{# </h4> #}
+
+																<hr>
+																{% if review.AllowToView=='' %}
+
+																	<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-soft-primary btn-xs  mt-1" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
+																		Send   comment to PI</a> 
+																{% elseif review.AllowToView=='1'  %}
+																   <span class="badge badge-boxed  badge-outline-success">
+																		Comment sent</span><br>
+																	<a href="{{ path('undo_allocomment', {'id': review.id}) }}" class="btn btn-soft-danger btn-xs  mt-1">
+																		Unsend comment from PI</a>
+																		
+																	{% else %}
+
+																{% endif %}
+
+																<hr>
+																{# {{editorialDecisions.decision}} #}
+															</td>
 														</td>
 													</tr>
 												</tbody>
@@ -539,14 +567,17 @@
 
 									</div>
 								</div>
+<br>
+											<br>
+											<br>
 							</div>
 							{# <div class="tab-pane" id="copyedit">
-																																																																																																																																																															{{ submission.abstract|raw }}
-																																																																																																																																																														</div>
-																																																																																																																																																														<div class="tab-pane" id="progress-report">
-																																																																																																																																																															{{ submission.title }}
-																																																																																																																																																														</div>
-																																																																																																																																																														<div class="tab-pane" id="terminal-report"></div> #}
+																																																																																																																																																																													{{ submission.abstract|raw }}
+																																																																																																																																																																												</div>
+																																																																																																																																																																												<div class="tab-pane" id="progress-report">
+																																																																																																																																																																													{{ submission.title }}
+																																																																																																																																																																												</div>
+																																																																																																																																																																												<div class="tab-pane" id="terminal-report"></div> #}
 						</div>
 					</div>
 
@@ -559,14 +590,8 @@
 			<div class="card-body">
 				<div class="float-end">
 					<div
-						class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="##" role="button" aria-haspopup="false" aria-expanded="false">
-																																																																																																											<i class="las la-ellipsis-v font-24 text-muted"></i>
-																																																																																																											</a>
-																																																																																																											<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
-																																																																																																											<a class="dropdown-item" href="##">Open Project</a>
-																																																																																																											<a class="dropdown-item" href="##">Edit Card</a>
-																																																																																																											<a class="dropdown-item" href="##">Delete</a>
-																																																																																																											</div> #}
+						class="dropdown d-inline-block">
+						
 					</div>
 				</div>
 				<div class="media align-items-center">
@@ -643,8 +668,11 @@
 
 				</div>
 				<hr class="hr-dashed my-4"></div><!--end card-body--></div><!--end card-->{# </div> #}<div class="card">
-			<div class="card-body ">
-				<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
+				<div class="card-header ">
+							<h4 class="font-18 m-0 fw-bold">Attachments</h4> 
+
+		</div>
+			<div class="card-body "> 
 				{% for submissionattachment in submission.submissionAttachements %}
 					<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
 						{{submissionattachment.name}}
@@ -657,8 +685,12 @@
 			</div>
 		</div>
 		<div class="card">
+			<div class="card-header ">
+							<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4> 
+
+		</div>
+
 			<div class="card-body ">
-				<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
 
 
 				{% for member in submission.coAuthors %}
@@ -678,48 +710,102 @@
 			</div>
 		</div>
 		<div class="card">
+			<div class="card-header ">
+			<h5 class="font-18 m-0 fw-bold">Reviewers ({{review_assignments|length}})
+					<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
+					Add  Reviewer</a>
+				</h5> 
+		</div>
+
 			<div class="card-body ">
-				<h5 class="font-18 m-0 fw-bold">Reviewers ({{review_assignments|length}})
-					<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>Assign New  Reviewer</a>
-				</h5><hr>
+				
 
 				{% for review_assignment in review_assignments %}
 
 					<div class="card">
 						<div class="card-body ">
+						 <div class="media align-items-center">
 
-							<h4 class="m-0 fw-semibold text-dark font-16 mt-2">
-								{{ loop.index }}.
-								<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0     mb-1 align-right'>{{ review_assignment.reviewer }}
+					{% if review_assignment.reviewer.userInfo and review_assignment.reviewer.userInfo.image %}
+
+<img src="{{ asset('files/profile_pictures/'~review_assignment.reviewer.userInfo.image ) }}" alt="" class="rounded-circle thumb-xs">
+					{% else %}
+
+						<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle thumb-xs"> 
+					{% endif %} 
+					<div class="media-body ms-3 align-self-center">
+						<h4 class="team-leader m-0"> 
+						
+						<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0
+																	  mb-1 align-right'>{{ review_assignment.reviewer }}
+
 								</a>
+								</h4>
+						<p class="text-muted font-12 mb-0"> 
+						{% if review_assignment.reviewer.isReviewer  %}
+													<span class="text-soft-primary">External 
+													</span>
 
-							</h4>
-							<br>
+												{% else %}
+													<span class="text-soft-success">Internal
+
+														 
+													</span>
+												{% endif %}
+						</p>
+					</div>
+				</div>
+
+					 
+						<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-dark rounded-circle font-10 font-weight-normal">
+											 {{loop.index}}
+										</span>
+									</a>
+						 
+								{% if review_assignment.reassigned %}
+
+									<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+											Re
+										</span>
+									</a>
+								{% endif %}
+							 
+							 
 							<p class="text-muted  mb-0 font-13">
-								<span class="text-dark">
-									Invitation Sent At:
+								<span class="text-dark text-muted">
+									Invitation Sent :
 									{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
 								</span>
 								<br>
-								<span class="text-dark">
+								<span class="text-dark text-muted">
+									Invitaion duedate:
+									{{ review_assignment.InvitationDueDate ? review_assignment.InvitationDueDate|date('Y-m-d') : '' }}
+								</span>
+								<br>
+								<span class="text-dark text-muted">
 									Review duedate:
 									{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
 								</span>
 								<br>
-								<span class="text-dark">
-									Review Invitaion  response:
+								<span class="text-dark text-muted">
+									Invitaion  response:
 									{% if  review_assignment.Declined %}
-										<span class="text-danger">
+										<span class="text-danger ">
 											Declined</span>
-									{% elseif  review_assignment.IsAccepted %}
-
-										<span class="text-success">
-											Accepted</span>
 									{% elseif  review_assignment.Closed %}
 
 										<span class="text-primary">
 											Closed</span>
+									{% elseif  review_assignment.IsAccepted %}
 
+										<span class="text-info">
+											Reviewing</span>
+									{% elseif  review_assignment.InactiveAssignment == 1 %}
+										<span class="badge bg-danger">Inactive
+										</span>
+										<br>
 
 									{% else   %}
 
@@ -728,13 +814,42 @@
 
 
 									{% endif   %}
-
+ 
 									{% for review in review_assignment.reviews %}
-										<h4>
-											{{    review.remark }}</h4>
-										{{review.AllowToView}}
+<hr>
+								 <h5  >  
+								  Decision:
+											 
+											{% if   review.remark==1 %}
+											<span class="text-danger">
+											Declined</span>
+
+											{% elseif   review.remark==2 %}
+											<span class="text-warning">
+											Accepted with major revision</span>
+											{% elseif   review.remark==3 %}
+	<span class="text-warning">
+	Accepted with minor revision </span>
+											{% elseif   review.remark==4 %}
+
+ 	<span class="text-success">
+	Accepted   </span>
+
+
+										
+
+									{% endif   %}
+
+											</h5>
+											{% if  review.AllowToView  %}
+
+										<small class="text-info">
+											Comment sent</small>
+
+									{% endif   %}
 
 									{% endfor %}
+<hr>
 
 
 								</span>
@@ -749,21 +864,43 @@
 
 
 											{# {{ include('review_assignment/_delete_form.html.twig') }} #}
-											<form method="post" action="{{ path('review_assignment_delete', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
+											<form method="post" action="{{ path('unassign', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
 												<input type="hidden" name="_method" value="DELETE">
 												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
 
-												{% if review_assignment.ExternalreviewerEmail  %}
-													<span class=" btn btn-sm btn-soft-primary">External reviewer</span>
+												{% if review_assignment.reviewer.isReviewer  %}
+													<span class=" btn btn-xs btn-soft-primary">External
+
+
+														<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+																+
+																{{review_assignment.reviewer.reviewAssignments|length}}
+															</span>
+														</a>
+													</span>
 												{% else %}
-													<span class="btn btn-sm btn-soft-success">Internal reviewer</span>
+													<span class="btn btn-xs btn-soft-success">Internal
+
+														<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+																+
+																{{review_assignment.reviewer.reviewAssignments|length}}
+															</span>
+														</a>
+													</span>
 												{% endif %}
 
-												<button class="btn btn-sm btn-soft-danger">
-													<b>
-														Unassign
-													</b>
-												</button>
+
+												<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-sm btn-soft-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
+													Unassign</a>
+
+												{% if review_assignment.closed %}
+
+
+													<a href="{{ path('reassign', {'id': review_assignment.id}) }}" class='btn btn-sm btn-soft-primary btn-sm '>
+														Re-assign</a>
+												{% endif %}
 
 
 											</form>

@@ -1,11 +1,11 @@
 <?php
 namespace App\Filter; 
- use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;
  class FilterFunctions
 {
     /**
      * Return filtered data.
-     *
+     * 
      */
     public function filter(Request $request,$formFilter, $em, $lexikFormFilter, $selectedEntity)
     {

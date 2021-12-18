@@ -42,14 +42,14 @@
 		</div>
 	</div>
 
-{#  
-	<div class="col-md-2">
-		<div class="form-group select-wizard">
-		Upload approval of your clearance<br>
-			{{form_widget(researches.imageFile )}}
-
-		</div>
-	</div> #}
+	{#  
+		<div class="col-md-2">
+			<div class="form-group select-wizard">
+			Upload approval of your clearance<br>
+				{{form_widget(researches.imageFile )}}
+	
+			</div>
+		</div> #}
 
 
 	<div class="col-md-1">
@@ -83,7 +83,7 @@
 										{% else %}
 											<img src="{{ asset('/img/defaultuser.png') }}" class="rounded-circle circle-border  " alt="profile" style="width:110px; height:110px;">
 										{% endif %}
-										 
+
 									</div>
 									<div class="dastone-profile_user-detail">
 										<h5 class="dastone-user-name">{{ user}}</h5>
@@ -93,21 +93,24 @@
 												{{ userInfo.affiliation }}
 												{% else %}
 											{% endif %}
-										
 
-{{ user.userInfo.suffix   }}
- ({{ user.userInfo.educationLevel   }})
-{{ user.userInfo.academicRank   }}, 
- {% if user.userInfo.department  is defined %}
-Department of 
 
-{{ user.userInfo.department   }}
- {% else %}
-                                                                                        {% endif %}
-, 
-{{ user.userInfo.college  }}
+											{{ user.userInfo.suffix   }}
+										 
+											{% if user.userInfo.educationLevel %}	( {{ user.userInfo.educationLevel }} )
+											{% endif %}
+											
+											{{ user.userInfo.academicRank   }},
+											{% if user.userInfo.department  is defined %}
+												Department of
 
-                                            
+												{{ user.userInfo.department   }}
+												{% else %}
+											{% endif %}
+											,
+											{{ user.userInfo.college  }}
+
+
 										</p>
 									</div>
 								</div>
@@ -126,28 +129,42 @@ Department of
 									<li class="mt-2">
 										<i class="ti ti-email text-secondary font-16 align-middle me-2"></i>
 										<b>
-											Email </b> : {{ user.email }}</li>
+											Email
+										</b>
+										:
+										{{ user.email }}</li>
 
-                                            <li class="mt-2"> 
+									<li class="mt-2">
 										<i class="ti ti-user text-secondary font-16 align-middle me-2"></i>
-                                      <b>   Gender:</b>   {{ user.userInfo.gender }}   
-										
-                                        </li>
+										<b>
+											Gender:</b>
+										{{ user.userInfo.gender }}
+
+									</li>
 									<li class="mt-2">
 										<i class="ti ti-home text-secondary font-16 align-middle me-2"></i>
 										<b>
-											Affiliation: 
+											Affiliation:
 
 										</b>
-                                       ( 
-                                            {{ user.userInfo.educationLevel }} ) 
-                                           
-                                         {{  user.userInfo.academicRank }},  
-                                            {{ user.userInfo.department}} at 
+									{% if user.userInfo.educationLevel %}	( {{ user.userInfo.educationLevel }} )
+											{% endif %}
 
-                                            {{ user.userInfo.college }} 
+{% if user.userInfo.academicRank %}	  {{ user.userInfo.academicRank }}  ,
+											{% endif %}
 
-										 
+ 
+											{% if user.userInfo.department  is defined %}
+												Department of
+
+												{{ user.userInfo.department   }}
+												{% else %}
+											{% endif %}
+											  
+
+{% if user.userInfo.college %}	at  {{ user.userInfo.college }}  
+											{% endif %}
+
 										<a href="" class="font-14 text-primary">
 											{% if userInfo.affiliation is defined %}
 
@@ -167,19 +184,15 @@ Department of
 											<i class="fa fa-book"></i>
 										</button>
 										<p class="mb-0 fw-semibold">Publications</p>
-										{# <h4 class="m-0 fw-bold">25k
-																																																																																	<span class="text-muted font-12 fw-normal">Proceedings</span>
-																																																																																</h4> #}
 									</div>
 									<!--end col-->
 									<div class="col-auto">
 										<button type="button" class="btn btn-soft-info btn-icon-circle btn-icon-circle-sm mb-2">
-											<i class="fab fa-twitter"></i>
+											<i class="fa fa-book"></i>
 										</button>
-										{# <p class="mb-0 fw-semibold">Publications</p>
-																																																																																<h4 class="m-0 fw-bold">58k
-																																																																																	<span class="text-muted font-12 fw-normal">Proceedings</span>
-																																																																																</h4> #}
+										<p class="mb-0 fw-semibold">Trainings</p>
+ 
+											 
 									</div>
 									<!--end col-->
 								</div>
@@ -206,8 +219,8 @@ Department of
 				<a class="nav-link" id="Profile_Post_tab" data-bs-toggle="pill" href="#Profile_Post">Coferences</a>
 			</li>
 			{# <li class="nav-item">
-																									<a class="nav-link" id="portfolio_detail_tab" data-bs-toggle="pill" href="#Profile_Portfolio">Project Membership</a>
-																								</li> #}
+																												<a class="nav-link" id="portfolio_detail_tab" data-bs-toggle="pill" href="#Profile_Portfolio">Project Membership</a>
+																											</li> #}
 			<li class="nav-item">
 				<a class="nav-link active" id="settings_detail_tab" data-bs-toggle="pill" href="#About">About</a>
 			</li>
@@ -217,8 +230,9 @@ Department of
 		<div class="col-12">
 			<div class="tab-content" id="pills-tabContent">
 				<div class="tab-pane fade " id="Profile_Project" role="tabpanel" aria-labelledby="Profile_Project_tab">
-					 
-						<div class="row"> <div class="col-3">
+
+					<div class="row">
+						<div class="col-3">
 							<div class="card">
 								<div class="card-body "></div>
 								<!--end card-body-->
@@ -259,13 +273,13 @@ Department of
 								</div>
 								<!--end card-header-->
 							{# <div class="card-body">
- </div> #}
+							 </div> #}
 								<!--end card-body-->
 							</div>
 
 							{# <div class="card">
-	 <!--end card-body-->
-																																																								</div> #}
+								 <!--end card-body-->
+																																																															</div> #}
 							<!--end card-->
 						</div>
 						<!--end col-->
@@ -275,9 +289,9 @@ Department of
 				<div class="tab-pane fade" id="Profile_Portfolio" role="tabpanel" aria-labelledby="portfolio_detail_tab">
 					<div class="row">
 						<div class="col-md-6">{# <div class="card">
-																																																									<div class="card-body">
-																																																										<div class="ribbon2 rib2-primary">
-			 </div> #}
+																																																																<div class="card-body">
+																																																																	<div class="ribbon2 rib2-primary">
+										 </div> #}
 							<!--end card-->
 						</div>
 						<!--end col-->
@@ -308,42 +322,42 @@ Department of
 									<div class="row">
 										<div class="col-sm-12">
 
- 
 
-                                    <table class="table table-bordered">
-        <tbody>
-           
-            <tr>
-                <th>Researcher:</th>
-                <td> {{ user.userInfo}} </td>
-            </tr>
+											<table class="table table-bordered">
+												<tbody>
 
-            <tr>
-                <th>College</th>
-                <td>{{ user.userInfo.college }}</td>
-            </tr>
-            <tr>
-                <th>Department</th>
-                <td>{{ user.userInfo.department }}</td>
-            </tr>
-            <tr>
-                <th>Alternative Email</th>
-                <td>{{ user.userInfo.alternativeEmail }}</td>
-            </tr>
-            <tr>
-                <th>Academic Rank</th>
-                <td>{{ user.userInfo.academicRank }}</td>
-            </tr>
-            <tr>
-                <th>Education Level</th>
-                <td>{{ user.userInfo.educationLevel }}</td>
-            </tr>
-           
-            
-        </tbody>
-    </table>
-    	 
-										 
+													<tr>
+														<th>Researcher:</th>
+														<td>
+															{{ user.userInfo}}
+														</td>
+													</tr>
+
+													<tr>
+														<th>College</th>
+														<td>{{ user.userInfo.college }}</td>
+													</tr>
+													<tr>
+														<th>Department</th>
+														<td>{{ user.userInfo.department }}</td>
+													</tr>
+													<tr>
+														<th>Alternative Email</th>
+														<td>{{ user.userInfo.alternativeEmail }}</td>
+													</tr>
+													<tr>
+														<th>Academic Rank</th>
+														<td>{{ user.userInfo.academicRank }}</td>
+													</tr>
+													<tr>
+														<th>Education Level</th>
+														<td>{{ user.userInfo.educationLevel }}</td>
+													</tr>
+
+
+												</tbody>
+											</table>
+
 
 										</div>
 									</div>
@@ -351,10 +365,11 @@ Department of
 
 								</div>
 							</div>
-					 
 
-					</div> </div></div></div> 
-		 
+
+						</div>
+					</div>
+				</div>
+			</div>
+
 		{% endblock %}
-
- 

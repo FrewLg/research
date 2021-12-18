@@ -32,6 +32,7 @@ use App\Entity\InstitutionalReviewersBoard;
 use App\Entity\UserInfo;
 use App\Helper\ReviewHelper;
 use DateTime;
+use Knp\Component\Pager\PaginatorInterface;
 use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
@@ -56,7 +57,7 @@ class ReviewAssignmentController extends AbstractController
     MailerInterface $mailer,  ReviewAssignmentRepository $reviewAssignmentRepository): Response
     {
 
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
 
         if($submission->getComplete()==''){
          
@@ -102,7 +103,7 @@ class ReviewAssignmentController extends AbstractController
 //  $submission=$entityManager->getRepository(Submission::class)->findBy(['id'=>$submission->getId()]);
     
  ///// check if the submission is completed or not 
-   	$allreviewersfrom_i_r_b =  array_reverse($reviewAssignmentRepository->findBy(['submission' => $submission] ));
+   	$allreviewersfrom_i_r_b =  $reviewAssignmentRepository->findBy(['submission' => $submission],["id"=>"DESC"] );
         $reviewAssignment = new ReviewAssignment();
         $reviewAssignment->setStatus(1);
         $reviewAssignment->setSubmission($submission);
@@ -325,42 +326,181 @@ else{
                         return $this->redirectToRoute('review_assignment_new', array('id'=>$submission->getId()));
          
             }
+            $reviewers  = $entityManager->getRepository(User::class)->findAll();
+
         ////////////////External reviewer
         return $this->render('review_assignment/new.html.twig', [
             'review_assignment' => $reviewAssignment,
             'submission' => $submission,
+            'reviewers' => $reviewers,
             'review_assignments'=>$allreviewersfrom_i_r_b,
             'form' => $form->createView(),
+
             'externalreviewerform'=>$externalreviewerform->createView(),
         ]);
     }
      
  
 
+
+    /**
+     * @Route("/all", name="allreviewers", methods={"GET","POST"})
+     */
+    public function allreviewers(Request $request , PaginatorInterface $paginator ): Response
+    {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $reviewAssignment = $entityManager->getRepository(ReviewAssignment::class)->findAll();
+            ###########
+            $em = $this->getDoctrine()->getManager();
+            $query = $entityManager->createQuery(
+                'SELECT u.email , u.id, pi.last_name , pi.first_name, pi.midle_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+                FROM App:ReviewAssignment s 
+                JOIN s.reviewer u 
+                JOIN u.userInfo pi 
+                JOIN s.submission b 
+              where  u.is_reviewer  is NULL  GROUP BY u.id
+            ');
+                    $recepients = $query->getResult();
+                        
+                    #######################
+                    $query2 = $entityManager->createQuery(
+                        'SELECT u.email , u.id, pi.last_name ,pi.midle_name , pi.first_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+                        FROM App:ReviewAssignment s 
+                        JOIN s.reviewer u 
+                        JOIN u.userInfo pi 
+                        JOIN s.submission b 
+                      where  u.is_reviewer =:external   GROUP BY u.id
+                    ')
+                 ->setParameter('external', 1  ); 
+                            $recepientextrnal = $query2->getResult();
+                    ################################
+                    // $recepients = $querytwo->getScalarResult();
+                    $all=count($recepients)  ;
+                    $allext=count($recepientextrnal)  ;
+                    // dd(count($recepients) );
+
+                    $review_assignments = $paginator->paginate(
+                    // Doctrine Query, not results
+                    $recepients,
+                    // Define the page parameter
+                    $request->query->getInt('page', 1),
+                    // Items per page
+                    10
+                    );
+
+                    $recepientextrnalpa = $paginator->paginate(
+                        // Doctrine Query, not results
+                        $recepientextrnal,
+                        // Define the page parameter
+                        $request->query->getInt('page', 1),
+                        // Items per page
+                        10
+                        );
+
+                        $info="Internal reviewers";
+                         
+            ########################
+         return $this->render('review_assignment/show.html.twig', [
+            'review_assignments' => $review_assignments, 
+            'review_assignmentsext' => $recepientextrnalpa, 
+            'all' =>  $all,
+            'info' => $info, 
+
+            'allext' =>  $allext
+         ]);
+    } 
+
+
+
+
+
+    /**
+     * @Route("/external", name="alexternalreviewers", methods={"GET","POST"})
+     */
+    public function externalreviewers(Request $request , PaginatorInterface $paginator ): Response
+    {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+
+        $entityManager = $this->getDoctrine()->getManager();
+       
+                        
+                    #######################
+                    $query2 = $entityManager->createQuery(
+                        'SELECT  u.email , u.id, pi.last_name , pi.first_name, pi.midle_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
+                        FROM App:ReviewAssignment s 
+                        JOIN s.reviewer u 
+                        JOIN u.userInfo pi 
+                        JOIN s.submission b 
+                      where  u.is_reviewer =:external    GROUP BY u.id
+                    ')
+                 ->setParameter('external', 1  ); 
+                            $recepientextrnal = $query2->getResult();
+                    ################################
+                    
+                    $allext=count($recepientextrnal)  ;
+
+                    $recepientextrnalpa = $paginator->paginate(
+                        // Doctrine Query, not results
+                        $recepientextrnal,
+                        // Define the page parameter
+                        $request->query->getInt('page', 1),
+                        // Items per page
+                        10
+                        );
+
+                         $info="External reviewers";
+            ########################
+         return $this->render('review_assignment/show.html.twig', [
+             'review_assignments' => $recepientextrnalpa, 
+             'info' => $info, 
+             'all' =>  $allext
+            
+         ]);
+    } 
+
+
+
     /**
      * @Route("/{id}/edit", name="review_assignment_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, ReviewAssignment $reviewAssignment): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
 
         $entityManager = $this->getDoctrine()->getManager();
 #        $subs = $entityManager->getRepository(Submission::class)->findBy(['submission' => $workunit ] );
         $form = $this->createForm(ReviewAssignmentType::class, $reviewAssignment);     
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) { 
+
+            $file3external = $form->get('file_tobe_reviewed')->getData();
+
+            if ($file3external==''){
+                $this->addFlash(
+                    'danger',
+                    'Review file is not uploaded !'
+              ); 
+             }   else{
+              $file3external = $form->get('file_tobe_reviewed')->getData();
+                   $fileName3ext = md5(uniqid()).'.'.$file3external->guessExtension();
+               $file3external->move($this->getParameter('review_files'), $fileName3ext);
+                    $reviewAssignment->setFileTobeReviewed($fileName3ext);
+                  }
+
             $this->getDoctrine()->getManager()->flush();
-         #  return $this->redirectToRoute('submission_index');
+            
          $this->addFlash(
             'success',
-            'Update has been made to the submission successfully!'
-        ); 
+            'Update has been made to the asignment successfully!'  ); 
 
            return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
         }
          return $this->render('review_assignment/edit.html.twig', [
             'review_assignment' => $reviewAssignment,
-            'form' => $form->createView(),
+             'editform'=>$form->createView(),
+
         ]);
     } 
     /**
@@ -368,6 +508,8 @@ else{
      */
     public function unassign(Request $request, ReviewAssignment $reviewAssignment  ): Response
     {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+
         if ($this->isCsrfTokenValid('delete'.$reviewAssignment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             // $entityManager->remove($reviewAssignment);
@@ -387,16 +529,76 @@ else{
      */
     public function delete(ReviewAssignment $reviewAssignment  ): Response
     {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
  
              $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($reviewAssignment);
+            // $entityManager->remove($reviewAssignment);
+            $reviewAssignment->setInactiveAssignment(1);
+
             $entityManager->flush() ;
 
-         $flashbag = $this->get('session')->getFlashBag();
-        $flashbag->add("info", "Reviewer deleted successfully ! Thank you!");
+         
+        $this->addFlash("info", "Reviewer deleted successfully ! Thank you!");
       
         return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
     }
+
+        /**
+     * @Route("/{id}/updatedate", name="updatedate", methods={  "GET","POST"})
+     */
+    public function updatedate(Request $request, ReviewAssignment $reviewAssignment  ): Response
+    {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+ 
+       
+    $form = $this->createFormBuilder($reviewAssignment)
+    ->add('invitationDueDate', DateType::class, array(
+        'placeholder' => [
+'year' => 'Year', 'month' => 'Month', 'day' => 'Day', ],
+'label' => 'Invitation response duedate',
+     
+'widget' => 'single_text',
+      'format' => 'yyyy-MM-dd',
+         'attr' => array(
+            'min'=>(new DateTime('now'))->format('Y-m-d'),
+'max'=>$reviewAssignment->getSubmission()->getCallForProposal()->getReviewProcessEnd()->format('Y-m-d'),
+
+   'required' => true,
+'class'=>'form-control',
+)              
+  ))
+  ->add('duedate', DateType::class, array(
+    'placeholder' => [
+'year' => 'Year', 'month' => 'Month', 'day' => 'Day', ],
+    'label' => 'Review duedate',
+    'widget' => 'single_text',
+  'format' => 'yyyy-MM-dd',
+     'attr' => array(
+'min'=>(new DateTime('now'))->format('Y-m-d'), 
+'max'=>$reviewAssignment->getSubmission()->getCallForProposal()->getReviewProcessEnd()->format('Y-m-d'),
+'required' => true,
+'class'=>'form-control',
+)              
+))
+    ->getForm();
+$form->handleRequest($request);
+if ($form->isSubmitted() && $form->isValid()) {
+
+    $this->getDoctrine()->getManager()->flush();
+            
+    $this->addFlash(
+       'success',
+       'Update has been made to the asignment successfully!'  ); 
+
+      return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
+   }
+    return $this->render('review_assignment/edit.html.twig', [
+       'review_assignment' => $reviewAssignment,
+        'editform'=>$form->createView(),
+
+   ]);
+  
+}
 }
  
  

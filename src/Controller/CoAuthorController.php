@@ -90,8 +90,8 @@ class CoAuthorController extends AbstractController {
                 
                {
                 
-                $flashbag = $this->get('session')->getFlashBag();
-                $flashbag->add("danger", "Please complete your profile first before you confirm  your Co-Authorship invitation  !");
+                
+                $this->addFlash("danger", "Please complete your profile first before you confirm  your Co-Authorship invitation  !");
                
                return $this->redirectToRoute('researchworks');
                }
@@ -104,8 +104,8 @@ $lastdate = $em->getRepository('App:CallForProposal')->find($sub->getCallForProp
  $deadline = $lastdate->getDeadline();
   $today = new \DateTime('');
   if ($deadline <= $today) {
-$flashbag = $this->get('session')->getFlashBag();
-     $flashbag->add("danger", "Sorry! Call has expired!  Thank you!");
+
+     $this->addFlash("danger", "Sorry! Call has expired!  Thank you!");
     return $this->redirectToRoute('myreviews');
  }
 
@@ -117,8 +117,8 @@ $flashbag = $this->get('session')->getFlashBag();
         $pi = $sub->getAuthor();
         $entityManager->getRepository(CoAuthor::class)->find($sub);
         $this->getDoctrine()->getManager()->flush();
-        $flashbag = $this->get('session')->getFlashBag();
-        $flashbag->add("success", "You have accepted the membership invitation to this submission. Thank you  !");
+        
+        $this->addFlash("success", "You have accepted the membership invitation to this submission. Thank you  !");
         $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'INVOLVEMENT_ACCEPTED_SUCCESS']);
         $recepient =  $pi->getEmail(); 
         $name =  $pi->getUserInfo()->getSuffix() . " " . $pi ->getUserInfo()->getFirstName();
@@ -150,7 +150,7 @@ $flashbag = $this->get('session')->getFlashBag();
     
         } catch (TransportExceptionInterface $e) {$flashbag = $this->get
             ('session')->getFlashBag();
-            $flashbag->add("warning", "Sorry email could'nt be
+            $this->addFlash("warning", "Sorry email could'nt be
                  sent!" . $e . "!");return $this->redirectToRoute('submission_status', array
                 ('id' => $sub->getId()));
     
