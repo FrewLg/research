@@ -53,33 +53,32 @@ class AnnouncementController extends AbstractController
             $announcement->setPostedBy($user);
             $entityManager->persist($announcement);
             $entityManager->flush();
-            ///////////// Let us email subscribed users to announcements
-            $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
-            $subject = $messages->getSubject();
-            $body = $messages->getBody();
+ 	///////////// Let us email subscribed users to announcements
+            $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
+            $subject=$messages->getSubject();
+            $body=$messages->getBody();
             $em = $this->getDoctrine()->getManager();
             $query = $entityManager->createQuery(
-                'SELECT u.email , u.first_name, u.username
-	    FROM App:Subscription s
-	    JOIN s.user u
-	    WHERE s.announcement = :subscribed'
-            )
-                ->setParameter('subscribed', '1');
+            'SELECT u.email , ui.first_name, u.username
+            FROM App:Subscription s
+            JOIN s.user u
+            JOIN u.userInfo ui
+            WHERE s.announcement = :subscribed')
+            ->setParameter('subscribed', '1');
             $recepients = $query->getResult();
             ///////////////Email for those who subscribed to website/////////
             $em = $this->getDoctrine()->getManager();
             $qb = $em->createQueryBuilder();
-            $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'NEWS_NOTIFICATION']);
+            $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'NEWS_NOTIFICATION']);
             $fl = $em->getRepository('App:User')->findAll();
-            $subject = $messages->getSubject();
-            $body = $messages->getBody();
-            foreach ($recepients as $row) {
-                $theEmails[] =   $row['email'] . ' ';
-                $theNames[] =   $row['username'] . ' ';
-                $theFirstNames[] =   $row['first_name'] . ' ';
-            }
-
-
+            $subject=$messages->getSubject();
+            $body=$messages->getBody();
+            foreach ($recepients as $row ) {
+            $theEmails[]=   $row['email'].' ';
+            $theNames[]=   $row['username'].' ';
+            $theFirstNames[]=   $row['first_name'].' ';
+            }  
+ 
             ////////////
             $length = count($recepients);
             for ($i = 0; $i < $length; $i++) {
@@ -94,7 +93,7 @@ class AnnouncementController extends AbstractController
                     ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research  Office'))
                     //    ->to($theEmails)
                     ->to(new Address($theEmails[$i], $theFirstNames[$i]))
-                    ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
+                    // ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
                     ->subject($subject)
                     ->htmlTemplate('emails/news.html.twig')
                     ->context([
