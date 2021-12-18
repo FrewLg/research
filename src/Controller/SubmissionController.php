@@ -1243,7 +1243,7 @@ return $this->redirectToRoute('submission_index');
            $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
            $emailtwo = (new TemplatedEmail())
                ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
-               ->cc(new Address($applicantcc, $$$applicantname)) 
+               //->cc(new Address($applicantcc, $applicantname)) 
                ->to($applicant)
                ->subject($applicantsubject)
                ->htmlTemplate('emails/application_ack.html.twig')
