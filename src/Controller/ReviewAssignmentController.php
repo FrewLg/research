@@ -537,8 +537,8 @@ else{
 
             $entityManager->flush() ;
 
-         $flashbag = $this->get('session')->getFlashBag();
-        $flashbag->add("info", "Reviewer deleted successfully ! Thank you!");
+         
+        $this->addFlash("info", "Reviewer deleted successfully ! Thank you!");
       
         return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
     }

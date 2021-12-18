@@ -94,8 +94,8 @@ class CallForTrainingController extends AbstractController
             $entityManager->persist($callForTraining);
             $entityManager->flush();
 
-            $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("success", "Training has been created successfully !");
+            
+            $this->addFlash("success", "Training has been created successfully !");
 
 
             return $this->redirectToRoute('call_for_training_index', [], Response::HTTP_SEE_OTHER);

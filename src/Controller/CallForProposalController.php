@@ -7,6 +7,7 @@ use App\Entity\ResearchReportPhase;
 use App\Form\CallForProposalType;
 use App\Form\ResearchReportPhaseType;
 use App\Repository\CallForProposalRepository;
+use App\Utils\Constants;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Knp\Component\Pager\PaginatorInterface;
@@ -24,22 +25,18 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CallForProposalController extends AbstractController {
     /**
-     * @Route("/adminlist", name="all_calls", methods={"GET"})
+     * @Route("/list", name="all_calls", methods={"GET"})
      */
     public function adminlist(Request $request, CallForProposalRepository $callForProposalRepository, PaginatorInterface $paginator): Response {
 
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $em = $this->getDoctrine()->getManager();
-        $call_for_proposalRepository = array_reverse($em->getRepository(CallForProposal::class)->findAll());
+        $call_for_proposalRepository = $callForProposalRepository->getCalls(['college' => $this->getUser()->getUserInfo()->getCollege()]);
         $info = 'All';
 
-        // Paginate the results of the query
         $Allsubmissions = $paginator->paginate(
-            // Doctrine Query, not results
             $call_for_proposalRepository,
-            // Define the page parameter
             $request->query->getInt('page', 1),
-            // Items per page
             10
         );
         return $this->render('call_for_proposal/adminindex.html.twig', [
@@ -49,34 +46,14 @@ class CallForProposalController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/collcall", name="collcall", methods={"GET"})
-     */
-    public function collcall(Request $request, PaginatorInterface $paginator): Response {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $em = $this->getDoctrine()->getManager();
-        $call_for_proposalRepository = array_reverse($em->getRepository(CallForProposal::class)->findBy(['college' => $this->getUser()->getUserInfo()->getCollege()]));
-        // Paginate the results of the query
-        $Allsubmissions = $paginator->paginate(
-            // Doctrine Query, not results
-            $call_for_proposalRepository,
-            // Define the page parameter
-            $request->query->getInt('page', 1),
-            // Items per page
-            10
-        );
-        return $this->render('call_for_proposal/adminindex.html.twig', [
-            'call_for_proposals' => $Allsubmissions,
-
-        ]);
-    }
+   
     /**
      * @Route("/", name="call_for_proposal_all", methods={"GET"})
      */
     public function allcalss(CallForProposalRepository $callForProposalRepository, PaginatorInterface $paginator, Request $request): Response {
         $em = $this->getDoctrine()->getManager();
         //$callForProposals = array_reverse($em->getRepository(CallForProposal::class)->findAll());
-        $callForProposals = array_reverse($em->getRepository(CallForProposal::class)->findBy(array('approved' => 1)));
+        $callForProposals = $callForProposalRepository->getCalls(array('approved' => 1));
         // Paginate the results of the query
         $AllcallForProposal = $paginator->paginate(
             // Doctrine Query, not results
@@ -103,12 +80,12 @@ class CallForProposalController extends AbstractController {
                 'placeholder' => '-- Select Research Type--',
                 'choices' => [
                     'University Research' => [
-                        'Mega research' => 'Mega research',
-                        'Community service' => 'Community service',
-                        'Technology transfer' => 'Technology transfer',
-                        'Female granted' => 'Female granted',
-                        'Youth granted' => 'Youth granted',
-                        'PG Students' => 'PG Studens',
+                        'Mega research' => Constants::RESEARCH_TYPE_MEGA,
+                        'Community service' => Constants::RESEARCH_TYPE_COMMUNITY_SERVICE,
+                        'Technology transfer' => Constants::RESEARCH_TYPE_TECHNOLOGY_TRANSFER,
+                        'Female granted' => Constants::RESEARCH_TYPE_FEMALE_GRANT,
+                        'Youth granted' =>Constants::RESEARCH_TYPE_YOUTH_GRANT,
+                        'PG Students' => Constants::RESEARCH_TYPE_PG_STUDENT,
                     ],
                     // 'External research' => [
                     //     'Grant' => 'Grant',
@@ -264,11 +241,11 @@ class CallForProposalController extends AbstractController {
 //     $mailer->send($email);
 // }
 
-            $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("success", "Call for proposal created suucessflly and will be approved later!");
+            
+            $this->addFlash("success", "Call for proposal created suucessflly and will be approved later!");
 //////////////////////////// end emailing ///////////////////////
           
-// return $this->redirectToRoute('collcall' );
+// return $this->redirectToRoute('all_calls' );
 return $this->redirectToRoute('call__details', array('id' => $callForProposal->getid()));
         }
 
@@ -315,7 +292,7 @@ return $this->redirectToRoute('call__details', array('id' => $callForProposal->g
         // $callForProposal->setApprovedAt(new \Datetime());
         $this->getDoctrine()->getManager()->flush();
         // return $this->redirectToRoute('all_calls');
-return $this->redirectToRoute('collcall' );
+return $this->redirectToRoute('all_calls' );
 
     }
     /**
@@ -330,7 +307,7 @@ return $this->redirectToRoute('collcall' );
         $callForProposal->setApprovedBy($approver);
         $callForProposal->setApprovedAt(new \Datetime());
         $this->getDoctrine()->getManager()->flush();
-        return $this->redirectToRoute('collcall');
+        return $this->redirectToRoute('all_calls');
     }
 
     /**

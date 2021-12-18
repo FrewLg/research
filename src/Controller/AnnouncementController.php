@@ -104,8 +104,8 @@ $theEmail=$theEmails[$i];
     ;
     $mailer->send($email);
 } 
-  $flashbag = $this->get('session')->getFlashBag();
-         $flashbag->add("success", "Email sent!" );
+  
+         $this->addFlash("success", "Email sent!" );
 	//////////////////////////// end emailing ///////////////////////
         return $this->redirectToRoute('announcement_index');
         }

@@ -57,8 +57,8 @@ class TrainingParticipantController extends AbstractController
             $userdetails->getLastName() == '' ||
             $userdetails->getCollege() == ''  
              ) {
-            $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("danger", "Please complete your profile first before you  register for participation  !");
+            
+            $this->addFlash("danger", "Please complete your profile first before you  register for participation  !");
 
             return $this->redirectToRoute('myprofile');
         }
@@ -67,8 +67,8 @@ class TrainingParticipantController extends AbstractController
 
         if($ifexists){
 
-            $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("warning", "You have already been registered! Thank you");
+            
+            $this->addFlash("warning", "You have already been registered! Thank you");
             return $this->redirectToRoute('homepage');
 
         }
@@ -76,8 +76,8 @@ class TrainingParticipantController extends AbstractController
         $p_i_college = $this->getUser()->getUserInfo()->getCollege();
 
         if (!$p_i_college == $callForTraining->getCollege()) {
-            $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("danger", "You are not allowed to apply from" . $p_i_college . " !");
+            
+            $this->addFlash("danger", "You are not allowed to apply from" . $p_i_college . " !");
 
             return $this->redirectToRoute('researchworks');
         }
@@ -89,8 +89,8 @@ class TrainingParticipantController extends AbstractController
         $entityManager->persist($trainingParticipant);
         $entityManager->flush(); 
             
-        $flashbag = $this->get('session')->getFlashBag();
-            $flashbag->add("success", "You have been successfully registered for training. Thank You!");
+        
+            $this->addFlash("success", "You have been successfully registered for training. Thank You!");
  
             $applicantmessages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUCCESSFUL_TRAINING_PARTICIPATION']);
                 $applicantsubject = $applicantmessages->getSubject();
