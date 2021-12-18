@@ -58,9 +58,10 @@ class AnnouncementController extends AbstractController
 	$body=$messages->getBody();
 	$em = $this->getDoctrine()->getManager();
 	$query = $entityManager->createQuery(
-   	 'SELECT u.email , u.first_name, u.username
+   	 'SELECT u.email , ui.first_name, u.username
 	    FROM App:Subscription s
 	    JOIN s.user u
+	    JOIN u.userInfo ui
 	    WHERE s.announcement = :subscribed')
     ->setParameter('subscribed', '1');
 	$recepients = $query->getResult();
