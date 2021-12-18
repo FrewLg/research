@@ -1224,7 +1224,7 @@ return $this->redirectToRoute('submission_index');
             $review->setFromDirector(1);
             $review->setAllowToView(1);
            ######################
-           ###########Let us mail it ###########
+           ########### Let us mail it ########### 
              
             if ($form->get('remark')->getData()==4){
 
@@ -1239,9 +1239,11 @@ return $this->redirectToRoute('submission_index');
            $applicantbody = $applicantmessages->getBody();
            $submission_url = 'submission/' . $submission->getId() . '/status';
            $applicant = $submission->getAuthor()->getEmail();
+           $applicantcc = $submission->getAuthor()->getUserInfo()->getAlternativeEmail();
            $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
            $emailtwo = (new TemplatedEmail())
                ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+               ->cc(new Address($applicantcc, $$$applicantname)) 
                ->to($applicant)
                ->subject($applicantsubject)
                ->htmlTemplate('emails/application_ack.html.twig')
