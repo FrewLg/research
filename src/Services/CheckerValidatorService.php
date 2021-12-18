@@ -21,9 +21,9 @@ class CheckerValidator extends AbstractController
         $myapplications = $em->getRepository(Submission::class)->find($submission );
 $requesteduser=$myapplications->getAuthor()->getId(); 
 if($requesteduser!==$thisUser){
-$flashbag = $this->get('session')->getFlashBag();
 
-                $flashbag->add("danger", "Sorry you are not allowed for this service ! thank you!" );
+
+                $this->addFlash("danger", "Sorry you are not allowed for this service ! thank you!" );
         return $this->redirectToRoute('myreviews'); 
 
 }

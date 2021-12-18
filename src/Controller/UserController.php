@@ -334,8 +334,8 @@ class UserController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $file3 = $user->getImage();
             if ($file3 == NULL) {
-                $flashbag = $this->get('session')->getFlashBag();
-                $flashbag->add("warning", "Sorry you have to upload your original or temporary document !");
+                
+                $this->addFlash("warning", "Sorry you have to upload your original or temporary document !");
             }
             if ($file3) {
                 $fundeddocDocsfileName3 = md5(uniqid()) . '.' . $file3;

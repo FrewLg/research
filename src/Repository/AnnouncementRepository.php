@@ -22,19 +22,17 @@ class AnnouncementRepository extends ServiceEntityRepository
     // /**
     //  * @return Announcement[] Returns an array of Announcement objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function getData($filter = [])
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('a');
+        if (isset($filter['sdfghj']))
+            $qb->andWhere('a.exampleField = :val')
+                ->setParameter('val', $filter['dfgh']);
+        return $qb->orderBy('a.id', 'ASC')
+            ->getQuery();
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Announcement

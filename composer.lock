@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "ff3d4f7912e6b86e07c7851e369a5b36",
+=======
+    "content-hash": "18799d5e1b0d421e8f3f63f291e548ec",
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
     "packages": [
         {
             "name": "cmen/google-charts-bundle",
@@ -521,6 +525,7 @@
             "time": "2020-11-11T10:22:58+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "composer/pcre",
             "version": "1.0.0",
             "source": {
@@ -592,6 +597,8 @@
             "time": "2021-12-06T15:17:27+00:00"
         },
         {
+=======
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             "name": "composer/semver",
             "version": "3.2.6",
             "source": {
@@ -754,6 +761,7 @@
         },
         {
             "name": "composer/xdebug-handler",
+<<<<<<< HEAD
             "version": "2.0.3",
             "source": {
                 "type": "git",
@@ -768,13 +776,33 @@
             },
             "require": {
                 "composer/pcre": "^1",
+=======
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/xdebug-handler.git",
+                "reference": "84674dd3a7575ba617f5a76d7e9e29a7d3891339"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/84674dd3a7575ba617f5a76d7e9e29a7d3891339",
+                "reference": "84674dd3a7575ba617f5a76d7e9e29a7d3891339",
+                "shasum": ""
+            },
+            "require": {
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
                 "php": "^5.3.2 || ^7.0 || ^8.0",
                 "psr/log": "^1 || ^2 || ^3"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "phpstan/phpstan": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.1",
                 "symfony/phpunit-bridge": "^4.2 || ^5.0 || ^6.0"
+=======
+                "phpstan/phpstan": "^0.12.55",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             },
             "type": "library",
             "autoload": {
@@ -800,7 +828,11 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/composer/xdebug-handler/tree/2.0.3"
+=======
+                "source": "https://github.com/composer/xdebug-handler/tree/2.0.2"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             },
             "funding": [
                 {
@@ -816,7 +848,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2021-12-08T13:07:32+00:00"
+=======
+            "time": "2021-07-31T17:03:58+00:00"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
         },
         {
             "name": "craue/formflow-bundle",
@@ -2018,6 +2054,7 @@
         },
         {
             "name": "doctrine/orm",
+<<<<<<< HEAD
             "version": "2.10.3",
             "source": {
                 "type": "git",
@@ -2028,6 +2065,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/orm/zipball/7b242753466508e1dd10f67c1baee95785f845c1",
                 "reference": "7b242753466508e1dd10f67c1baee95785f845c1",
+=======
+            "version": "2.10.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/orm.git",
+                "reference": "81d472f6f96b8b571cafefe8d2fef89ed9446a62"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/81d472f6f96b8b571cafefe8d2fef89ed9446a62",
+                "reference": "81d472f6f96b8b571cafefe8d2fef89ed9446a62",
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
                 "shasum": ""
             },
             "require": {
@@ -2057,12 +2106,20 @@
                 "doctrine/annotations": "^1.13",
                 "doctrine/coding-standard": "^9.0",
                 "phpbench/phpbench": "^0.16.10 || ^1.0",
+<<<<<<< HEAD
                 "phpstan/phpstan": "1.2.0",
+=======
+                "phpstan/phpstan": "0.12.99",
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.4",
                 "squizlabs/php_codesniffer": "3.6.1",
                 "symfony/cache": "^4.4 || ^5.2",
                 "symfony/yaml": "^3.4 || ^4.0 || ^5.0 || ^6.0",
+<<<<<<< HEAD
                 "vimeo/psalm": "4.13.1"
+=======
+                "vimeo/psalm": "4.10.0"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             },
             "suggest": {
                 "symfony/cache": "Provides cache support for Setup Tool with doctrine/cache 2.0",
@@ -2111,9 +2168,15 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/doctrine/orm/tree/2.10.3"
             },
             "time": "2021-12-03T12:27:05+00:00"
+=======
+                "source": "https://github.com/doctrine/orm/tree/2.10.2"
+            },
+            "time": "2021-10-21T17:57:02+00:00"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
         },
         {
             "name": "doctrine/persistence",
@@ -2390,6 +2453,7 @@
             "time": "2021-10-11T09:18:27+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "ezyang/htmlpurifier",
             "version": "v4.13.0",
             "source": {
@@ -2444,6 +2508,8 @@
             "time": "2020-06-29T00:56:53+00:00"
         },
         {
+=======
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             "name": "friendsofphp/proxy-manager-lts",
             "version": "v1.0.5",
             "source": {
@@ -3017,6 +3083,7 @@
         },
         {
             "name": "laminas/laminas-code",
+<<<<<<< HEAD
             "version": "4.5.0",
             "source": {
                 "type": "git",
@@ -3044,15 +3111,52 @@
             "suggest": {
                 "doctrine/annotations": "Doctrine\\Common\\Annotations >=1.0 for annotation features",
                 "laminas/laminas-stdlib": "Laminas\\Stdlib component"
+=======
+            "version": "4.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-code.git",
+                "reference": "bb324850d09dd437b6acb142c13e64fdc725b0e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-code/zipball/bb324850d09dd437b6acb142c13e64fdc725b0e1",
+                "reference": "bb324850d09dd437b6acb142c13e64fdc725b0e1",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ~8.0.0"
+            },
+            "conflict": {
+                "phpspec/prophecy": "<1.9.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^1.10.4",
+                "ext-phar": "*",
+                "laminas/laminas-coding-standard": "^2.1.4",
+                "laminas/laminas-stdlib": "^3.3.0",
+                "phpunit/phpunit": "^9.4.2",
+                "psalm/plugin-phpunit": "^0.14.0",
+                "vimeo/psalm": "^4.3.1"
+            },
+            "suggest": {
+                "doctrine/annotations": "Doctrine\\Common\\Annotations >=1.0 for annotation features",
+                "laminas/laminas-stdlib": "Laminas\\Stdlib component",
+                "laminas/laminas-zendframework-bridge": "A bridge with Zend Framework"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Laminas\\Code\\": "src/"
+<<<<<<< HEAD
                 },
                 "files": [
                     "polyfill/ReflectionEnumPolyfill.php"
                 ]
+=======
+                }
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -3079,6 +3183,7 @@
                     "type": "community_bridge"
                 }
             ],
+<<<<<<< HEAD
             "time": "2021-12-07T06:00:32+00:00"
         },
         {
@@ -3093,24 +3198,60 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/lexik/LexikFormFilterBundle/zipball/ecea502dfd4eb47fb7df190a789572c2afa5ebfc",
                 "reference": "ecea502dfd4eb47fb7df190a789572c2afa5ebfc",
+=======
+            "time": "2021-09-21T13:40:23+00:00"
+        },
+        {
+            "name": "lexik/form-filter-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lexik/LexikFormFilterBundle.git",
+                "reference": "7dfd928fb91c99c1def88336f186a0871f187da8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lexik/LexikFormFilterBundle/zipball/7dfd928fb91c99c1def88336f186a0871f187da8",
+                "reference": "7dfd928fb91c99c1def88336f186a0871f187da8",
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
                 "shasum": ""
             },
             "require": {
                 "doctrine/orm": "^2.10",
                 "php": ">=7.1",
+<<<<<<< HEAD
                 "symfony/form": "^4.4|^5.1|^6.0",
                 "symfony/framework-bundle": "^4.4|^5.1|^6.0"
+=======
+                "symfony/form": "^4.4|^5.1",
+                "symfony/framework-bundle": "^4.4|^5.1"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "^1.8 || ^2.0",
                 "doctrine/mongodb-odm-bundle": "^4.1",
+<<<<<<< HEAD
                 "symfony/phpunit-bridge": "^4.4|^5.1|^6.0",
                 "symfony/var-dumper": "^4.4|^5.1|^6.0"
+=======
+                "symfony/phpunit-bridge": "^4.4|^5.1",
+                "symfony/var-dumper": "^4.4|^5.1"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             },
             "suggest": {
                 "alcaeus/mongo-php-adapter": "Install this package if using the PHP 7 MongoDB Driver"
             },
+<<<<<<< HEAD
             "type": "symfony-bundle",
+=======
+            "default-branch": true,
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x.x-dev"
+                }
+            },
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             "autoload": {
                 "psr-4": {
                     "Lexik\\Bundle\\FormFilterBundle\\": ""
@@ -3141,9 +3282,15 @@
             ],
             "support": {
                 "issues": "https://github.com/lexik/LexikFormFilterBundle/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/lexik/LexikFormFilterBundle/tree/v7.0.2"
             },
             "time": "2021-12-09T09:06:40+00:00"
+=======
+                "source": "https://github.com/lexik/LexikFormFilterBundle/tree/v7.0.1"
+            },
+            "time": "2021-10-08T16:45:45+00:00"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
         },
         {
             "name": "lexik/translation-bundle",
@@ -3151,12 +3298,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikTranslationBundle.git",
+<<<<<<< HEAD
                 "reference": "679a835fbd1992c4f1342074bf8665510de56ecc"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/lexik/LexikTranslationBundle/zipball/679a835fbd1992c4f1342074bf8665510de56ecc",
                 "reference": "679a835fbd1992c4f1342074bf8665510de56ecc",
+=======
+                "reference": "3391b923c7f384ff4fc4fb424eab7c82e3002554"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lexik/LexikTranslationBundle/zipball/3391b923c7f384ff4fc4fb424eab7c82e3002554",
+                "reference": "3391b923c7f384ff4fc4fb424eab7c82e3002554",
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
                 "shasum": ""
             },
             "require": {
@@ -3218,6 +3374,7 @@
                 "issues": "https://github.com/lexik/LexikTranslationBundle/issues",
                 "source": "https://github.com/lexik/LexikTranslationBundle/tree/master"
             },
+<<<<<<< HEAD
             "time": "2021-12-02T13:03:12+00:00"
         },
         {
@@ -3397,6 +3554,9 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/3.0.0"
             },
             "time": "2021-07-01T19:01:15+00:00"
+=======
+            "time": "2021-11-10T09:18:29+00:00"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
         },
         {
             "name": "monolog/monolog",
@@ -3498,6 +3658,7 @@
             "time": "2021-10-01T21:08:31+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "myclabs/php-enum",
             "version": "1.8.3",
             "source": {
@@ -3558,6 +3719,8 @@
             "time": "2021-07-05T08:18:36+00:00"
         },
         {
+=======
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             "name": "nikic/php-parser",
             "version": "v4.13.2",
             "source": {
@@ -3615,6 +3778,7 @@
         },
         {
             "name": "phenx/php-font-lib",
+<<<<<<< HEAD
             "version": "0.5.4",
             "source": {
                 "type": "git",
@@ -3632,6 +3796,22 @@
             },
             "require-dev": {
                 "symfony/phpunit-bridge": "^3 || ^4 || ^5"
+=======
+            "version": "0.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhenX/php-font-lib.git",
+                "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/ca6ad461f032145fff5971b5985e5af9e7fa88d8",
+                "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35 || ^5 || ^6 || ^7"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             },
             "type": "library",
             "autoload": {
@@ -3652,10 +3832,17 @@
             "description": "A library to read, parse, export and make subsets of different types of font files.",
             "homepage": "https://github.com/PhenX/php-font-lib",
             "support": {
+<<<<<<< HEAD
                 "issues": "https://github.com/dompdf/php-font-lib/issues",
                 "source": "https://github.com/dompdf/php-font-lib/tree/0.5.4"
             },
             "time": "2021-12-17T19:44:54+00:00"
+=======
+                "issues": "https://github.com/PhenX/php-font-lib/issues",
+                "source": "https://github.com/PhenX/php-font-lib/tree/0.5.2"
+            },
+            "time": "2020-03-08T15:31:32+00:00"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
         },
         {
             "name": "phenx/php-svg-lib",
@@ -3863,6 +4050,7 @@
             "time": "2021-10-02T14:08:47+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "phpoffice/phpspreadsheet",
             "version": "1.20.0",
             "source": {
@@ -3967,6 +4155,8 @@
             "time": "2021-11-23T15:23:42+00:00"
         },
         {
+=======
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             "name": "psr/cache",
             "version": "2.0.0",
             "source": {
@@ -4114,6 +4304,7 @@
             "time": "2019-01-08T18:20:26+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "psr/http-client",
             "version": "1.0.1",
             "source": {
@@ -4274,6 +4465,8 @@
             "time": "2016-08-06T14:39:51+00:00"
         },
         {
+=======
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             "name": "psr/link",
             "version": "1.1.1",
             "source": {
@@ -4377,6 +4570,7 @@
             "time": "2021-07-14T16:41:46+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "psr/simple-cache",
             "version": "1.0.1",
             "source": {
@@ -4428,6 +4622,8 @@
             "time": "2017-10-23T01:57:42+00:00"
         },
         {
+=======
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             "name": "react/promise",
             "version": "v2.8.0",
             "source": {
@@ -4479,6 +4675,7 @@
         },
         {
             "name": "sabberworm/php-css-parser",
+<<<<<<< HEAD
             "version": "8.4.0",
             "source": {
                 "type": "git",
@@ -4506,6 +4703,31 @@
             "autoload": {
                 "psr-4": {
                     "Sabberworm\\CSS\\": "src/"
+=======
+            "version": "8.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sabberworm/PHP-CSS-Parser.git",
+                "reference": "d217848e1396ef962fb1997cf3e2421acba7f796"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/d217848e1396ef962fb1997cf3e2421acba7f796",
+                "reference": "d217848e1396ef962fb1997cf3e2421acba7f796",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "codacy/coverage": "^1.4",
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Sabberworm\\CSS": "lib/"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4518,7 +4740,11 @@
                 }
             ],
             "description": "Parser for CSS Files written in PHP",
+<<<<<<< HEAD
             "homepage": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser",
+=======
+            "homepage": "http://www.sabberworm.com/blog/2010/6/10/php-css-parser",
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             "keywords": [
                 "css",
                 "parser",
@@ -4526,9 +4752,15 @@
             ],
             "support": {
                 "issues": "https://github.com/sabberworm/PHP-CSS-Parser/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.4.0"
             },
             "time": "2021-12-11T13:40:54+00:00"
+=======
+                "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.3.1"
+            },
+            "time": "2020-06-01T09:10:00+00:00"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
         },
         {
             "name": "scottharwell/google-charts",
@@ -4633,6 +4865,7 @@
         },
         {
             "name": "seld/phar-utils",
+<<<<<<< HEAD
             "version": "1.2.0",
             "source": {
                 "type": "git",
@@ -4643,6 +4876,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/9f3452c93ff423469c0d56450431562ca423dcee",
                 "reference": "9f3452c93ff423469c0d56450431562ca423dcee",
+=======
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/phar-utils.git",
+                "reference": "749042a2315705d2dfbbc59234dd9ceb22bf3ff0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/749042a2315705d2dfbbc59234dd9ceb22bf3ff0",
+                "reference": "749042a2315705d2dfbbc59234dd9ceb22bf3ff0",
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
                 "shasum": ""
             },
             "require": {
@@ -4675,9 +4920,15 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/phar-utils/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/Seldaek/phar-utils/tree/1.2.0"
             },
             "time": "2021-12-10T11:20:11+00:00"
+=======
+                "source": "https://github.com/Seldaek/phar-utils/tree/1.1.2"
+            },
+            "time": "2021-08-19T21:01:38+00:00"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -9565,6 +9816,7 @@
         },
         {
             "name": "symfony/swiftmailer-bundle",
+<<<<<<< HEAD
             "version": "v3.5.3",
             "source": {
                 "type": "git",
@@ -9575,6 +9827,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/fa7d78cbdf0a16a4da126c465f25f6547ad69cf6",
                 "reference": "fa7d78cbdf0a16a4da126c465f25f6547ad69cf6",
+=======
+            "version": "v3.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/swiftmailer-bundle.git",
+                "reference": "6b72355549f02823a2209180f9c035e46ca3f178"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/6b72355549f02823a2209180f9c035e46ca3f178",
+                "reference": "6b72355549f02823a2209180f9c035e46ca3f178",
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
                 "shasum": ""
             },
             "require": {
@@ -9625,7 +9889,11 @@
             "homepage": "http://symfony.com",
             "support": {
                 "issues": "https://github.com/symfony/swiftmailer-bundle/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/swiftmailer-bundle/tree/v3.5.3"
+=======
+                "source": "https://github.com/symfony/swiftmailer-bundle/tree/v3.5.2"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
             },
             "funding": [
                 {
@@ -9641,7 +9909,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2021-12-02T16:23:52+00:00"
+=======
+            "time": "2021-01-25T17:31:39+00:00"
+>>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
         },
         {
             "name": "symfony/translation",

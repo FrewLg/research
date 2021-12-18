@@ -92,8 +92,8 @@ class ReviewController extends AbstractController
         $review->setAllowedAt(new \DateTime());
 
           $this->getDoctrine()->getManager()->flush();
-          $flashbag = $this->get('session')->getFlashBag();
-          $flashbag->add("success", "The PI  has been allowed to see reviewer comment  !");
+          
+          $this->addFlash("success", "The PI  has been allowed to see reviewer comment  !");
            
           return $this->redirectToRoute('submission_show', array('id' =>$review->getSubmission()->getId()));
 
@@ -113,8 +113,8 @@ class ReviewController extends AbstractController
         $review->setAllowedAt(new \DateTime());
 
           $this->getDoctrine()->getManager()->flush();
-          $flashbag = $this->get('session')->getFlashBag();
-          $flashbag->add("success", "The comment show to PI has been  undone   !");
+          
+          $this->addFlash("success", "The comment show to PI has been  undone   !");
            
           return $this->redirectToRoute('submission_show', array('id' =>$review->getSubmission()->getId()));
 
