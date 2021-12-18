@@ -876,9 +876,10 @@ link below before the deadline of the call.';
             ######################
             $review->setFromDirector(1);
             $review->setAllowToView(1);
-            ######################
-            ###########Let us mail it ###########
-
+           ######################
+           ########### Let us mail it ########### 
+             
+        
             if ($form->get('remark')->getData() == 4) {
 
                 $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'EMAIL_KEY_SUBMISSION_STATUS_ACCEPTED']);
@@ -886,29 +887,31 @@ link below before the deadline of the call.';
                 $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'EMAIL_KEY_SUBMISSION_STATUS_DECLINED']);
             }
 
-            $applicantsubject = $applicantmessages->getSubject();
-            $applicantbody = $applicantmessages->getBody();
-            $submission_url = 'submission/' . $submission->getId() . '/status';
-            $applicant = $submission->getAuthor()->getEmail();
-            $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
-            $emailtwo = (new TemplatedEmail())
-                ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
-                ->to($applicant)
-                ->subject($applicantsubject)
-                ->htmlTemplate('emails/application_ack.html.twig')
-                ->context([
-                    'subject' => $applicantsubject,
-                    'body' => $applicantbody,
-                    'title' => $submission->getTitle(),
-                    'submission_url' => $submission_url,
-                    'name' => $applicantname,
-                    'Authoremail' => $applicant
-                ]);
+           $applicantsubject = $applicantmessages->getSubject();
+           $applicantbody = $applicantmessages->getBody();
+           $submission_url = 'submission/' . $submission->getId() . '/status';
+           $applicant = $submission->getAuthor()->getEmail();
+           $applicantcc = $submission->getAuthor()->getUserInfo()->getAlternativeEmail();
+           $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
+           $emailtwo = (new TemplatedEmail())
+               ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+               ->cc(new Address($applicantcc, $$$applicantname)) 
+               ->to($applicant)
+               ->subject($applicantsubject)
+               ->htmlTemplate('emails/application_ack.html.twig')
+               ->context([
+                   'subject' => $applicantsubject,
+                   'body' => $applicantbody,
+                   'title' => $submission->getTitle(),
+                   'submission_url' => $submission_url,
+                   'name' => $applicantname,
+                   'Authoremail' => $applicant])
+           ;
 
-            $mailer->send($emailtwo);
+           $mailer->send($emailtwo);
 
-            ########### End Let us mail it ###########
-
+           ########### End Let us mail it ###########
+            
             $entityManager->persist($review);
             $entityManager->flush();
             
