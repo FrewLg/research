@@ -7,6 +7,7 @@ use App\Entity\ResearchReportPhase;
 use App\Form\CallForProposalType;
 use App\Form\ResearchReportPhaseType;
 use App\Repository\CallForProposalRepository;
+use App\Repository\SubmissionRepository;
 use App\Utils\Constants;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
@@ -293,6 +294,22 @@ return $this->redirectToRoute('call__details', array('id' => $callForProposal->g
         $this->getDoctrine()->getManager()->flush();
         // return $this->redirectToRoute('all_calls');
 return $this->redirectToRoute('all_calls' );
+
+    }
+
+
+
+    /**
+     * @Route("/{uidentifier}/result", name="call_approved_result", methods={"GET"})
+     */
+    public function result(CallForProposal $callForProposal,SubmissionRepository $submissionRepository): Response {
+
+            $results=$submissionRepository->filterApproved($callForProposal);
+            
+            return $this->render('call_for_proposal/result.html.twig', [
+                'results' => $results,
+                'call_for_proposal'=>$callForProposal
+            ]);
 
     }
     /**

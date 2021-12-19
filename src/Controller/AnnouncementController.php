@@ -31,7 +31,7 @@ class AnnouncementController extends AbstractController
     public function index(AnnouncementRepository $announcementRepository): Response
     {
         return $this->render('announcement/index.html.twig', [
-            'announcements' => $announcementRepository->findAll(),
+            'announcements' => $announcementRepository->getPosted()->getResult(),
         ]);
     }
 
@@ -42,8 +42,10 @@ class AnnouncementController extends AbstractController
     public function new(Request $request, AnnouncementRepository $announcementRepository, MailerInterface $mailer,  PaginatorInterface $paginator): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
+        
         $announcement = new Announcement();
         $form = $this->createForm(AnnouncementType::class, $announcement);
         $form->handleRequest($request);
@@ -53,6 +55,37 @@ class AnnouncementController extends AbstractController
             $announcement->setPostedBy($user);
             $entityManager->persist($announcement);
             $entityManager->flush();
+// <<<<<<< HEAD
+	///////////// Let us email subscribed users to announcements
+	$messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
+	$subject=$messages->getSubject();
+	$body=$messages->getBody();
+	$em = $this->getDoctrine()->getManager();
+	$query = $entityManager->createQuery(
+   	 'SELECT u.email , ui.first_name, u.username
+	    FROM App:Subscription s
+	    JOIN s.user u
+	    JOIN u.userInfo ui
+	    WHERE s.announcement = :subscribed')
+    ->setParameter('subscribed', '1');
+	$recepients = $query->getResult();
+	 ///////////////Email for those who subscribed to website/////////
+	$em = $this->getDoctrine()->getManager();
+	$qb = $em->createQueryBuilder();
+  	$messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'NEWS_NOTIFICATION']);
+	$fl = $em->getRepository('App:User')->findAll();
+ 	$subject=$messages->getSubject();
+ 	$body=$messages->getBody();
+ foreach ($recepients as $row ) {
+  $theEmails[]=   $row['email'].' ';
+  $theNames[]=   $row['username'].' ';
+  $theFirstNames[]=   $row['first_name'].' ';
+  }  
+// =======
+            ///////////// Let us email subscribed users to announcements
+            $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
+            $subject = $messages->getSubject();
+            $body = $messages->getBody();
  	///////////// Let us email subscribed users to announcements
             $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
             $subject=$messages->getSubject();
@@ -71,6 +104,16 @@ class AnnouncementController extends AbstractController
             $qb = $em->createQueryBuilder();
             $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'NEWS_NOTIFICATION']);
             $fl = $em->getRepository('App:User')->findAll();
+            $subject = $messages->getSubject();
+            $body = $messages->getBody();
+            foreach ($recepients as $row) {
+                $theEmails[] =   $row['email'] . ' ';
+                $theNames[] =   $row['username'] . ' ';
+                $theFirstNames[] =   $row['first_name'] . ' ';
+            }
+// >>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
+
+
             $subject=$messages->getSubject();
             $body=$messages->getBody();
             foreach ($recepients as $row ) {
@@ -117,11 +160,19 @@ class AnnouncementController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route("/{id}", name="announcement_show", methods={"GET"})
+     * @Route("/{id}", name="announcement_show")
      */
-    public function show(Announcement $announcement): Response
+    public function show(Announcement $announcement,Request $request): Response
     {
+        if($request->request->get('toogle_status')){
+            $announcement->setIsPosted(!$announcement->getIsPosted());
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success","Announcment Status changed!!");
+            return $this->redirectToRoute('announcement_new');
+
+        }
         return $this->render('announcement/show.html.twig', [
             'announcement' => $announcement,
         ]);

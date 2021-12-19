@@ -4,8 +4,17 @@
     {{ form_widget(form.subject) }} 
 {{ form_label(form.body) }}
 {{ form_widget(form.body ) }}
+<div class="row">
+{{ form_row(form.openAt ) }}
+{{ form_row(form.closeAt ) }}
+
+</div>
 
 <p> 
 
+<<<<<<< HEAD
+   <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+=======
    <button class="btn btn-soft-primary">{{ button_label|default('Save') }}</button>
+>>>>>>> e29e539b4a36ed36f05310535d22c41dd59b3cc2
 {{ form_end(form) }}
