@@ -121,8 +121,7 @@ public function testindex(MessageBusInterface $bus)
 
     public function onKernelRequest(GetResponseEvent $event) {
         $request = $event->getRequest();
-        $locale = $request->getLocale();
-
+        $locale = $request->getLocale(); 
 //        echo $locale;
 //        die();
         // some logic to determine the $locale
