@@ -29,7 +29,7 @@ class DefaultController extends AbstractController
     {
       
 	$em = $this->getDoctrine()->getManager();
-	$news = array_reverse($em->getRepository(Announcement::class)->findAll());
+	$news = array_reverse($em->getRepository(Announcement::class)->findBy(['approved'=>1]));
 	$qb = $em->createQueryBuilder();
     	
         $result = $qb

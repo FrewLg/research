@@ -310,6 +310,34 @@ return $this->redirectToRoute('all_calls' );
         return $this->redirectToRoute('all_calls');
     }
 
+    //         /**
+//      * @Route("/{id}/undo-announce", name="ann_approve_undo", methods={"GET"})
+//      */
+//     public function undoapprove(Announcement $announcement): Response {
+
+//         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+//          $announcement->setApproved(0); 
+//         $this->getDoctrine()->getManager()->flush(); 
+// return $this->redirectToRoute('announcement_index' );
+
+//     }
+//     /**
+//      * @Route("/{id}/aapprove", name="ann__approve", methods={"GET"})
+//      */
+//     public function approve(Announcement $announcement): Response {
+
+//         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+//         $approver = $this->getUser();
+//         $announcement->setApproved(1); 
+//         $this->getDoctrine()->getManager()->flush();
+//         $this->addFlash("success", "Announcement has been! Thank you!");
+
+//         return $this->redirectToRoute('announcement_index');
+//     } 
+
+
     /**
      * @Route("/{id}/show", name="call__details", methods={"GET"})
      */

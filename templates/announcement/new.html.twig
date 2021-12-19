@@ -44,8 +44,7 @@
                                     <td>{{ announcement.body |raw}}</td>
  
                                     <td><span class="pie">0.52/1.561</span></td>
-                                    <td>   
-                                             <a href="{{ path('announcement_edit', {'id': announcement.id}) }}" class="btn btn-primary">Edit</a>
+                                    <td nowrap=nowrap>   
 
     {{ include('announcement/_delete_form.html.twig') }}
 
