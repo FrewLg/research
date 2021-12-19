@@ -870,9 +870,7 @@ link below before the deadline of the call.';
             $review->setFromDirector(1);
             $review->setAllowToView(1);
             ######################
-            ########### Let us mail it ########### 
-
-
+            ########### Let us mail it ###########  
             if ($form->get('remark')->getData() == 4) {
 
                 $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'EMAIL_KEY_SUBMISSION_STATUS_ACCEPTED']);
@@ -911,11 +909,7 @@ link below before the deadline of the call.';
             $this->addFlash("success", "Decision sent successfully!");
             return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
         }
-
-
-
         ################ Admin Revision#########################
-
         return $this->render('submission/submission_details.html.twig', [
             'submission' => $submission,
             'Overall_budger_request' => $Overall_budger_request,
@@ -947,13 +941,12 @@ link below before the deadline of the call.';
             $request->query->getInt('page', 1),
             10
         );
-
+        
         return $this->render('submission/co-authorship.html.twig', [
             'collaborations' => $Allmyresearches,
         ]);
     }
-
-
+    
     /**
      * @Route("/my-membership-details/{id}", name="membershipdetails" ,  methods={"GET","POST"})
      */
@@ -967,8 +960,6 @@ link below before the deadline of the call.';
         $researcher = $submission->getCoAuthors->getResearcher();
         $user = $this->getUser();
         if (!$researcher == $user) {
-
-
             $this->addFlash("danger", "Sorry the link bronek!");
             return $this->redirectToRoute('membership');
         }
