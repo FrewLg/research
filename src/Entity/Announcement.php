@@ -44,6 +44,21 @@ class Announcement
      */
     private $posted_by;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $openAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $closeAt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPosted=0;
+
    
   
 
@@ -116,6 +131,42 @@ public function getBody(): ?string
     public function setPostedBy(?User $posted_by): self
     {
         $this->posted_by = $posted_by;
+
+        return $this;
+    }
+
+    public function getOpenAt(): ?\DateTimeInterface
+    {
+        return $this->openAt;
+    }
+
+    public function setOpenAt(\DateTimeInterface $openAt): self
+    {
+        $this->openAt = $openAt;
+
+        return $this;
+    }
+
+    public function getCloseAt(): ?\DateTimeInterface
+    {
+        return $this->closeAt;
+    }
+
+    public function setCloseAt(\DateTimeInterface $closeAt): self
+    {
+        $this->closeAt = $closeAt;
+
+        return $this;
+    }
+
+    public function getIsPosted(): ?bool
+    {
+        return $this->isPosted;
+    }
+
+    public function setIsPosted(bool $isPosted): self
+    {
+        $this->isPosted = $isPosted;
 
         return $this;
     }

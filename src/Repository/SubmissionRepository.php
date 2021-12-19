@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\CallForProposal;
 use App\Entity\Submission;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -112,6 +113,22 @@ class SubmissionRepository extends ServiceEntityRepository
         // dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());
         return  $qb->orderBy('s.id', 'ASC')
             ->getQuery();;
+    }
+    public function filterApproved(CallForProposal $callForProposal)
+    {
+        $qb = $this->createQueryBuilder('s');
+     
+        $qb->andWhere("s.callForProposal = :callForProposal")->setParameter('callForProposal',$callForProposal);
+
+            $qb->leftJoin("App:Review", "r", "with", "s.id=r.submission");
+            $qb->andWhere("r.remark = 4")
+            ->andWhere("r.from_director = 1");
+        
+    
+
+        // dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());
+        return  $qb->orderBy('s.id', 'ASC')
+            ->getQuery()->getResult();
     }
 
 

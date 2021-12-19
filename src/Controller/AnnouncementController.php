@@ -31,7 +31,7 @@ class AnnouncementController extends AbstractController
     public function index(AnnouncementRepository $announcementRepository): Response
     {
         return $this->render('announcement/index.html.twig', [
-            'announcements' => $announcementRepository->findAll(),
+            'announcements' => $announcementRepository->getPosted()->getResult(),
         ]);
     }
 
@@ -42,8 +42,10 @@ class AnnouncementController extends AbstractController
     public function new(Request $request, AnnouncementRepository $announcementRepository, MailerInterface $mailer,  PaginatorInterface $paginator): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
+        
         $announcement = new Announcement();
         $form = $this->createForm(AnnouncementType::class, $announcement);
         $form->handleRequest($request);
@@ -53,7 +55,7 @@ class AnnouncementController extends AbstractController
             $announcement->setPostedBy($user);
             $entityManager->persist($announcement);
             $entityManager->flush();
-<<<<<<< HEAD
+// <<<<<<< HEAD
 	///////////// Let us email subscribed users to announcements
 	$messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
 	$subject=$messages->getSubject();
@@ -79,7 +81,7 @@ class AnnouncementController extends AbstractController
   $theNames[]=   $row['username'].' ';
   $theFirstNames[]=   $row['first_name'].' ';
   }  
-=======
+// =======
             ///////////// Let us email subscribed users to announcements
             $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
             $subject = $messages->getSubject();
@@ -105,7 +107,7 @@ class AnnouncementController extends AbstractController
                 $theNames[] =   $row['username'] . ' ';
                 $theFirstNames[] =   $row['first_name'] . ' ';
             }
->>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
+// >>>>>>> 09e91eab5ab4abbb01669cab5b177e425b349089
 
 
             ////////////
@@ -146,11 +148,19 @@ class AnnouncementController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route("/{id}", name="announcement_show", methods={"GET"})
+     * @Route("/{id}", name="announcement_show")
      */
-    public function show(Announcement $announcement): Response
+    public function show(Announcement $announcement,Request $request): Response
     {
+        if($request->request->get('toogle_status')){
+            $announcement->setIsPosted(!$announcement->getIsPosted());
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success","Announcment Status changed!!");
+            return $this->redirectToRoute('announcement_new');
+
+        }
         return $this->render('announcement/show.html.twig', [
             'announcement' => $announcement,
         ]);

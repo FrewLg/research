@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Announcement;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -29,6 +30,16 @@ class AnnouncementRepository extends ServiceEntityRepository
         if (isset($filter['sdfghj']))
             $qb->andWhere('a.exampleField = :val')
                 ->setParameter('val', $filter['dfgh']);
+        return $qb->orderBy('a.id', 'ASC')
+            ->getQuery();
+    }
+
+    public function getPosted($limit = null)
+    {
+        $now = (new DateTime('now'))->format('Y-m-d H:i');
+        $qb = $this->createQueryBuilder('a');
+        $qb->andWhere('a.isPosted = 1')->andWhere(" :now between  a.openAt and a.closeAt")
+        ->setParameter('now', $now);
         return $qb->orderBy('a.id', 'ASC')
             ->getQuery();
     }

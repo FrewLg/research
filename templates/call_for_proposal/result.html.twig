@@ -1,0 +1,32 @@
+{% extends 'homelayout.html.twig' %}
+
+{% block title %}Call for proposal Result Announcement
+{% endblock %}
+
+{% block pagehead %} 
+
+{{ call_for_proposal.heading | raw}} Result Announcement
+{% endblock %}
+{% block breadcrumb %}
+	<li class="breadcrumb-item active">Result</li>
+{% endblock %}
+{% block body %}
+<h3>List of accepted proposal.</h3>
+<ol>
+{% for submission in results %}
+
+        <li>
+        {% if submission.author == app.user %}
+        <a href="#">{{ submission.title }}</a>
+        {% else %}
+            {{ submission.title }}
+        {% endif %}
+        
+       
+        </li>
+    
+{% else %}
+    <p class="text-danger">No  result announced yet!</p>
+{% endfor %}
+<ol>
+{% endblock %}
