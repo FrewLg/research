@@ -11,13 +11,14 @@
 	<li class="breadcrumb-item active">Result</li>
 {% endblock %}
 {% block body %}
-<h3>List of accepted proposal.</h3>
-<ol>
+<h3>List of Shortlisted proposal.</h3>
+<hr>
+<ol class="mt-3">
 {% for submission in results %}
 
         <li>
         {% if submission.author == app.user %}
-        <a href="#">{{ submission.title }}</a>
+        <a href="{{ path('submission_status',{id:submission.id}) }}">{{ submission.title }}</a>
         {% else %}
             {{ submission.title }}
         {% endif %}
