@@ -58,19 +58,19 @@ class UserProfileType extends AbstractType
                                 ]
                             )
             
-            // ->add('birth_date' 
-            // , DateType::class, array(
-            //                 'placeholder' => [
-            //       'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-            //     ],
-            //               'widget' => 'single_text',
-            //               'format' => 'yyyy-MM-dd',
-            //                  'attr' => array(
+            ->add('birth_date' 
+            , DateType::class, array(
+                            'placeholder' => [
+                  'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                ],
+                          'widget' => 'single_text',
+                          'format' => 'yyyy-MM-dd',
+                             'attr' => array(
                 
-            //            'required' => true,
-            //     'class'=>'form-group col-md-4',
-            //        )
-            //           ))
+                       'required' => true,
+                'class'=>'form-group col-md-4',
+                   )
+                      ))
 //             ->add('bio' ,TextareaType::class,
 //             [
 //                 'required'=>false,
@@ -106,30 +106,30 @@ class UserProfileType extends AbstractType
                 'allow_delete' => true,
             ])
             
-            // ->add('suffix' ,EntityType::class,[
-            //     'placeholder' => '---Select Suffixe   ---',
-            //     "class"=>Suffixe::class,
-            //     'expanded'=>true,
-            //     "attr"=>[
-            //         "class"=>"select2 ",
-            //     ]
-            // ])
-            // ->add('education_level',EntityType::class,[
-            //     'placeholder' => '---Select Education level ---',
-            //     "class"=>EducationalLevel::class,
-            //     "attr"=>[
-            //         "class"=>"select2 ",
-            //     ]
-            // ])
+            ->add('suffix' ,EntityType::class,[
+                'placeholder' => '---Select Suffixe   ---',
+                "class"=>Suffixe::class,
+                'expanded'=>true,
+                "attr"=>[
+                    "class"=>"select2 ",
+                ]
+            ])
+            ->add('education_level',EntityType::class,[
+                'placeholder' => '---Select Education level ---',
+                "class"=>EducationalLevel::class,
+                "attr"=>[
+                    "class"=>"select2 ",
+                ]
+            ])
             
-            // ->add('academic_rank',EntityType::class,[
-            //     'placeholder' => '---Select Academic rank---',
+            ->add('academic_rank',EntityType::class,[
+                'placeholder' => '---Select Academic rank---',
                
-            //     "class"=>AcademicRank::class,
-            //     "attr"=>[
-            //         "class"=>"select2 ",
-            //     ]
-            // ])
+                "class"=>AcademicRank::class,
+                "attr"=>[
+                    "class"=>"select2 ",
+                ]
+            ])
             ->add('college',EntityType::class,[
                 'placeholder' => '---Select College---',
                 "class"=>College::class,
@@ -148,7 +148,7 @@ class UserProfileType extends AbstractType
         // ])
             // 
             ->add('image', FileType::class, [
-                'label' => 'Upload profile picture... ',
+                'label' => 'Upload profile picture.. ',
                 'mapped' => false,
                 'required' => false,
                 "attr"=>[
