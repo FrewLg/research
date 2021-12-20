@@ -374,7 +374,7 @@ return $this->redirectToRoute('all_calls' );
 	    WHERE s.from_director = 1 and s.remark=4');
  
 	$recepients = $query->getResult();
-    dd($recepients);
+    // dd($recepients);
 	 ///////////////Email for those who subscribed to website/////////
 	$em = $this->getDoctrine()->getManager();
 	$qb = $em->createQueryBuilder();

@@ -177,8 +177,9 @@ class AnnouncementController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($announcement);
             $entityManager->flush();
+            $this->addFlash("success", "Announcement deleted!");
         }
 
-        return $this->redirectToRoute('announcement_index');
+        return $this->redirectToRoute('announcement_new');
     }
 }

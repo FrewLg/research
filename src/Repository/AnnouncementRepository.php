@@ -40,7 +40,7 @@ class AnnouncementRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('a');
         $qb->andWhere('a.isPosted = 1')->andWhere(" :now between  a.openAt and a.closeAt")
         ->setParameter('now', $now);
-        return $qb->orderBy('a.id', 'ASC')
+        return $qb->orderBy('a.id', 'DESC')
             ->getQuery();
     }
 
