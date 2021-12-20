@@ -12,6 +12,7 @@ use App\Utils\Constants;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -354,6 +356,77 @@ return $this->redirectToRoute('all_calls' );
 //         return $this->redirectToRoute('announcement_index');
 //     } 
 
+
+   /**
+     * @Route("/{uidentifier}/sendbatch", name="calsendbatch_email", methods={"GET"})
+     */
+    public function sendbatch(CallForProposal $callForProposal , MailerInterface $mailer  ): Response {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $entityManager = $this->getDoctrine()->getManager();
+
+	///////////// Let us email subscribed users to announcements 
+	$query = $entityManager->createQuery(
+   	 'SELECT u.email , ui.first_name, u.username
+	    FROM App:Review s
+	    JOIN s.submission r
+	    JOIN r.author u 
+	    JOIN u.userInfo ui
+	    WHERE s.from_director = 1 and s.remark=4');
+ 
+	$recepients = $query->getResult();
+    dd($recepients);
+	 ///////////////Email for those who subscribed to website/////////
+	$em = $this->getDoctrine()->getManager();
+	$qb = $em->createQueryBuilder();
+  	$messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'PRESENTATION_SCHEDULE_NOTIFICATION']);
+	$fl = $em->getRepository('App:User')->findAll();
+ 	$subject=$messages->getSubject();
+ 	$body=$messages->getBody();
+ foreach ($recepients as $row ) {
+  $theEmails[]=   $row['email'].' ';
+  $theNames[]=   $row['username'].' ';
+  $theFirstNames[]=   $row['first_name'].' ';
+  }   
+     $subject=$messages->getSubject();
+            $body=$messages->getBody();
+            foreach ($recepients as $row ) {
+            $theEmails[]=   $row['email'].' ';
+            $theNames[]=   $row['username'].' ';
+            $theFirstNames[]=   $row['first_name'].' ';
+            }  
+ 
+            ////////////
+            $length = count($recepients);
+            for ($i = 0; $i < $length; $i++) {
+                /////////////// 
+                $theFirstName = $theFirstNames[$i];
+                if ($theFirstName == '') {
+                    $theFirstName = $theNames[$i];
+                    dd($theFirstName);
+                }
+                $theEmail = $theEmails[$i];
+                $email = (new TemplatedEmail())
+                    ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research  Office'))
+                    //    ->to($theEmails)
+                    ->to(new Address($theEmails[$i], $theFirstNames[$i]))
+                    // ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
+                    ->subject($subject)
+                    ->htmlTemplate('emails/news.html.twig')
+                    ->context([
+                        'subject' => $subject,
+                        'body' => $body,
+                        'name' => $theFirstName,
+                        'Authoremail' => $theEmail,
+                    ]);
+                $mailer->send($email);
+            }
+
+            $this->addFlash("success", "Email sent!");
+            //////////////////////////// end emailing ///////////////////////
+            return $this->redirectToRoute('announcement_index');
+        
+        
+    }
 
     /**
      * @Route("/{id}/show", name="call__details", methods={"GET"})

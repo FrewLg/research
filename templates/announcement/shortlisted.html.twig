@@ -14,13 +14,8 @@
             <h6>
             
             <a href="{{ path('submission_status', {'id': announcement.id}) }}"  >{{ announcement.subject |striptags|slice(0, 170)|raw }}</a>
-
-            </h6>
-            
-            
+  </h6> 
         </div>
-    </div>
-        
-        {% endfor %}
-        
+    </div> 
+    {% endfor %} 
 {% endblock %}
