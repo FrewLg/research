@@ -369,12 +369,14 @@ return $this->redirectToRoute('all_calls' );
    	 'SELECT u.email , ui.first_name, u.username
 	    FROM App:Review s
 	    JOIN s.submission r
+	    JOIN r.callForProposal c
 	    JOIN r.author u 
 	    JOIN u.userInfo ui
-	    WHERE s.from_director = 1 and s.remark=4');
+	    WHERE s.from_director = 1 and s.remark=4  and c.id=:callForProposal' ) 
+            ->setParameter('callForProposal', $callForProposal);
  
 	$recepients = $query->getResult();
-    // dd($recepients);
+    dd($recepients);
 	 ///////////////Email for those who subscribed to website/////////
 	$em = $this->getDoctrine()->getManager();
 	$qb = $em->createQueryBuilder();
@@ -421,7 +423,7 @@ return $this->redirectToRoute('all_calls' );
                 $mailer->send($email);
             }
 
-            $this->addFlash("success", "Email sent!");
+            $this->addFlash("success", "Email sent to short listed porposal PIs successfully!");
             //////////////////////////// end emailing ///////////////////////
             return $this->redirectToRoute('announcement_index');
         
