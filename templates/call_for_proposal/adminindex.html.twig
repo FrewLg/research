@@ -93,7 +93,7 @@
 												<a href="{{ path('call_approved_result', {'uidentifier': call_for_proposal.uidentifier }) }}" class='btn btn-success btn-xs'>
 
 											Result</a>
-	<a href="{{ path('calsendbatch_email', {'uidentifier': call_for_proposal.uidentifier }) }}" class='btn btn-soft-info btn-xs'>
+	<a href="{{ path('calsendbatch_email', {'uidentifier': call_for_proposal.uidentifier }) }}" class='btn btn-soft-info btn-xs' onsubmit="return confirm('Are you sure you want to send batch email?');">
 
 											Email shortlisted</a>
 
