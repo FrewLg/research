@@ -117,7 +117,7 @@
 									<b>
 										Affiliation:
 									</b>
-									:
+									 
 									<a href="" class="font-12 text-default ">
 										{% if userInfo.affiliation is defined %}
 
@@ -126,9 +126,7 @@
 										{% endif %}
 										{{ user.userInfo.suffix   }}
 										{% if user.userInfo.educationLevel %}
-											(
-											{{ user.userInfo.educationLevel }}
-											)
+											({{ user.userInfo.educationLevel }})
 										{% endif %}
 
 
@@ -197,7 +195,7 @@
 			<a class="nav-link " id="Profile_Project_tab" data-bs-toggle="pill" href="#Profile_Project">Projects</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" id="Profile_Post_tab" data-bs-toggle="pill" href="#Profile_Post">Coferences</a>
+			<a class="nav-link" id="Profile_Post_tab" data-bs-toggle="pill" href="#Profile_Post">Conferences</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link active" id="settings_detail_tab" data-bs-toggle="pill" href="#Profile_Settings">Edit Profile</a>
