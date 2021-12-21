@@ -571,6 +571,7 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
      */
     public function departmentFetch(Request $request, DepartmentRepository $departmentRepository)
     {
+        
         $em = $this->getDoctrine()->getManager();
         $college = $request->request->get("college");
         //  dd($principal);
@@ -582,8 +583,11 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
     #[Route('/update-profile', name: 'researchworks', methods: ['GET','POST'])]
     public function researchworks(Request $request): Response
     {
-        // $publishedResearch = new UserInfo();
+        $this->denyAccessUnlessGranted("ROLE_USER");
+ 
         $em = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager(); 
+
         $user = $this->getUser();
         if($user->getUserInfo()==''){
             $user_info=new UserInfo();
@@ -597,33 +601,29 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
          $form->handleRequest($request);
         $userInfo = $user->getUserInfo();
 
+        $image = $user->getUserInfo();
         
-        $profilepictureform = $this->createForm(UserProfilePictureType::class, $publishedResearch); 
+        $profilepictureform = $this->createForm(UserProfilePictureType::class, $image); 
         $profilepictureform->handleRequest($request);
         if ($profilepictureform->isSubmitted() && $profilepictureform->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager(); 
             $prifilepicture = $profilepictureform->get('image')->getData();
-            $Emailpicture = $user->getEmail();
-
+ 
             if ($prifilepicture == NULL) {
                 echo 'Image not uploaded';
                  $prifilepicture = '';
             } else {
-                $prifilepicture = $profilepictureform->get('image')->getData();
-                $fileName3 =  md5($Emailpicture) . '.' . $prifilepicture->guessExtension();
+                 $fileName3 =  md5(uniqid()) . '.' . $prifilepicture->guessExtension();
                 $prifilepicture->move($this->getParameter('profile_pictures'), $fileName3);
                 $userInfo->setImage($fileName3);
-                $entityManager->persist($publishedResearch);
+                $entityManager->persist($image);
                 $entityManager->flush();
             $this->addFlash('success', "Profile picture  has been changed successfully!   ");
  
-            }
-
+            } 
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();  
-
+ 
         $dep=$request->request->get("department");
 $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'=>$dep));
             // dd($udep);
@@ -636,8 +636,7 @@ $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'
             $entityManager->flush();
             return $this->redirectToRoute('call_for_proposal_all' );
         }
-        $entityManager = $this->getDoctrine()->getManager();
-
+ 
         $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find($this->getUser());
           
         return $this->render('user/profile2.html.twig', [
