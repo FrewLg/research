@@ -167,7 +167,9 @@ class UserProfilePictureType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 "attr"=>[
-                    "accept"=>"image/*"
+                    "accept"=>"image/*",
+                    "class"=>"form-control",
+
                 ]
             ]);
         }
