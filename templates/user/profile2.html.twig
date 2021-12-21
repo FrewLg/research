@@ -374,7 +374,7 @@
 												<div class="form-group">
 
 													<label class="form-controll">Department</label><br>
-													<select id="dep" name="department" style="width: 350px;" class="dep m-5 select2" required="required"></select>
+													<select id="dep" name="department" style="width: 100%;" value="{{user.userInfo.department}}" class="dep m-5 select2" required="required"></select>
 												</div>
 											</div>
 
@@ -528,9 +528,9 @@ dataType: "json",
 success: function (data) {
 $('.dep').children().remove()
 {% if user.userInfo.department=="" %}
-select.append('<option  id="dep" name="department"    value=""  >' + '--Select Department--' + '</option>');
+select.append('<option  id="dep" name="department"    value="{{user.userInfo.department}}"  >' + '{{user.userInfo.department}} ' + '</option>');
 {% else %}
-select.append('<option  id="dep" name="department"    value=""  >' + '-- Select Department ----' + '</option>');
+select.append('<option  id="dep" name="department"    value="{{user.userInfo.department}}"  >' + '{{user.userInfo.department}}' + '</option>');
 {% endif %}
 for (let [key, value] of Object.entries(data)) {
 select.append('<option>' + value.name + '</option>');
