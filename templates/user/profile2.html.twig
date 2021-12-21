@@ -276,14 +276,14 @@
 											<div class="row">
 												 
 
-
 												<div class="col-md-3">
 													<div class="form-c">
 														<div class="label">
-															Gender</div>
-														{{ form_widget(submissionform.gender  ) }}
+															Suffix</div>
+														{{ form_widget(submissionform.suffix  ) }}
 													</div>
-												</div>
+												</div> 
+
 
 												<div class="col-md-3">
 													<div class="form-s">
@@ -310,6 +310,23 @@
 
 											<div class="row">
 
+
+												<div class="col-md-3">
+													<div class="form-c">
+														<div class="label">
+															Gender</div>
+														{{ form_widget(submissionform.gender  ) }}
+													</div>
+												</div>
+
+												<div class="col-md-3">
+													<div class="form-c">
+														<div class="label">
+															Birth date</div>
+														{{ form_widget(submissionform.birth_date  ) }}
+													</div>
+												</div>
+
 												<div class="col-md-3">
 													<div class="form-group">
 
@@ -323,6 +340,9 @@
 														{{ form_widget(submissionform.phone_number  ) }}
 													</div>
 												</div>
+												</div>
+
+											<div class="row">
 
 												<div class="col-md-3">
 													<div class="form-group">
@@ -330,6 +350,10 @@
 														{{ form_widget(submissionform.image  ) }}
 													</div>
 												</div>
+												</div>
+
+											<div class="row">
+											
 												<div class="col-md-3">
 													<div class="form-group">
 														{{ form_label(submissionform.college  ) }}
@@ -344,11 +368,20 @@
 													</div>
 												</div>
 
-												<div class="col-md-2">
-													<div class="form-group"></div>
-												</div>
 												<div class="col-md-3">
-													<div class="form-group"></div>
+													<div class="form-c">
+														<div class="label">
+															Education level</div>
+														{{ form_widget(submissionform.education_level  ) }}
+													</div>
+												</div>
+
+												<div class="col-md-3">
+													<div class="form-c">
+														<div class="label">
+															Academic rank</div>
+														{{ form_widget(submissionform.academic_rank  ) }}
+													</div>
 												</div>
 											</div>
 

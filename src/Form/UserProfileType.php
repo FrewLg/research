@@ -107,9 +107,8 @@ class UserProfileType extends AbstractType
             ])
             
             ->add('suffix' ,EntityType::class,[
-                'placeholder' => '---Select Suffixe   ---',
+                'placeholder' => '--- Select Suffix ---',
                 "class"=>Suffixe::class,
-                'expanded'=>true,
                 "attr"=>[
                     "class"=>"select2 ",
                 ]

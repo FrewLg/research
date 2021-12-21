@@ -79,7 +79,7 @@ class UserInfo
     private $image;
  
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="datetime", length=255, nullable=true)
      */
     private $birth_date;
 
@@ -266,17 +266,20 @@ class UserInfo
         return $this;
     }
 
-    public function getBirthDate(): ?string
+    public function getBirthDate(): ?\DateTime 
     {
         return $this->birth_date;
     }
 
-    public function setBirthDate(?string $birth_date): self
+    public function setBirthDate(?\DateTime  $birth_date): self
     {
         $this->birth_date = $birth_date;
 
         return $this;
     }
+
+
+   
 
     public function getAddress(): ?string
     {
