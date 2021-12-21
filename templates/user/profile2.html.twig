@@ -522,8 +522,12 @@ college: college
 },
 dataType: "json",
 success: function (data) {
-$('.dep').children().remove(){% if user.userInfo.department=="" %}select.append('<option  id="dep" name="department"    value=""  >' + '--Select Department--' + '</option>');
-{% else %}select.append('<option  id="dep" name="department"    value=""  >' + '-- Select Department ----' + '</option>');{% endif %}
+$('.dep').children().remove()
+{% if user.userInfo.department=="" %}
+select.append('<option  id="dep" name="department"    value=""  >' + '--Select Department--' + '</option>');
+{% else %}
+select.append('<option  id="dep" name="department"    value=""  >' + '-- Select Department ----' + '</option>');
+{% endif %}
 for (let [key, value] of Object.entries(data)) {
 select.append('<option>' + value.name + '</option>');
 $("#dep").prop("required", true)
@@ -531,4 +535,5 @@ $("#dep").prop("required", true)
 }
 });
 })
-</script>{% endblock %}
+</script>
+{% endblock %}
