@@ -13,6 +13,7 @@ use App\Form\ChangePasswordFormType;
 use App\Form\CollegeCoordinatorType;
 use App\Form\DirecotorateOfficeUserType;
 use App\Form\PublishedResearchType;
+use App\Form\UserProfilePictureType;
 use App\Form\UserProfileType;
 use App\Form\UserType;
 use App\Message\SendEmail;
@@ -593,9 +594,33 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
          $publishedResearch = $user->getUserInfo();
         $user_info = $user->getUserInfo(); 
         $form = $this->createForm(UserProfileType::class, $publishedResearch); 
-        // $originalTitles = new ArrayCollection();
-        $form->handleRequest($request);
+         $form->handleRequest($request);
         $userInfo = $user->getUserInfo();
+
+        
+        $profilepictureform = $this->createForm(UserProfilePictureType::class, $publishedResearch); 
+        $profilepictureform->handleRequest($request);
+        if ($profilepictureform->isSubmitted() && $profilepictureform->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager(); 
+            $prifilepicture = $profilepictureform->get('image')->getData();
+            $Emailpicture = $user->getEmail();
+
+            if ($prifilepicture == NULL) {
+                echo 'Image not uploaded';
+                 $prifilepicture = '';
+            } else {
+                $prifilepicture = $profilepictureform->get('image')->getData();
+                $fileName3 =  md5($Emailpicture) . '.' . $prifilepicture->guessExtension();
+                $prifilepicture->move($this->getParameter('profile_pictures'), $fileName3);
+                $userInfo->setImage($fileName3);
+                $entityManager->persist($publishedResearch);
+                $entityManager->flush();
+            $this->addFlash('success', "Profile picture  has been changed successfully!   ");
+
+                // $userInfo->setImage($fileName3);
+            }
+
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager(); 
@@ -606,34 +631,19 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
 $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'=>$dep));
             // dd($udep);
         $userInfo->setDepartment($udep);
-            // dd($form->getData());
-            // foreach ($userInfo->getIrbClearances() as $key => $clearance) {
+          
 
-            //     // $file = $form->get('file')->getData();
-            //     $files = $clearance->getFile('irb_clearance');
-
-            //     if ($files == NULL) {
-
-            //         $this->addFlash('danger', "Please upload a file with only valid word file format! Allowed file formats are  .doc , .docx , .odp ,
-            //     ");
-
-            //         // return $this->redirectToRoute('submission_firststepold', ["uidentifier" => $callForProposal->getUidentifier()]);
-
-            //     }
-            // }
-
-            $Emailpicture = $user->getEmail();
             // $publishedResearch->saveIrbClearance(Form $form);
             $userInfo->setHasCompleteProfile(true);
-            if ($prifilepicture == NULL) {
-                echo 'Image not uploaded';
-                 $prifilepicture = '';
-            } else {
-                $prifilepicture = $form->get('image')->getData();
-                $fileName3 =  md5($Emailpicture) . '.' . $prifilepicture->guessExtension();
-                $prifilepicture->move($this->getParameter('profile_pictures'), $fileName3);
-                $userInfo->setImage($fileName3);
-            }
+            // if ($prifilepicture == NULL) {
+            //     echo 'Image not uploaded';
+            //      $prifilepicture = '';
+            // } else {
+            //     $prifilepicture = $form->get('image')->getData();
+            //     $fileName3 =  md5($Emailpicture) . '.' . $prifilepicture->guessExtension();
+            //     $prifilepicture->move($this->getParameter('profile_pictures'), $fileName3);
+            //     $userInfo->setImage($fileName3);
+            // }
             $entityManager->persist($publishedResearch);
             $entityManager->flush();
             return $this->redirectToRoute('call_for_proposal_all' );
@@ -646,7 +656,8 @@ $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'
             'published_research' => $publishedResearch,
             'user' => $user,
             'alltitles'=>$earlierprojects,
-            'submissionform' => $form->createView(),
+            'submissionform' => $form->createView(), 
+            'profilepicture' => $profilepictureform->createView(),
         ]);
     }
 

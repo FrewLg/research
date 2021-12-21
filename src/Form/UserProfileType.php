@@ -27,6 +27,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+
+
+
 class UserProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -137,17 +140,30 @@ class UserProfileType extends AbstractType
                 ]
             ])
             
-            
-        // ->add('department',EntityType::class,[
-        //     'placeholder' => '---Select Department---',
-        //     "class"=>Department::class,
-        //     "attr"=>[
-        //         "class"=>"select2 ",
-        //     ]
-        // ])
-            // 
+        
+           ;
+        }
+    
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => UserInfo::class,
+        ]);
+    }
+}
+
+class UserProfilePictureType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        
+       
+
+            $builder
+         
             ->add('image', FileType::class, [
-                'label' => 'Upload profile picture.. ',
+                'label' => false,
                 'mapped' => false,
                 'required' => false,
                 "attr"=>[
