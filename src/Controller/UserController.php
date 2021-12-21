@@ -616,16 +616,13 @@ $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find
                 $entityManager->persist($publishedResearch);
                 $entityManager->flush();
             $this->addFlash('success', "Profile picture  has been changed successfully!   ");
-
-                // $userInfo->setImage($fileName3);
+ 
             }
 
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager(); 
-            $prifilepicture = $form->get('image')->getData();
-        // dd($request->request->get("department"));
+            $entityManager = $this->getDoctrine()->getManager();  
 
         $dep=$request->request->get("department");
 $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'=>$dep));
@@ -633,17 +630,8 @@ $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'
         $userInfo->setDepartment($udep);
           
 
-            // $publishedResearch->saveIrbClearance(Form $form);
-            $userInfo->setHasCompleteProfile(true);
-            // if ($prifilepicture == NULL) {
-            //     echo 'Image not uploaded';
-            //      $prifilepicture = '';
-            // } else {
-            //     $prifilepicture = $form->get('image')->getData();
-            //     $fileName3 =  md5($Emailpicture) . '.' . $prifilepicture->guessExtension();
-            //     $prifilepicture->move($this->getParameter('profile_pictures'), $fileName3);
-            //     $userInfo->setImage($fileName3);
-            // }
+             $userInfo->setHasCompleteProfile(true);
+            
             $entityManager->persist($publishedResearch);
             $entityManager->flush();
             return $this->redirectToRoute('call_for_proposal_all' );
