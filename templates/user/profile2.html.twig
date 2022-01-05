@@ -75,7 +75,7 @@
 
 								</div>
 								<div class="dastone-profile_user-detail">
-									<h5 class="dastone-user-name">{{ user}}</h5>
+									<h5 class="dastone-user-name">{{ user.userInfo.suffix   }} {{ user}}</h5>
 									<p class="mb-0 dastone-user-name-post">
 										{% if userInfo.affiliation is defined %}
 
@@ -532,6 +532,7 @@ select.append('<option  id="dep" name="department"    value=""  >' + '-- Select 
 {% else %}
 select.append('<option  id="dep" name="department"    value="{{user.userInfo.department}}"  >' + '{{user.userInfo.department}}' + '</option>');
 {% endif %}
+
 for (let [key, value] of Object.entries(data)) {
 select.append('<option>' + value.name + '</option>');
 $("#dep").prop("required", true)

@@ -248,6 +248,11 @@ class Submission
      */
     private $actionplan;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $granted;
+
    
 
  
@@ -1015,6 +1020,18 @@ class Submission
     public function setBudgetAndTimeSchedule(?string $budget_and_time_schedule): self
     {
         $this->budget_and_time_schedule = $budget_and_time_schedule;
+
+        return $this;
+    }
+
+    public function getGranted(): ?bool
+    {
+        return $this->granted;
+    }
+
+    public function setGranted(?bool $granted): self
+    {
+        $this->granted = $granted;
 
         return $this;
     }
