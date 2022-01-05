@@ -551,19 +551,13 @@ class SubmissionController extends AbstractController
         $thisUser = $this->getUser();
         $myapplications = $em->getRepository(Submission::class)->find($submission);
         $requesteduser = $myapplications->getAuthor();
-        if ($requesteduser !== $thisUser) {
+        if (  $requesteduser !== $thisUser) {
             
             $this->addFlash("danger", "Sorry you are not allowed for this service ! Thank you!");
             return $this->redirectToRoute('myreviews');
         }
         ################### Are you the one? #################################
-        $me = $this->getUser()->getId();
-
-        /////
-        //  $this->checkValidatdeAuthor($submission, $me);
-
-        //////
-        $metoo = $this->getUser();
+         
         $editorialDecisions = $entityManager->getRepository(EditorialDecision::class)->findBy(['submission' => $submission]);
         #dd($me_as_a_reviewer.$me);
         $measareviewer = $this->getUser();
@@ -995,21 +989,39 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/my-membership-details/{id}", name="membershipdetails" ,  methods={"GET","POST"})
      */
-    public function mymembershipdetailss(Request $request, Submission $submission): Response
+    public function mymembershipdetails(  Submission $submission): Response
     {
 
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
-        $myresearches = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission]);
+        $myresearche = $entityManager->getRepository(Submission::class)->find( $submission);
+ 
+        $user = $this->getUser(); 
+                $allcoauthors = $entityManager->getRepository(CoAuthor::class)->find($submission);
+                $member = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission, 'researcher' => $this->getUser()]);
 
-        $researcher = $submission->getCoAuthors->getResearcher();
-        $user = $this->getUser();
-        if (!$researcher == $user) {
-            $this->addFlash("danger", "Sorry the link bronek!");
-            return $this->redirectToRoute('membership');
-        }
+ 
+        if (!$member) {
+            $this->addFlash("danger", "Sorry the you are not allowed for this service!");
+    return $this->redirectToRoute('membership');
+         }
+ 
+  
+        $entityManager = $this->getDoctrine()->getManager();
+        $publicationstatus = $entityManager->getRepository(PublishedSubmission::class)->findBy(['submission' => $submission]);
+        $Expenses = $entityManager->getRepository(SubmissionBudget::class)->findBy(['submission' => $submission]);
+        $reviewsatge = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission],["id"=>"DESC"]);
+        $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $submission, 'allow_to_view' => 1]);
+        $contributors = $entityManager->getRepository(CoAuthor::class)->find($submission);
+         
         return $this->render('submission/co-authorship_detail.html.twig', [
-            'collaboration' => $myresearches,
+            'co_authors' => $contributors,
+            'expenses' => $Expenses,
+            'comments' => $reviews,
+             'review_assignments' => $reviewsatge,
+            'publicationstatus' => $publicationstatus,
+            'submission' => $submission,
+             
         ]);
     }
 
