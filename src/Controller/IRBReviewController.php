@@ -512,10 +512,7 @@ $entityManager = $this->getDoctrine()->getManager();
          
         $submission->setGranted(1);
         $this->getDoctrine()->getManager()->flush();
-        $this->addFlash( 
-                'success',
-                'You announced this submission as a winner successfully!'
-            ); 
+        
 
         $entityManager = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery(
@@ -612,7 +609,10 @@ $entityManager = $this->getDoctrine()->getManager();
         $mailer->send($emailtwo);
         ##########
 // dd();
-
+$this->addFlash( 
+    'success',
+    'You announced this submission as a winner successfully!'
+); 
         return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
 
     }
