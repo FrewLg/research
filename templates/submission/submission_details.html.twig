@@ -665,10 +665,29 @@
 					+{{ submission.coAuthors|length   }}
 				</span>
 			</a>
+
 		</div>
 
 	</div>
-	<hr class="hr-dashed my-4"></div><!--end card-body--></div><!--end card-->{# </div> #}<div class="card">
+	
+	<hr class="hr-dashed my-4">
+
+{% if submission.granted==1 %}
+
+ 	<a href="" class='container btn btn-outline-success mt-2 btn-sm btn-block'>Winner 
+			<i class="fa fa-check text-success"></i>
+	</a>
+		
+{% elseif submission.granted=='0' %}
+	<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn btn-outline-danger mt-2 btn-sm btn-block'>Not granted</a>
+
+	{% elseif  submission.granted is null  %}
+	<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn mt-2 btn-info btn-sm btn-block'>Declare grant</a>
+
+{% endif %}										
+	 </div> 
+	</div>
+	<div class="card">
 <div class="card-header ">
 	<h4 class="font-18 m-0 fw-bold">Attachments</h4>
 
@@ -886,9 +905,7 @@
 												</span>
 											</a>
 										</span>
-									{% endif %}
-
-
+									{% endif %} 
 									<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-sm btn-soft-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
 										Unassign</a>
 

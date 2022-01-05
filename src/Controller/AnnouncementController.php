@@ -81,9 +81,7 @@ class AnnouncementController extends AbstractController
   $theNames[]=   $row['username'].' ';
   $theFirstNames[]=   $row['first_name'].' ';
   }   
-
-
-            $subject=$messages->getSubject();
+   $subject=$messages->getSubject();
             $body=$messages->getBody();
             foreach ($recepients as $row ) {
             $theEmails[]=   $row['email'].' ';
@@ -117,7 +115,7 @@ class AnnouncementController extends AbstractController
                 $mailer->send($email);
             }
 
-            $this->addFlash("success", "Email sent!");
+            $this->addFlash("success", "Announcement posted!");
             //////////////////////////// end emailing ///////////////////////
             return $this->redirectToRoute('announcement_index');
         }

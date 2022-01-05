@@ -28,6 +28,27 @@
                           <a href="{{ path('call__approve', {'id': call_for_proposal.id }) }}" class='btn btn-warning btn-xs'> Approve and publish</a>                          
                          {% endif %}
 
+                         {% if call_for_proposal.approved=='1'%}
+										<a href="{{ path('call_approve_undo', {'id': call_for_proposal.id }) }} " class='btn btn-success btn-xs'>
+											Unpublish
+										</a>
+
+
+									{% else %}
+										<a href="{{ path('call__approve', {'id': call_for_proposal.id }) }}" class='btn btn-warning btn-xs'>
+											Approve and publish</a>
+									{% endif %}
+
+										<a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" class='btn btn-info btn-xs'>
+
+											Responses</a>
+												<a href="{{ path('call_approved_result', {'uidentifier': call_for_proposal.uidentifier }) }}" class='btn btn-success btn-xs'>
+
+											Result</a>
+	<a href="{{ path('calsendbatch_email', {'uidentifier': call_for_proposal.uidentifier }) }}" class='btn btn-soft-info btn-xs' onsubmit="return confirm('Are you sure you want to send batch email?');">
+
+											Email shortlisted</a>
+                                            
                             </div>
                             <p>
                             <div class="text-center  ">

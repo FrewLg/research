@@ -178,8 +178,8 @@ class SubmissionController extends AbstractController
             $body = 'Dear ' . $theFirstNames[$i] . ',  <br> 
                      ' . $pi_name . ' is waiting for you to respond 
                     to his recent proposal submisison entitled
-"' . $titles[$i] . ' ". Please respond to the invitaion using the invitation 
-link below before the deadline of the call.';
+            "' . $titles[$i] . ' ". Please respond to the invitaion using the invitation 
+            link below before the deadline of the call.';
             $invitation_url = 'submission/my-membership-details/' . $copi_id[$i];
             $email = (new TemplatedEmail())
                 ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
@@ -552,7 +552,7 @@ link below before the deadline of the call.';
         $myapplications = $em->getRepository(Submission::class)->find($submission);
         $requesteduser = $myapplications->getAuthor();
         if ($requesteduser !== $thisUser) {
-
+            
             $this->addFlash("danger", "Sorry you are not allowed for this service ! Thank you!");
             return $this->redirectToRoute('myreviews');
         }
@@ -947,6 +947,51 @@ link below before the deadline of the call.';
         ]);
     }
     
+    
+
+     /**
+     * @Route("/all-grant-winners/", name="allawarded", methods={"GET","POST"})
+     */
+
+    public function allawarded(Request $request,  PaginatorInterface $paginator): Response
+    {
+
+         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $entityManager = $this->getDoctrine()->getManager(); 
+        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['granted' => 1  ]);
+       $Allmyresearches = $paginator->paginate(
+            $allawarded,
+            $request->query->getInt('page', 1),
+            15
+        );
+        
+        return $this->render('submission/index.html.twig', [
+            'info'=>'All grant winners ',
+            'submissions' => $Allmyresearches,
+        ]);
+    } 
+     /**
+     * @Route("/grant-winners/{uidentifier}/", name="call_winners", methods={"GET"})
+     */
+    public function call_winners(Request $request, CallForProposal $callForProposal, PaginatorInterface $paginator): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $entityManager = $this->getDoctrine()->getManager(); 
+        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['granted' => 1 , 'call_for_proposal'=>$callForProposal ]);
+ 
+         $Allmyresearches = $paginator->paginate(
+            $allawarded,
+            $request->query->getInt('page', 1),
+            15
+        );
+        
+        return $this->render('submission/index.html.twig', [
+            'submissions' => $Allmyresearches,
+            'info'=>'Grant winners of'.$callForProposal->getSubject(),
+        ]);
+    }
+    
+
     /**
      * @Route("/my-membership-details/{id}", name="membershipdetails" ,  methods={"GET","POST"})
      */
