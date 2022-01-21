@@ -38,9 +38,38 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function getData($filter=[])
     {
-        return $this->createQueryBuilder('u')
+        $qb =$this->createQueryBuilder('ui');
+
+        if (isset($filter['name'])) {
+
+            $qb->join("ui.userInfo","u");
+
+            $names = explode(" ", $filter['name']);
+            if (sizeof($names) == 3) {
+               
+                $qb->andWhere('u.first_name = :fname')
+                    ->setParameter('fname', $names[0])
+
+                    ->andWhere('u.midle_name = :mname')
+                    ->setParameter('mname', $names[1])
+                    ->andWhere('u.last_name = :lname')
+                    ->setParameter('lname', $names[2]);
+            } else if (sizeof($names) == 2) {
+
+                $qb->andWhere('u.first_name = :fname')
+                    ->setParameter('fname', $names[0])
+
+                    ->andWhere('u.midle_name = :mname')
+                    ->setParameter('mname', $names[1]);
+            } else if (sizeof($names) == 1) {
+
+            
+                $qb=$qb->andWhere("u.first_name LIKE '%" . $names[0] . "%' or u.midle_name LIKE '%" . $names[0] . "%' or u.last_name LIKE '%" . $names[0] . "%'  or ui.username LIKE '%" . $names[0] . "%' ");
+              
+            }
+        }
            
-            ->orderBy('u.id', 'ASC')
+       return   $qb  ->orderBy('ui.id', 'ASC')
          
             ->getQuery()
          

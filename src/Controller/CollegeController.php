@@ -240,7 +240,7 @@ $institutionalReviewersBoard= new InstitutionalReviewersBoard() ;
 
      public function show(College $college, Request $request,        ): Response
     {
-    $this->denyAccessUnlessGranted('ROLE_USER');
+    
     $entityManager = $this->getDoctrine()->getManager();
     $thematicAreas = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $college ] );
     $guidelines = $entityManager->getRepository(Guidelines::class)->findBy(['college' => $college ] );

@@ -18,7 +18,7 @@ class ResearchReportPhaseType extends AbstractType
         $builder
             ->add('numberOfPhases',ChoiceType::class,[
 
-                "choices"=>array_combine(range(1,10),range(1,10)),
+                "choices"=>array_combine(range(2,10),range(2,10)),
                 "help"=>"Total number of phases",
                 "attr"=>[
                     "min"=>1,
@@ -31,27 +31,39 @@ class ResearchReportPhaseType extends AbstractType
                     "min"=>1,
                 ]
             ])
+            ->add('tolerableDay',ChoiceType::class,[
+
+                "choices"=>array_combine(range(1,10),range(1,10)),
+                "help"=>"Tolerable Days",
+                "attr"=>[
+                    "min"=>1,
+                ]
+            ])
             ->add('startDate',DateTimeType::class,[
                  "date_label"=>"Starts on",
+                "html5"=>false,
+              
                 "widget"=>"single_text",
-                "input_format"=>"Y-m-d H:i",
                 "placeholder"=>
                     "Select Start date"
                     ,
                "attr"=>[
-                    "min"=>(new \DateTime())->format("Y-m-d H:i:s"),
+                    // "min"=>(new \DateTime())->format("Y-m-d H:i:s"),
+                    "class"=>"js-datepicker"
                 ]
             ])
             ->add('endDate',DateTimeType::class,[
                 "date_label"=>"Starts on",
                "widget"=>"single_text",
-               "input_format"=>"Y-m-d H:i",
+               "html5"=>false,
+             
                "placeholder"=>
                    "Select Start date"
                    ,
-               "attr"=>[
-                   "min"=>(new \DateTime())->format("Y-m-d H:i:s"),
-               ]
+                   "attr"=>[
+                    // "min"=>(new \DateTime())->format("Y-m-d H:i:s"),
+                    "class"=>"js-datepicker"
+                ]
            ])
         ;
     }

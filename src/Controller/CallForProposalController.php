@@ -263,7 +263,10 @@ return $this->redirectToRoute('call__details', array('id' => $callForProposal->g
         $form = $this->createForm(ResearchReportPhaseType::class, $researchReportPhase);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+     
+            $researchReportPhase->setStartDate(new \DateTime($request->request->get('startDate')));
+            $researchReportPhase->setEndDate(new \DateTime($request->request->get('endDate')));
             $researchReportPhase->setApplicationCall($call_for_proposal);
             $researchReportPhase->setCreatedBy($this->getUser());
             $entityManager->persist($researchReportPhase);
@@ -271,7 +274,7 @@ return $this->redirectToRoute('call__details', array('id' => $callForProposal->g
 
             return $this->redirectToRoute('call_research_report_phase', ["id"=>$call_for_proposal->getId()], Response::HTTP_SEE_OTHER);
         }
-
+       
         return $this->render('call_for_proposal/research_phase.html.twig', [
             'call_for_proposal' => $call_for_proposal,
             'research_report_phase' => $researchReportPhase,

@@ -1,0 +1,32 @@
+<div class="tab-pane" id="report">
+
+	<h2>Reports</h2>
+	{% if research_report_submssion_setting_count %}
+<a href="#" class="btn btn-info float-right">View Your Report Schedule</a>
+
+		<div>
+			{% for report in research_reports %}
+				<div class="font-18 my-2 fw-bold">
+					Report
+					{{loop.index}}</div>
+				<div class="font-17 m-0 fw-bold">
+					{{report.title}}</div>
+				<a class="btn btn-bd-download btn-info" href="{{asset('research-report')}}/{{report.file}}">Open File</a>
+				<div class="font-16 m-0 ">
+					{{report.remark}}</div>
+				<div class="font-13 m-0 fw-bold text-green bg-red">
+					{{report.submittedAt|date('Y-m-d')}}</div>
+			{% endfor %}
+		</div>
+		<div>
+			{{ form_start(research_report_form,{"attr":{"onsubmit":"return confirm('are you sure?')"}}) }}
+			{{ form_widget(research_report_form) }}
+			<button class="btn btn-success" type="submit">Submit</button>
+			{{ form_end(research_report_form) }}
+		</div>
+		{% else %}
+{{ form_start(research_report_submssion_setting_form) }}
+{{ form_widget(research_report_submssion_setting_form) }}
+{{ form_end(research_report_submssion_setting_form) }}
+	{% endif %}
+</div>

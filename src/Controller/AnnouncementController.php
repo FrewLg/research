@@ -41,7 +41,7 @@ class AnnouncementController extends AbstractController
      */
     public function new(Request $request, AnnouncementRepository $announcementRepository, MailerInterface $mailer,  PaginatorInterface $paginator): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $announcement = new Announcement();

@@ -19,7 +19,7 @@ class ResearchReportPhase
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=CallForProposal::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=CallForProposal::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $applicationCall;
@@ -64,6 +64,11 @@ class ResearchReportPhase
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $tolerableDay;
 
     public function getId(): ?int
     {
@@ -187,6 +192,18 @@ class ResearchReportPhase
     public function setUpdatedAt(?\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getTolerableDay(): ?int
+    {
+        return $this->tolerableDay;
+    }
+
+    public function setTolerableDay(int $tolerableDay): self
+    {
+        $this->tolerableDay = $tolerableDay;
 
         return $this;
     }

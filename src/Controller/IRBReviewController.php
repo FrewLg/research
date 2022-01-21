@@ -59,7 +59,7 @@ class IRBReviewController extends AbstractController
      * @Route("/myassigned", name="myassigned", methods={"GET"})
      */
     public function myassigned(Request $request, PaginatorInterface $paginator): Response {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
@@ -189,7 +189,7 @@ $entityManager = $this->getDoctrine()->getManager();
      * @Route("/{id}/assigned", name="his_assignment", methods={"GET"})
      */
     public function allassigned(Request $request, User $user, PaginatorInterface $paginator): Response {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
          
         $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $user  ],["id"=>"DESC"]);
@@ -218,7 +218,7 @@ $entityManager = $this->getDoctrine()->getManager();
      */
     public function revise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
         ////Ultimate reviewers page
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $submissionOfreviewer = $entityManager->getRepository(ReviewAssignment::class)->find($reviewAssignment);
@@ -364,7 +364,7 @@ $entityManager = $this->getDoctrine()->getManager();
      */
     public function rerevise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
         ////Ultimate reviewers page
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         // $id=  $review->getReviewAssignment()->getId();
@@ -509,7 +509,7 @@ $entityManager = $this->getDoctrine()->getManager();
      */
     public function declineinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
 
 	$entityManager = $this->getDoctrine()->getManager();
     $mew= $this->getUser()->getId();
@@ -582,7 +582,7 @@ $entityManager = $this->getDoctrine()->getManager();
      */
     public function acceptinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
 
     $entityManager = $this->getDoctrine()->getManager();
     if($this->getUser() != $reviewAssignment->getReviewer()){

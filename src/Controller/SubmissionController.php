@@ -9,6 +9,8 @@ use App\Entity\EditorialDecision;
 use App\Entity\Expense;
 use App\Entity\PublishedSubmission;
 use App\Entity\PublishedSubmissionAttachment;
+use App\Entity\ResearchReport;
+use App\Entity\ResearchReportSubmissionSetting;
 use App\Entity\Review;
 use App\Entity\ReviewAssignment;
 use App\Entity\Submission;
@@ -17,6 +19,8 @@ use App\Entity\SubmissionBudget;
 use App\Filter\Type\FilterFunctions;
 use App\Filter\Type\SubmissionFilterType;
 use App\Form\EditorialDecisionType;
+use App\Form\ResearchReportSubmissionSettingType;
+use App\Form\ResearchReportType;
 use App\Form\ReviewType;
 use App\Form\ReviewDecisionType;
 use App\Form\SubmissionType;
@@ -55,7 +59,8 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/", name="submission_index", methods={"GET","POST"})
      */
-    public function index(Request $request,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater ): Response {
+    public function index(Request $request,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
+    {
         // $this->denyAccessUnlessGranted('assn_clg_cntr');
         $em = $this->getDoctrine()->getManager();
         //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
@@ -99,10 +104,10 @@ class SubmissionController extends AbstractController
 
         // Paginate the results of the query
         $submissions = $paginator->paginate(
-         
+
             $submissionRepository,
             $request->query->getInt('page', 1),
-          
+
             10
         );
         return $this->render('submission/index.html.twig', [
@@ -214,7 +219,7 @@ link below before the deadline of the call.';
 
         #######################
         $em  = $this->getDoctrine()->getManager();
-      
+
         $deadline = $callForProposal->getDeadline();
         $today = new \DateTime('');
         if ($deadline <= $today) {
@@ -674,7 +679,7 @@ link below before the deadline of the call.';
         $entityManager = $this->getDoctrine()->getManager();
         $publicationstatus = $entityManager->getRepository(PublishedSubmission::class)->findBy(['submission' => $submission]);
         $Expenses = $entityManager->getRepository(SubmissionBudget::class)->findBy(['submission' => $submission]);
-        $reviewsatge = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission],["id"=>"DESC"]);
+        $reviewsatge = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission], ["id" => "DESC"]);
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $submission, 'allow_to_view' => 1]);
         $contributors = $entityManager->getRepository(CoAuthor::class)->find($submission);
         return $this->render('submission/status.html.twig', [
@@ -912,7 +917,49 @@ link below before the deadline of the call.';
             return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
         }
 
+        $research_report_submssion_setting_count = sizeof($submission->getResearchReportSubmissionSettings());
 
+
+            $research_report_submssion_setting = new ResearchReportSubmissionSetting();
+
+            $research_report_submssion_setting_form =  $this->createForm(ResearchReportSubmissionSettingType::class, $research_report_submssion_setting);
+            $research_report_submssion_setting_form->handleRequest($request);
+
+            if ($research_report_submssion_setting_form->isSubmitted() && $research_report_submssion_setting_form->isValid()) {
+               $research_report_submssion_setting->setSubmission($submission);
+                $em->persist($research_report_submssion_setting);
+                $em->flush();
+                return $this->redirectToRoute("submission_show",['id'=>$submission->getId()]);
+            }
+        
+
+        $researchReport = new ResearchReport();
+        $research_report_form = $this->createForm(ResearchReportType::class, $researchReport);
+
+        $research_report_form->handleRequest($request);
+        $research_reports = $submission->getResearchReports();
+
+
+        if ($research_report_form->isSubmitted() && $research_report_form->isValid()) {
+
+
+
+            $uploadedFile = $research_report_form['file']->getData();
+            $destination = $this->getParameter('kernel.project_dir') . '/public/research-report';
+            $newFilename = $this->getUser()->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
+            $uploadedFile->move($destination, $newFilename);
+
+
+            $researchReport->setFile($newFilename);
+            $researchReport->setFileType($uploadedFile->getClientOriginalExtension());
+            $researchReport->setSubmission($submission);
+            $researchReport->setSubmittedBy($this->getUser());
+
+            $em->persist($researchReport);
+            $em->flush();
+            $this->addFlash("success", "Report submitted successfully!!");
+            return $this->redirectToRoute("submission_show", ["id" => $submission->getId()]);
+        }
 
         ################ Admin Revision#########################
 
@@ -927,6 +974,10 @@ link below before the deadline of the call.';
             'co_authors' => $contributors,
             'collaborating_institutions' => $CollaboratingInstitutions,
             'expenses' => $Expenses,
+            'research_report_form' => $research_report_form->createView(),
+            'research_report_submssion_setting_form' => $research_report_submssion_setting_form->createView(),
+            'research_report_submssion_setting_count' => $research_report_submssion_setting_count,
+            'research_reports' => $research_reports,
         ]);
     }
 
@@ -937,10 +988,10 @@ link below before the deadline of the call.';
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
-       
+
         $myemail = $this->getUser();
         // $membership = $entityManager->getRepository(CoAuthor::class)->findBy(['email' => $this_is_me]);
-        $myresearches = $entityManager->getRepository(CoAuthor::class)->findBy(['researcher' => $myemail],["id"=>"DESC"]);
+        $myresearches = $entityManager->getRepository(CoAuthor::class)->findBy(['researcher' => $myemail], ["id" => "DESC"]);
         ////// if no throw exception
         $Allmyresearches = $paginator->paginate(
             $myresearches,

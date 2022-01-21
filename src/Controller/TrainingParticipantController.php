@@ -127,7 +127,7 @@ class TrainingParticipantController extends AbstractController
      */
     public function exportcertnow(Request $request, TrainingParticipant $uid) {
 
-        // $this->denyAccessUnlessGranted('ROLE_USER');
+        // 
 
         $em = $this->getDoctrine()->getManager();
 

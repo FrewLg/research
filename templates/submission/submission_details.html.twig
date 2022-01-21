@@ -70,6 +70,9 @@
 									<li>
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
 									</li>
+									<li>
+										<a class="nav-link" href="#report" data-bs-toggle="tab">Reports</a>
+									</li>
 									{% if submission.copyedit is  not empty %}
 										<li>
 											<a class="nav-link" href="#copyedit" data-bs-toggle="tab">Progress report</a>
@@ -430,6 +433,9 @@
 
 									</div>
 
+{# start of report tab #}
+{% include "submission/tabs/report.html.twig" %}
+{# end of report tab #}
 
 									<div class="tab-pane" id="Revision">
 

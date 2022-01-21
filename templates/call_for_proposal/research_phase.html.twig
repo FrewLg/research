@@ -5,7 +5,7 @@
  {% block styles %}
  
   <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
- {% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> {% endblock %}
 {% block pagehead %}Call For Proposal {% endblock %}
 {% block breadcrumb %} <li class="breadcrumb-item active">Call For Proposal</li>  {% endblock %}
 {% block body %}
@@ -64,9 +64,11 @@
                 </div>
               </div>
 		
+    
               <!-- END timeline item -->
 			  {% for key,phase in research_report_phase.phases %}
 				  
+
 				
               <!-- timeline item -->
               <div>
@@ -76,7 +78,7 @@
                   <h3 class="timeline-header"><a href="#">{{"Phase "~key}} ({{research_report_phase.phases[key]|date('Y-m-d')}})</a> </h3>
 
                   <div class="timeline-body">
-                  {{" Phase "~key}} Report should be submitted with in this days
+                  {{" Phase "~key}} Report should be submitted with in {{research_report_phase.maximumDuration}}  days
                   </div>
                   <div class="timeline-footer">
                     <a class="btn btn-primary btn-sm">Read more</a>
@@ -124,4 +126,9 @@
 {% endblock %}
 {% block script %}
 	<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>   <script type="text/javascript">
+         $(function () {
+         $('.js-datepicker').datetimepicker();
+               });
+      </script>
 {% endblock %}
