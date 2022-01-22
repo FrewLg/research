@@ -257,6 +257,10 @@ class Submission
      * @ORM\OneToMany(targetEntity=ResearchReportSubmissionSetting::class, mappedBy="submission", orphanRemoval=true)
      */
     private $researchReportSubmissionSettings;
+    /*
+    * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $granted;
 
    
 
@@ -1087,6 +1091,16 @@ class Submission
                 $researchReportSubmissionSetting->setSubmission(null);
             }
         }
+    return $this;
+    }
+    public function getGranted(): ?bool
+    {
+        return $this->granted;
+    }
+
+    public function setGranted(?bool $granted): self
+    {
+        $this->granted = $granted;
 
         return $this;
     }

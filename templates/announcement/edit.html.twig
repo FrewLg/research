@@ -5,7 +5,6 @@
 
     {{ include('announcement/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('announcement_new') }}">back to list</a>
+    <a href="{{ path('announcement_new') }}" class="btn btn-soft-info">back to list</a>
 
-    {{ include('announcement/_delete_form.html.twig') }}
-{% endblock %}
+ {% endblock %}

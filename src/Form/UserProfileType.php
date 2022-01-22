@@ -27,6 +27,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+
+
+
 class UserProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -58,19 +61,19 @@ class UserProfileType extends AbstractType
                                 ]
                             )
             
-            // ->add('birth_date' 
-            // , DateType::class, array(
-            //                 'placeholder' => [
-            //       'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-            //     ],
-            //               'widget' => 'single_text',
-            //               'format' => 'yyyy-MM-dd',
-            //                  'attr' => array(
+            ->add('birth_date' 
+            , DateType::class, array(
+                            'placeholder' => [
+                  'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                ],
+                          'widget' => 'single_text',
+                          'format' => 'yyyy-MM-dd',
+                             'attr' => array(
                 
-            //            'required' => true,
-            //     'class'=>'form-group col-md-4',
-            //        )
-            //           ))
+                       'required' => true,
+                'class'=>'form-group col-md-4',
+                   )
+                      ))
 //             ->add('bio' ,TextareaType::class,
 //             [
 //                 'required'=>false,
@@ -106,30 +109,29 @@ class UserProfileType extends AbstractType
                 'allow_delete' => true,
             ])
             
-            // ->add('suffix' ,EntityType::class,[
-            //     'placeholder' => '---Select Suffixe   ---',
-            //     "class"=>Suffixe::class,
-            //     'expanded'=>true,
-            //     "attr"=>[
-            //         "class"=>"select2 ",
-            //     ]
-            // ])
-            // ->add('education_level',EntityType::class,[
-            //     'placeholder' => '---Select Education level ---',
-            //     "class"=>EducationalLevel::class,
-            //     "attr"=>[
-            //         "class"=>"select2 ",
-            //     ]
-            // ])
+            ->add('suffix' ,EntityType::class,[
+                'placeholder' => '--- Select Suffix ---',
+                "class"=>Suffixe::class,
+                "attr"=>[
+                    "class"=>"select2 ",
+                ]
+            ])
+            ->add('education_level',EntityType::class,[
+                'placeholder' => '---Select Education level ---',
+                "class"=>EducationalLevel::class,
+                "attr"=>[
+                    "class"=>"select2 ",
+                ]
+            ])
             
-            // ->add('academic_rank',EntityType::class,[
-            //     'placeholder' => '---Select Academic rank---',
+            ->add('academic_rank',EntityType::class,[
+                'placeholder' => '---Select Academic rank---',
                
-            //     "class"=>AcademicRank::class,
-            //     "attr"=>[
-            //         "class"=>"select2 ",
-            //     ]
-            // ])
+                "class"=>AcademicRank::class,
+                "attr"=>[
+                    "class"=>"select2 ",
+                ]
+            ])
             ->add('college',EntityType::class,[
                 'placeholder' => '---Select College---',
                 "class"=>College::class,
@@ -138,21 +140,36 @@ class UserProfileType extends AbstractType
                 ]
             ])
             
-            
-        // ->add('department',EntityType::class,[
-        //     'placeholder' => '---Select Department---',
-        //     "class"=>Department::class,
-        //     "attr"=>[
-        //         "class"=>"select2 ",
-        //     ]
-        // ])
-            // 
+        
+           ;
+        }
+    
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => UserInfo::class,
+        ]);
+    }
+}
+
+class UserProfilePictureType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        
+       
+
+            $builder
+         
             ->add('image', FileType::class, [
-                'label' => 'Upload profile picture... ',
+                'label' => false,
                 'mapped' => false,
                 'required' => false,
                 "attr"=>[
-                    "accept"=>"image/*"
+                    "accept"=>"image/*",
+                    "class"=>"form-control",
+
                 ]
             ]);
         }

@@ -25,7 +25,8 @@ class ResearchReportType extends AbstractType
                 "help"=>"Upload research report",
                 "mapped"=>false,
                 "attr"=>[
-                    "accept"=>"application/pdf",
+                    "accept"=>"application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                    text/plain, application/pdf, image/*",
                     "class"=>"form-control",
                 ]
             ])

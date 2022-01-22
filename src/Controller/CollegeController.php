@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CallForProposal;
 use App\Entity\College;
 use App\Form\CollegeType;
 use App\Repository\CollegeRepository; 
@@ -26,6 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Guidelines;
 use App\Form\GuidelinesType;
 use App\Repository\GuidelinesRepository;
+use App\Utils\Constants;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 #[Route('/college')]
@@ -400,6 +402,66 @@ $institutionalReviewersBoard= new InstitutionalReviewersBoard() ;
              'thematic_areas' => $thematicAreas,
         ]);
         
+    }
+
+
+    #[Route('/{prefix}/details/', name: 'college_detail', methods: ['GET', 'POST'])]
+    public function details(Request $request,  College $college, $prefix): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $guidelines =$entityManager->getRepository(Guidelines::class)->findOneBy(['college' => $college ] );
+   
+    $AllIRBMembers = $entityManager->getRepository(InstitutionalReviewersBoard::class)->findBy(['college' => $college ] );
+    $collegeinfo = $entityManager->getRepository(CallForProposal::class)->findBy(['college' => $college ] );
+        //  $collegeinfo='';
+    $info = 'All';
+    switch ($prefix) {
+
+    case 'jih':
+         $request->setlocale('am');
+         break;
+    case 'jit':
+        $collegeinfo = $collegeinfo->getSubmissions(['complete' => '1']);
+        $info = 'Complete submission';
+        break;
+    case 'beco':
+        $collegeinfo = $collegeinfo->getSubmissions(['submission_type' => 'grant']);
+        $info = 'Grant';
+        break;
+    case 'cns':
+        $collegeinfo = $collegeinfo->getSubmissions(['submission_type' => Constants::RESEARCH_TYPE_COMMUNITY_SERVICE]);
+        $info = 'Community service';
+        break;
+    case 'clg':
+     
+        $collegeinfo = $collegeinfo->getSubmissions(['submission_type' => Constants::RESEARCH_TYPE_MEGA]);
+        $info = 'Technology transfer';
+        break;
+    case 'jucavm':
+        $collegeinfo = $collegeinfo->getSubmissions(['submission_type' =>Constants::RESEARCH_TYPE_TECHNOLOGY_TRANSFER]);
+        $info = 'Technology transfer';
+        break;
+    case 'cebs':
+        $collegeinfo = $collegeinfo->getSubmissions(['published' => '1']);
+        $info = 'Published';
+        break;
+
+    case 'cssh':
+        $collegeinfo = $collegeinfo->getSubmissions(['submission_type' => 'grant']);
+        $info = 'Review assigned';
+        break;
+    case 'ic':
+        $collegeinfo = $collegeinfo->getSubmissions(['complete' => '0']);
+        $info = 'Incomplete ';
+        break;
+    default:
+        return $this->redirectToRoute('submission_index');
+ }
+    return $this->render('college/showdetails.html.twig', [
+            'college' => $college,
+         'guidelines' => $guidelines, 
+          'institutional_reviewers_boards'=> $AllIRBMembers,
+          ]);
     }
 
     #[Route('/{id}/edit', name: 'college_edit', methods: ['GET', 'POST'])]

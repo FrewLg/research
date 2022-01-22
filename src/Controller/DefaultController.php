@@ -29,7 +29,7 @@ class DefaultController extends AbstractController
     {
       
 	$em = $this->getDoctrine()->getManager();
-	$news = array_reverse($em->getRepository(Announcement::class)->findAll());
+	$news = $em->getRepository(Announcement::class)->getPosted();
 	$qb = $em->createQueryBuilder();
     	
         $result = $qb
@@ -121,8 +121,7 @@ public function testindex(MessageBusInterface $bus)
 
     public function onKernelRequest(GetResponseEvent $event) {
         $request = $event->getRequest();
-        $locale = $request->getLocale();
-
+        $locale = $request->getLocale(); 
 //        echo $locale;
 //        die();
         // some logic to determine the $locale

@@ -23,9 +23,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('email_message_index') }}">back to list</a>
+    <a href="{{ path('email_message_index') }}"  class='btn btn-soft-info btn-xs'>Back to list</a>
 
-    <a href="{{ path('email_message_edit', {'id': email_message.id}) }}">edit</a>
+    <a href="{{ path('email_message_edit', {'id': email_message.id}) }}"  class='btn btn-soft-primary btn-xs'>Edit</a>
 
     {{ include('email_message/_delete_form.html.twig') }}
 {% endblock %}

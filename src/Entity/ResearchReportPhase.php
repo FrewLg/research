@@ -70,6 +70,11 @@ class ResearchReportPhase
      */
     private $tolerableDay;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $note;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -204,6 +209,18 @@ class ResearchReportPhase
     public function setTolerableDay(int $tolerableDay): self
     {
         $this->tolerableDay = $tolerableDay;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }

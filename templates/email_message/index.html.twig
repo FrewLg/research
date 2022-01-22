@@ -22,8 +22,8 @@
                 <td>{{ email_message.emailKey }}</td>
                 <td>{{ email_message.subject |raw}}</td>
                 <td>
-                    <a href="{{ path('email_message_show', {'id': email_message.id}) }}">show</a>
-                    <a href="{{ path('email_message_edit', {'id': email_message.id}) }}">edit</a>
+                    <a href="{{ path('email_message_show', {'id': email_message.id}) }}" class="btn btn-xs btn-soft-info">show</a>
+                    <a href="{{ path('email_message_edit', {'id': email_message.id}) }}" class="btn btn-xs btn-soft-primary">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -36,5 +36,5 @@
     </div>
                 {{ knp_pagination_render(email_messages) }}
 
-    <a href="{{ path('email_message_new') }}">Create new</a>
+    <a href="{{ path('email_message_new') }}" class="btn btn-xs btn-soft-success">Create new</a>
 {% endblock %}

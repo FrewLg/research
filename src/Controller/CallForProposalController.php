@@ -7,10 +7,12 @@ use App\Entity\ResearchReportPhase;
 use App\Form\CallForProposalType;
 use App\Form\ResearchReportPhaseType;
 use App\Repository\CallForProposalRepository;
+use App\Repository\SubmissionRepository;
 use App\Utils\Constants;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -18,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -265,8 +268,9 @@ return $this->redirectToRoute('call__details', array('id' => $callForProposal->g
 
         if ($form->isSubmitted()) {
      
-            $researchReportPhase->setStartDate(new \DateTime($request->request->get('startDate')));
-            $researchReportPhase->setEndDate(new \DateTime($request->request->get('endDate')));
+           
+            $researchReportPhase->setStartDate(new \DateTime($request->request->get('research_report_phase')['startDate']));
+            $researchReportPhase->setEndDate(new \DateTime($request->request->get('research_report_phase')['endDate']));
             $researchReportPhase->setApplicationCall($call_for_proposal);
             $researchReportPhase->setCreatedBy($this->getUser());
             $entityManager->persist($researchReportPhase);
@@ -298,6 +302,22 @@ return $this->redirectToRoute('call__details', array('id' => $callForProposal->g
 return $this->redirectToRoute('all_calls' );
 
     }
+
+
+
+    /**
+     * @Route("/{uidentifier}/result", name="call_approved_result", methods={"GET"})
+     */
+    public function result(CallForProposal $callForProposal,SubmissionRepository $submissionRepository): Response {
+
+            $results=$submissionRepository->filterApproved($callForProposal);
+            
+            return $this->render('call_for_proposal/result.html.twig', [
+                'results' => $results,
+                'call_for_proposal'=>$callForProposal
+            ]);
+
+    }
     /**
      * @Route("/{id}/approve", name="call__approve", methods={"GET"})
      */
@@ -311,6 +331,107 @@ return $this->redirectToRoute('all_calls' );
         $callForProposal->setApprovedAt(new \Datetime());
         $this->getDoctrine()->getManager()->flush();
         return $this->redirectToRoute('all_calls');
+    }
+
+    //         /**
+//      * @Route("/{id}/undo-announce", name="ann_approve_undo", methods={"GET"})
+//      */
+//     public function undoapprove(Announcement $announcement): Response {
+
+//         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+//          $announcement->setApproved(0); 
+//         $this->getDoctrine()->getManager()->flush(); 
+// return $this->redirectToRoute('announcement_index' );
+
+//     }
+//     /**
+//      * @Route("/{id}/aapprove", name="ann__approve", methods={"GET"})
+//      */
+//     public function approve(Announcement $announcement): Response {
+
+//         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+//         $approver = $this->getUser();
+//         $announcement->setApproved(1); 
+//         $this->getDoctrine()->getManager()->flush();
+//         $this->addFlash("success", "Announcement has been! Thank you!");
+
+//         return $this->redirectToRoute('announcement_index');
+//     } 
+
+
+   /**
+     * @Route("/{uidentifier}/sendbatch", name="calsendbatch_email", methods={"GET"})
+     */
+    public function sendbatch(CallForProposal $callForProposal , MailerInterface $mailer  ): Response {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $entityManager = $this->getDoctrine()->getManager();
+
+	///////////// Let us email subscribed users to announcements 
+	$query = $entityManager->createQuery(
+   	 'SELECT u.email , ui.first_name, u.username
+	    FROM App:Review s
+	    JOIN s.submission r
+	    JOIN r.callForProposal c
+	    JOIN r.author u 
+	    JOIN u.userInfo ui
+	    WHERE s.from_director = 1 and s.remark=4  and c.id=:callForProposal' ) 
+            ->setParameter('callForProposal', $callForProposal);
+ 
+	$recepients = $query->getResult();
+    dd($recepients);
+	 ///////////////Email for those who subscribed to website/////////
+	$em = $this->getDoctrine()->getManager();
+	$qb = $em->createQueryBuilder();
+  	$messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'PRESENTATION_SCHEDULE_NOTIFICATION']);
+	$fl = $em->getRepository('App:User')->findAll();
+ 	$subject=$messages->getSubject();
+ 	$body=$messages->getBody();
+ foreach ($recepients as $row ) {
+  $theEmails[]=   $row['email'].' ';
+  $theNames[]=   $row['username'].' ';
+  $theFirstNames[]=   $row['first_name'].' ';
+  }   
+     $subject=$messages->getSubject();
+            $body=$messages->getBody();
+            foreach ($recepients as $row ) {
+            $theEmails[]=   $row['email'].' ';
+            $theNames[]=   $row['username'].' ';
+            $theFirstNames[]=   $row['first_name'].' ';
+            }  
+ 
+            ////////////
+            $length = count($recepients);
+            for ($i = 0; $i < $length; $i++) {
+                /////////////// 
+                $theFirstName = $theFirstNames[$i];
+                if ($theFirstName == '') {
+                    $theFirstName = $theNames[$i];
+                    dd($theFirstName);
+                }
+                $theEmail = $theEmails[$i];
+                $email = (new TemplatedEmail())
+                    ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research  Office'))
+                    //    ->to($theEmails)
+                    ->to(new Address($theEmails[$i], $theFirstNames[$i]))
+                    // ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
+                    ->subject($subject)
+                    ->htmlTemplate('emails/news.html.twig')
+                    ->context([
+                        'subject' => $subject,
+                        'body' => $body,
+                        'name' => $theFirstName,
+                        'Authoremail' => $theEmail,
+                    ]);
+                $mailer->send($email);
+            }
+
+            $this->addFlash("success", "Email sent to short listed porposal PIs successfully!");
+            //////////////////////////// end emailing ///////////////////////
+            return $this->redirectToRoute('announcement_index');
+        
+        
     }
 
     /**

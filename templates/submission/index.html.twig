@@ -5,14 +5,43 @@
 {% endblock %}
 {% block body %}
 	<!-- testFilter.html.twig -->
+{% import "common/macro/input.html.twig" as input_macro %}
 
 
 	<div class="row">
+		<div class="col-lg-12 row">
+			<div class="accordion" id="accordionExample">
+				<div class="accordion-item active">
+					<h5 class="accordion-header m-0" id="headingOne">
+						<button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+							Filter
+						</button>
+					</h5>
+					<div id="collapseOne" class="accordion-collapse collapse active" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+						<div class="accordion-body active">
+							{{ form_start(sumissionFilterForm) }}
+							{% for child in sumissionFilterForm.children %}
+							{% if child.vars.name != "_token" %}
+							
+								{{input_macro.input(child)}}
+							{% endif %}
+							{% endfor %}
+							<button class="btn offset-5 col-3 float-right btn-success my-3 float-right schedule-submit-button" type="submit">Filter</button>
+
+							{{ form_end(sumissionFilterForm) }}
+							
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="col-lg-10">
 
 			<div class="card ">
 				<div class="card-header container">
-					{{ info |raw}}
+					{{ info |raw}}({{submissions.totalItemCount}})
 				</div>
 
 				<div class="card-body container ">
@@ -85,7 +114,7 @@
 
 												<a href="#" class="avatar-box thumb-xxs align-self-center">
 													<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-														 {{submission.reviewAssignments|length}}R
+														{{submission.reviewAssignments|length}}R
 													</span>
 
 												</a>
@@ -172,8 +201,8 @@
 				<div class="card-body container ">
 					<div class="row ">
 
-    {{ include('dashboard/quick_filter.html.twig') }}
-					 
+						{{ include('dashboard/quick_filter.html.twig') }}
+
 					</div>
 
 				</div>

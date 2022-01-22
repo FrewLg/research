@@ -23,6 +23,7 @@ use App\Form\ResearchReportSubmissionSettingType;
 use App\Form\ResearchReportType;
 use App\Form\ReviewType;
 use App\Form\ReviewDecisionType;
+use App\Form\SubmissionFilterType as FormSubmissionFilterType;
 use App\Form\SubmissionType;
 use App\Message\SendEmailMessage;
 use App\Repository\CallForProposalRepository;
@@ -67,17 +68,26 @@ class SubmissionController extends AbstractController
         $formFilter = $this->createForm(SubmissionFilterType::class);
         $formFilter->handleRequest($request);
         $info = 'All';
-        $submissionRepository = $submissionRepository->getSubmissions();
+        $submissionData = $submissionRepository->getSubmissions();
         if ($request->query->has($formFilter->getName())) {
             $filter = new FilterFunctions();
             $lexikFormFilter = $this->get('lexik_form_filter.query_builder_updater');
-            $submissionRepository = $filter->filter($request, $formFilter, $em, $lexikFormFilter, 'App:User');
+            $submissionData = $filter->filter($request, $formFilter, $em, $lexikFormFilter, 'App:User');
+        }
+        $sumissionFilterForm= $this->createForm(FormSubmissionFilterType::class);
+        $sumissionFilterForm->handleRequest($request);
+        if($sumissionFilterForm->isSubmitted() && $sumissionFilterForm->isValid()){
+
+           $submissionData= $submissionRepository->getSubmissions($sumissionFilterForm->getData());
+         
+        //    dd($submissionData);
+            
         }
 
         // Paginate the results of the query
         $Allsubmissions = $paginator->paginate(
             // Doctrine Query, not results
-            $submissionRepository,
+            $submissionData,
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
@@ -87,6 +97,7 @@ class SubmissionController extends AbstractController
             'formFilter' => $formFilter->createView(),
             'submissions' => $Allsubmissions,
             'info' => $info,
+            'sumissionFilterForm' => $sumissionFilterForm->createView(),
         ]);
     }
     /**
@@ -183,8 +194,8 @@ class SubmissionController extends AbstractController
             $body = 'Dear ' . $theFirstNames[$i] . ',  <br> 
                      ' . $pi_name . ' is waiting for you to respond 
                     to his recent proposal submisison entitled
-"' . $titles[$i] . ' ". Please respond to the invitaion using the invitation 
-link below before the deadline of the call.';
+            "' . $titles[$i] . ' ". Please respond to the invitaion using the invitation 
+            link below before the deadline of the call.';
             $invitation_url = 'submission/my-membership-details/' . $copi_id[$i];
             $email = (new TemplatedEmail())
                 ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
@@ -562,13 +573,7 @@ link below before the deadline of the call.';
             return $this->redirectToRoute('myreviews');
         }
         ################### Are you the one? #################################
-        $me = $this->getUser()->getId();
 
-        /////
-        //  $this->checkValidatdeAuthor($submission, $me);
-
-        //////
-        $metoo = $this->getUser();
         $editorialDecisions = $entityManager->getRepository(EditorialDecision::class)->findBy(['submission' => $submission]);
         #dd($me_as_a_reviewer.$me);
         $measareviewer = $this->getUser();
@@ -875,9 +880,7 @@ link below before the deadline of the call.';
             $review->setFromDirector(1);
             $review->setAllowToView(1);
             ######################
-            ########### Let us mail it ########### 
-
-
+            ########### Let us mail it ###########  
             if ($form->get('remark')->getData() == 4) {
 
                 $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'EMAIL_KEY_SUBMISSION_STATUS_ACCEPTED']);
@@ -920,18 +923,30 @@ link below before the deadline of the call.';
         $research_report_submssion_setting_count = sizeof($submission->getResearchReportSubmissionSettings());
 
 
-            $research_report_submssion_setting = new ResearchReportSubmissionSetting();
+        $researchReportPhase = $submission->getCallForProposal()?->getResearchReportPhase();
 
-            $research_report_submssion_setting_form =  $this->createForm(ResearchReportSubmissionSettingType::class, $research_report_submssion_setting);
-            $research_report_submssion_setting_form->handleRequest($request);
+        $research_report_submssion_setting = new ResearchReportSubmissionSetting();
 
-            if ($research_report_submssion_setting_form->isSubmitted() && $research_report_submssion_setting_form->isValid()) {
-               $research_report_submssion_setting->setSubmission($submission);
-                $em->persist($research_report_submssion_setting);
-                $em->flush();
-                return $this->redirectToRoute("submission_show",['id'=>$submission->getId()]);
+        $research_report_submssion_setting_form =  $this->createForm(ResearchReportSubmissionSettingType::class, $research_report_submssion_setting, ["researchReportPhase" => $researchReportPhase]);
+        $research_report_submssion_setting_form->handleRequest($request);
+
+        if ($research_report_submssion_setting_form->isSubmitted()) {
+            //   dd($request->request);
+            foreach ($request->request->get('research_report_submission_setting') as $key => $value) {
+
+                if ($key != "_token") {
+                    $research_report_submssion_setting = new ResearchReportSubmissionSetting();
+
+                    $research_report_submssion_setting->setSubmission($submission);
+                    $research_report_submssion_setting->setPhase(explode("_", $key)[1]);
+                    $research_report_submssion_setting->setSubmissionDate(new \DateTime($value));
+                    $em->persist($research_report_submssion_setting);
+                    $em->flush();
+                }
             }
-        
+            return $this->redirectToRoute("submission_show", ['id' => $submission->getId()]);
+        }
+
 
         $researchReport = new ResearchReport();
         $research_report_form = $this->createForm(ResearchReportType::class, $researchReport);
@@ -962,7 +977,6 @@ link below before the deadline of the call.';
         }
 
         ################ Admin Revision#########################
-
         return $this->render('submission/submission_details.html.twig', [
             'submission' => $submission,
             'Overall_budger_request' => $Overall_budger_request,
@@ -1005,26 +1019,86 @@ link below before the deadline of the call.';
     }
 
 
+
+    /**
+     * @Route("/all-grant-winners/", name="allawarded", methods={"GET","POST"})
+     */
+
+    public function allawarded(Request $request,  PaginatorInterface $paginator): Response
+    {
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $entityManager = $this->getDoctrine()->getManager();
+        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['granted' => 1]);
+        $Allmyresearches = $paginator->paginate(
+            $allawarded,
+            $request->query->getInt('page', 1),
+            15
+        );
+
+        return $this->render('submission/index.html.twig', [
+            'info' => 'All grant winners ',
+            'submissions' => $Allmyresearches,
+        ]);
+    }
+    /**
+     * @Route("/grant-winners/{uidentifier}/", name="call_winners", methods={"GET"})
+     */
+    public function call_winners(Request $request, CallForProposal $callForProposal, PaginatorInterface $paginator): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $entityManager = $this->getDoctrine()->getManager();
+        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['granted' => 1, 'call_for_proposal' => $callForProposal]);
+
+        $Allmyresearches = $paginator->paginate(
+            $allawarded,
+            $request->query->getInt('page', 1),
+            15
+        );
+
+        return $this->render('submission/index.html.twig', [
+            'submissions' => $Allmyresearches,
+            'info' => 'Grant winners of' . $callForProposal->getSubject(),
+        ]);
+    }
+
+
     /**
      * @Route("/my-membership-details/{id}", name="membershipdetails" ,  methods={"GET","POST"})
      */
-    public function mymembershipdetailss(Request $request, Submission $submission): Response
+    public function mymembershipdetails(Submission $submission): Response
     {
 
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
-        $myresearches = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission]);
+        $myresearche = $entityManager->getRepository(Submission::class)->find($submission);
 
-        $researcher = $submission->getCoAuthors->getResearcher();
         $user = $this->getUser();
-        if (!$researcher == $user) {
+        $allcoauthors = $entityManager->getRepository(CoAuthor::class)->find($submission);
+        $member = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission, 'researcher' => $this->getUser()]);
 
 
-            $this->addFlash("danger", "Sorry the link bronek!");
+        if (!$member) {
+            $this->addFlash("danger", "Sorry the you are not allowed for this service!");
             return $this->redirectToRoute('membership');
         }
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $publicationstatus = $entityManager->getRepository(PublishedSubmission::class)->findBy(['submission' => $submission]);
+        $Expenses = $entityManager->getRepository(SubmissionBudget::class)->findBy(['submission' => $submission]);
+        $reviewsatge = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission], ["id" => "DESC"]);
+        $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $submission, 'allow_to_view' => 1]);
+        $contributors = $entityManager->getRepository(CoAuthor::class)->find($submission);
+
         return $this->render('submission/co-authorship_detail.html.twig', [
-            'collaboration' => $myresearches,
+            'co_authors' => $contributors,
+            'expenses' => $Expenses,
+            'comments' => $reviews,
+            'review_assignments' => $reviewsatge,
+            'publicationstatus' => $publicationstatus,
+            'submission' => $submission,
+
         ]);
     }
 

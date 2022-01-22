@@ -3,9 +3,7 @@
 </a>
 <hr>
 <a href="{{ path('research_theams') }}" class='btn btn-warning  btn-sm btn-block'>
-	Researchers
-
-</a>
+	Researchers </a>
 <hr>
 
 <a href="{{ path('allreviewers') }}" class='btn btn-info  btn-sm btn-block'>
@@ -18,7 +16,13 @@
 	External  Reviewers
 
 </a>
+<hr>
 
+<a href="{{ path('allawarded') }}" class='btn btn-success  btn-sm btn-block'>
+	All winners
+
+</a>
+ 
 <hr>
 <a href="{{ path('alert') }}" class='btn btn-warning btn-sm btn-block' onclick="return confirm('Are you sure you want to submit message ?');">
 	Co-PI Reminder</a>
@@ -26,52 +30,7 @@
 
 <a href="{{ path('allaccepted') }}" class='btn btn-success btn-xs  btn-block'>Review decisions filter 
 </a>
-<hr>
-{# 
-
-<a href="{{ path('allaccepted' , {'status': [4,3] }) }}" class='btn btn-info btn-xs  btn-block'>Accepted and Accepted with minor revision
-</a>
-<hr>
-
-<a href="{{ path('allaccepted' , {'status': [4,2]}) }}" class='btn btn-warning btn-xs  btn-block'>Accepted and  Accepted with major revision
-</a>
 <hr> 
-
-<a href="{{ path('allaccepted' , {'status': [1,3] }) }}" class='btn btn-info btn-xs  btn-block'>Declined and Accepted with minor revision
-</a>
-<hr>
-
-<a href="{{ path('allaccepted' , {'status': [1,2]}) }}" class='btn btn-warning btn-xs  btn-block'>Declined and  Accepted with major revision
-</a>
-<hr> 
-
-<a href="{{ path('allaccepted' , {'status': [4,1]}) }}" class='btn btn-warning btn-xs  btn-block'>Accepted and  Declined 
-</a>
-<hr> 
-
-
-<a href="{{ path('allaccepted' , {'status': [1]}) }}" class='btn btn-danger btn-xs  btn-block'>Declined Declined
-</a>
-<hr>  #}
-
-
-{# 
-<a href="{{ path('allaccepted') }}" class='btn btn-success btn-xs  btn-block'>Accepted
-</a>
-<hr>
-
-<a href="{{ path('minor_rev') }}" class='btn btn-info btn-xs  btn-block'>Accepted with minor revision
-</a>
-<hr>
-
-<a href="{{ path('all_minor') }}" class='btn btn-primary btn-xs  btn-block'>Accepted with major revision
-</a>
-<hr> #}
-
-
-{# <a href="{{ path('allrejected' ) }}" class='btn btn-danger btn-xs  btn-block'>Declined and Accepted
-</a>
-<hr> #}
 <a href="{{ path('submission_filter', {'filter': 'al'}) }}" class='btn btn-primary btn-xs  btn-block'>All
 </a>
 <hr>
