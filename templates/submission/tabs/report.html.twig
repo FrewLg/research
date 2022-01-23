@@ -2,7 +2,7 @@
 <div class="tab-pane active" id="report">
 
 	<h2>Reports</h2>
-	{% if research_report_submssion_setting_count %}
+	{% if submission_report_schedule_count %}
 		<button type="button" class="btn btn-info float-right" data-bs-toggle="modal" data-bs-target="#exampleModalSmall">
 			View Your Report Schedule
 		</button>
@@ -59,10 +59,10 @@
 
 			</div>
 		
-		{{ form_start(research_report_submssion_setting_form,{"attr":{"onsubmit":"return confirm('are you sure?')"}}) }}
+		{{ form_start(submission_report_schedule_form,{"attr":{"onsubmit":"return confirm('are you sure?')"}}) }}
 
 		<div class="row">
-			{% for child in research_report_submssion_setting_form.children %}
+			{% for child in submission_report_schedule_form.children %}
 				<div class="col-4">
 					{% if  child.vars.name!="_token" %}
 						<div class="h5 text-black-50">Phase
@@ -78,7 +78,7 @@
 		</div>
 		<button class="btn btn-success my-3 float-right schedule-submit-button" type="submit">Submit</button>
 
-		{{ form_end(research_report_submssion_setting_form) }}
+		{{ form_end(submission_report_schedule_form) }}
 	{% endif %}
 </div>
 

@@ -24,6 +24,8 @@ parameters:
  
     uas_token  : '%env(resolve:UAS_API_TOKEN)%'
     uas_host  : '%env(resolve:UAS_HOST)%'
+    msg_api_host  : '%env(resolve:MSG_API_HOST)%'
+    msg_api_token  : '%env(resolve:MSG_API_TOKEN)%'
 #    app.supported_locales: ['en', 'am','or', 'fr']
 ######
      

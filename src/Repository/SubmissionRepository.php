@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\CallForProposal;
 use App\Entity\Submission;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -89,6 +90,7 @@ class SubmissionRepository extends ServiceEntityRepository
                 ->setParameter("thematic_area", $filter['thematic_area']);
         }
         if (isset($filter['submission_type'])) {
+
             $qb->andWhere("s.submission_type =  :submission_type")
                 ->setParameter("submission_type", $filter['submission_type']);
         }
@@ -104,7 +106,28 @@ class SubmissionRepository extends ServiceEntityRepository
             $qb->andWhere("s.callForProposal =  :callForProposal")
                 ->setParameter("callForProposal", $filter['callForProposal']);
         }
-        if (isset($filter['abstract'])) {
+        if (isset($filter['sentAt'])  && $filter['sentAt']) {
+            $date = explode(" - ", $filter['sentAt']);
+
+            // dd($date);
+            $qb->andWhere("s.sent_at <= '" . (new \DateTime($date[1]))->format('Y-m-d H:i:s') . "'");
+            $qb->andWhere("s.sent_at >= '" . (new \DateTime($date[0]))->format('Y-m-d H:i:s') . "'");
+        }
+        if (isset($filter['project_start_at'])  && $filter['project_start_at']) {
+            $date = explode(" - ", $filter['project_start_at']);
+
+            // dd($date);
+            $qb->andWhere("s.project_start_at <= '" . (new \DateTime($date[1]))->format('Y-m-d H:i:s') . "'");
+            $qb->andWhere("s.project_start_at >= '" . (new \DateTime($date[0]))->format('Y-m-d H:i:s') . "'");
+        }
+        if (isset($filter['project_end_at'])  && $filter['project_end_at']) {
+            $date = explode(" - ", $filter['project_end_at']);
+
+            // dd($date);
+            $qb->andWhere("s.project_end_at <= '" . (new \DateTime($date[1]))->format('Y-m-d H:i:s') . "'");
+            $qb->andWhere("s.project_end_at >= '" . (new \DateTime($date[0]))->format('Y-m-d H:i:s') . "'");
+        }
+        if (isset($filter['abstract'])  && $filter['abstract']) {
             $qb->andWhere("s.abstract LIKE  '%" . $filter['abstract'] . "%'");
         }
         if (isset($filter['title']) && $filter['title']) {

@@ -25,6 +25,8 @@ use App\Form\ReviewType;
 use App\Form\ReviewDecisionType;
 use App\Form\SubmissionFilterType as FormSubmissionFilterType;
 use App\Form\SubmissionType;
+use App\Helper\SmsHelper;
+use App\Helper\SubmissionHelper;
 use App\Message\SendEmailMessage;
 use App\Repository\CallForProposalRepository;
 use App\Repository\EvaluationFormRepository;
@@ -74,14 +76,14 @@ class SubmissionController extends AbstractController
             $lexikFormFilter = $this->get('lexik_form_filter.query_builder_updater');
             $submissionData = $filter->filter($request, $formFilter, $em, $lexikFormFilter, 'App:User');
         }
-        $sumissionFilterForm= $this->createForm(FormSubmissionFilterType::class);
+        $sumissionFilterForm = $this->createForm(FormSubmissionFilterType::class);
         $sumissionFilterForm->handleRequest($request);
-        if($sumissionFilterForm->isSubmitted() && $sumissionFilterForm->isValid()){
+        if ($sumissionFilterForm->isSubmitted() && $sumissionFilterForm->isValid()) {
 
-           $submissionData= $submissionRepository->getSubmissions($sumissionFilterForm->getData());
-         
-        //    dd($submissionData);
-            
+            $submissionData = $submissionRepository->getSubmissions($sumissionFilterForm->getData());
+
+            //    dd($submissionData);
+
         }
 
         // Paginate the results of the query
@@ -470,7 +472,7 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/metadata/{id}/", name="submission_firststep_edit", methods={"GET","POST"})
      */
-    public function metadataedit(Request $request, Submission $submission, CallForProposalRepository $callForProposalRepository): Response
+    public function metadataedit(Request $request, Submission $submission, CallForProposalRepository $callForProposalRepository, SmsHelper $smsHelper): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
@@ -541,6 +543,16 @@ class SubmissionController extends AbstractController
                 }
                 $sendEmail = new SendEmailMessage($emails, Constants::EMAIL_KEY_SUBMISSION_ACKNOWLEDGEMENT, "emails/application_ack.html.twig", []);
                 $this->dispatchMessage($sendEmail);
+
+                try {
+
+
+                    $message = sprintf("Dear %s your submission is completed.   \nJimma University", $this->getUser()->getUserInfo()->getFirstName());
+                    $smsHelper->sendSms("new submission ", $message, '["' . $this->getUser()->getUserInfo()->getPhoneNumber() . '"]');
+                } catch (\Throwable $th) {
+                    $this->addFlash("warning", "error on sending sms." . $th->getMessage());
+                }
+
 
                 return $this->redirectToRoute('myreviews');
             }
@@ -816,7 +828,8 @@ class SubmissionController extends AbstractController
         Request $request,
         Submission $submission,
         ReviewRepository $reviewRepository,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        SubmissionHelper $submissionHelper
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
@@ -920,60 +933,31 @@ class SubmissionController extends AbstractController
             return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
         }
 
-        $research_report_submssion_setting_count = sizeof($submission->getResearchReportSubmissionSettings());
+        $submission_report_schedule_count = sizeof($submission->getResearchReportSubmissionSettings());
 
 
         $researchReportPhase = $submission->getCallForProposal()?->getResearchReportPhase();
 
-        $research_report_submssion_setting = new ResearchReportSubmissionSetting();
+        $submission_report_schedule = new ResearchReportSubmissionSetting();
 
-        $research_report_submssion_setting_form =  $this->createForm(ResearchReportSubmissionSettingType::class, $research_report_submssion_setting, ["researchReportPhase" => $researchReportPhase]);
-        $research_report_submssion_setting_form->handleRequest($request);
+        $submission_report_schedule_form =  $this->createForm(ResearchReportSubmissionSettingType::class, $submission_report_schedule, ["researchReportPhase" => $researchReportPhase]);
+        $submission_report_schedule_form->handleRequest($request);
 
-        if ($research_report_submssion_setting_form->isSubmitted()) {
-            //   dd($request->request);
-            foreach ($request->request->get('research_report_submission_setting') as $key => $value) {
-
-                if ($key != "_token") {
-                    $research_report_submssion_setting = new ResearchReportSubmissionSetting();
-
-                    $research_report_submssion_setting->setSubmission($submission);
-                    $research_report_submssion_setting->setPhase(explode("_", $key)[1]);
-                    $research_report_submssion_setting->setSubmissionDate(new \DateTime($value));
-                    $em->persist($research_report_submssion_setting);
-                    $em->flush();
-                }
-            }
-            return $this->redirectToRoute("submission_show", ['id' => $submission->getId()]);
+        if ($submission_report_schedule_form->isSubmitted()) {
+            //create schedule
+            $submissionHelper->createSubmissionReportSchedule($request, $submission);
         }
 
 
         $researchReport = new ResearchReport();
-        $research_report_form = $this->createForm(ResearchReportType::class, $researchReport);
+        $research_report_form = $this->createForm(ResearchReportType::class, $researchReport)->handleRequest($request);
 
-        $research_report_form->handleRequest($request);
-        $research_reports = $submission->getResearchReports();
 
 
         if ($research_report_form->isSubmitted() && $research_report_form->isValid()) {
 
-
-
-            $uploadedFile = $research_report_form['file']->getData();
-            $destination = $this->getParameter('kernel.project_dir') . '/public/research-report';
-            $newFilename = $this->getUser()->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
-            $uploadedFile->move($destination, $newFilename);
-
-
-            $researchReport->setFile($newFilename);
-            $researchReport->setFileType($uploadedFile->getClientOriginalExtension());
-            $researchReport->setSubmission($submission);
-            $researchReport->setSubmittedBy($this->getUser());
-
-            $em->persist($researchReport);
-            $em->flush();
-            $this->addFlash("success", "Report submitted successfully!!");
-            return $this->redirectToRoute("submission_show", ["id" => $submission->getId()]);
+            //create research report
+            $submissionHelper->createResearchReport($research_report_form, $researchReport, $submission);
         }
 
         ################ Admin Revision#########################
@@ -989,9 +973,9 @@ class SubmissionController extends AbstractController
             'collaborating_institutions' => $CollaboratingInstitutions,
             'expenses' => $Expenses,
             'research_report_form' => $research_report_form->createView(),
-            'research_report_submssion_setting_form' => $research_report_submssion_setting_form->createView(),
-            'research_report_submssion_setting_count' => $research_report_submssion_setting_count,
-            'research_reports' => $research_reports,
+            'submission_report_schedule_form' => $submission_report_schedule_form->createView(),
+            'submission_report_schedule_count' => $submission_report_schedule_count,
+            'research_reports' => $submission->getResearchReports(),
         ]);
     }
 

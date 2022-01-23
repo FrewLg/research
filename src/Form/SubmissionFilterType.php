@@ -29,8 +29,12 @@ class SubmissionFilterType extends AbstractType
             ->add('title',TextType::class,[
              
             ])
-            ->add('sent_at', TextType::class, [
-                "required" => false
+            ->add('sentAt', TextType::class, [
+                "required" => false,
+                "attr"=>[
+                    "class"=>"daterangerpicker",
+                    "autocomplete"=>"off"
+                ]
             ])
          
             ->add('complete', ChoiceType::class, [
@@ -44,8 +48,18 @@ class SubmissionFilterType extends AbstractType
             ->add('submission_type',SubmissionCategoryType::class)
             ->add('funding_organization')
             ->add('reference')
-            ->add('project_start_at')
-            ->add('project_end_at')
+            ->add('project_start_at',TextType::class,[
+                "attr"=>[
+                    "class"=>"daterangerpicker",
+                    "autocomplete"=>"off"
+                ]
+            ])
+            ->add('project_end_at',TextType::class,[
+                "attr"=>[
+                    "class"=>"daterangerpicker",
+                    "autocomplete"=>"off"
+                ]
+            ])
             ->add('progress')
             ->add('published', ChoiceType::class, [
                 "placeholder"=>"Select Publication status",
@@ -55,7 +69,7 @@ class SubmissionFilterType extends AbstractType
                     "not Published" => 0,
                 ]
             ])
-            ->add('status')
+            //->add('status')
             ->add('keywords')
             ->add('methodology')
             ->add('author',EntityType::class,[

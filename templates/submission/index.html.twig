@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
-{% block title %}Submission
+{% block title %}
+Submission
 {% endblock %}
-{% block container_title %}Submissions
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+{% endblock %}
+{% block container_title %}
+Submissions
 {% endblock %}
 {% block body %}
 	<!-- testFilter.html.twig -->
@@ -211,4 +216,29 @@
 
 	</div>
 
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+
+<script type="text/javascript">
+$(function() {
+
+  $('.daterangerpicker').daterangepicker({
+      autoUpdateInput: false,
+      locale: {
+          cancelLabel: 'Clear'
+      }
+  });
+
+  $('.daterangerpicker').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+  });
+
+  $('.daterangerpicker').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+  });
+
+});
+</script>
 {% endblock %}
