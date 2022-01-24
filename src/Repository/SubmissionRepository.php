@@ -83,6 +83,16 @@ class SubmissionRepository extends ServiceEntityRepository
             $qb->andWhere("s.author in  (:author)")
                 ->setParameter("author", $filter['author']);
         }
+        if (isset($filter['coAuthor']) and sizeof($filter['coAuthor']) > 0) {
+
+
+            $qb
+            
+            ->join("s.coAuthors","c","With","c.submission=s.id")
+            ->join("c.researcher","uu","With","c.researcher=uu.id")
+            ->andWhere("uu in  (:coAuthor)")
+                ->setParameter("coAuthor", $filter['coAuthor']);
+        }
         if (isset($filter['thematic_area']) and sizeof($filter['thematic_area']) > 0) {
 
 

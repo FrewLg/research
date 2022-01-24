@@ -84,6 +84,19 @@ class SubmissionFilterType extends AbstractType
                        ;
                 }
             ])
+            ->add('coAuthor',EntityType::class,[
+                "class"=>User::class,
+                "multiple"=>true,
+                "attr"=>[
+                    "class"=>"select2"
+                ],
+                'query_builder' => function (EntityRepository $entityRepository) {
+                    return $entityRepository->createQueryBuilder('u')
+                    ->join("u.coAuthors","c","With","c.researcher=u.id")
+                    ->join("c.submission","s","With","s.id=c.submission")
+                       ;
+                }
+            ])
             ->add('thematic_area', EntityType::class, [
                 "placeholder"=>"Select Thematic area",
                 "attr"=>[
@@ -101,7 +114,8 @@ class SubmissionFilterType extends AbstractType
             // 'data_class' => Submission::class,
             'required' => false,
             'attr' => array(
-                'class' => 'row'
+                'class' => 'row',
+                'autocomplete' => 'off'
             )
         ]);
     }

@@ -17,6 +17,7 @@ class ResearchReportPhaseType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+       
         $builder
             ->add('numberOfPhases',ChoiceType::class,[
 
@@ -27,8 +28,8 @@ class ResearchReportPhaseType extends AbstractType
                 ]
             ])
             ->add('maximumDuration',IntegerType::class,[
-                "help"=>"maximum duration of each phase  in days",
-                "label"=>"Maximum duration(days)",
+                "help"=>"minimum days after last report ",
+                "label"=>"minimum days after last report(days)",
                 "attr"=>[
                     "min"=>1,
                 ]
@@ -41,30 +42,32 @@ class ResearchReportPhaseType extends AbstractType
                     "min"=>1,
                 ]
             ])
-            ->add('startDate',DateTimeType::class,[
-                 "date_label"=>"Starts on",
-                "html5"=>false,
-              
-                "widget"=>"single_text",
-                "placeholder"=>
-                    "Select Start date"
-                    ,
-               "attr"=>[
+            ->add('startDate',TextType::class,[
+                 "label"=>"Starts on",
+                "mapped"=>false,
+                
+                
+                "attr"=>[
+                    "value"=>$options['data']?->getStartDate()->format('Y/m/d H:i'),
                     // "min"=>(new \DateTime())->format("Y-m-d H:i:s"),
+                    "placeholder"=> "Select Start date" ,
                     "class"=>"js-datepicker"
                 ]
             ])
-            ->add('endDate',DateTimeType::class,[
-                "date_label"=>"Starts on",
-               "widget"=>"single_text",
-               "html5"=>false,
+            ->add('endDate',TextType::class,[
+                "label"=>"End Date",
+              "mapped"=>false,
+              
              
-               "placeholder"=>
-                   "Select Start date"
-                   ,
-                   "attr"=>[
+              
+              "attr"=>[
+                "value"=>$options['data']?->getEndDate()->format('Y/m/d H:i'),
+                   
+                  "placeholder"=>
+                  "Select Start date",
                     // "min"=>(new \DateTime())->format("Y-m-d H:i:s"),
-                    "class"=>"js-datepicker"
+                    "class"=>"js-datepicker",
+                    "autocomplete"=>"off"
                 ]
            ])
            ->add('note',TextareaType::class,[

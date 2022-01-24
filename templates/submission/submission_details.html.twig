@@ -70,13 +70,13 @@
 							<div class="panel-options">
 								<ul class="nav nav-pills nav-justified">
 									<li>
-										<a class="nav-link " href="#tab-1" data-bs-toggle="tab">Research detail</a>
+										<a class="nav-link active" href="#tab-1" data-bs-toggle="tab">Research detail</a>
 									</li>
 									<li>
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
 									</li>
 									<li>
-										<a class="nav-link active"  href="#report" data-bs-toggle="tab">Reports</a>
+										<a class="nav-link "  href="#report" data-bs-toggle="tab">Reports</a>
 									</li>
 									{% if submission.copyedit is  not empty %}
 										<li>
@@ -943,102 +943,3 @@
 
 	{% endfor %}
 </div></div></div><br><br>{% endblock %}
-
-{% block script %}
-	<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
-  <script type="text/javascript">
-
-var isvalid=false;
-  {% set phase = submission.callForProposal.researchReportPhase %}
-
-var startDate="{{phase.startDate|date('Y-m-d H:i:s')}}";
-var endDate="{{phase.endDate|date('Y-m-d H:i:s')}}";
-var minimumDays={{phase.maximumDuration}};
-
-         $(function () {
-         $('.js-datepicker').datetimepicker({timepicker:false,
-		   onChangeDateTime:function(dp,input){
-
-if(dp!=null){
-			   const current_input_field_id = input.attr("id");
-const parts = current_input_field_id.split('_');
-const value =parts.pop();
-const base_part =parts.join("_")
-console.log(base_part,"base part");
-if(value==1){
-
-var previous_input_value= $("#"+current_input_field_id).val();
-
-
-if(new Date($("#"+current_input_field_id).val()) <= new Date(startDate))
-{
-
-invalid(input)
-console.log("some error");
-}
-else{
-valid(input)
-}
-var previous_input_value = new Date(previous_input_value);
-}
-
-else if(value>1){
-var previous_input_value= $("#"+base_part+"_"+(value-1)).val();
-
-var previous_input_value = new Date(previous_input_value);
-
-var previous_input_value = previous_input_value.setDate(previous_input_value.getDate() + minimumDays);
-
-
-console.log(dp,new Date(previous_input_value),"dfgh");
-if(input.attr('data-last')=="last"){
-	console.log('last')
-if((new Date(dp) >= new Date(previous_input_value)) && (new Date(dp) <= new Date(endDate)))
-{
-valid(input)
-}else{
-invalid(input)
-
-}
-
-}
-else if(new Date(dp) <= new Date(previous_input_value))
-{
-invalid(input)
-console.log("error");
-}else{
-valid(input)
-
-}
-
-}
-   console.log(dp);
-   console.log();
-  }
-  toggleSubmit();
-  },}
-  )
-		                });
-
-function valid(input){
-isvalid=true;
-input.removeClass("is-invalid").addClass('is-valid');
-}
-function invalid(input){
-isvalid=false;
-input.removeClass("is-valid").addClass('is-invalid');
-}
-
-function toggleSubmit(){
-if(isvalid==true){
-$('.schedule-submit-button').prop('disabled', false);
-}
-else{
-
-$('.schedule-submit-button').prop('disabled', true);
-}
-}
-
-  </script>
-{% endblock %}

@@ -23,15 +23,12 @@ class ResearchReportSubmissionSettingType extends AbstractType
        
         $builder
             
-            ->add('submissionDate_'.$i,DateType::class,[
+            ->add('submissionDate_'.$i,TextType::class,[
                 "label"=>"Starts on",
                "mapped"=>false,
-               "html5"=>false,
+              
              
-               "widget"=>"single_text",
-               "placeholder"=>
-                   "Select Start date"
-                   ,
+               
               "attr"=>[
                    // "min"=>(new \DateTime())->format("Y-m-d H:i:s"),
                    "class"=>"js-datepicker input_submission_date",

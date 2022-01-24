@@ -568,7 +568,7 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/{id}/status", name="submission_status", methods={"GET","POST"})
      */
-    public function statusubmission(Request $request, Submission $submission): Response
+    public function statusubmission(Request $request, Submission $submission,SubmissionHelper $submissionHelper): Response
     {
         ////Ultimate reviewers page
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -691,6 +691,36 @@ class SubmissionController extends AbstractController
                 'Info saved successfully!'
             );
         }
+
+
+
+        $submission_report_schedule_count = sizeof($submission->getResearchReportSubmissionSettings());
+
+        $researchReportPhase = $submission->getCallForProposal()?->getResearchReportPhase();
+
+    
+        $submission_report_schedule_form =  $this->createForm(ResearchReportSubmissionSettingType::class, null, ["researchReportPhase" => $researchReportPhase]);
+        $submission_report_schedule_form->handleRequest($request);
+
+        if ($submission_report_schedule_form->isSubmitted()) {
+            //create schedule
+           return $submissionHelper->createSubmissionReportSchedule($request, $submission);
+        }
+
+
+
+        $researchReport = new ResearchReport();
+        $research_report_form = $this->createForm(ResearchReportType::class, $researchReport)->handleRequest($request);
+
+        if ($research_report_form->isSubmitted() && $research_report_form->isValid()) {
+
+            //create research report
+           return $submissionHelper->createResearchReport($research_report_form, $researchReport, $submission);
+        }
+
+
+
+
         $attachements = $entityManager->getRepository(PublishedSubmissionAttachment::class)->findBy(['published_submission' => $publicationstatus]);
         $datasetused = new PublishedSubmissionAttachment();
         $entityManager = $this->getDoctrine()->getManager();
@@ -710,6 +740,10 @@ class SubmissionController extends AbstractController
             'editorialDecisions' => $editorialDecisions,
             'finalreportform' => $finalreportform->createView(),
             'form' => $form->createView(),
+            'research_report_form' => $research_report_form->createView(),
+            'submission_report_schedule_form' => $submission_report_schedule_form->createView(),
+            'submission_report_schedule_count' => $submission_report_schedule_count,
+            'research_reports' => $submission->getResearchReports(),
         ]);
     }
 
@@ -824,13 +858,8 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/{id}/details", name="submission_show",  methods={"GET","POST"})
      */
-    public function directorshow(
-        Request $request,
-        Submission $submission,
-        ReviewRepository $reviewRepository,
-        MailerInterface $mailer,
-        SubmissionHelper $submissionHelper
-    ): Response {
+    public function directorshow(Request $request,  Submission $submission, ReviewRepository $reviewRepository, MailerInterface $mailer): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
         ################### Are you the one? #################################
@@ -841,8 +870,6 @@ class SubmissionController extends AbstractController
             $this->addFlash("danger", "Sorry you are not allowed for this service ! Thank you!");
             return $this->redirectToRoute('myreviews');
         }
-
-        ################### Are you the one? #################################
 
         #####################################
 
@@ -933,32 +960,8 @@ class SubmissionController extends AbstractController
             return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
         }
 
-        $submission_report_schedule_count = sizeof($submission->getResearchReportSubmissionSettings());
 
 
-        $researchReportPhase = $submission->getCallForProposal()?->getResearchReportPhase();
-
-        $submission_report_schedule = new ResearchReportSubmissionSetting();
-
-        $submission_report_schedule_form =  $this->createForm(ResearchReportSubmissionSettingType::class, $submission_report_schedule, ["researchReportPhase" => $researchReportPhase]);
-        $submission_report_schedule_form->handleRequest($request);
-
-        if ($submission_report_schedule_form->isSubmitted()) {
-            //create schedule
-            $submissionHelper->createSubmissionReportSchedule($request, $submission);
-        }
-
-
-        $researchReport = new ResearchReport();
-        $research_report_form = $this->createForm(ResearchReportType::class, $researchReport)->handleRequest($request);
-
-
-
-        if ($research_report_form->isSubmitted() && $research_report_form->isValid()) {
-
-            //create research report
-            $submissionHelper->createResearchReport($research_report_form, $researchReport, $submission);
-        }
 
         ################ Admin Revision#########################
         return $this->render('submission/submission_details.html.twig', [
@@ -972,10 +975,7 @@ class SubmissionController extends AbstractController
             'co_authors' => $contributors,
             'collaborating_institutions' => $CollaboratingInstitutions,
             'expenses' => $Expenses,
-            'research_report_form' => $research_report_form->createView(),
-            'submission_report_schedule_form' => $submission_report_schedule_form->createView(),
-            'submission_report_schedule_count' => $submission_report_schedule_count,
-            'research_reports' => $submission->getResearchReports(),
+           
         ]);
     }
 

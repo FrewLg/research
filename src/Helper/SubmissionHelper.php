@@ -48,7 +48,7 @@ class SubmissionHelper
         $this->em->persist($researchReport);
         $this->em->flush();
         $this->flashBagInterface->add("success", "Report submitted successfully!!");
-        return new RedirectResponse($this->urlGenerator->generate("submission_show", ["id" => $submission->getId()]));
+        return new RedirectResponse($this->urlGenerator->generate("submission_status", ["id" => $submission->getId()]));
     }
 
     public function createSubmissionReportSchedule(Request $request, Submission $submission){
@@ -66,7 +66,7 @@ class SubmissionHelper
             }
         }
         $this->flashBagInterface->add("success", "Report submitted successfully!!");
-        return new RedirectResponse($this->urlGenerator->generate("submission_show", ["id" => $submission->getId()]));
+        return new RedirectResponse($this->urlGenerator->generate("submission_status", ["id" => $submission->getId()]));
   
     }
 }

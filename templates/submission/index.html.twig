@@ -24,6 +24,8 @@ Submissions
 					</h5>
 					<div id="collapseOne" class="accordion-collapse collapse active" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body active">
+						{% if sumissionFilterForm is defined %}
+						
 							{{ form_start(sumissionFilterForm) }}
 							{% for child in sumissionFilterForm.children %}
 							{% if child.vars.name != "_token" %}
@@ -31,10 +33,14 @@ Submissions
 								{{input_macro.input(child)}}
 							{% endif %}
 							{% endfor %}
-							<button class="btn offset-5 col-3 float-right btn-success my-3 float-right schedule-submit-button" type="submit">Filter</button>
+							<button class="btn  col-3 float-right btn-warning my-3  schedule-submit-button" type="reset">Clear</button>
+							<button class="btn mx-1  col-3 float-right btn-success my-3  schedule-submit-button" type="submit">Filter</button>
 
 							{{ form_end(sumissionFilterForm) }}
 							
+						{% else %}
+						<div>Filter not allowed here</div>
+						{% endif %}
 
 
 						</div>
