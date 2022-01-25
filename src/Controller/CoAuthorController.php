@@ -79,7 +79,7 @@ class CoAuthorController extends AbstractController {
      */
     public function edit(Request $request, CoAuthor $coAuthor, Submission $sub , MailerInterface $mailer): Response {
 
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
          
         ##########################
                $userdetails = $this->getUser()->getUserInfo();

@@ -31,9 +31,9 @@
 			<div class="card-header">
 
 
-				<form class="form-inline card-title" method="POST">
+				<form class="form-inline card-title" method="get">
 					<div class="input-group ">
-						<input class="form-control" autocomplete="off" name="name" type="search" placeholder="Search" aria-label="Search">
+						<input class="form-control" autocomplete="off"  value="{{app.request.query.get('search')}}" name="search" type="search" placeholder="Search" aria-label="Search">
 						<div class="input-group-append">
 							<button class=" input-group-text btn btn-navbar  " type="submit">
 								<i class="fas fa-search"></i>

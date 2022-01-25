@@ -19,7 +19,7 @@ class InstitutionalReviewersBoardController extends AbstractController
      */
     public function index(InstitutionalReviewersBoardRepository $institutionalReviewersBoardRepository): Response
     {
-    	$this->denyAccessUnlessGranted('ROLE_USER'); 
+    	 
     	$em = $this->getDoctrine()->getManager();
 	$qb = $em->createQueryBuilder();
 	$qb = $qb

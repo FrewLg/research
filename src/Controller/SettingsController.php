@@ -200,7 +200,7 @@ $siteSetting=$em->getRepository('App:SiteSetting'::class)->findOneBy(array('id'=
     public function backupsettings(Request $request  ,  PaginatorInterface $paginator ): Response
     {   	
 	//var_dump(yaml_emit($invoice));
-	$this->denyAccessUnlessGranted('ROLE_USER'); 
+	 
 	/////////////////// BackupSetting /////////////
 	$entityManager = $this->getDoctrine()->getManager();
    

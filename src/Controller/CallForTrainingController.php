@@ -105,7 +105,7 @@ class CallForTrainingController extends AbstractController
     #[Route('/{id}', name: 'call_for_training_show', methods: ['GET'])]
     public function show(CallForTraining $callForTraining): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
 
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();

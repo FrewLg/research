@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\CallForProposal;
 use App\Entity\Submission;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -59,7 +60,7 @@ class SubmissionRepository extends ServiceEntityRepository
     // sET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY','')); 
     // select submission_id from review where remark in ('Accepted','Declined') group by submission_id having count(remark) >1; 
 
-    public function getSubmissions($filter=[])
+    public function getSubmissions($filter = [])
     {
         $qb = $this->createQueryBuilder('s');
         if (isset($filter['status']) and sizeof($filter['status']) > 0) {
@@ -76,7 +77,30 @@ class SubmissionRepository extends ServiceEntityRepository
             } else
                 $qb->groupBy("s.id")->andHaving("count(distinct(r.remark))>1");
         }
+        if (isset($filter['author']) and sizeof($filter['author']) > 0) {
+
+
+            $qb->andWhere("s.author in  (:author)")
+                ->setParameter("author", $filter['author']);
+        }
+        if (isset($filter['coAuthor']) and sizeof($filter['coAuthor']) > 0) {
+
+
+            $qb
+            
+            ->join("s.coAuthors","c","With","c.submission=s.id")
+            ->join("c.researcher","uu","With","c.researcher=uu.id")
+            ->andWhere("uu in  (:coAuthor)")
+                ->setParameter("coAuthor", $filter['coAuthor']);
+        }
+        if (isset($filter['thematic_area']) and sizeof($filter['thematic_area']) > 0) {
+
+
+            $qb->andWhere("s.thematic_area in  (:thematic_area)")
+                ->setParameter("thematic_area", $filter['thematic_area']);
+        }
         if (isset($filter['submission_type'])) {
+
             $qb->andWhere("s.submission_type =  :submission_type")
                 ->setParameter("submission_type", $filter['submission_type']);
         }
@@ -84,9 +108,55 @@ class SubmissionRepository extends ServiceEntityRepository
             $qb->andWhere("s.complete =  :complete")
                 ->setParameter("complete", $filter['complete']);
         }
+        if (isset($filter['published'])) {
+            $qb->andWhere("s.published =  :published")
+                ->setParameter("published", $filter['published']);
+        }
         if (isset($filter['callForProposal'])) {
             $qb->andWhere("s.callForProposal =  :callForProposal")
                 ->setParameter("callForProposal", $filter['callForProposal']);
+        }
+        if (isset($filter['sentAt'])  && $filter['sentAt']) {
+            $date = explode(" - ", $filter['sentAt']);
+
+            // dd($date);
+            $qb->andWhere("s.sent_at <= '" . (new \DateTime($date[1]))->format('Y-m-d H:i:s') . "'");
+            $qb->andWhere("s.sent_at >= '" . (new \DateTime($date[0]))->format('Y-m-d H:i:s') . "'");
+        }
+        if (isset($filter['project_start_at'])  && $filter['project_start_at']) {
+            $date = explode(" - ", $filter['project_start_at']);
+
+            // dd($date);
+            $qb->andWhere("s.project_start_at <= '" . (new \DateTime($date[1]))->format('Y-m-d H:i:s') . "'");
+            $qb->andWhere("s.project_start_at >= '" . (new \DateTime($date[0]))->format('Y-m-d H:i:s') . "'");
+        }
+        if (isset($filter['project_end_at'])  && $filter['project_end_at']) {
+            $date = explode(" - ", $filter['project_end_at']);
+
+            // dd($date);
+            $qb->andWhere("s.project_end_at <= '" . (new \DateTime($date[1]))->format('Y-m-d H:i:s') . "'");
+            $qb->andWhere("s.project_end_at >= '" . (new \DateTime($date[0]))->format('Y-m-d H:i:s') . "'");
+        }
+        if (isset($filter['abstract'])  && $filter['abstract']) {
+            $qb->andWhere("s.abstract LIKE  '%" . $filter['abstract'] . "%'");
+        }
+        if (isset($filter['title']) && $filter['title']) {
+            $qb->andWhere("s.title LIKE  '%" . $filter['title'] . "%'");
+        }
+        if (isset($filter['keywords']) && $filter['keywords']) {
+            $qb->andWhere("s.keywords LIKE  '%" . $filter['keywords'] . "%'");
+        }
+        if (isset($filter['reference']) && $filter['reference']) {
+            $qb->andWhere("s.reference LIKE  '%" . $filter['reference'] . "%'");
+        }
+        if (isset($filter['methodology']) && $filter['methodology']) {
+            $qb->andWhere("s.methodology LIKE  '%" . $filter['methodology'] . "%'");
+        }
+        if (isset($filter['GeneralObjective']) && $filter['GeneralObjective']) {
+            $qb->andWhere("s.GeneralObjective LIKE  '%" . $filter['GeneralObjective'] . "%'");
+        }
+        if (isset($filter['funding_organization']) && $filter['funding_organization']) {
+            $qb->andWhere("s.funding_organization LIKE  '%" . $filter['funding_organization'] . "%'");
         }
 
         //    dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());
@@ -117,14 +187,14 @@ class SubmissionRepository extends ServiceEntityRepository
     public function filterApproved(CallForProposal $callForProposal)
     {
         $qb = $this->createQueryBuilder('s');
-     
-        $qb->andWhere("s.callForProposal = :callForProposal")->setParameter('callForProposal',$callForProposal);
 
-            $qb->leftJoin("App:Review", "r", "with", "s.id=r.submission");
-            $qb->andWhere("r.remark = 4")
+        $qb->andWhere("s.callForProposal = :callForProposal")->setParameter('callForProposal', $callForProposal);
+
+        $qb->leftJoin("App:Review", "r", "with", "s.id=r.submission");
+        $qb->andWhere("r.remark = 4")
             ->andWhere("r.from_director = 1");
-        
-    
+
+
 
         // dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());
         return  $qb->orderBy('s.id', 'ASC')
