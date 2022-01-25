@@ -64,7 +64,7 @@ class SubmissionController extends AbstractController
      */
     public function index(Request $request,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
     {
-        // $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
         $em = $this->getDoctrine()->getManager();
         //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
         $formFilter = $this->createForm(SubmissionFilterType::class);
