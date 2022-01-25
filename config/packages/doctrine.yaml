@@ -16,3 +16,10 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+
+            # gedmo_loggable:
+            #     type: annotation
+            #     prefix: Gedmo\Loggable\Entity
+            #     dir: "%kernel.project_dir%/src/Entity/"
+            #     alias: GedmoLoggable
+            #     is_bundle: false

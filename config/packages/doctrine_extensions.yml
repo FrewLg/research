@@ -5,3 +5,10 @@ gedmo.listener.sortable:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+# stof_doctrine_extensions:
+#     class:
+#         loggable: ActivityLogBundle\Listener\LoggableListener
+#     orm:
+#         default:
+#             loggable: true
