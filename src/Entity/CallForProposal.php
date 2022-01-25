@@ -151,7 +151,7 @@ class CallForProposal
      */
     private $is_call_from_center;
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ResearchReportPhase", mappedBy="applicationCall", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\ResearchReportPhase", mappedBy="applicationCall")
      */
     private $researchReportPhase;
 

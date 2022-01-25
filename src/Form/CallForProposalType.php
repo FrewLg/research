@@ -14,97 +14,83 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+
 class CallForProposalType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
 
-       ->add('research_type', ChoiceType::class, [
-       'placeholder' => '-- Select Research Type--',
-      'choices' => [ 
-        'University Research' => [
-            'Mega research' => 'Mega research',
-            'Community service' => 'Community service',
-            'Technology transfer' => 'Technology transfer',
-            'Female granted' => 'Female granted',
-            'Youth granted' => 'Youth granted',
-            'PG Students' => 'PG Students',
-        ],
-        'External research' => [
-            'Grant' => 'Grant',
-        ],
-       
-    ],
-     'attr' => [
-                'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                'required' => true,
-                
-            ] ,            
-	])  
-	
-            ->add('subject',  CKEditorType::class,[
-    'attr'=>['placeholder'=>'Body of the call',
-    'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
-                 'required' => false,
-            
-],])    
-         ->add('heading' ,  CKEditorType::class,[
-    'attr'=>['placeholder'=>'Heading title of the call',
-    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                 'required' => false,
-            
-],])    
-	  ->add('guidelines' ,  CKEditorType::class,[
-    'attr'=>['placeholder'=>'Guideline details',
-    'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
-                 'required' => false,
-            
-],])    
-                       ->add('deadline', DateType::class, array(
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-            ))
-                   ->add('funding_source' , TextType:: class, [
-            'attr'=>['class'=>'form-control col col-md-12 col-sm-12 col-lg-9 '],
+            ->add('research_type', ResearchType::class)
+
+            ->add('subject',  CKEditorType::class, [
+                'attr' => [
+                    'placeholder' => 'Body of the call',
+                    'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
+                    'required' => false,
+
+                ],
             ])
-            
-              ->add('review_process_start', DateType::class, array(
+            ->add('heading',  CKEditorType::class, [
+                'attr' => [
+                    'placeholder' => 'Heading title of the call',
+                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                    'required' => false,
+
+                ],
+            ])
+            ->add('guidelines',  CKEditorType::class, [
+                'attr' => [
+                    'placeholder' => 'Guideline details',
+                    'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
+                    'required' => false,
+
+                ],
+            ])
+            ->add('deadline', DateType::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ))
-             ->add('review_process_end', DateType::class, array(
+            ->add('funding_source', TextType::class, [
+                'attr' => ['class' => 'form-control col col-md-12 col-sm-12 col-lg-9 '],
+            ])
+
+            ->add('review_process_start', DateType::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ))
-              ->add('reviewers_decision_will_be_communicated_at', DateType::class, array(
+            ->add('review_process_end', DateType::class, array(
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+            ))
+            ->add('reviewers_decision_will_be_communicated_at', DateType::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
 
             ))
-               ->add('project_starts_on', DateType::class, array(
+            ->add('project_starts_on', DateType::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ))
-                  
-     
-     ->add('number_of_co_pi')
-->add('allow_non_academic_staff_as_pi')
-// ->add('allow_researcher_from_another_college')
-->add('allow_pi_from_other_university')
-//->add('commitment_from_other_research', ChoiceType::class,['class'=>'switchery switchery-default'],)
- ->add('commitment_from_other_research', ChoiceType::class, [
-       'placeholder' => '-- Select Research Type--',
-'expanded'=> true,
-     'attr' => [
-                'class' => 'switchery switchery-default  col col-md-12 col-sm-12 col-lg-9  ',
-                'required' => true,
-                
-            ] ,            
-	])  
-	
- 
-           // ->add('work_unit')
+
+
+            ->add('number_of_co_pi')
+            ->add('allow_non_academic_staff_as_pi')
+            // ->add('allow_researcher_from_another_college')
+            ->add('allow_pi_from_other_university')
+            //->add('commitment_from_other_research', ChoiceType::class,['class'=>'switchery switchery-default'],)
+            ->add('commitment_from_other_research', ChoiceType::class, [
+                'placeholder' => '-- Select Research Type--',
+                'expanded' => true,
+                'attr' => [
+                    'class' => 'switchery switchery-default  col col-md-12 col-sm-12 col-lg-9  ',
+                    'required' => true,
+
+                ],
+            ])
+
+
+            // ->add('work_unit')
         ;
     }
 

@@ -31,7 +31,7 @@ class SubscriptionController extends AbstractController
      */
     public function managesbubs(Request $request ): Response
     {
-         $this->denyAccessUnlessGranted('ROLE_USER');
+         
          $user = $this->getUser(); 
                   $userid = $this->getUser()->getId(); 
          $em = $this->getDoctrine()->getManager();
@@ -73,7 +73,7 @@ class SubscriptionController extends AbstractController
     public function unsbscribe(Request $request): Response
     {
     
-               $this->denyAccessUnlessGranted('ROLE_USER');
+               
          $user = $this->getUser(); 
          $em = $this->getDoctrine()->getManager();
          $subscription = $em->getRepository(Subscription::class)->find($user);

@@ -56,10 +56,11 @@ class UserController extends AbstractController
     /**
      * @Route("/appinfo", name="app_index", methods={"GET"})
      */
-    public function appindex(UserRepository $userRepository): Response
+    public function appindex(UserRepository $userRepository,Request $request): Response
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
         
+      
         return $this->render('appinfo.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
@@ -83,7 +84,7 @@ class UserController extends AbstractController
     {
 
         $this->denyAccessUnlessGranted("ROLE_USER"); 
-        $queryBuilder = $userRepository->getData(['name' => $request->request->get('name')]);
+        $queryBuilder = $userRepository->getData(['name' => $request->query->get('search')]);
           $data = $paginator->paginate(
             $queryBuilder,
             $request->query->getInt('page', 1),
