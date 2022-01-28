@@ -109,6 +109,17 @@ class UserProfileType extends AbstractType
                 'allow_delete' => true,
             ])
             
+            ->add('cv', FileType::class, [
+                'label' => "Upload your CV",
+                'mapped' => false,
+                'required' => false,
+                "attr"=>[
+                    "accept"=>"pdf/*",
+                    "class"=>"form-control",
+
+                ]
+            ])
+
             ->add('suffix' ,EntityType::class,[
                 'placeholder' => '--- Select Suffix ---',
                 "class"=>Suffixe::class,

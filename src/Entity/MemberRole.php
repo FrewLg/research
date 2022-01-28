@@ -34,9 +34,15 @@ class MemberRole
      */
     private $coAuthors;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Publication::class, mappedBy="member_role", orphanRemoval=true)
+     */
+    private $publications;
+
     public function __construct()
     {
         $this->coAuthors = new ArrayCollection();
+        $this->publications = new ArrayCollection();
     }
 
     
@@ -99,6 +105,36 @@ class MemberRole
             // set the owning side to null (unless already changed)
             if ($coAuthor->getRole() === $this) {
                 $coAuthor->setRole(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Publication[]
+     */
+    public function getPublications(): Collection
+    {
+        return $this->publications;
+    }
+
+    public function addPublication(Publication $publication): self
+    {
+        if (!$this->publications->contains($publication)) {
+            $this->publications[] = $publication;
+            $publication->setMemberRole($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublication(Publication $publication): self
+    {
+        if ($this->publications->removeElement($publication)) {
+            // set the owning side to null (unless already changed)
+            if ($publication->getMemberRole() === $this) {
+                $publication->setMemberRole(null);
             }
         }
 
