@@ -968,9 +968,7 @@ class SubmissionController extends AbstractController
             'submission' => $submission,
             'Overall_budger_request' => $Overall_budger_request,
             'review_assignments' => $reviewers,
-            'reviews' => $reviews,
-
-            // 'editorialDecisionform'=>$editorialDecisionform->createView(),
+            'reviews' => $reviews, 
             'adminvevisionform' => $form->createView(),
             'co_authors' => $contributors,
             'collaborating_institutions' => $CollaboratingInstitutions,

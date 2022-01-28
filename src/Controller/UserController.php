@@ -8,11 +8,13 @@ use App\Entity\PublishedResearch;
 use App\Entity\User;
 use App\Entity\UserInfo;
 use App\Entity\Submission;
+use App\Entity\Publication;
 use App\Entity\Subscription;
 use App\Form\ChangePasswordFormType;
 use App\Form\CollegeCoordinatorType;
 use App\Form\DirecotorateOfficeUserType;
 use App\Form\PublishedResearchType;
+use App\Form\PublicationType;
 use App\Form\UserProfilePictureType;
 use App\Form\UserProfileType;
 use App\Form\UserType;
@@ -457,135 +459,9 @@ class UserController extends AbstractController
 
     public function profile(Request $request, UserRepository $UserRepository, SubmissionRepository $submissionRepository)
     {
-        $this->denyAccessUnlessGranted("ROLE_USER");
-
-
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();
-        if($user->getUserInfo()==''){
-            $userInfo=new UserInfo();
-            $userInfo->setUser($user);
-            $em->persist($userInfo);
-            $em->flush();
-        }
-        $userInfo = $user->getUserInfo();
-        $profileform = $this->createForm(UserProfileType::class, $userInfo);
-          
-        $profileform->handleRequest($request);
-
-        if ($profileform->isSubmitted() && $profileform->isValid()) {
-            $prifilepicture = $profileform->get('image')->getData();
-            $Emailpicture = $user->getEmail();
-            $existingpicture = $userInfo->getImage();
-
-            $userInfo->setHasCompleteProfile(true);
-            if ($prifilepicture == NULL) {
-                echo 'Image not uploaded';
-                 $prifilepicture = '';
-            } else {
-                $prifilepicture = $profileform->get('image')->getData();
-                $fileName3 =  md5($Emailpicture) . '.' . $prifilepicture->guessExtension();
-                $prifilepicture->move($this->getParameter('profile_pictures'), $fileName3);
-                $userInfo->setImage($fileName3);
-            }
-            $em->flush();
-            $this->addFlash("success", "Updated Successfully");
-            // return $this->redirectToRoute('myprofile');
-            return $this->redirectToRoute('call_for_proposal_all' );
-
-        }
-
-        #$usersPublication=getSubmissionRepository('Submission':class, findBy('author'=>$user->getId()));
-        $qb = $em->createQueryBuilder();
-        $userpublication = $qb
-            ->select('COUNT(e.id) as Proposals , e.submission_type as Subbmission_type')
-            ->from('App\Entity\Submission', 'e')
-            ->andWhere('e.author = :publisher')
-            ->setParameter('publisher', $user)
-            ->groupBy('e.submission_type')
-            ->getQuery()->getResult();
-
- 
- 
-        $qb2 = $em->createQueryBuilder();
-        $usersubmission = $qb2
-            ->select('COUNT(s.id) as Submissions , s.submission_type as research')
-            ->from('App\Entity\Submission', 's')
-            //->andWhere(  's.complete = :status' ) 
-            ->andWhere('s.author = :author')
-            //->setParameter( 'status', 'complete' ) 
-            ->setParameter('author', $user)
-            ->groupBy('s.submission_type')
-            ->getQuery()->getResult();
-
-        $repoArticles = $em->getRepository('App:Submission'::class);
-        $totalSubmissions = $repoArticles->createQueryBuilder('sc')
-            ->select('count(sc.id) as ds')
-            ->andWhere('sc.author = :author')
-            ->setParameter('author', $user)
-            ->getQuery()
- 
-            ->getSingleScalarResult();
-        $me = $this->getUser();
-        $mysubscriptions = $em->getRepository(Subscription::class)->findBy(['user' => $me]);
- 
-################################################
-$em = $this->getDoctrine()->getManager();
-$user = $this->getUser();
-if($user->getUserInfo()==''){
-    $user_info=new UserInfo();
-    $user_info->setUser($user);
-    $em->persist($user_info);
-    $em->flush();
-}
- $user_info = $user->getUserInfo(); 
-$form = $this->createForm(UserProfileType::class, $userInfo); 
-// $originalTitles = new ArrayCollection();
-$form->handleRequest($request);
-
-if ($form->isSubmitted() && $form->isValid()) {
-    $entityManager = $this->getDoctrine()->getManager(); 
-    // $originalTitles = $user_info->getResearches();
-    $entityManager->persist($userInfo);
-    $entityManager->flush();
+        
     return $this->redirectToRoute('researchworks' );
-}
-$entityManager = $this->getDoctrine()->getManager();
-
-$earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find($this->getUser());
-$userInfo = $user->getUserInfo();
-
-$image = $user->getUserInfo();
-
-$profilepictureform = $this->createForm(UserProfilePictureType::class, $image); 
-$profilepictureform->handleRequest($request);
-if ($profilepictureform->isSubmitted() && $profilepictureform->isValid()) {
-    $prifilepicture = $profilepictureform->get('image')->getData();
-
-    if ($prifilepicture == NULL) {
-        echo 'Image not uploaded';
-         $prifilepicture = '';
-    } else {
-         $fileName3 =  md5(uniqid()) . '.' . $prifilepicture->guessExtension();
-        $prifilepicture->move($this->getParameter('profile_pictures'), $fileName3);
-        $userInfo->setImage($fileName3);
-        $entityManager->persist($image);
-        $entityManager->flush();
-    $this->addFlash('success', "Profile picture  has been changed successfully!   ");
-
-    } 
-}
-##################################################
-   return $this->render('user/profile2.html.twig', [
-            'user' => $user,
-             'alltitles'=>$earlierprojects,
-            'usersubmissions' => $usersubmission,
-            'subscriptions' => $mysubscriptions,
-             'userpublication' => $userpublication,
-            'form' => $profileform->createView(),
-            'submissionform' => $form->createView(),
-
-        ]);
+        
     }
     
  /**
@@ -602,6 +478,7 @@ if ($profilepictureform->isSubmitted() && $profilepictureform->isValid()) {
 
         return new JsonResponse($departments);
     }
+
     #[Route('/update-profile', name: 'researchworks', methods: ['GET','POST'])]
     public function researchworks(Request $request): Response
     {
@@ -634,7 +511,7 @@ if ($profilepictureform->isSubmitted() && $profilepictureform->isValid()) {
                 echo 'Image not uploaded';
                  $prifilepicture = '';
             } else {
-                 $fileName3 =  md5(uniqid()) . '.' . $prifilepicture->guessExtension();
+                 $fileName3 = 'PP-'.  md5(uniqid()) . '.' . $prifilepicture->guessExtension();
                 $prifilepicture->move($this->getParameter('profile_pictures'), $fileName3);
                 $userInfo->setImage($fileName3);
                 $entityManager->persist($image);
@@ -648,27 +525,62 @@ if ($profilepictureform->isSubmitted() && $profilepictureform->isValid()) {
  
         $dep=$request->request->get("department");
 $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'=>$dep));
-            // dd($udep);
-        $userInfo->setDepartment($udep);
-          
+         $userInfo->setDepartment($udep); 
+             $userInfo->setHasCompleteProfile(true); 
+/////////CV
+             $cv = $form->get('cv')->getData();
+ 
+            if ($cv == NULL) {
+                  $cv = '';
+            } else {
+                 $cvfile = 'CV-'. md5(uniqid()) . '.' . $cv->guessExtension();
+                $cv->move($this->getParameter('collaborators_cv'), $cvfile);
+                $userInfo->setCV($cvfile);
+               
+            } 
+/////////CV
 
-             $userInfo->setHasCompleteProfile(true);
-            
             $entityManager->persist($publishedResearch);
             $entityManager->flush();
             
-            $this->addFlash('success', "Your Profile  has been updated  successfully! <a href='/' class='text-info'> Go to homepage</a>   ");
+            $this->addFlash('success', "Your Personal Profile  has been updated  successfully! <a href='/' class='text-info'> Go to homepage</a>   ");
 
-            // return $this->redirectToRoute('call_for_proposal_all' );
-        }
+         }
  
         $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find($this->getUser());
           
+        ######Publication
+        $publication = new Publication();
+        $publicationform = $this->createForm(PublicationType::class, $publication);
+        $publicationform->handleRequest($request);
+
+        if ($publicationform->isSubmitted() && $publicationform->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $file3 = $publicationform->get('article_document')->getData();
+
+            if ($file3 == NULL) {
+                
+             }
+            if ($file3) {
+                $fundeddocDocsfileName3 = 'ARTICLE-'.  md5(uniqid()) . '.' . $file3;
+                $file3->move($this->getParameter('profile_pictures'), $fundeddocDocsfileName3);
+                $publication->setArticleDocument($fundeddocDocsfileName3);
+               
+            }
+            $publication->setCreatedAt(new \DateTime());  
+            $publication->setAuthor($this->getUser());
+            $entityManager->persist($publication);
+            $entityManager->flush();
+            $this->addFlash('success', "Your publication status has been updated  successfully!   ");
+
+         }
+        ###### End Publication #################### 
         return $this->render('user/profile2.html.twig', [
             'published_research' => $publishedResearch,
             'user' => $user,
             'alltitles'=>$earlierprojects,
             'submissionform' => $form->createView(), 
+            'publicationform' => $publicationform->createView(),  
             'profilepicture' => $profilepictureform->createView(),
         ]);
     }
