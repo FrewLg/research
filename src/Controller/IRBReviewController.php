@@ -510,13 +510,13 @@ $entityManager = $this->getDoctrine()->getManager();
         ////Ultimate reviewers page
         $this->denyAccessUnlessGranted('ROLE_USER');
          
-        $submission->setGranted(1);
+        $submission->setAwardgranted(1);
         $this->getDoctrine()->getManager()->flush();
         
 
         $entityManager = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery(
-            'SELECT u.email , s.id ,  u.username,   s.title 
+            "SELECT u.email , s.id ,  u.username,   s.title 
                       , pi.first_name  , ui.alternative_email
                     FROM App:CoAuthor c
                     JOIN c.researcher u
@@ -524,12 +524,10 @@ $entityManager = $this->getDoctrine()->getManager();
                     JOIN c.submission s
                     JOIN s.author p
                     JOIN p.userInfo pi 
-                    WHERE   s.granted=:granted  and 
-        c.submission = :submission'
-
-        )
+                    WHERE   s.awardgranted=:awardgranted  and 
+        c.submission = :submission "   )
          ->setParameter('submission', $submission)  
-        ->setParameter('granted', 1);
+        ->setParameter('awardgranted', 1);
         $recepients = $query->getResult();
         // dd($recepients);
 

@@ -1011,7 +1011,7 @@ class SubmissionController extends AbstractController
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
-        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['granted' => 1]);
+        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['awardgranted' => 1]);
         $Allmyresearches = $paginator->paginate(
             $allawarded,
             $request->query->getInt('page', 1),
@@ -1030,7 +1030,7 @@ class SubmissionController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
-        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['granted' => 1, 'call_for_proposal' => $callForProposal]);
+        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['awardgranted' => 1, 'call_for_proposal' => $callForProposal]);
 
         $Allmyresearches = $paginator->paginate(
             $allawarded,
