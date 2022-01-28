@@ -272,7 +272,7 @@
 								{% for submission in user.submissions %}
 												<h5 class="">{{ submission.title }} 
 												
-												{% if submission.granted %} 
+												{% if submission.awardgranted %} 
 
 												<a href="#" class="avatar-box thumb-xxs align-self-center">
 														<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
@@ -435,7 +435,7 @@
 									{% for submission in user.coAuthors %}
 										<h5 class="">{{ submission.submission.title }}
 
-											{% if submission.submission.granted %}
+											{% if submission.submission.awardgranted %}
 
 													<a href="#" class="avatar-box thumb-xxs align-self-center">
 														<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
