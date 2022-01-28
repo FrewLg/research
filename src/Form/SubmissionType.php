@@ -21,115 +21,144 @@ class SubmissionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-           
-            ->add('title',TextType::class,['attr'=>[]])
-            ->add('step',HiddenType::class)
+
+            ->add('title', TextType::class, ['attr' => []])
+            ->add('step', HiddenType::class)
             ->add('sub_title')
-            ->add('abstract',TextareaType::class,[
-                'required'=>true,
-                'attr'=>[
-                'class'=>'form-control',
-            ], ]
-            ) 
-            ->add('actionplan' ,   CKEditorType::class,[
-                'attr'=>['placeholder'=>'References',
-                'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                             'required' => false,
-            
-                ],]) 
+            ->add(
+                'abstract',
+                TextareaType::class,
+                [
+                    'required' => true,
+                    'attr' => [
+                        'class' => 'form-control',
+                    ],
+                ]
+            )
+            ->add('actionplan',   CKEditorType::class, [
+                'attr' => [
+                    'placeholder' => 'References',
+                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                    'required' => false,
+
+                ],
+            ])
             // ->add('abstract' ) 
-            ->add('background_and_rationale' ,TextareaType::class,[
-                'required'=>true,
-                'attr'=>[
-                'class'=>'form-control',
-            ], ]
-            ) 
-            ->add('methodology'  ,TextareaType::class,[
-                'required'=>true,
-                'attr'=>[
-                'class'=>'form-control',
-            ], ]
-            ) 
-            ->add('research_outcome' ,TextareaType::class,[
-                'required'=>true,
-                'attr'=>[
-                'class'=>'form-control',
-            ], ]
-            )  
+            ->add(
+                'background_and_rationale',
+                TextareaType::class,
+                [
+                    'required' => true,
+                    'attr' => [
+                        'class' => 'form-control',
+                    ],
+                ]
+            )
+            ->add(
+                'methodology',
+                TextareaType::class,
+                [
+                    'required' => true,
+                    'attr' => [
+                        'class' => 'form-control',
+                    ],
+                ]
+            )
+            ->add(
+                'research_outcome',
+                TextareaType::class,
+                [
+                    'required' => true,
+                    'attr' => [
+                        'class' => 'form-control',
+                    ],
+                ]
+            )
 
-            ->add('reference' ,   CKEditorType::class,[
-                'attr'=>['placeholder'=>'References',
-                'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                             'required' => false,
-            
-                ],]) 
-              
-             ->add('budget_and_time_schedule' ,   CKEditorType::class,[
-                'attr'=>['placeholder'=>'Budget and time schedule',
-             'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                 'required' => false,
+            ->add('reference',   CKEditorType::class, [
+                'attr' => [
+                    'placeholder' => 'References',
+                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                    'required' => false,
 
-],]) 
-->add('GeneralObjective',TextareaType::class,[
-    'required'=>true,
-    'attr'=>[
-    'class'=>'form-control',
-], ]
-) 
-          
-->add('specificObjectives', CollectionType::class, [
-    'entry_type' => SpecificObjectiveType::class,
-    'entry_options' => ['label' => false],
-    'allow_add' => true,
-    'by_reference' => false,
-    // 'constraints' => [
-    //     new Count([
-    //       'min' => 0,
-    //       'minMessage' => 'You have to add some  specific objectives to your research details',
-    //       // also has max and maxMessage just like the Length constraint
-    //     ]),
-    //   ],
-    'allow_delete' => true,
-])
+                ],
+            ])
+
+            ->add('budget_and_time_schedule',   CKEditorType::class, [
+                'attr' => [
+                    'placeholder' => 'Budget and time schedule',
+                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+                    'required' => false,
+
+                ],
+            ])
+            ->add(
+                'GeneralObjective',
+                TextareaType::class,
+                [
+                    'required' => true,
+                    'attr' => [
+                        'class' => 'form-control',
+                    ],
+                ]
+            )
+
+            ->add('specificObjectives', CollectionType::class, [
+                'entry_type' => SpecificObjectiveType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                // 'constraints' => [
+                //     new Count([
+                //       'min' => 0,
+                //       'minMessage' => 'You have to add some  specific objectives to your research details',
+                //       // also has max and maxMessage just like the Length constraint
+                //     ]),
+                //   ],
+                'allow_delete' => true,
+            ])
 
 
-->add('researchTimeTables',CollectionType::class,[
-    'entry_type' => ResearchTimeTableType::class,
-    'entry_options' => ['label' => false],
-    'allow_add' => true,
-    'by_reference' => false,
-    'allow_delete' => true,
-    'required' => false,
+            ->add('researchTimeTables', CollectionType::class, [
+                'entry_type' => ResearchTimeTableType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+                'required' => false,
 
-    // 'constraints' => [
-    //     new Count([
-    //       'min' => 1,
-    //       'minMessage' => 'Research Time Tables Must have at least one value',
-    //       // also has max and maxMessage just like the Length constraint
-    //     ]),
-    //   ],
-])
+                // 'constraints' => [
+                //     new Count([
+                //       'min' => 1,
+                //       'minMessage' => 'Research Time Tables Must have at least one value',
+                //       // also has max and maxMessage just like the Length constraint
+                //     ]),
+                //   ],
+            ])
 
-            ->add('thematic_area'  , EntityType::class, array(
+            ->add('thematic_area', EntityType::class, array(
                 'placeholder' => '---Select Thematic Area    ---',
-              
+
                 'class' => 'App\Entity\ThematicArea',
                 'attr' => array(
                     'empty' => 'Thematic Area    ',
                     'required' => true,
                     'class' => 'select2 chosen-select form-control',
                 )
-             ))
-            ->add('keywords',null,["attr"=>["data-role"=>"tagsinput"]])
-            ->add('agree_to_the_terms',
-            ChoiceType::class, [
-                "label"=>"I have read guidelines and agree",
-                "choices" =>  ["I have read guidelines and agree"=>"1"],
-             'mapped' => false, "multiple" => true, 'expanded'=>true,
-               ]) 
-            
+            ))
+            ->add('keywords', null, ["attr" => ["data-role" => "tagsinput"]])
+            ->add(
+                'agree_to_the_terms',
+                ChoiceType::class,
+                [
+                    "label" => "I have read guidelines and agree",
+                    "choices" =>  ["I have read guidelines and agree" => "1"],
+                    'mapped' => false, "multiple" => true, 'expanded' => true,
+                ]
+            )
+
             // null,["label"=>"I agree with the Terms and Conditions."])
-            ->add('submissionBudgets',CollectionType::class,[
+            ->add('submissionBudgets', CollectionType::class, [
                 'entry_type' => SubmissionBudgetType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
@@ -144,36 +173,34 @@ class SubmissionType extends AbstractType
                 //     ]),
                 //   ],
             ])
-            ->add('submissionAttachements',CollectionType::class,[
+            ->add('submissionAttachements', CollectionType::class, [
                 'entry_type' => SubmissionAttachementType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'by_reference' => false,
-                'error_bubbling'=>false,
+                'error_bubbling' => false,
                 'allow_delete' => true,
-                  'constraints' => [
+                'constraints' => [
                     new Count([
-                      'min' => 1,
-                      'minMessage' => 'You have to add some  attachment',
-                      // also has max and maxMessage just like the Length constraint
+                        'min' => 1,
+                        'minMessage' => 'You have to add some  attachment',
+                        // also has max and maxMessage just like the Length constraint
                     ]),
-                  ],
-                'required'=>false
+                ],
+                'required' => false
             ])
             ->add('coAuthors', CollectionType::class, [
-            'entry_type' => CoAuthorType::class,
-            'entry_options' => ['label' => false],
-            'allow_add' => true,
-            'by_reference' => false,
-            'allow_delete' => true,
-        ])
-        
-      #  ->add('save', SubmitType::class,[
-       # 'attr'=>['class'=>'btn btn-success']
-       # ])
+                'entry_type' => CoAuthorType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+            ])
+
+            #  ->add('save', SubmitType::class,[
+            # 'attr'=>['class'=>'btn btn-success']
+            # ])
         ;
-        
-          
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -70,7 +70,7 @@ class ReportController extends AbstractController
      */ 
     public function irbreport(InstitutionalReviewersBoardRepository $institutionalReviewersBoardRepository): Response
     {
-         	$this->denyAccessUnlessGranted('ROLE_USER');  
+         	  
 $em = $this->getDoctrine()->getManager();
 	$qb = $em->createQueryBuilder();
 	$result = $qb
@@ -114,7 +114,7 @@ $em = $this->getDoctrine()->getManager();
      */ 
     public function publications(SubmissionRepository $submissionRepository): Response
     {
-   	$this->denyAccessUnlessGranted('ROLE_USER');  
+   	  
      
 $em = $this->getDoctrine()->getManager();
 	$qb = $em->createQueryBuilder();

@@ -248,6 +248,20 @@ class Submission
      */
     private $actionplan;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ResearchReport::class, mappedBy="submission", orphanRemoval=true)
+     */
+    private $researchReports;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ResearchReportSubmissionSetting::class, mappedBy="submission", orphanRemoval=true)
+     */
+    private $researchReportSubmissionSettings;
+    /*
+    * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $granted;
+
    
 
  
@@ -266,6 +280,8 @@ class Submission
         $this->submissionAttachements = new ArrayCollection();
         $this->specificObjectives = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->researchReports = new ArrayCollection();
+        $this->researchReportSubmissionSettings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1015,6 +1031,76 @@ class Submission
     public function setBudgetAndTimeSchedule(?string $budget_and_time_schedule): self
     {
         $this->budget_and_time_schedule = $budget_and_time_schedule;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ResearchReport[]
+     */
+    public function getResearchReports(): Collection
+    {
+        return $this->researchReports;
+    }
+
+    public function addResearchReport(ResearchReport $researchReport): self
+    {
+        if (!$this->researchReports->contains($researchReport)) {
+            $this->researchReports[] = $researchReport;
+            $researchReport->setSubmission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResearchReport(ResearchReport $researchReport): self
+    {
+        if ($this->researchReports->removeElement($researchReport)) {
+            // set the owning side to null (unless already changed)
+            if ($researchReport->getSubmission() === $this) {
+                $researchReport->setSubmission(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ResearchReportSubmissionSetting[]
+     */
+    public function getResearchReportSubmissionSettings(): Collection
+    {
+        return $this->researchReportSubmissionSettings;
+    }
+
+    public function addResearchReportSubmissionSetting(ResearchReportSubmissionSetting $researchReportSubmissionSetting): self
+    {
+        if (!$this->researchReportSubmissionSettings->contains($researchReportSubmissionSetting)) {
+            $this->researchReportSubmissionSettings[] = $researchReportSubmissionSetting;
+            $researchReportSubmissionSetting->setSubmission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResearchReportSubmissionSetting(ResearchReportSubmissionSetting $researchReportSubmissionSetting): self
+    {
+        if ($this->researchReportSubmissionSettings->removeElement($researchReportSubmissionSetting)) {
+            // set the owning side to null (unless already changed)
+            if ($researchReportSubmissionSetting->getSubmission() === $this) {
+                $researchReportSubmissionSetting->setSubmission(null);
+            }
+        }
+    return $this;
+    }
+    public function getGranted(): ?bool
+    {
+        return $this->granted;
+    }
+
+    public function setGranted(?bool $granted): self
+    {
+        $this->granted = $granted;
 
         return $this;
     }

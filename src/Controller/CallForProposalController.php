@@ -6,6 +6,7 @@ use App\Entity\CallForProposal;
 use App\Entity\ResearchReportPhase;
 use App\Form\CallForProposalType;
 use App\Form\ResearchReportPhaseType;
+use App\Form\ResearchType;
 use App\Repository\CallForProposalRepository;
 use App\Repository\SubmissionRepository;
 use App\Utils\Constants;
@@ -17,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -26,11 +28,13 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/call-for-proposals")
  */
-class CallForProposalController extends AbstractController {
+class CallForProposalController extends AbstractController
+{
     /**
      * @Route("/list", name="all_calls", methods={"GET"})
      */
-    public function adminlist(Request $request, CallForProposalRepository $callForProposalRepository, PaginatorInterface $paginator): Response {
+    public function adminlist(Request $request, CallForProposalRepository $callForProposalRepository, PaginatorInterface $paginator): Response
+    {
 
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $em = $this->getDoctrine()->getManager();
@@ -43,17 +47,18 @@ class CallForProposalController extends AbstractController {
             10
         );
         return $this->render('call_for_proposal/adminindex.html.twig', [
-//            'formFilter' => $formFilter->createView(),
+            //            'formFilter' => $formFilter->createView(),
             'call_for_proposals' => $Allsubmissions,
 
         ]);
     }
 
-   
+
     /**
      * @Route("/", name="call_for_proposal_all", methods={"GET"})
      */
-    public function allcalss(CallForProposalRepository $callForProposalRepository, PaginatorInterface $paginator, Request $request): Response {
+    public function allCalls(CallForProposalRepository $callForProposalRepository, PaginatorInterface $paginator, Request $request): Response
+    {
         $em = $this->getDoctrine()->getManager();
         //$callForProposals = array_reverse($em->getRepository(CallForProposal::class)->findAll());
         $callForProposals = $callForProposalRepository->getCalls(array('approved' => 1));
@@ -75,68 +80,54 @@ class CallForProposalController extends AbstractController {
     /**
      * @Route("/new", name="call_for_proposal_new", methods={"GET","POST"})
      */
-    public function new (Request $request, MailerInterface $mailer): Response {
-           $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    public function new(Request $request, MailerInterface $mailer): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $callForProposal = new CallForProposal();
         $form = $this->createFormBuilder($callForProposal)
-            ->add('research_type', ChoiceType::class, [
-                'placeholder' => '-- Select Research Type--',
-                'choices' => [
-                    'University Research' => [
-                        'Mega research' => Constants::RESEARCH_TYPE_MEGA,
-                        'Community service' => Constants::RESEARCH_TYPE_COMMUNITY_SERVICE,
-                        'Technology transfer' => Constants::RESEARCH_TYPE_TECHNOLOGY_TRANSFER,
-                        'Female granted' => Constants::RESEARCH_TYPE_FEMALE_GRANT,
-                        'Youth granted' =>Constants::RESEARCH_TYPE_YOUTH_GRANT,
-                        'PG Students' => Constants::RESEARCH_TYPE_PG_STUDENT,
-                    ],
-                    // 'External research' => [
-                    //     'Grant' => 'Grant',
-                    // ],
+            ->add('research_type', ResearchType::class)
 
-                ],
-                'attr' => [
-                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                    'required' => true,
-
-                ],
-            ])
-
-        #->add('deadline')
+            #->add('deadline')
             ->add('subject', CKEditorType::class, [
-                'attr' => ['placeholder' => 'Body of the call',
+                'attr' => [
+                    'placeholder' => 'Body of the call',
                     'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
                     'required' => false,
 
-                ]])
+                ]
+            ])
             ->add('heading', CKEditorType::class, [
-                'attr' => ['placeholder' => 'Heading title of the call',
+                'attr' => [
+                    'placeholder' => 'Heading title of the call',
                     'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
                     'required' => false,
 
-                ]])
+                ]
+            ])
             ->add('guidelines', CKEditorType::class, [
-                'attr' => ['placeholder' => 'Guideline details',
+                'attr' => [
+                    'placeholder' => 'Guideline details',
                     'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
                     'required' => false,
 
-                ]])
+                ]
+            ])
             ->add('deadline', DateType::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ))
 
-        //               ->add('thematic_area', EntityType::class, array(
-        //     'placeholder' => '-- Select Thematic area--',
+            //               ->add('thematic_area', EntityType::class, array(
+            //     'placeholder' => '-- Select Thematic area--',
 
-        //     'class' => 'App\Entity\ThematicArea',
-        //      'attr' => array(
-        //          'empty' => 'Select disability detail ',
-        //          'required' => true,
-        // 'class' => 'form-control form-inline col col-md-12 col-sm-12 col-lg-9 ',
+            //     'class' => 'App\Entity\ThematicArea',
+            //      'attr' => array(
+            //          'empty' => 'Select disability detail ',
+            //          'required' => true,
+            // 'class' => 'form-control form-inline col col-md-12 col-sm-12 col-lg-9 ',
 
-        //      )
-        //  ))
+            //      )
+            //  ))
             ->add('funding_source', TextType::class, [
                 'attr' => ['class' => 'form-control col col-md-12 col-sm-12 col-lg-9 '],
             ])
@@ -180,76 +171,32 @@ class CallForProposalController extends AbstractController {
 
                 // dd($this->getUser()->getUserInfo()->getCollege());
                 $callForProposal->setCollege($this->getUser()->getUserInfo()->getCollege());
-        // $this->getUser()->getUserInfo()->getCollege( );
+                // $this->getUser()->getUserInfo()->getCollege( );
 
                 $Princiapal_contacts = $this->getUser()->getUserInfo()->getCollege()->getPrincipalContact();
-
             }
 
             $entityManager->persist($callForProposal);
             $entityManager->flush();
-///////////////Email for those who subscribed to website/////////
+            ///////////////Email for those who subscribed to website/////////
 
             ///////////// Let us email subscribed users to announcements
 
             $em = $this->getDoctrine()->getManager();
             $query = $entityManager->createQuery(
-                'SELECT u.email , u.first_name, u.username
+                'SELECT u.email , u.first_name, u.username 
 	    FROM App:Subscription s
 	    JOIN s.user u
-	    WHERE s.calls = :subscribed')
+	    WHERE s.calls = :subscribed'
+            )
                 ->setParameter('subscribed', '1');
-            // $recepients = $query->getResult();
-            ///////////////Email for those who subscribed to website/////////
-            // $em = $this->getDoctrine()->getManager();
-            // $qb = $em->createQueryBuilder();
-            //      $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
-            // $fl = $em->getRepository('App:User')->findAll();
-            //     $subject=$messages->getSubject();
-            //     $body=$messages->getBody();
+           
 
-            // foreach ($recepients as $row ) {
-            //  $theEmails[]=   $row['email'].' ';
-            //  $theNames[]=   $row['username'].' ';
-            //  $theFirstNames[]=   $row['first_name'].' ';
-            //  }
-
-            ////////////
-//   $length = count($recepients);
-// for ($i = 0; $i < $length; $i++) {
-// ///////////////
-// $theFirstName=$theFirstNames[$i];
-// if($theFirstName==''){
-// $theFirstName= $theNames[$i];
-// //dd($theFirstName);
-// }
-// $theEmail=$theEmails[$i];
-// $thecall_url='call-for-proposals/'.$identifier.'/details';
-//  $email = (new TemplatedEmail())
-//    ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research Directorate Office'))
-// //    ->cc($theEmails)
-//     ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
-//     ->subject($subject)
-//     ->htmlTemplate('emails/call_announcement.html.twig')
-//     ->context([
-//         'subject' => $subject,
-//         'body' => $body,
-//         'signature'=>$Princiapal_contacts,
-//         'guideline'=>$guideline,
-//         'call_url'=> $thecall_url,
-//         'name' => $theFirstName,
-//         'Authoremail' => $theEmail,
-//     ])
-//     ;
-//     $mailer->send($email);
-// }
-
-            
             $this->addFlash("success", "Call for proposal created suucessflly and will be approved later!");
-//////////////////////////// end emailing ///////////////////////
-          
-// return $this->redirectToRoute('all_calls' );
-return $this->redirectToRoute('call__details', array('id' => $callForProposal->getid()));
+            //////////////////////////// end emailing ///////////////////////
+
+            // return $this->redirectToRoute('all_calls' );
+            return $this->redirectToRoute('call__details', array('id' => $callForProposal->getid()));
         }
 
         return $this->render('call_for_proposal/new.html.twig', [
@@ -257,22 +204,35 @@ return $this->redirectToRoute('call__details', array('id' => $callForProposal->g
             'form' => $form->createView(),
         ]);
     }
-    #[Route('/{id}/research_report_phase_show', name: 'call_research_report_phase', methods: ['GET',"POST"])]
-    public function show(CallForProposal $call_for_proposal,EntityManagerInterface $entityManager,Request $request): Response
+    #[Route('/{id}/research_report_phase_show', name: 'call_research_report_phase', methods: ['GET', "POST"])]
+    public function show(CallForProposal $call_for_proposal, EntityManagerInterface $entityManager, Request $request): Response
     {
-       
-       
-        $researchReportPhase=   $call_for_proposal->getResearchReportPhase()?:  new ResearchReportPhase();
-        $form = $this->createForm(ResearchReportPhaseType::class, $researchReportPhase);
-        $form->handleRequest($request);
 
+
+        $researchReportPhase =   $call_for_proposal->getResearchReportPhase() ?:  new ResearchReportPhase();
+        $form = $this->createForm(ResearchReportPhaseType::class, $researchReportPhase)->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $researchReportPhase->setApplicationCall($call_for_proposal);
-            $researchReportPhase->setCreatedBy($this->getUser());
-            $entityManager->persist($researchReportPhase);
-            $entityManager->flush();
 
-            return $this->redirectToRoute('call_research_report_phase', ["id"=>$call_for_proposal->getId()], Response::HTTP_SEE_OTHER);
+            $request_data = $request->request->get("research_report_phase");
+
+            if (!isset($request_data['startDate'])) {
+                $form->addError(new FormError("Start date not set"));
+            } else if (!isset($request_data['endDate'])) {
+                $form->addError(new FormError("End date not set"));
+            } else {
+
+                $researchReportPhase->setStartDate(new \DateTime($request_data['startDate']));
+                $researchReportPhase->setEndDate(new \DateTime($request_data['endDate']));
+                $researchReportPhase->setApplicationCall($call_for_proposal);
+                $researchReportPhase->setCreatedBy($this->getUser());
+                $entityManager->persist($researchReportPhase);
+                $entityManager->flush();
+                $this->addFlash("success", "Action done!!");
+
+
+                return $this->redirectToRoute('call_research_report_phase', ["id" => $call_for_proposal->getId()], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->render('call_for_proposal/research_phase.html.twig', [
@@ -285,7 +245,8 @@ return $this->redirectToRoute('call__details', array('id' => $callForProposal->g
     /**
      * @Route("/{id}/undo-approve", name="call_approve_undo", methods={"GET"})
      */
-    public function undoapprove(CallForProposal $callForProposal): Response {
+    public function undoapprove(CallForProposal $callForProposal): Response
+    {
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -295,8 +256,7 @@ return $this->redirectToRoute('call__details', array('id' => $callForProposal->g
         // $callForProposal->setApprovedAt(new \Datetime());
         $this->getDoctrine()->getManager()->flush();
         // return $this->redirectToRoute('all_calls');
-return $this->redirectToRoute('all_calls' );
-
+        return $this->redirectToRoute('all_calls');
     }
 
 
@@ -304,20 +264,21 @@ return $this->redirectToRoute('all_calls' );
     /**
      * @Route("/{uidentifier}/result", name="call_approved_result", methods={"GET"})
      */
-    public function result(CallForProposal $callForProposal,SubmissionRepository $submissionRepository): Response {
+    public function result(CallForProposal $callForProposal, SubmissionRepository $submissionRepository): Response
+    {
 
-            $results=$submissionRepository->filterApproved($callForProposal);
-            
-            return $this->render('call_for_proposal/result.html.twig', [
-                'results' => $results,
-                'call_for_proposal'=>$callForProposal
-            ]);
+        $results = $submissionRepository->filterApproved($callForProposal);
 
+        return $this->render('call_for_proposal/result.html.twig', [
+            'results' => $results,
+            'call_for_proposal' => $callForProposal
+        ]);
     }
     /**
      * @Route("/{id}/approve", name="call__approve", methods={"GET"})
      */
-    public function approve(CallForProposal $callForProposal): Response {
+    public function approve(CallForProposal $callForProposal): Response
+    {
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -329,111 +290,79 @@ return $this->redirectToRoute('all_calls' );
         return $this->redirectToRoute('all_calls');
     }
 
-    //         /**
-//      * @Route("/{id}/undo-announce", name="ann_approve_undo", methods={"GET"})
-//      */
-//     public function undoapprove(Announcement $announcement): Response {
 
-//         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
-//          $announcement->setApproved(0); 
-//         $this->getDoctrine()->getManager()->flush(); 
-// return $this->redirectToRoute('announcement_index' );
-
-//     }
-//     /**
-//      * @Route("/{id}/aapprove", name="ann__approve", methods={"GET"})
-//      */
-//     public function approve(Announcement $announcement): Response {
-
-//         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
-//         $approver = $this->getUser();
-//         $announcement->setApproved(1); 
-//         $this->getDoctrine()->getManager()->flush();
-//         $this->addFlash("success", "Announcement has been! Thank you!");
-
-//         return $this->redirectToRoute('announcement_index');
-//     } 
-
-
-   /**
+    /**
      * @Route("/{uidentifier}/sendbatch", name="calsendbatch_email", methods={"GET"})
      */
-    public function sendbatch(CallForProposal $callForProposal , MailerInterface $mailer  ): Response {
+    public function sendbatch(CallForProposal $callForProposal, MailerInterface $mailer): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
 
-	///////////// Let us email subscribed users to announcements 
-	$query = $entityManager->createQuery(
-   	 'SELECT u.email , ui.first_name, u.username
+        ///////////// Let us email subscribed users to announcements 
+        $query = $entityManager->createQuery(
+            'SELECT u.email , ui.first_name, u.username
 	    FROM App:Review s
 	    JOIN s.submission r
 	    JOIN r.callForProposal c
 	    JOIN r.author u 
 	    JOIN u.userInfo ui
-	    WHERE s.from_director = 1 and s.remark=4  and c.id=:callForProposal' ) 
+	    WHERE s.from_director = 1 and s.remark=4  and c.id=:callForProposal'
+        )
             ->setParameter('callForProposal', $callForProposal);
- 
-	$recepients = $query->getResult();
-    dd($recepients);
-	 ///////////////Email for those who subscribed to website/////////
-	$em = $this->getDoctrine()->getManager();
-	$qb = $em->createQueryBuilder();
-  	$messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'PRESENTATION_SCHEDULE_NOTIFICATION']);
-	$fl = $em->getRepository('App:User')->findAll();
- 	$subject=$messages->getSubject();
- 	$body=$messages->getBody();
- foreach ($recepients as $row ) {
-  $theEmails[]=   $row['email'].' ';
-  $theNames[]=   $row['username'].' ';
-  $theFirstNames[]=   $row['first_name'].' ';
-  }   
-     $subject=$messages->getSubject();
-            $body=$messages->getBody();
-            foreach ($recepients as $row ) {
-            $theEmails[]=   $row['email'].' ';
-            $theNames[]=   $row['username'].' ';
-            $theFirstNames[]=   $row['first_name'].' ';
-            }  
- 
-            ////////////
-            $length = count($recepients);
-            for ($i = 0; $i < $length; $i++) {
-                /////////////// 
-                $theFirstName = $theFirstNames[$i];
-                if ($theFirstName == '') {
-                    $theFirstName = $theNames[$i];
-                    dd($theFirstName);
-                }
-                $theEmail = $theEmails[$i];
-                $email = (new TemplatedEmail())
-                    ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research  Office'))
-                    //    ->to($theEmails)
-                    ->to(new Address($theEmails[$i], $theFirstNames[$i]))
-                    // ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
-                    ->subject($subject)
-                    ->htmlTemplate('emails/news.html.twig')
-                    ->context([
-                        'subject' => $subject,
-                        'body' => $body,
-                        'name' => $theFirstName,
-                        'Authoremail' => $theEmail,
-                    ]);
-                $mailer->send($email);
-            }
 
-            $this->addFlash("success", "Email sent to short listed porposal PIs successfully!");
-            //////////////////////////// end emailing ///////////////////////
-            return $this->redirectToRoute('announcement_index');
-        
-        
+        $recepients = $query->getResult();
+        dd($recepients);
+        ///////////////Email for those who subscribed to website/////////
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+        $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'PRESENTATION_SCHEDULE_NOTIFICATION']);
+        $fl = $em->getRepository('App:User')->findAll();
+        $subject = $messages->getSubject();
+        $body = $messages->getBody();
+        foreach ($recepients as $row) {
+            $theEmails[] =   $row['email'] . ' ';
+            $theNames[] =   $row['username'] . ' ';
+            $theFirstNames[] =   $row['first_name'] . ' ';
+        }
+
+
+        ////////////
+        $length = count($recepients);
+        for ($i = 0; $i < $length; $i++) {
+            /////////////// 
+            $theFirstName = $theFirstNames[$i];
+            if ($theFirstName == '') {
+                $theFirstName = $theNames[$i];
+                dd($theFirstName);
+            }
+            $theEmail = $theEmails[$i];
+            $email = (new TemplatedEmail())
+                ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research  Office'))
+                //    ->to($theEmails)
+                ->to(new Address($theEmails[$i], $theFirstNames[$i]))
+                // ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
+                ->subject($subject)
+                ->htmlTemplate('emails/news.html.twig')
+                ->context([
+                    'subject' => $subject,
+                    'body' => $body,
+                    'name' => $theFirstName,
+                    'Authoremail' => $theEmail,
+                ]);
+            $mailer->send($email);
+        }
+
+        $this->addFlash("success", "Email sent to short listed porposal PIs successfully!");
+        //////////////////////////// end emailing ///////////////////////
+        return $this->redirectToRoute('announcement_index');
     }
 
     /**
      * @Route("/{id}/show", name="call__details", methods={"GET"})
      */
-    public function details(CallForProposal $callForProposal): Response {
+    public function details(CallForProposal $callForProposal): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $em = $this->getDoctrine()->getManager();
@@ -455,7 +384,8 @@ return $this->redirectToRoute('all_calls' );
     /**
      * @Route("/{uidentifier}/details", name="call_for_proposal_show", methods={"GET"})
      */
-    public function showdetails(CallForProposal $call_for_proposal): Response {
+    public function showdetails(CallForProposal $call_for_proposal): Response
+    {
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
         $number_of_applicants = $qb
@@ -482,7 +412,8 @@ return $this->redirectToRoute('all_calls' );
     /**
      * @Route("/{id}/edit", name="call__edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, CallForProposal $callForProposal): Response {
+    public function edit(Request $request, CallForProposal $callForProposal): Response
+    {
         //    $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createForm(CallForProposalType::class, $callForProposal);
@@ -503,7 +434,8 @@ return $this->redirectToRoute('all_calls' );
     /**
      * @Route("/{id}", name="call_for_proposal_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, CallForProposal $callForProposal): Response {
+    public function delete(Request $request, CallForProposal $callForProposal): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete' . $callForProposal->getId(), $request->request->get('_token'))) {

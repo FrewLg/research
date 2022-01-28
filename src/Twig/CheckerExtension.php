@@ -31,6 +31,7 @@ class CheckerExtension extends AbstractExtension
             new TwigFunction('isCollegeCoordinator', [$this, 'isCollegeCoordinator']),
             new TwigFunction('isDirectorate', [$this, 'isDirectorate']),
             new TwigFunction('hasRole', [$this, 'hasRole']),
+            new TwigFunction('allowedToSubmitReport', [$this, 'allowedToSubmitReport']),
         ];
     }
 
@@ -57,6 +58,18 @@ class CheckerExtension extends AbstractExtension
         if(in_array($role,$user->getRoles())){
             return true;
         }
+
+        return false;
+   
+    }
+    public function allowedToSubmitReport($setting,$research_reports)
+    {
+        $count=count($research_reports);
+       
+        if ((new \DateTime('now')) > $setting[$count]->getSubmissionDate()) {
+            return $setting[$count]->getSubmissionDate();
+        }
+       
 
         return false;
    

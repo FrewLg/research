@@ -56,10 +56,11 @@ class UserController extends AbstractController
     /**
      * @Route("/appinfo", name="app_index", methods={"GET"})
      */
-    public function appindex(UserRepository $userRepository): Response
+    public function appindex(UserRepository $userRepository,Request $request): Response
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
         
+      
         return $this->render('appinfo.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
@@ -83,7 +84,7 @@ class UserController extends AbstractController
     {
 
         $this->denyAccessUnlessGranted("ROLE_USER"); 
-        $queryBuilder = $userRepository->getData(['name' => $request->request->get('name')]);
+        $queryBuilder = $userRepository->getData(['name' => $request->query->get('search')]);
           $data = $paginator->paginate(
             $queryBuilder,
             $request->query->getInt('page', 1),
@@ -552,7 +553,28 @@ if ($form->isSubmitted() && $form->isValid()) {
 $entityManager = $this->getDoctrine()->getManager();
 
 $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find($this->getUser());
-  
+$userInfo = $user->getUserInfo();
+
+$image = $user->getUserInfo();
+
+$profilepictureform = $this->createForm(UserProfilePictureType::class, $image); 
+$profilepictureform->handleRequest($request);
+if ($profilepictureform->isSubmitted() && $profilepictureform->isValid()) {
+    $prifilepicture = $profilepictureform->get('image')->getData();
+
+    if ($prifilepicture == NULL) {
+        echo 'Image not uploaded';
+         $prifilepicture = '';
+    } else {
+         $fileName3 =  md5(uniqid()) . '.' . $prifilepicture->guessExtension();
+        $prifilepicture->move($this->getParameter('profile_pictures'), $fileName3);
+        $userInfo->setImage($fileName3);
+        $entityManager->persist($image);
+        $entityManager->flush();
+    $this->addFlash('success', "Profile picture  has been changed successfully!   ");
+
+    } 
+}
 ##################################################
    return $this->render('user/profile2.html.twig', [
             'user' => $user,
@@ -634,7 +656,10 @@ $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'
             
             $entityManager->persist($publishedResearch);
             $entityManager->flush();
-            return $this->redirectToRoute('call_for_proposal_all' );
+            
+            $this->addFlash('success', "Your Profile  has been updated  successfully! <a href='/' class='text-info'> Go to homepage</a>   ");
+
+            // return $this->redirectToRoute('call_for_proposal_all' );
         }
  
         $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find($this->getUser());

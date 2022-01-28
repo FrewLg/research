@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CallForProposal;
 use App\Entity\EditorialDecision;
 use App\Entity\ReviewAssignment;
 use App\Form\ReviewAssignmentType;
@@ -59,7 +60,7 @@ class IRBReviewController extends AbstractController
      * @Route("/myassigned", name="myassigned", methods={"GET"})
      */
     public function myassigned(Request $request, PaginatorInterface $paginator): Response {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
@@ -189,7 +190,7 @@ $entityManager = $this->getDoctrine()->getManager();
      * @Route("/{id}/assigned", name="his_assignment", methods={"GET"})
      */
     public function allassigned(Request $request, User $user, PaginatorInterface $paginator): Response {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
          
         $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $user  ],["id"=>"DESC"]);
@@ -218,7 +219,7 @@ $entityManager = $this->getDoctrine()->getManager();
      */
     public function revise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
         ////Ultimate reviewers page
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $submissionOfreviewer = $entityManager->getRepository(ReviewAssignment::class)->find($reviewAssignment);
@@ -364,7 +365,7 @@ $entityManager = $this->getDoctrine()->getManager();
      */
     public function rerevise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
         ////Ultimate reviewers page
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         // $id=  $review->getReviewAssignment()->getId();
@@ -501,6 +502,120 @@ $entityManager = $this->getDoctrine()->getManager();
             'evaluationForms' => $evaluationFormRepository->findBy(['parent' => null]),
         ]);
     }
+ 
+    /**
+     * @Route("/{id}/granted", name="grant_winner", methods={"GET","POST"})
+     */
+    public function grantwinner(Submission $submission,  MailerInterface $mailer ): Response {
+        ////Ultimate reviewers page
+        $this->denyAccessUnlessGranted('ROLE_USER');
+         
+        $submission->setGranted(1);
+        $this->getDoctrine()->getManager()->flush();
+        
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery(
+            'SELECT u.email , s.id ,  u.username,   s.title 
+                      , pi.first_name  , ui.alternative_email
+                    FROM App:CoAuthor c
+                    JOIN c.researcher u
+                    JOIN u.userInfo ui
+                    JOIN c.submission s
+                    JOIN s.author p
+                    JOIN p.userInfo pi 
+                    WHERE   s.granted=:granted  and 
+        c.submission = :submission'
+
+        )
+         ->setParameter('submission', $submission)  
+        ->setParameter('granted', 1);
+        $recepients = $query->getResult();
+        // dd($recepients);
+
+        $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_GRANTED_AWARDED_CO_PI']);
+        $subject = $messages->getSubject();
+        $body = $messages->getBody();
+
+        foreach ($recepients as $row) {
+            $theEmails[]             = $row['email'] . ' ';
+            $theNames[] = $row['username'] . ' ';
+            $theFirstNames[] = $row['username'] . ' ';
+            $pi_name[] = $row['first_name'] . ' ';
+            $titles[] = $row['title'] . ' ';
+            $alternative_email[] = $row['alternative_email'] . ' ';
+            $copi_id[] = $row['id'] . ' ';
+            // dd($row[0]);
+
+        }
+        ////////////
+        $length = count($recepients);
+        for ($i = 0; $i < $length; $i++) {
+            ///////////////
+            $theFirstName = $theFirstNames[$i];
+            if ($theFirstName == '') {
+                $theFirstName = $theNames[$i];
+                // dd($theFirstName);
+            }
+            if ($alternative_email[$i] == '') {
+                $alternative_email[$i] = $theEmails[$i];
+            }
+            $pi_name = $theEmails[$i];
+            $theEmail = $theEmails[$i];
+            // $titles = $titles[$i];
+             
+            $invitation_url = 'submission/my-membership-details/' . $copi_id[$i];
+            $email = (new TemplatedEmail())
+                ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+                ->to(new Address($theEmails[$i], $theFirstNames[$i]))
+                // ->cc(new Address($alternative_email[$i], $theFirstNames[$i]))
+                ->subject($subject)
+                ->htmlTemplate('emails/granted-award-notice.html.twig')
+                ->context([
+                    'subject' => $subject,
+                    'body' => $body,
+                    'title' => $titles[$i],
+                    'pi' => $submission->getAuthor()->getUserInfo(),
+                    'submission_url' => $invitation_url,
+                    'college' => $submission->getCallForProposal()->getCollege()->getPrincipalContact(),
+                    'name' => $theFirstName,
+                    'Authoremail' => $theEmail,
+                ]);
+            $mailer->send($email);
+        }
+        ########### For PI##############
+        $applicantmessages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_GRANTED_AWARDED_PI']);
+        $applicantsubject = $applicantmessages->getSubject();
+        $applicantbody = $applicantmessages->getBody(); 
+        $submission_url = 'submission/' . $submission->getId() . '/status';
+        $applicant = $submission->getAuthor()->getEmail();
+        $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
+        $emailtwo = (new TemplatedEmail())
+            ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+            ->to($applicant)
+            ->subject($applicantsubject)
+            ->htmlTemplate('emails/granted-award-notice.html.twig')
+            ->context([
+                'subject' => $applicantsubject,
+                'body' => $applicantbody,
+                'title' => $submission->getTitle(),
+                'submission_url' => $submission_url,
+                'college' => $submission->getCallForProposal()->getCollege()->getPrincipalContact(),
+
+                'name' => $applicantname,
+                'Authoremail' => $applicant
+            ]);
+
+        $mailer->send($emailtwo);
+        ##########
+// dd();
+$this->addFlash( 
+    'success',
+    'You announced this submission as a winner successfully!'
+); 
+        return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
+
+    }
 
 
       
@@ -509,7 +624,7 @@ $entityManager = $this->getDoctrine()->getManager();
      */
     public function declineinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
 
 	$entityManager = $this->getDoctrine()->getManager();
     $mew= $this->getUser()->getId();
@@ -582,7 +697,7 @@ $entityManager = $this->getDoctrine()->getManager();
      */
     public function acceptinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
 
     $entityManager = $this->getDoctrine()->getManager();
     if($this->getUser() != $reviewAssignment->getReviewer()){
@@ -642,6 +757,9 @@ if ($reviewAssignment->getIsRejected()){
 	'guideline' => $guideline_for_reviewers,
         ]);
     }  
+
+    
+
 }
  
  

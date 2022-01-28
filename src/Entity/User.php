@@ -184,6 +184,8 @@ class User implements UserInterface
         $this->directorateOfficeUsers = new ArrayCollection();
         $this->permissions = new ArrayCollection();
         $this->editorialDecisions = new ArrayCollection();
+        $this->submissions = new ArrayCollection();
+        
         $this->callForProposals = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
         $this->announcements = new ArrayCollection();
@@ -548,6 +550,17 @@ class User implements UserInterface
     {
         return $this->editorialDecisions;
     }
+    
+
+      /**
+     * @return Collection|Submission[]
+     */
+    public function getSubmissions(): Collection
+    {
+        return $this->submissions;
+    }
+     
+    
 
     public function addEditorialDecision(EditorialDecision $editorialDecision): self
     {

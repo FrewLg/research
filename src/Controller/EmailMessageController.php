@@ -23,7 +23,7 @@ class EmailMessageController extends AbstractController
     public function index(Request $request, EmailMessageRepository $emailMessageRepository, PaginatorInterface $paginator): Response
     {
     
-     $this->denyAccessUnlessGranted('ROLE_USER'); 
+      
 	$em = $this->getDoctrine()->getManager();
             $emailMessages = array_reverse($em->getRepository('App:EmailMessage')->findAll()); 
     $emailMessageRepository1 = $paginator->paginate(

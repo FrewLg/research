@@ -43,13 +43,13 @@
 	</div>
 
 	{#  
-		<div class="col-md-2">
-			<div class="form-group select-wizard">
-			Upload approval of your clearance<br>
-				{{form_widget(researches.imageFile )}}
-	
-			</div>
-		</div> #}
+			<div class="col-md-2">
+				<div class="form-group select-wizard">
+				Upload approval of your clearance<br>
+					{{form_widget(researches.imageFile )}}
+		
+				</div>
+			</div> #}
 
 
 	<div class="col-md-1">
@@ -86,7 +86,8 @@
 
 									</div>
 									<div class="dastone-profile_user-detail">
-										<h5 class="dastone-user-name">{{ user}}</h5>
+										<h5 class="dastone-user-name">{{ user.userInfo.suffix   }}
+											{{ user}}</h5>
 										<p class="mb-0 dastone-user-name-post">
 											{% if userInfo.affiliation is defined %}
 
@@ -96,10 +97,11 @@
 
 
 											{{ user.userInfo.suffix   }}
-										 
-											{% if user.userInfo.educationLevel %}	( {{ user.userInfo.educationLevel }} )
+
+											{% if user.userInfo.educationLevel %}
+												({{ user.userInfo.educationLevel }})
 											{% endif %}
-											
+
 											{{ user.userInfo.academicRank   }},
 											{% if user.userInfo.department  is defined %}
 												Department of
@@ -147,23 +149,28 @@
 											Affiliation:
 
 										</b>
-									{% if user.userInfo.educationLevel %}	( {{ user.userInfo.educationLevel }} )
-											{% endif %}
+										{% if user.userInfo.educationLevel %}
+											({{ user.userInfo.educationLevel }})
+										{% endif %}
 
-{% if user.userInfo.academicRank %}	  {{ user.userInfo.academicRank }}  ,
-											{% endif %}
+										{% if user.userInfo.academicRank %}
+											{{ user.userInfo.academicRank }}
+											,
+										{% endif %}
 
- 
-											{% if user.userInfo.department  is defined %}
-												Department of
 
-												{{ user.userInfo.department   }}
-												{% else %}
-											{% endif %}
-											  
+										{% if user.userInfo.department  is defined %}
+											Department of
 
-{% if user.userInfo.college %}	at  {{ user.userInfo.college }}  
-											{% endif %}
+											{{ user.userInfo.department   }}
+											{% else %}
+										{% endif %}
+
+
+										{% if user.userInfo.college %}
+											at
+											{{ user.userInfo.college }}
+										{% endif %}
 
 										<a href="" class="font-14 text-primary">
 											{% if userInfo.affiliation is defined %}
@@ -191,8 +198,8 @@
 											<i class="fa fa-book"></i>
 										</button>
 										<p class="mb-0 fw-semibold">Trainings</p>
- 
-											 
+
+
 									</div>
 									<!--end col-->
 								</div>
@@ -218,9 +225,9 @@
 			<li class="nav-item">
 				<a class="nav-link" id="Profile_Post_tab" data-bs-toggle="pill" href="#Profile_Post">Conferences</a>
 			</li>
-			{# <li class="nav-item">
-																												<a class="nav-link" id="portfolio_detail_tab" data-bs-toggle="pill" href="#Profile_Portfolio">Project Membership</a>
-																											</li> #}
+			<li class="nav-item">
+				<a class="nav-link" id="portfolio_detail_tab" data-bs-toggle="pill" href="#Profile_Portfolio">Project Membership</a>
+			</li>
 			<li class="nav-item">
 				<a class="nav-link active" id="settings_detail_tab" data-bs-toggle="pill" href="#About">About</a>
 			</li>
@@ -273,13 +280,13 @@
 								</div>
 								<!--end card-header-->
 							{# <div class="card-body">
-							 </div> #}
+														 </div> #}
 								<!--end card-body-->
 							</div>
 
 							{# <div class="card">
-								 <!--end card-body-->
-																																																															</div> #}
+															 <!--end card-body-->
+																																																																						</div> #}
 							<!--end card-->
 						</div>
 						<!--end col-->
@@ -288,75 +295,90 @@
 				</div>
 				<div class="tab-pane fade" id="Profile_Portfolio" role="tabpanel" aria-labelledby="portfolio_detail_tab">
 					<div class="row">
-						<div class="col-md-6">{# <div class="card">
-																																																																<div class="card-body">
-																																																																	<div class="ribbon2 rib2-primary">
-										 </div> #}
-							<!--end card-->
-						</div>
-						<!--end col-->
-
-						<!--end col-->
-					</div>
-
-
-					<!--end row-->
-				</div>
-				<div class="tab-pane fade active show" id="About" role="tabpanel" aria-labelledby="settings_detail_tab">
-					<div class="row">
-						<div class="col-lg-12   col-xl-12">
-							<div class="card">
-								<div class="card-header">
-									<div class="row align-items-center">
-										<div class="col">
-											<h4 class="card-title">Personal Information</h4>
-										</div>
-										<!--end col-->
-									</div>
-									<!--end row-->
-								</div>
-								<!--end card-header-->
+						<div class="col-md-6">
+							{# <div class="card">
 								<div class="card-body">
+									<div class="ribbon2 rib2-primary"></div>
+ 								</div> 
+							</div> #}
 
 
-									<div class="row">
-										<div class="col-sm-12">
+							<!--end row-->
+						</div>
+						<div class="tab-pane fade active show" id="About" role="tabpanel" aria-labelledby="settings_detail_tab">
+							<div class="row">
+								<div class="col-lg-12   col-xl-12">
+									<div class="card">
+										<div class="card-header">
+											<div class="row align-items-center">
+												<div class="col">
+													<h4 class="card-title">Personal Information</h4>
+												</div>
+												<!--end col-->
+											</div>
+											<!--end row-->
+										</div>
+										<!--end card-header-->
+										<div class="card-body">
 
 
-											<table class="table table-bordered">
-												<tbody>
+											<div class="row">
+												<div class="col-sm-12">
+													{% for submission in user.submissions %}
+														{{ submission.title }}
+													{% endfor %}
 
-													<tr>
-														<th>Researcher:</th>
-														<td>
-															{{ user.userInfo}}
-														</td>
-													</tr>
-
-													<tr>
-														<th>College</th>
-														<td>{{ user.userInfo.college }}</td>
-													</tr>
-													<tr>
-														<th>Department</th>
-														<td>{{ user.userInfo.department }}</td>
-													</tr>
-													<tr>
-														<th>Alternative Email</th>
-														<td>{{ user.userInfo.alternativeEmail }}</td>
-													</tr>
-													<tr>
-														<th>Academic Rank</th>
-														<td>{{ user.userInfo.academicRank }}</td>
-													</tr>
-													<tr>
-														<th>Education Level</th>
-														<td>{{ user.userInfo.educationLevel }}</td>
-													</tr>
+													{% for submission in user.reviewAssignments %}
+														{{loop.index}}
+														{{ submission.submission.title }}
+													{% endfor %}
 
 
-												</tbody>
-											</table>
+													{% for submission in user.userGroup %}{% endfor %}
+													{% for submission in user.trainingParticipants %}
+														{{loop.index}}
+														{{submission.callForTraining.name}}
+													{% endfor %}
+
+
+													<table class="table table-bordered">
+														<tbody>
+
+															<tr>
+																<th>Researcher:</th>
+																<td>
+																	{{ user.userInfo}}
+																</td>
+															</tr>
+
+															<tr>
+																<th>College</th>
+																<td>{{ user.userInfo.college }}</td>
+															</tr>
+															<tr>
+																<th>Department</th>
+																<td>{{ user.userInfo.department }}</td>
+															</tr>
+															<tr>
+																<th>Alternative Email</th>
+																<td>{{ user.userInfo.alternativeEmail }}</td>
+															</tr>
+															<tr>
+																<th>Academic Rank</th>
+																<td>{{ user.userInfo.academicRank }}</td>
+															</tr>
+															<tr>
+																<th>Education Level</th>
+																<td>{{ user.userInfo.educationLevel }}</td>
+															</tr>
+
+
+														</tbody>
+													</table>
+
+
+												</div>
+											</div>
 
 
 										</div>
@@ -365,11 +387,7 @@
 
 								</div>
 							</div>
-
-
 						</div>
 					</div>
-				</div>
-			</div>
 
-		{% endblock %}
+				{% endblock %}

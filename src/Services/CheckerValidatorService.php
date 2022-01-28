@@ -11,7 +11,7 @@ class CheckerValidator extends AbstractController
  public function checkauthor(Submission $submission)
     {
     ////Ultimate reviewers page
-    $this->denyAccessUnlessGranted('ROLE_USER'); 
+     
     $entityManager = $this->getDoctrine()->getManager();
     $me= $this->getUser()->getId(); 
     

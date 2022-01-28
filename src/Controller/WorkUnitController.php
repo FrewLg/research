@@ -69,7 +69,7 @@ class WorkUnitController extends AbstractController
      */
     public function show(Request $request, WorkUnit $workUnit, ThematicAreaRepository $thematicAreaRepository, InstitutionalReviewersBoardRepository $institutionalReviewersBoardRepository, GuidelinesRepository $guidelinesRepository): Response
     {
-    $this->denyAccessUnlessGranted('ROLE_USER');
+    
 	$entityManager = $this->getDoctrine()->getManager();
 	$thematicAreas = $entityManager->getRepository(ThematicArea::class)->findBy(['work_unit' => $workUnit ] );
 	$guidelines = $entityManager->getRepository(Guidelines::class)->findBy(['work_unit' => $workUnit ] );

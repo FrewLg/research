@@ -46,10 +46,10 @@ class CallForProposal
      */
     private $updated_date;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Submission::class, mappedBy="callForProposal")
-     */
-    private $submissions;
+    // /**
+    //  * @ORM\OneToMany(targetEntity=Submission::class, mappedBy="callForProposal")
+    //  */
+    // private $submissions;
 
     /**
      * @ORM\ManyToOne(targetEntity=ThematicArea::class, inversedBy="callForProposals")
@@ -151,7 +151,7 @@ class CallForProposal
      */
     private $is_call_from_center;
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ResearchReportPhase", mappedBy="applicationCall", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\ResearchReportPhase", mappedBy="applicationCall")
      */
     private $researchReportPhase;
 
@@ -236,36 +236,7 @@ class CallForProposal
         return $this;
     }
 
-    /**
-     * @return Collection|Submission[]
-     */
-    public function getSubmissions(): Collection
-    {
-        return $this->submissions;
-    }
-
-    public function addSubmission(Submission $submission): self
-    {
-        if (!$this->submissions->contains($submission)) {
-            $this->submissions[] = $submission;
-            $submission->setCallForProposal($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSubmission(Submission $submission): self
-    {
-        if ($this->submissions->removeElement($submission)) {
-            // set the owning side to null (unless already changed)
-            if ($submission->getCallForProposal() === $this) {
-                $submission->setCallForProposal(null);
-            }
-        }
-
-        return $this;
-    }
-
+   
     public function getThematicArea(): ?ThematicArea
     {
         return $this->thematic_area;
