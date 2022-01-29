@@ -12,6 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ResearchReport
 {
+
+    const STATUS_CREATED=0;
+    const STATUS_REJECTED=1;
+    const STATUS_AGREED=2;
+    const STATUS_NOT_AGREED=3;
+    const STATUS_APPROVED=4;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -71,11 +78,42 @@ class ResearchReport
      */
     private $researchReportReviews;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $challenges;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $financialClearance;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ResearchReportComment::class, mappedBy="report", orphanRemoval=true)
+     */
+    private $researchReportComments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $approvedAt;
+
+   
     public function __construct()
     {
-        $this->submissionStatus=1;
+        $this->submissionStatus=self::STATUS_CREATED;
         $this->submittedAt=new \DateTime('now');
         $this->researchReportReviews = new ArrayCollection();
+        $this->researchReportComments = new ArrayCollection();
+    }
+
+    public function approveResearchReport(){
+        
     }
 
     public function getId(): ?int
@@ -220,4 +258,84 @@ class ResearchReport
 
         return $this;
     }
+
+    public function getChallenges(): ?string
+    {
+        return $this->challenges;
+    }
+
+    public function setChallenges(?string $challenges): self
+    {
+        $this->challenges = $challenges;
+
+        return $this;
+    }
+
+    public function getFinancialClearance(): ?string
+    {
+        return $this->financialClearance;
+    }
+
+    public function setFinancialClearance(?string $financialClearance): self
+    {
+        $this->financialClearance = $financialClearance;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ResearchReportComment[]
+     */
+    public function getResearchReportComments(): Collection
+    {
+        return $this->researchReportComments;
+    }
+
+    public function addResearchReportComment(ResearchReportComment $researchReportComment): self
+    {
+        if (!$this->researchReportComments->contains($researchReportComment)) {
+            $this->researchReportComments[] = $researchReportComment;
+            $researchReportComment->setReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResearchReportComment(ResearchReportComment $researchReportComment): self
+    {
+        if ($this->researchReportComments->removeElement($researchReportComment)) {
+            // set the owning side to null (unless already changed)
+            if ($researchReportComment->getReport() === $this) {
+                $researchReportComment->setReport(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
+
+        return $this;
+    }
+
+    public function getApprovedAt(): ?\DateTimeInterface
+    {
+        return $this->approvedAt;
+    }
+
+    public function setApprovedAt(?\DateTimeInterface $approvedAt): self
+    {
+        $this->approvedAt = $approvedAt;
+
+        return $this;
+    }
+
+    
 }

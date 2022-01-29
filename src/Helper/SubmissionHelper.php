@@ -3,8 +3,10 @@
 namespace App\Helper;
 
 use App\Entity\ResearchReport;
+use App\Entity\ResearchReportComment;
 use App\Entity\ResearchReportSubmissionSetting;
 use App\Entity\Submission;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,36 +24,71 @@ class SubmissionHelper
     private $em;
     private $urlGenerator;
     private $flashBagInterface;
-    public function __construct(ContainerInterface $containerInterface, TokenStorageInterface $tokenInterface, EntityManagerInterface $em, FlashBagInterface $flashBagInterface, UrlGeneratorInterface $urlGenerator)
+    private $mailHelper;
+    private $user;
+    public function __construct(ContainerInterface $containerInterface, TokenStorageInterface $tokenInterface, EntityManagerInterface $em, FlashBagInterface $flashBagInterface, UrlGeneratorInterface $urlGenerator, MailHelper $mailHelper)
     {
         $this->containerInterface = $containerInterface;
         $this->tokenInterface = $tokenInterface;
         $this->flashBagInterface = $flashBagInterface;
 
         $this->urlGenerator = $urlGenerator;
+        $this->mailHelper = $mailHelper;
         $this->em = $em;
+
+        $this->user = $this->tokenInterface->getToken()->getUser();
     }
     public function createResearchReport($research_report_form, ResearchReport $researchReport, Submission $submission)
     {
-        $user=$this->tokenInterface->getToken()->getUser();
         $uploadedFile = $research_report_form['file']->getData();
-        $destination = $this->containerInterface->getParameter('kernel.project_dir') . '/public/research-report';
-        $newFilename = $user->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
+        $destination = $this->containerInterface->getParameter('kernel.project_dir') . '/public/uploads/research-report';
+        $newFilename = $this->user->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
         $uploadedFile->move($destination, $newFilename);
 
 
         $researchReport->setFile($newFilename);
+
+        $uploadedFile = $research_report_form['financial_clearance']->getData();
+        $destination = $this->containerInterface->getParameter('kernel.project_dir') . '/public/uploads/research-report';
+        $newFilename = $this->user->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
+        $uploadedFile->move($destination, $newFilename);
+
+
+        $researchReport->setFinancialClearance($newFilename);
         $researchReport->setFileType($uploadedFile->getClientOriginalExtension());
         $researchReport->setSubmission($submission);
-        $researchReport->setSubmittedBy($user);
+        $researchReport->setSubmittedBy($this->user);
 
         $this->em->persist($researchReport);
         $this->em->flush();
+
+
+        foreach ($submission->getCoAuthors() as $key => $value) {
+
+
+
+            $this->mailHelper->sendEmail(
+                $value->getResearcher()->getEmail(),
+                "Co-PI response on your submission",
+                "emails/general.html.twig",
+                [
+                    "info" => "Co-PI response on your submission",
+                    "subject" => "Co-PI response on your submission",
+                    "body" => "
+                    The project titled as " . $submission->getTitle() . " you assigned as a CO-PI submitted the phase 1 report on " . ((new \DateTime())->format('Y-m-d H:iA')) . "date. Please confirm that you are aware and agree on the report
+                    following the link below <a href='" . $this->urlGenerator->generate("submission_status", ['id' => $submission->getId()]) . "'>Click here to get the report</a>
+                    ",
+                ]
+            );
+        }
+
+
         $this->flashBagInterface->add("success", "Report submitted successfully!!");
-        return new RedirectResponse($this->urlGenerator->generate("submission_status", ["id" => $submission->getId()]));
+        return $this->redirectBack($submission);
     }
 
-    public function createSubmissionReportSchedule(Request $request, Submission $submission){
+    public function createSubmissionReportSchedule(Request $request, Submission $submission)
+    {
         foreach ($request->request->get('research_report_submission_setting') as $key => $value) {
 
             if ($key != "_token") {
@@ -61,12 +98,91 @@ class SubmissionHelper
                 $submission_report_schedule->setPhase(explode("_", $key)[1]);
                 $submission_report_schedule->setSubmissionDate(new \DateTime($value));
                 $this->em->persist($submission_report_schedule);
-              
+
                 $this->em->flush();
             }
         }
         $this->flashBagInterface->add("success", "Report submitted successfully!!");
+        return $this->redirectBack($submission);
+    }
+
+    public function copiReportResponse(Request $request, Submission $submission)
+    {
+
+
+        if ($request->request->get("pi_action")) {
+            $request_data = $request->request->get("pi_action");
+
+            $researchReport = $this->em->getRepository(ResearchReport::class)->find($request_data['research_report_id']);
+            $copi_response = $this->em->getRepository(ResearchReportComment::class)->find($request_data['research_report_comment_id']);
+
+
+            $copi_response->setPIResponse($request_data['reason']);
+            $copi_response->setPIRespondedAt(new \DateTime());
+
+            $this->em->flush();
+        }
+        if ($request->request->get("copi_response")) {
+            $copi_response = new ResearchReportComment();
+
+            $request_data = $request->request->get("copi_action");
+
+            $researchReport = $this->em->getRepository(ResearchReport::class)->find($request_data['research_report_id']);
+
+
+
+
+
+            $copi_response->setReport($researchReport);
+            if ($request_data['agree'] == 0)
+                $copi_response->setRejectionReason($request_data['reason']);
+            $copi_response->setWasAgreed($request_data['agree']);
+            $copi_response->setCommentedBy($this->user);
+
+            $this->em->persist($copi_response);
+
+
+            $this->em->flush();
+            if (!$copi_response->getWasAgreed()) {
+                $this->mailHelper->sendEmail(
+                    $submission->getAuthor()->getEmail(),
+                    "Co-PI response on your submission",
+                    "emails/general.html.twig",
+                    [
+                        "info" => "Co-PI response on your submission",
+                        "subject" => "Co-PI response on your submission",
+                        "body" => "Co-PI response on your submission <a href='" . $this->urlGenerator->generate("submission_status", ['id' => $submission->getId()]) . "'>Click here to get your submission</a>",
+                    ]
+                );
+            }
+        }
+        $this->flashBagInterface->add("success", "your response submitted successfully!!");
+        return $this->redirectBack($submission);
+    }
+
+    public function approveResearchReport(Request $request, Submission $submission)
+    {
+
+        if ($request->request->get('approve_research_report')) {
+
+            $researchReport = $this->em->getRepository(ResearchReport::class)->find($request->request->get('research_report_id'));
+
+            $researchReport->setSubmissionStatus(ResearchReport::STATUS_APPROVED);
+            $researchReport->setApprovedBy($this->user);
+            $researchReport->setApprovedAt(new \DateTime());
+            $this->em->flush();
+            $this->flashBagInterface->add("success", "Approved successfully!!");
+
+            //note here
+            // send email for all members
+
+            return $this->redirectBack($submission);
+        }
+    }
+
+
+    public function redirectBack(Submission $submission)
+    {
         return new RedirectResponse($this->urlGenerator->generate("submission_status", ["id" => $submission->getId()]));
-  
     }
 }

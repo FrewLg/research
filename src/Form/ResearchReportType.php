@@ -21,8 +21,8 @@ class ResearchReportType extends AbstractType
                 ]
             ])
             ->add('file',FileType::class,[
-                "label"=>"Select File",
-                "help"=>"Upload research report",
+                "label"=>"Progress report",
+                "help"=>"Upload Progress report",
                 "mapped"=>false,
                 "attr"=>[
                     "accept"=>"application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
@@ -30,7 +30,27 @@ class ResearchReportType extends AbstractType
                     "class"=>"form-control",
                 ]
             ])
+            ->add('financial_clearance',FileType::class,[
+                "label"=>"Financial clearance",
+                "help"=>"Upload Financial clearance",
+                "mapped"=>false,
+                "attr"=>[
+                    "accept"=>"application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                    text/plain, application/pdf, image/*",
+                    "class"=>"form-control",
+                ]
+                ])
+                
+                ->add('challenges',TextareaType::class,[
+                "help"=>"Challenges faced ( If any )",
+                "attr"=>[
+                  
+                    "class"=>"form-control",
+                ]
+            ])
             ->add('remark',TextareaType::class,[
+                "help"=>"your remark (If any)",
+            
                 "attr"=>[
                   
                     "class"=>"form-control",
