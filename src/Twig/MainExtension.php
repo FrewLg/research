@@ -8,6 +8,7 @@ use App\Entity\Submission;
 use App\Entity\User;
 use App\Helper\MainHelper;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -15,7 +16,7 @@ use Twig\TwigFunction;
 class MainExtension extends AbstractExtension
 {
     private $em;
-    public function __construct(EntityManager $em) {
+    public function __construct(EntityManagerInterface $em) {
         $this->em = $em;
     }
     public function getFilters(): array

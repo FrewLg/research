@@ -6,8 +6,7 @@ use App\Entity\CoAuthor;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-
+use Symfony\Component\Security\Core\Security;
 /**
  * @method CoAuthor|null find($id, $lockMode = null, $lockVersion = null)
  * @method CoAuthor|null findOneBy(array $criteria, array $orderBy = null)
@@ -16,13 +15,13 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class CoAuthorRepository extends ServiceEntityRepository
 {
-    private $tokenInterface;
+    private $security;
     private $user;
-    public function __construct(ManagerRegistry $registry, TokenInterface $tokenInterface)
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, CoAuthor::class);
-        $this->tokenInterface = $tokenInterface;
-        $this->user = $this->tokenInterface->getUser();
+        $this->security = $security;
+        $this->user = $this->security->getUser();
     }
 
     // /**
