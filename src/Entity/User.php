@@ -169,6 +169,11 @@ class User implements UserInterface
      */
     private $directorateOfficeUsers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Publication::class, mappedBy="author", orphanRemoval=true)
+     */
+    private $publications;
+
 
      
     public function __construct()
@@ -184,12 +189,15 @@ class User implements UserInterface
         $this->directorateOfficeUsers = new ArrayCollection();
         $this->permissions = new ArrayCollection();
         $this->editorialDecisions = new ArrayCollection();
+        $this->submissions = new ArrayCollection();
+        
         $this->callForProposals = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
         $this->announcements = new ArrayCollection();
         $this->coAuthors = new ArrayCollection();
         $this->userFeedback = new ArrayCollection();
         $this->trainingParticipants = new ArrayCollection();
+        $this->publications = new ArrayCollection();
      }
   
 
@@ -548,6 +556,17 @@ class User implements UserInterface
     {
         return $this->editorialDecisions;
     }
+    
+
+      /**
+     * @return Collection|Submission[]
+     */
+    public function getSubmissions(): Collection
+    {
+        return $this->submissions;
+    }
+     
+    
 
     public function addEditorialDecision(EditorialDecision $editorialDecision): self
     {
@@ -877,6 +896,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($trainingParticipant->getParticipant() === $this) {
                 $trainingParticipant->setParticipant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Publication[]
+     */
+    public function getPublications(): Collection
+    {
+        return $this->publications;
+    }
+
+    public function addPublication(Publication $publication): self
+    {
+        if (!$this->publications->contains($publication)) {
+            $this->publications[] = $publication;
+            $publication->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublication(Publication $publication): self
+    {
+        if ($this->publications->removeElement($publication)) {
+            // set the owning side to null (unless already changed)
+            if ($publication->getAuthor() === $this) {
+                $publication->setAuthor(null);
             }
         }
 

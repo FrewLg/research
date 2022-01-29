@@ -78,6 +78,13 @@ class UserInfo
      */
     private $image;
  
+      /**
+    * @ORM\Column(type="string", length=250, nullable=true)
+    
+     */
+    private $cv;
+ 
+
     /**
      * @ORM\Column(type="datetime", length=255, nullable=true)
      */
@@ -224,6 +231,18 @@ class UserInfo
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCV(): string
+    {
+        return (string) $this->cv;
+    }
+
+    public function setCV(string $cv): self
+    {
+        $this->cv = $cv;
 
         return $this;
     }

@@ -184,57 +184,13 @@ class CallForProposalController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
             $query = $entityManager->createQuery(
-                'SELECT u.email , u.first_name, u.username
+                'SELECT u.email , u.first_name, u.username 
 	    FROM App:Subscription s
 	    JOIN s.user u
 	    WHERE s.calls = :subscribed'
             )
                 ->setParameter('subscribed', '1');
-            // $recepients = $query->getResult();
-            ///////////////Email for those who subscribed to website/////////
-            // $em = $this->getDoctrine()->getManager();
-            // $qb = $em->createQueryBuilder();
-            //      $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key'=>'CALL_FOR_PROPOSAL_ANNOUNCEMENT']);
-            // $fl = $em->getRepository('App:User')->findAll();
-            //     $subject=$messages->getSubject();
-            //     $body=$messages->getBody();
-
-            // foreach ($recepients as $row ) {
-            //  $theEmails[]=   $row['email'].' ';
-            //  $theNames[]=   $row['username'].' ';
-            //  $theFirstNames[]=   $row['first_name'].' ';
-            //  }
-
-            ////////////
-            //   $length = count($recepients);
-            // for ($i = 0; $i < $length; $i++) {
-            // ///////////////
-            // $theFirstName=$theFirstNames[$i];
-            // if($theFirstName==''){
-            // $theFirstName= $theNames[$i];
-            // //dd($theFirstName);
-            // }
-            // $theEmail=$theEmails[$i];
-            // $thecall_url='call-for-proposals/'.$identifier.'/details';
-            //  $email = (new TemplatedEmail())
-            //    ->from(new Address('no-reply@ju.edu.et', 'Jimma University Research Directorate Office'))
-            // //    ->cc($theEmails)
-            //     ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
-            //     ->subject($subject)
-            //     ->htmlTemplate('emails/call_announcement.html.twig')
-            //     ->context([
-            //         'subject' => $subject,
-            //         'body' => $body,
-            //         'signature'=>$Princiapal_contacts,
-            //         'guideline'=>$guideline,
-            //         'call_url'=> $thecall_url,
-            //         'name' => $theFirstName,
-            //         'Authoremail' => $theEmail,
-            //     ])
-            //     ;
-            //     $mailer->send($email);
-            // }
-
+           
 
             $this->addFlash("success", "Call for proposal created suucessflly and will be approved later!");
             //////////////////////////// end emailing ///////////////////////

@@ -64,7 +64,7 @@ class SubmissionController extends AbstractController
      */
     public function index(Request $request,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
     {
-        // $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
         $em = $this->getDoctrine()->getManager();
         //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
         $formFilter = $this->createForm(SubmissionFilterType::class);
@@ -981,9 +981,7 @@ class SubmissionController extends AbstractController
             'submission' => $submission,
             'Overall_budger_request' => $Overall_budger_request,
             'review_assignments' => $reviewers,
-            'reviews' => $reviews,
-
-            // 'editorialDecisionform'=>$editorialDecisionform->createView(),
+            'reviews' => $reviews, 
             'adminvevisionform' => $form->createView(),
             'co_authors' => $contributors,
             'collaborating_institutions' => $CollaboratingInstitutions,
@@ -1026,7 +1024,7 @@ class SubmissionController extends AbstractController
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
-        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['granted' => 1]);
+        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['awardgranted' => 1]);
         $Allmyresearches = $paginator->paginate(
             $allawarded,
             $request->query->getInt('page', 1),
@@ -1045,7 +1043,7 @@ class SubmissionController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager = $this->getDoctrine()->getManager();
-        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['granted' => 1, 'call_for_proposal' => $callForProposal]);
+        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['awardgranted' => 1, 'call_for_proposal' => $callForProposal]);
 
         $Allmyresearches = $paginator->paginate(
             $allawarded,

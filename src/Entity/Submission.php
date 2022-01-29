@@ -42,17 +42,7 @@ class Submission
      */
     private $sub_title;
 
-    // /**
-    //  * @ORM\Column(type="boolean", nullable=true)
-    //  */
-    // private $agree_to_the_terms;  
- 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $round;
-
-     
+   
  
     /**
      * @ORM\ManyToOne(targetEntity=CallForProposal::class, inversedBy="submissions")
@@ -62,8 +52,7 @@ class Submission
     /**
      * @ORM\OneToMany(targetEntity=CoAuthor::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
      */
-  #  private $coAuthors; 
-
+ 
        protected $coAuthors;
        
     /**
@@ -107,11 +96,7 @@ class Submission
      */
     private $background_and_rationale;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $submission_type;
-
+    
     /**
      * @ORM\Column(type="text",  nullable=true)
      */
@@ -129,16 +114,8 @@ class Submission
      */
     private $GeneralObjective;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $funding_organization;
-
-    /**
-     * @ORM\OneToMany(targetEntity=CollaboratingInstitution::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
-     */
-    private $collaboratingInstitutions;
-
+    
+   
     /**
      * @ORM\Column(type="date", nullable=true)
      */
@@ -158,6 +135,8 @@ class Submission
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $is_author_pi;
+
+    
 
     /**
      * @ORM\OneToMany(targetEntity=EditorialDecision::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
@@ -179,26 +158,13 @@ class Submission
      */
     private $published;
 
-    /**
-     * @ORM\OneToMany(targetEntity=FundingInstition::class, mappedBy="submission")
-     */
-    private $fundingInstitions;
-
-    // /**
-    //  * @ORM\OneToMany(targetEntity=PublishedSubmission::class, mappedBy="submission")
-    //  */
-    // private $publishedSubmissions;
+     
 
     /**
      * @ORM\Column(type="integer")
      */
     private $status;
-
-    // /**
-    //  * @ORM\OneToOne(targetEntity=Review::class, inversedBy="submission", cascade={"persist", "remove"})
-    //  * @ORM\JoinColumn(nullable=false)
-    //  */
-    // private $review;
+ 
      
       /**
      * @ORM\OneToMany(targetEntity=SubmissionBudget::class, mappedBy="submission", orphanRemoval=true,cascade={"persist"})
@@ -212,6 +178,8 @@ class Submission
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $keywords;
+
+   
 
     /**
      * @ORM\OneToMany(targetEntity=SubmissionAttachement::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
@@ -257,24 +225,18 @@ class Submission
      * @ORM\OneToMany(targetEntity=ResearchReportSubmissionSetting::class, mappedBy="submission", orphanRemoval=true)
      */
     private $researchReportSubmissionSettings;
-    /*
-    * @ORM\Column(type="boolean", nullable=true)
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
      */
-    private $granted;
-
-   
-
- 
+    private $awardgranted; 
  
     public function __construct()
     {
  
         $this->coAuthors = new ArrayCollection();
         $this->reviewAssignments = new ArrayCollection(); 
-        $this->collaboratingInstitutions = new ArrayCollection();
-        $this->editorialDecisions = new ArrayCollection();
-        $this->fundingInstitions = new ArrayCollection();
-        // $this->publishedSubmissions = new ArrayCollection();
+         $this->editorialDecisions = new ArrayCollection(); 
         $this->submissionBudgets = new ArrayCollection();
         $this->researchTimeTables = new ArrayCollection();
         $this->submissionAttachements = new ArrayCollection();
@@ -290,19 +252,7 @@ class Submission
     }
 
  
-   
-    // public function getReview(): ?Review
-    // {
-    //     return $this->review;
-    // }
-
-    // public function setReview(Review $review): self
-    // {
-    //     $this->review = $review;
-
-    //     return $this;
-    // }
-
+    
     
    
         public function __toString(): string
@@ -358,33 +308,7 @@ class Submission
 
         return $this;
     }
-
-    // public function getAgreeToTheTerms(): ?bool
-    // {
-    //     return $this->agree_to_the_terms;
-    // }
-
-    // public function setAgreeToTheTerms(bool $agree_to_the_terms): self
-    // {
-    //     $this->agree_to_the_terms = $agree_to_the_terms;
-
-    //     return $this;
-    // }
-
  
-   
-
-    public function getRound(): ?string
-    {
-        return $this->round;
-    }
-
-    public function setRound(?string $round): self
-    {
-        $this->round = $round;
-
-        return $this;
-    }
 
     
    
@@ -570,17 +494,7 @@ class Submission
 
         return $this;
     }
-    public function getSubmissionType(): ?string
-    {
-        return $this->submission_type;
-    }
-
-    public function setSubmissionType(?string $submission_type): self
-    {
-        $this->submission_type = $submission_type;
-
-        return $this;
-    }
+    
  
 
     
@@ -597,47 +511,9 @@ class Submission
         return $this;
     }
 
-    public function getFundingOrganization(): ?string
-    {
-        return $this->funding_organization;
-    }
+    
 
-    public function setFundingOrganization(?string $funding_organization): self
-    {
-        $this->funding_organization = $funding_organization;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|CollaboratingInstitution[]
-     */
-    public function getCollaboratingInstitutions(): Collection
-    {
-        return $this->collaboratingInstitutions;
-    }
-
-    public function addCollaboratingInstitution(CollaboratingInstitution $collaboratingInstitution): self
-    {
-        if (!$this->collaboratingInstitutions->contains($collaboratingInstitution)) {
-            $this->collaboratingInstitutions[] = $collaboratingInstitution;
-            $collaboratingInstitution->setSubmission($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCollaboratingInstitution(CollaboratingInstitution $collaboratingInstitution): self
-    {
-        if ($this->collaboratingInstitutions->removeElement($collaboratingInstitution)) {
-            // set the owning side to null (unless already changed)
-            if ($collaboratingInstitution->getSubmission() === $this) {
-                $collaboratingInstitution->setSubmission(null);
-            }
-        }
-
-        return $this;
-    }
+    
 
     public function getProjectStartAt(): ?\DateTimeInterface
     {
@@ -753,35 +629,7 @@ class Submission
         return $this;
     }
 
-    /**
-     * @return Collection|FundingInstition[]
-     */
-    public function getFundingInstitions(): Collection
-    {
-        return $this->fundingInstitions;
-    }
-
-    public function addFundingInstition(FundingInstition $fundingInstition): self
-    {
-        if (!$this->fundingInstitions->contains($fundingInstition)) {
-            $this->fundingInstitions[] = $fundingInstition;
-            $fundingInstition->setSubmission($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFundingInstition(FundingInstition $fundingInstition): self
-    {
-        if ($this->fundingInstitions->removeElement($fundingInstition)) {
-            // set the owning side to null (unless already changed)
-            if ($fundingInstition->getSubmission() === $this) {
-                $fundingInstition->setSubmission(null);
-            }
-        }
-
-        return $this;
-    }
+     
 
     /**
      * @return Collection|PublishedSubmission[]
@@ -1093,14 +941,14 @@ class Submission
         }
     return $this;
     }
-    public function getGranted(): ?bool
+    public function getAwardgranted(): ?bool
     {
-        return $this->granted;
+        return $this->awardgranted;
     }
 
-    public function setGranted(?bool $granted): self
+    public function setAwardgranted(?bool $awardgranted): self
     {
-        $this->granted = $granted;
+        $this->awardgranted = $awardgranted;
 
         return $this;
     }

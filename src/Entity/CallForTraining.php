@@ -7,8 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use ActivityLogBundle\Entity\Interfaces\StringableInterface;
+
 /**
  * @ORM\Entity(repositoryClass=CallForTrainingRepository::class)
+  * @Gedmo\Loggable(logEntryClass="ActivityLogBundle\Entity\LogEntry")
  */
 class CallForTraining
 {
@@ -21,16 +25,19 @@ class CallForTraining
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *@Gedmo\Versioned
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Gedmo\Versioned
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Gedmo\Versioned
      */
     private $deadline;
 
@@ -51,11 +58,13 @@ class CallForTraining
 
         /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Gedmo\Versioned
      */
     private $approved;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Gedmo\Versioned
      */
     private $document_attachment;
 
