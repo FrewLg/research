@@ -1,42 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Application{% endblock %}
+{% block title %}
+  Application
+{% endblock %}
 
 {% block body %}
-    <h1>Application</h1>
+  <h1>
+    Application
+  </h1>
+<a href={{ path('i_r_b_amendment_new',{id:application.id}) }}>Amendment</a>
+  <div class="card">
+    <h4>
+      Title
+    </h4>
+    <h6>
+      {{ application.title }}
+    </h6>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ application.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ application.title }}</td>
-            </tr>
-            <tr>
-                <th>StartDate</th>
-                <td>{{ application.startDate ? application.startDate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>EndDate</th>
-                <td>{{ application.endDate ? application.endDate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Location</th>
-                <td>{{ application.location }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ application.description }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <h4>
+      StartDate
+    </h4>
+    <h6>
+      {{ application.startDate ? application.startDate|date('Y-m-d') : '' }}
+    </h6>
 
-    <a href="{{ path('application_index') }}">back to list</a>
+    <h4>
+      EndDate
+    </h4>
+    <h6>
+      {{ application.endDate ? application.endDate|date('Y-m-d') : '' }}
+    </h6>
 
-    <a href="{{ path('application_edit', {'id': application.id}) }}">edit</a>
+    <h4>
+      Location
+    </h4>
+    <h6>
+      {{ application.location }}
+    </h6>
 
-    {{ include('application/_delete_form.html.twig') }}
+    <h4>
+      Description
+    </h4>
+    <h6>
+      {{ application.description }}
+    </h6>
+  </div>
+
+
+
+
+
+
+
+
+  <div class="modal fade bd-example-modal-lg" id="exampleModalLarge" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title m-0" id="myLargeModalLabel">Request Amendment</h6>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<!--end modal-header-->
+			<div class="modal-body" id="modal-body">
+			
+            {% set application = form.vars.data.application %}
+       
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button class="btn">{{ button_label|default('Request') }}</button>
+            {{ form_end(form) }}
+
+			</div>
+			<!--end modal-body-->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-soft-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+			</div>
+			<!--end modal-footer-->
+		</div>
+		<!--end modal-content-->
+	</div>
+	<!--end modal-dialog-->
+</div>
+<!--end modal-->
+
+
+  <a href="{{ path('application_index') }}">back to list</a>
+
+  {# {{ include('application/_delete_form.html.twig') }} #}
 {% endblock %}

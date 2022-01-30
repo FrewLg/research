@@ -2,6 +2,7 @@
 
 namespace App\Controller\IRB;
 
+use App\Entity\IRB\Amendment;
 use App\Entity\IRB\Application;
 use App\Entity\IRB\ApplicationAttachment;
 use App\Entity\IRB\ApplicationMitigationStrategy;
@@ -36,8 +37,11 @@ class ApplicationController extends AbstractController
     #[Route('/new', name: 'application_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        
         $em=$this->getDoctrine()->getManager();
         $application = new Application();
+        $application->setSubmittedBy($this->getUser());
+        if($request->getMethod() !="POST"){
         foreach ($em->getRepository(ResearchSubject::class)->findBy(array(),["type"=>"ASC"]) as $key => $value) {
           
           $applicationResearch=  new ApplicationResearchSubject();
@@ -61,13 +65,15 @@ class ApplicationController extends AbstractController
         $attachment=  new ApplicationAttachment();
         $attachment->setType($value);
         $application->addApplicationAttachment($attachment);
-     }
+     }}
         $form = $this->createForm(ApplicationType::class, $application);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
           
             $application->setType(1);
+            $application=$this->removeUnchecked($application);
+
             $entityManager->persist($application);
             $entityManager->flush();
 
@@ -84,12 +90,45 @@ class ApplicationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'application_show', methods: ['GET'])]
-    public function show(Application $application): Response
+    #[Route('/{id}', name: 'application_show')]
+    public function show(Application $application,Request $request,EntityManagerInterface $entityManager): Response
     {
+
+        $amendment = new Amendment();
+        $amendment->setApplication($application);
+        $form = $this->createForm(AmendmentType::class, $amendment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($amendment);
+            $entityManager->flush();
+            $this->addFlash("success","Amendment requested successfully");
+            return $this->redirectToRoute('application_show', ["id"=>$application->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+       
         return $this->render('application/show.html.twig', [
            'application' => $application,
+           'amendment' => $amendment,
+            'form' => $form->createView(),
         ]);
+    }
+
+    public function removeUnchecked(Application $application )
+    {
+        $vars=[ $application->getApplicationAttachments(),
+                $application->getApplicationMitigationStrategies(),
+                $application->getApplicationReviews(),
+                $application->getApplicationResearchSubjects()];
+        foreach ($vars as $key => $value) {
+            foreach ($value as $k => $val) {
+                if(!$val->getChecked()){
+                    $value->removeElement($val);
+                }
+            }
+        }
+        return $application;
+
     }
 
     #[Route('/{id}/edit', name: 'application_edit', methods: ['GET', 'POST'])]

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eab8976fe07ce1c8ce3414c8ed23d024",
+    "content-hash": "fa55bc78cbde222d9122ccd1a8311772",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3244,16 +3244,16 @@
         },
         {
             "name": "lexik/translation-bundle",
-            "version": "dev-master",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikTranslationBundle.git",
-                "reference": "679a835fbd1992c4f1342074bf8665510de56ecc"
+                "reference": "14f71785046bfd68dba56194a2efee2eaa35c914"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikTranslationBundle/zipball/679a835fbd1992c4f1342074bf8665510de56ecc",
-                "reference": "679a835fbd1992c4f1342074bf8665510de56ecc",
+                "url": "https://api.github.com/repos/lexik/LexikTranslationBundle/zipball/14f71785046bfd68dba56194a2efee2eaa35c914",
+                "reference": "14f71785046bfd68dba56194a2efee2eaa35c914",
                 "shasum": ""
             },
             "require": {
@@ -3277,7 +3277,6 @@
             "suggest": {
                 "doctrine/orm": ">=2.4"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -3313,9 +3312,9 @@
             ],
             "support": {
                 "issues": "https://github.com/lexik/LexikTranslationBundle/issues",
-                "source": "https://github.com/lexik/LexikTranslationBundle/tree/master"
+                "source": "https://github.com/lexik/LexikTranslationBundle/tree/v5.2.0"
             },
-            "time": "2021-12-02T13:03:12+00:00"
+            "time": "2021-04-05T20:20:52+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -11053,5 +11052,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }

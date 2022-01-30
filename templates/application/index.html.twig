@@ -3,32 +3,31 @@
 {% block title %}Application index{% endblock %}
 
 {% block body %}
-    <h1>Application index</h1>
-
+<div class="card">
+<div class="card-header">
+									<h4 class="card-title">Application List</h4>
+								
+								</div>
+                                <div class="card-body">
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Title</th>
-                <th>StartDate</th>
-                <th>EndDate</th>
-                <th>Location</th>
-                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for application in applications %}
             <tr>
-                <td>{{ application.id }}</td>
+                <td>{{ loop.index }}</td>
                 <td>{{ application.title }}</td>
                 <td>{{ application.startDate ? application.startDate|date('Y-m-d') : '' }}</td>
                 <td>{{ application.endDate ? application.endDate|date('Y-m-d') : '' }}</td>
-                <td>{{ application.location }}</td>
-                <td>{{ application.description }}</td>
                 <td>
-                    <a href="{{ path('application_show', {'id': application.id}) }}">show</a>
-                    <a href="{{ path('application_edit', {'id': application.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('application_show', {'id': application.id}) }}">show</a>
                 </td>
             </tr>
         {% else %}
@@ -38,6 +37,6 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('application_new') }}">Create new</a>
+</div>
+</div>
 {% endblock %}

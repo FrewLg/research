@@ -9,7 +9,9 @@ index:
 kms_froala_editor:
     resource: '@KMSFroalaEditorBundle/Resources/config/routing.yml'
     prefix:   /froalaeditor
-
+lexik_translation_edition:
+    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
+    prefix:   /translation   
 #switch-locales:
  #   path:       /{_locale}/contact
   #  controller: App\Controller\CallForProposalController::allcalss
