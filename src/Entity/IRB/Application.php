@@ -87,11 +87,11 @@ class Application
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $additionalAttachemet;
+    private $additionalAttachmet;
 
     /**
      * 
-     * @Vich\UploadableField(mapping="application_file", fileNameProperty="additionalAttachemet")
+     * @Vich\UploadableField(mapping="application_file", fileNameProperty="additionalAttachmet")
      * 
      * @var File|null
      */
@@ -128,6 +128,11 @@ class Application
      * @ORM\OneToMany(targetEntity=Amendment::class, mappedBy="application", orphanRemoval=true)
      */
     private $amendments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=IRBStatus::class)
+     */
+    private $status;
 
 
 
@@ -367,14 +372,14 @@ class Application
         return $this;
     }
 
-    public function getAdditionalAttachemet(): ?string
+    public function getAdditionalAttachmet(): ?string
     {
-        return $this->additionalAttachemet;
+        return $this->additionalAttachmet;
     }
 
-    public function setAdditionalAttachemet(?string $additionalAttachemet): self
+    public function setAdditionalAttachmet(?string $additionalAttachmet): self
     {
-        $this->additionalAttachemet = $additionalAttachemet;
+        $this->additionalAttachmet = $additionalAttachmet;
 
         return $this;
     }
@@ -505,6 +510,18 @@ class Application
                 $amendment->setApplication(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?IRBStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?IRBStatus $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

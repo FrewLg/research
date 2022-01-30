@@ -4,6 +4,7 @@ namespace App\Entity\IRB;
 
 use App\Entity\IRB\Application;
 use App\Repository\IRB\AmendmentRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,7 +63,7 @@ class Amendment
     private $updateAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Status::class)
+     * @ORM\ManyToOne(targetEntity=IRBStatus::class)
      */
     private $status;
 
@@ -73,6 +74,7 @@ class Amendment
 
     public function __construct()
     {
+        $this->createdAt=new DateTime();
         $this->amendmentAttachments = new ArrayCollection();
     }
 
@@ -195,12 +197,12 @@ class Amendment
         return $this;
     }
 
-    public function getStatus(): ?Status
+    public function getStatus(): ?IRBStatus
     {
         return $this->status;
     }
 
-    public function setStatus(?Status $status): self
+    public function setStatus(?IRBStatus $status): self
     {
         $this->status = $status;
 

@@ -3,6 +3,7 @@
 namespace App\Controller\IRB;
 
 use App\Entity\IRB\Amendment;
+use App\Entity\IRB\AmendmentAttachment;
 use App\Entity\IRB\Application;
 use App\Entity\IRB\ApplicationAttachment;
 use App\Entity\IRB\ApplicationMitigationStrategy;
@@ -15,6 +16,7 @@ use App\Entity\IRB\ResearchSubject;
 use App\Entity\IRB\ResearchSubjectCategory;
 use App\Entity\IRB\ReviewStatus;
 use App\Entity\IRB\ReviewStatusGroup;
+use App\Form\IRB\AmendmentType;
 use App\Form\IRB\ApplicationType;
 use App\Repository\IRB\ApplicationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -100,6 +102,15 @@ class ApplicationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+        $att=$request->files->get('amendment')["attachment"];
+        foreach ($att as $key => $value) {
+            $amendmentAtachment=new AmendmentAttachment();
+            $amendmentAtachment->setUploadFile($value);
+            $amendmentAtachment->setName($value->getClientOriginalName());
+            $amendmentAtachment->setAmendment($amendment);
+            $entityManager->persist($amendmentAtachment);
+            
+        }
             $entityManager->persist($amendment);
             $entityManager->flush();
             $this->addFlash("success","Amendment requested successfully");
@@ -111,6 +122,9 @@ class ApplicationController extends AbstractController
            'application' => $application,
            'amendment' => $amendment,
             'form' => $form->createView(),
+            'subject_category'=>$entityManager->getRepository(ResearchSubjectCategory::class)->findAll(),
+            'mitigation_strategy_group'=>$entityManager->getRepository(MitigationStrategyGroup::class)->findAll(),
+            'review_status_group'=>$entityManager->getRepository(ReviewStatusGroup::class)->findAll()
         ]);
     }
 
