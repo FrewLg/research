@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\IRB;
 
-use App\Repository\ReviewAssignmentRepository;
+use App\Repository\IRBReviewAssignmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;  
 
 /**
- * @ORM\Entity(repositoryClass=ReviewAssignmentRepository::class)
+ * @ORM\Entity(repositoryClass=IRBReviewAssignmentRepository::class)
  */
-class ReviewAssignment
+class IRBReviewAssignment
 {
     /**
      * @ORM\Id
@@ -21,12 +21,12 @@ class ReviewAssignment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Submission::class, inversedBy="submission_reviewAssignments")
+     * @ORM\ManyToOne(targetEntity=Submission::class, inversedBy="submission_iRBReviewAssignments")
      */
     private $submission;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rewiewer_reviewAssignments")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rewiewer_iRBReviewAssignments")
      */
     private $reviewer; 
     /**
@@ -104,7 +104,7 @@ class ReviewAssignment
     private $rejectedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="reviewAssignment", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="iRBReviewAssignment", orphanRemoval=true)
      */
     private $reviews;
 
@@ -337,7 +337,7 @@ class ReviewAssignment
     {
         if (!$this->reviews->contains($review)) {
             $this->reviews[] = $review;
-            $review->setReviewAssignment($this);
+            $review->setIRBReviewAssignment($this);
         }
 
         return $this;
@@ -347,8 +347,8 @@ class ReviewAssignment
     {
         if ($this->reviews->removeElement($review)) {
             // set the owning side to null (unless already changed)
-            if ($review->getReviewAssignment() === $this) {
-                $review->setReviewAssignment(null);
+            if ($review->getIRBReviewAssignment() === $this) {
+                $review->setIRBReviewAssignment(null);
             }
         }
 
