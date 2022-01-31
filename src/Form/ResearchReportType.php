@@ -33,12 +33,9 @@ class ResearchReportType extends AbstractType
             ->add('financial_clearance',FileType::class,[
                 "label"=>"Financial clearance",
                 "help"=>"Upload Financial clearance",
+                "required"=>false,
                 "mapped"=>false,
-                "attr"=>[
-                    "accept"=>"application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
-                    text/plain, application/pdf, image/*",
-                    "class"=>"form-control",
-                ]
+             
                 ])
                 
                 ->add('challenges',TextareaType::class,[
@@ -49,6 +46,7 @@ class ResearchReportType extends AbstractType
                 ]
             ])
             ->add('remark',TextareaType::class,[
+                "required"=>false,
                 "help"=>"your remark (If any)",
             
                 "attr"=>[

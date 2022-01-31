@@ -1,154 +1,54 @@
 {% set phase = submission.callForProposal.researchReportPhase %}
 <div class="tab-pane " id="progress-report">
 
-	<h2>Reports</h2>
+
 	{% set schedule_count  = submission.researchReportSubmissionSettings|length %}
 	{% if schedule_count > 0 %}
 		<button type="button" class="btn btn-info float-right" data-bs-toggle="modal" data-bs-target="#exampleModalSmall">
 			View Your Report Schedule
 		</button>
 
-		<div>
-			{% for report in research_reports %}
-				<div class="font-24 my-2 fw-bold">
-					Report for phase 
-					{{loop.index}}{{loop.index == schedule_count ?"(Terminal Report)":""}}</div>
-				<div class="font-17 m-0 fw-bold">
-					{{report.title}}</div>
-				<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.file}}">Progress report</a>
-				<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.financialClearance}}">Financial clearance</a>
-
-				<div class="font-16 my-3 ">
-					<b>Challenges:-
-					</b>
-					{{report.challenges}}</div>
-
-				<div class="font-16 my-3 ">
-					<b>Remark:-
-					</b>
-					{{report.remark}}</div>
-				<div class="font-13 m-0 fw-bold text-green bg-red-50   float-right my-2">
-					{% if true or is_granted('approve_re_re') and report.submissionStatus != 4 %}
-						<form method="POST" class=" form-inline">
-
-							<input type="hidden" name="approve_research_report" value="true"/>
-							<input type="hidden" name="research_report_id" value="{{report.id}}"/>
-							<button class="btn btn-secondary" type="submit">Approve</button>
-
-						</form>
-					{% endif %}
-					{# <a class="btn  btn-sm btn-secondary m-2" href="#">Review research report</a> #}
-				</div>
-				<div class="font-16 my-3 ">
-					Submission Date:-
-					{{report.submittedAt|date('Y-m-d')}}
-
-					<span class="badge  {{report.submissionStatus == 4 ? " badge-success":" badge-warning"}}">{{report.submissionStatus == 4 ? "Approved":"pending approval"}}</span>
-
-				</div>
-				<div class=" text-bold text-info my-3">Co-PI responses</div>
-				<table class="table table-striped table-hover">
-					<thead>
-						<tr>
-							<th>CO PI</th>
-							<th>Agreed</th>
-							<th>Comment</th>
-							<th>Commented At</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for copi_response in report.researchReportComments %}
-							<tr>
-								<td>{{copi_response.commentedBy}}</td>
-								<td>
-									<span class="badge  {{copi_response.wasAgreed ? " badge-success":" badge-warning"}}">{{copi_response.wasAgreed ? "Agree":"not agree"}}</span>
-								</td>
-								<td>
-									{% if not copi_response.wasAgreed %}
-									<span>
-											<b>Rejection Reason:- </b>
-											{{copi_response.rejectionReason}}
-											</span>
-									
-									{% endif %}
-									{% if not copi_response.wasAgreed and not copi_response.PIResponse  %}
-										<form method="POST">
-
-											<div class="form-group">
-												<label class=" form-label">Your response for Co-PI`s reason
-												</label>
-												<textarea name="pi_action[reason]" class="form-control" required></textarea>
-											</div>
-
-											<input type="hidden" name="pi_response" value="true"/>
-											<input type="hidden" name="pi_action[research_report_id]" value="{{report.id}}"/>
-											<input type="hidden" name="pi_action[research_report_comment_id]" value="{{copi_response.id}}"/>
-											<button class="btn btn-primary" type="submit">Submit</button>
-										</form>
-									{% elseif copi_response.PIResponse %}
-
-										<div>
-
-											<span>
-											<b>PI response:- </b>
-											{{copi_response.PIResponse}}
-											</span>
-											<span>
-											<b>Responded at:- </b>
-											{{copi_response.PIRespondedAt|date('H:iA M d,Y')}}
-											</span>
-
-										</div>
-									
-
-									{% endif %}
-								
-									
-
-
-								</td>
-								<td>{{copi_response.commentedAt|date('H:iA M d,Y')}}</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="4">No comments yet!</td>
-							</tr>
-
-						{% endfor %}
-					</tbody>
-				</table>
-
-				{# note remove return true #}
-				{% if  isCOPIAllowedToReview(submission,report, app.user)  %}
-
-					<div class="my-5">
-						<form method="POST">
-							<div class="form-group">
-								I agree
-								<input id="agree_radio" class="" type="radio" name="copi_action[agree]"  value="1"/>
-								I don`t agree<input id="disagree_radio" type="radio" name="copi_action[agree]" value="0"/>
-							</div>
-							<div class="form-group disagree_textbox_div">
-								<label class=" form-label">If no, please state your  reason
-								</label>
-								<textarea name="copi_action[reason]" class="form-control disagree_textbox" required></textarea>
-							</div>
-
-							<input type="hidden" name="copi_response" value="true"/>
-							<input type="hidden" name="copi_action[research_report_id]" value="{{report.id}}"/>
-							<button class="btn btn-primary" type="submit">Submit</button>
-						</form>
-					</div>
-				{% endif %}
-			{% else %}
-				<div>
-					No Reports submitted yet</div>
-			{% endfor %}
-		</div>
-
 		{% if  research_reports|length  < phase.numberOfPhases   %}
 			{% if  allowedToSubmitReport(submission.researchReportSubmissionSettings,research_reports)  %}
+				{% if ((research_reports|length)+1)  == phase.numberOfPhases %}
 
+
+					<div>
+						<div class="h4 text-bold">Submit full terminal report
+						</div>
+						<div class="p text-bold">Full Length Report should include
+						</div>
+						<ul>
+							<li>
+								Introduction
+							</li>
+							<li>
+								Methodology</li>
+							<li>
+								Result
+							</li>
+							<li>
+								Reference
+							</li>
+						</ul>
+						<div class="p text-bold">Manuscript Prepared
+						</div>
+						<ul>
+							<li>
+								All manuscript prepared should not be longer than 20 pages including references
+							</li>
+							<li>
+								Manuscript preparation should target any relevant Scopus indexed journal
+							</li>
+							<li>
+								Attach in Pdf format
+							</li>
+						</ul>
+					</div>
+
+{% else %}
+	<div class="my-3 text-bold">Report for phase {{research_reports|length +1 }}</div>
+				{% endif %}
 				<div>
 					{{ form_start(research_report_form,{"attr":{"onsubmit":"return confirm('are you sure?')"}}) }}
 					{{ form_widget(research_report_form) }}
@@ -160,8 +60,9 @@
 					<span class="h2 text-red">{{ timeAgo(submission.researchReportSubmissionSettings[research_reports|length].submissionDate,null) }}
 					</span>for next report submission</div>
 			{% endif %}
+
 		{% endif %}
-	{% else %}
+	{% elseif phase  %}
 		<div class="p text-black-50">
 			Note:-
 			{{phase.note}}
@@ -208,6 +109,160 @@
 				{{ form_end(submission_report_schedule_form) }}
 			{% endif %}
 		{% endif %}
+		<div class="h2 text-red">Reports</div>
+		<div>
+			{% for report in research_reports %}
+				<div class="font-24 my-2 fw-bold">
+					Report for phase
+					{{loop.index}}{{loop.last and schedule_count==loop.index ?"(Terminal report)":""}}</div>
+				<div class="font-17 m-0 fw-bold">
+					{{report.title}}</div>
+				<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.file}}">Full Progress report</a>
+				{% if report.financialClearance %}
+					<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.financialClearance}}">Financial clearance</a>
+				{% endif %}
+
+				{% if loop.last and submission.manuscript %}
+					<a class="btn btn-bd-download btn-secondary" href="{{asset('uploads/research-report/')~submission.manuscript}}">Manuscript</a>
+				{% endif %}
+
+
+				<div class="font-16 my-3 ">
+					<b>Challenges:-
+					</b>
+					{{report.challenges}}</div>
+
+				<div class="font-16 my-3 ">
+					<b>Remark:-
+					</b>
+					{{report.remark}}</div>
+				<div class="font-13 m-0 fw-bold text-green bg-red-50   float-right my-2">
+					{% if is_granted('approve_re_re') and report.submissionStatus != 4 %}
+						<form method="POST" class=" form-inline">
+
+							<input type="hidden" name="approve_research_report" value="true"/>
+							<input type="hidden" name="research_report_id" value="{{report.id}}"/>
+							{% if loop.last and schedule_count == loop.index and submission.manuscript %}
+							<input type="hidden" name="approve_research_generate" value="true"/>
+							<button class="btn btn-secondary mx-3" type="submit">Approve and Generate Certificate</button>
+						{% else %}
+							<button class="btn btn-secondary" type="submit">Approve </button>
+								
+							{% endif %}
+							
+
+						</form>
+					{% endif %}
+					{# <a class="btn  btn-sm btn-secondary m-2" href="#">Review research report</a> #}
+				</div>
+				<div class="font-16 my-3 ">
+					Submission Date:-
+					{{report.submittedAt|date('Y-m-d')}}
+
+					<span class="badge  {{report.submissionStatus == 4 ? " badge-success":" badge-warning"}}">{{report.submissionStatus == 4 ? "Approved":"pending approval"}}</span>
+
+				</div>
+				<div class=" text-bold text-info my-3">Co-PI responses</div>
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>CO PI</th>
+							<th>Agreed</th>
+							<th>Comment</th>
+							<th>Commented At</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for copi_response in report.researchReportComments %}
+							<tr>
+								<td>{{copi_response.commentedBy}}</td>
+								<td>
+									<span class="badge  {{copi_response.wasAgreed ? " badge-success":" badge-warning"}}">{{copi_response.wasAgreed ? "Agree":"not agree"}}</span>
+								</td>
+								<td>
+									{% if not copi_response.wasAgreed %}
+										<span>
+											<b>Rejection Reason:-
+											</b>
+											{{copi_response.rejectionReason}}
+										</span>
+
+									{% endif %}
+									{% if not copi_response.wasAgreed and not copi_response.PIResponse  %}
+										<form method="POST">
+
+											<div class="form-group">
+												<label class=" form-label">Your response for Co-PI`s reason
+												</label>
+												<textarea name="pi_action[reason]" class="form-control" required></textarea>
+											</div>
+
+											<input type="hidden" name="pi_response" value="true"/>
+											<input type="hidden" name="pi_action[research_report_id]" value="{{report.id}}"/>
+											<input type="hidden" name="pi_action[research_report_comment_id]" value="{{copi_response.id}}"/>
+											<button class="btn btn-primary" type="submit">Submit</button>
+										</form>
+									{% elseif copi_response.PIResponse %}
+
+										<div>
+
+											<span>
+												<b>PI response:-
+												</b>
+												{{copi_response.PIResponse}}
+											</span>
+											<span>
+												<b>Responded at:-
+												</b>
+												{{copi_response.PIRespondedAt|date('H:iA M d,Y')}}
+											</span>
+
+										</div>
+
+
+									{% endif %}
+
+
+								</td>
+								<td>{{copi_response.commentedAt|date('H:iA M d,Y')}}</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="4">No comments yet!</td>
+							</tr>
+
+						{% endfor %}
+					</tbody>
+				</table>
+
+				{# note remove return true #}
+				{% if  isCOPIAllowedToReview(submission,report, app.user)  %}
+
+					<div class="my-5">
+						<form method="POST">
+							<div class="form-group">
+								I agree
+								<input id="agree_radio" class="" type="radio" name="copi_action[agree]" value="1"/>
+								I don`t agree<input id="disagree_radio" type="radio" name="copi_action[agree]" value="0"/>
+							</div>
+							<div class="form-group disagree_textbox_div">
+								<label class=" form-label">If no, please state your  reason
+								</label>
+								<textarea name="copi_action[reason]" class="form-control disagree_textbox" required></textarea>
+							</div>
+
+							<input type="hidden" name="copi_response" value="true"/>
+							<input type="hidden" name="copi_action[research_report_id]" value="{{report.id}}"/>
+							<button class="btn btn-primary" type="submit">Submit</button>
+						</form>
+					</div>
+				{% endif %}
+			{% else %}
+				<div>
+					No Reports submitted yet</div>
+			{% endfor %}
+		</div>
+
 	</div>
 
 
@@ -242,14 +297,14 @@
 
 				</div>
 				{# <div class="my-3 ">
-																<p>once research report schedule is submitted it not permitted to update unless allowed by research and innovation director office</p>
-																<p>to edit schedule please send request by using request for change button below</p>
-																	{% if true or submission.author == app.user and submission.status != 5 %}
-																	
-																	<a class="btn btn-bd-download btn-info" href="#">Request for change</a>
-																	{% endif %}
-												
-																</div> #}
+																								<p>once research report schedule is submitted it not permitted to update unless allowed by research and innovation director office</p>
+																								<p>to edit schedule please send request by using request for change button below</p>
+																									{% if true or submission.author == app.user and submission.status != 5 %}
+																									
+																									<a class="btn btn-bd-download btn-info" href="#">Request for change</a>
+																									{% endif %}
+																				
+																								</div> #}
 				<!--end modal-content-->
 			</div>
 			<!--end modal-dialog-->
