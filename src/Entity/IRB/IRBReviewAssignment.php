@@ -21,7 +21,7 @@ class IRBReviewAssignment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="application_iRBReviewAssignments")
+     * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="iRBReviewAssignments")
      */
     private $application;
 
@@ -104,7 +104,7 @@ class IRBReviewAssignment
     private $rejectedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="iRBReviewAssignment", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=IRBReview::class, mappedBy="iRBReviewAssignment", orphanRemoval=true)
      */
     private $irbreviews;
 

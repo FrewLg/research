@@ -134,6 +134,13 @@ class Application
      */
     private $status;
 
+ 
+
+
+      /**
+     * @ORM\OneToMany(targetEntity=App\Entity\IRB\IRBReviewAssignment::class, mappedBy="irbreviewer" , orphanRemoval=true,cascade={"persist"})
+     */
+    private $iRBReviewAssignments;
 
 
     public function __construct()
@@ -145,6 +152,8 @@ class Application
         $this->applicationAttachments = new ArrayCollection();
         $this->members = new ArrayCollection();
         $this->amendments = new ArrayCollection();
+        $this->IRBreviewAssignments = new ArrayCollection();
+
     }
 
     public function setUploadFile(?File $imageFile = null): void
@@ -156,6 +165,37 @@ class Application
         //     // otherwise the event listeners won't be called and the file is lost
         //     $this->updatedAt = new \DateTimeImmutable();
         // }
+    }
+
+
+    /**
+     * @return Collection|iRBReviewAssignments[]
+     */
+    public function getIRBReviewAssignments(): Collection
+    {
+        return $this->iRBReviewAssignments;
+    }
+
+    public function addIRBReviewAssignment(\App\Entity\IRB\IRBReviewAssignment $iRBReviewAssignments): self
+    {
+        if (!$this->iRBReviewAssignments->contains($iRBReviewAssignments)) {
+            $this->iRBReviewAssignments[] = $iRBReviewAssignments;
+            $iRBReviewAssignments->setApplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIRBReviewAssignment(\App\Entity\IRB\IRBReviewAssignment $iRBReviewAssignments): self
+    {
+        if ($this->iRBReviewAssignments->removeElement($iRBReviewAssignments)) {
+            // set the owning side to null (unless already changed)
+            if ($iRBReviewAssignments->getApplication() === $this) {
+                $iRBReviewAssignments->setApplication(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getUploadFile(): ?File
