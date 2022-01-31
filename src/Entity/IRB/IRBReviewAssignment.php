@@ -26,9 +26,9 @@ class IRBReviewAssignment
     private $application;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rewiewer_iRBReviewAssignments")
+     * @ORM\ManyToOne(targetEntity=App\Entity\User::class, inversedBy="iRBReviewAssignments")
      */
-    private $reviewer; 
+    private $irbreviewer; 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -43,12 +43,12 @@ class IRBReviewAssignment
     /**
      * @ORM\Column(type="string", length=255, nullable=true)     
      */
-    private $external_reviewer_email;
+    private $external_irbreviewer_email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $external_reviewer_name;
+    private $external_irbreviewer_name;
 
      /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -140,14 +140,14 @@ class IRBReviewAssignment
         return $this;
     }
 
-    public function getReviewer() 
+    public function getIrbreviewer() 
     {
-        return $this->reviewer;
+        return $this->irbreviewer;
     }
 
-    public function setReviewer(?\App\Entity\User $reviewer): self
+    public function setIrbreviewer(?\App\Entity\User $irbreviewer): self
     {
-        $this->reviewer = $reviewer;
+        $this->irbreviewer = $irbreviewer;
 
         return $this;
     }
@@ -214,27 +214,27 @@ class IRBReviewAssignment
 
     
 
-    public function getExternalrevieweremail(): ?string
+    public function getExternalirbrevieweremail(): ?string
     {
-        return $this->external_reviewer_email;
+        return $this->external_irbreviewer_email;
     }
-    public function setExternalrevieweremail(?string $external_reviewer_email): self
+    public function setExternalirbrevieweremail(?string $external_irbreviewer_email): self
     {
-        $this->external_reviewer_email = $external_reviewer_email;
+        $this->external_irbreviewer_email = $external_irbreviewer_email;
 
         return $this;
     }
 
  
     
-    public function getExternalreviewerName(): ?string
+    public function getExternalirbreviewerName(): ?string
     {
-        return $this->external_reviewer_name;
+        return $this->external_irbreviewer_name;
     }
     
-    public function setExternalreviewerName(?string $external_reviewer_name): self
+    public function setExternalirbreviewerName(?string $external_irbreviewer_name): self
     {
-        $this->external_reviewer_name = $external_reviewer_name;
+        $this->external_irbreviewer_name = $external_irbreviewer_name;
 
         return $this;
     }
