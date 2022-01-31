@@ -73,6 +73,12 @@ class Application
      */
     private $applicationReviews;
 
+    //  /**
+    //  * @ORM\OneToMany(targetEntity=Review::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
+    //  */
+    // private $irbreviews;
+
+
     /**
      * @ORM\OneToMany(targetEntity=ApplicationAttachment::class, mappedBy="application",cascade={"persist"})
      */

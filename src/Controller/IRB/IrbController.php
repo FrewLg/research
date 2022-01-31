@@ -2,34 +2,33 @@
 
 namespace App\Controller\IRB;
 
-use App\Entity\CallForProposal;
 use App\Entity\EditorialDecision;
-use App\Entity\ReviewAssignment;
-use App\Form\ReviewAssignmentType;
-use App\Repository\ReviewAssignmentRepository;
+use App\Entity\IRB\IRBReviewAssignment;
+use App\Form\IRB\IRBReviewAssignmentType;
+use App\Repository\IRBReviewAssignmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\Review;
-use App\Entity\GuidelineForReviewer;
-use App\Form\GuidelineForReviewerType;
-use App\Repository\GuidelineForReviewerRepository;
+use App\Entity\IRB\IRBReview;
+use App\Entity\GuidelineForIrbreviewer;
+use App\Form\GuidelineForIrbreviewerType;
+use App\Repository\GuidelineForIrbreviewerRepository;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
-use App\Form\ReviewType;
+use App\Form\IRB\IRBReviewType;
 use Symfony\Component\Form\Extension\Core\Type\DateType; 
 use Symfony\Component\Form\Extension\Core\Type\CoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use App\Entity\Submission; 
-use App\Repository\SubmissionRepository;
-use App\Repository\InstitutionalReviewersBoardRepository;
+use App\Entity\IRB\Application; 
+use App\Repository\ApplicationRepository;
+use App\Repository\InstitutionalIrbreviewersBoardRepository;
 use App\Repository\ReviewRepository;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use App\Entity\InstitutionalReviewersBoard;
-use App\Helper\ReviewHelper;
+use App\Entity\InstitutionalIrbreviewersBoard;
+ use App\Helper\ReviewHelper;
 use App\Repository\EvaluationFormRepository;
 use App\Utils\Constants;
 use DateTime;
@@ -57,14 +56,14 @@ class IrbController extends AbstractController
   
 
     /**
-     * @Route("/myassigned", name="myassigned", methods={"GET"})
+     * @Route("/myassignedirb", name="myassignedirb", methods={"GET"})
      */
     public function myassigned(Request $request, PaginatorInterface $paginator): Response {
         
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
-        $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => NULL , 'Declined' => NULL ],["id"=>"DESC"]);
+        $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL , 'Declined' => NULL ],["id"=>"DESC"]);
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results
@@ -76,18 +75,8 @@ class IrbController extends AbstractController
         );
 #################################################
 
-$all = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me],["id"=>"DESC"]);
-// $closedones = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => 1 , 'inactive_assignment' => NULL ]));
-// ////// if no throw exception
-// $closeds = $paginator->paginate(
-//     // Doctrine Query, not results
-//     $closedones,
-//     // Define the page parameter
-//     $request->query->getInt('page', 1),
-//     // Items per page
-//     10
-// );
-
+$all = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me],["id"=>"DESC"]);
+ 
 
 #################################################
 
@@ -97,14 +86,14 @@ $entityManager = $this->getDoctrine()->getManager();
         #######################
         $query3 = $entityManager->createQuery(
         'SELECT    b.id , ass.invitation_sent_at as InvitationSentAt,     ass.Declined as Declined,  b.title , s.createdAt  , ass.duedate  as dueDate
-        FROM App:Review s 
-        JOIN s.submission b     
-        JOIN s.reviewAssignment ass      
-        WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed
+        FROM App\Entity\IRB\IRBReview s 
+        JOIN s.application b     
+        JOIN s.iRBReviewAssignment ass      
+        WHERE   s.reviewed_by=:irbreviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed
  
         ')  
         ->setParameter('closed', 1 )  
-        ->setParameter('reviewer', $this_is_me   ) 
+        ->setParameter('irbreviewer', $this_is_me   ) 
         ;
 
         $closeds = $query3->getResult();
@@ -112,87 +101,23 @@ $entityManager = $this->getDoctrine()->getManager();
 
 #################################################
 
-        return $this->render('submission/myassigned.html.twig', [
+        return $this->render('application/myassigned.html.twig', [
             'closeds' => $closeds,
             'all'=>$all,
             'myreviews' => $myassigneds,
         ]);
     }
 
-    /**
-     * @Route("/filter/{filter}/", name="submission_filter", methods={"GET"})
-     */
-    public function byfilter(Request $request, SubmissionRepository $submissionRepository, $filter, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
-
-        // $this->denyAccessUnlessGranted('assn_clg_cntr');
-        $info = 'All';
-        switch ($filter) {
-
-        case 'al':
-            $submissionRepository = $submissionRepository->getSubmissions();
-            break;
-        case 'cp':
-            $submissionRepository = $submissionRepository->getSubmissions(['complete' => '1']);
-            $info = 'Complete submission';
-            break;
-        case 'gr':
-            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' => 'grant']);
-            $info = 'Grant';
-            break;
-        case 'cs':
-            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' => Constants::RESEARCH_TYPE_COMMUNITY_SERVICE]);
-            $info = 'Community service';
-            break;
-        case 'mg':
-         
-            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' => Constants::RESEARCH_TYPE_MEGA]);
-            $info = 'Technology transfer';
-            break;
-        case 'tt':
-            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' =>Constants::RESEARCH_TYPE_TECHNOLOGY_TRANSFER]);
-            $info = 'Technology transfer';
-            break;
-        case 'ps':
-            $submissionRepository = $submissionRepository->getSubmissions(['published' => '1']);
-            $info = 'Published';
-            break;
-
-        case 'rv':
-            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' => 'grant']);
-            $info = 'Review assigned';
-            break;
-        case 'ic':
-            $submissionRepository = $submissionRepository->getSubmissions(['complete' => '0']);
-            $info = 'Incomplete ';
-            break;
-        default:
-            return $this->redirectToRoute('submission_index');
-     }
-
-        // Paginate the results of the query
-        $Allsubmissions = $paginator->paginate(
-            // Doctrine Query, not results
-            $submissionRepository,
-            // Define the page parameter
-            $request->query->getInt('page', 1),
-            // Items per page
-            10
-        );
-        return $this->render('submission/index.html.twig', [
-            'info' => $info,
-            'submissions' => $Allsubmissions,
-        ]);
-    }
-
+     
 
     /**
-     * @Route("/{id}/assigned", name="his_assignment", methods={"GET"})
+     * @Route("/{id}/irbassigned", name="his_assignment", methods={"GET"})
      */
     public function allassigned(Request $request, User $user, PaginatorInterface $paginator): Response {
         
         $entityManager = $this->getDoctrine()->getManager();
          
-        $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $user  ],["id"=>"DESC"]);
+        $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $user  ],["id"=>"DESC"]);
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results
@@ -214,36 +139,36 @@ $entityManager = $this->getDoctrine()->getManager();
 
 
     /**
-     * @Route("/{id}/revise", name="reviewsubmission", methods={"GET","POST"})
+     * @Route("/{id}/irbrevise", name="reviewapplication", methods={"GET","POST"})
      */
-    public function revise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
-        ////Ultimate reviewers page
+    public function revise(Request $request,  IRBReviewAssignment $iRBReviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
+        ////Ultimate irbreviewers page
         
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
-        $submissionOfreviewer = $entityManager->getRepository(ReviewAssignment::class)->find($reviewAssignment);
+        $applicationOfirbreviewer = $entityManager->getRepository(IRBReviewAssignment::class)->find($iRBReviewAssignment);
         $metoo = $this->getUser();
-        $me_as_a_reviewer = $submissionOfreviewer->getReviewer()->getId();
-        $submissions = $submissionOfreviewer->getSubmission();
-        $editorialDecisions = $entityManager->getRepository(EditorialDecision::class)->find($submissions);
-        #dd($me_as_a_reviewer.$me);
-        $iamareviewers = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submissions, 'reviewer' => $metoo]);
+        $me_as_a_irbreviewer = $applicationOfirbreviewer->getIrbreviewer()->getId();
+        $applications = $applicationOfirbreviewer->getApplication();
+        $editorialDecisions = $entityManager->getRepository(EditorialDecision::class)->find($applications);
+        #dd($me_as_a_irbreviewer.$me);
+        $iamairbreviewers = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['application' => $applications, 'irbreviewer' => $metoo]);
 
-        // $myassigned =  $entityManager->getRepository(ReviewAssignment::class)->findBy($reviewAssignment);
+        // $myassigned =  $entityManager->getRepository(IRBReviewAssignment::class)->findBy($iRBReviewAssignment);
         #######################
-        if ($reviewAssignment->getClosed() == 1) {
-            return $this->redirectToRoute('myassigned');
+        if ($iRBReviewAssignment->getClosed() == 1) {
+            return $this->redirectToRoute('myassignedirb');
 
         }
         #######################
-        foreach ($submissionOfreviewer as $muke) {
-            $dd = $muke->getReviewer()->getId();
-            echo $dd; #=  $muke->getReviewer()->getId();
+        foreach ($applicationOfirbreviewer as $muke) {
+            $dd = $muke->getIrbreviewer()->getId();
+            echo $dd; #=  $muke->getIrbreviewer()->getId();
 
             $lala = $dd . 'compare' . $me;
             /////////
             $me = $this->getUser()->getId();
-            $thereviewerone = $reviewAssignment->getReviewer()->getId();
+            $theirbreviewerone = $iRBReviewAssignment->getIrbreviewer()->getId();
             if ($dd == $me) {
 
                 return $this->redirectToRoute('myreviews');
@@ -257,37 +182,34 @@ $entityManager = $this->getDoctrine()->getManager();
 
             /////
         }
-        $measareviewer = $this->getUser();
-        $author = $submissions->getAuthor();
-        //   $reviews=$entityManager->getRepository(Review::class)->findBy(['submission' => $submissions ] );
+        $measairbreviewer = $this->getUser();
+        $author = $applications->getAuthor();
+        //   $reviews=$entityManager->getRepository(IRBReview::class)->findBy(['application' => $applications ] );
 
-        if ($measareviewer == $author) {
+        if ($measairbreviewer == $author) {
             ////if you are the author then you can't review it///////
             $this->addFlash(
                 'warining',
-                'You can not see the submission you made in this page!'
+                'You can not see the application you made in this page!'
             );
             return $this->redirectToRoute('myreviews');
         }
 
-        if ($reviewAssignment->getReassigned()==1 ) {
+        if ($iRBReviewAssignment->getReassigned()==1 ) {
             ////if you are the author then you can't review it///////
             $this->addFlash(
                 'warining',
                 'You have been re-assigned!'
             );
-            return $this->redirectToRoute('rereviewsubmission', array('id' => $reviewAssignment->getId()));
-        }
-
-
-
-        $review = new Review();
-        $review->setReviewAssignment($reviewAssignment);
-        $review->setSubmission($reviewAssignment->getSubmission());
-        $review->setReviewedBy($measareviewer);
+            return $this->redirectToRoute('rereviewapplication', array('id' => $iRBReviewAssignment->getId()));
+        } 
+        $review = new IRBReview();
+        $review->setIRBReviewAssignment($iRBReviewAssignment);
+        $review->setApplication($iRBReviewAssignment->getApplication());
+        $review->setReviewedBy($measairbreviewer);
 
         // $review = new Review();
-        $form = $this->createForm(ReviewType::class, $review);
+        $form = $this->createForm(IRBReviewType::class, $review);
         $form->handleRequest($request); 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -319,15 +241,14 @@ $entityManager = $this->getDoctrine()->getManager();
             ###############
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
-            $reviewAssignment->setClosed(1);
-
+            $iRBReviewAssignment->setClosed(1); 
             $entityManager->persist($review);
             $entityManager->flush();
             $this->addFlash(
                 'success',
                 'You have  completed a revision successfully!'
             );
-            return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
+            return $this->redirectToRoute('reviewapplication', array('id' => $iRBReviewAssignment->getId()));
         }
 
         $editorialDecision = new EditorialDecision();
@@ -340,59 +261,51 @@ $entityManager = $this->getDoctrine()->getManager();
                     'class' => 'form-control',
                 )))
             ->getForm();
-        $editorialDecisionform->handleRequest($request);
-
- 
-        $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $reviewAssignment->getSubmission(), 'reviewed_by' => $measareviewer]);
-
-        return $this->render('submission/review_byreviewer.html.twig', [
-            'review_assignment' => $reviewAssignment,
+        $editorialDecisionform->handleRequest($request); 
+        $reviews = $entityManager->getRepository(IRBReview::class)->findBy(['application' => $iRBReviewAssignment->getApplication(), 'reviewed_by' => $measairbreviewer]);
+   return $this->render('application/review_byirbreviewer.html.twig', [
+            'review_assignment' => $iRBReviewAssignment,
             'review_assignments' => $reviews,
-            'submission' => $submissions,
+            'application' => $applications,
             'editorialDecisions' => $editorialDecisions,
             'editorialDecisionform' => $editorialDecisionform->createView(),
             'form' => $form->createView(),
             'evaluationForms' => $evaluationFormRepository->findBy(['parent' => null]),
         ]);
     }
-
-
-
-
+    
     /**
-     * @Route("/{id}/rerevise", name="rereviewsubmission", methods={"GET","POST"})
+     * @Route("/{id}/rereviseapp", name="rereviewapp", methods={"GET","POST"})
      */
-    public function rerevise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
-        ////Ultimate reviewers page
+    public function rerevise(Request $request, IRBReviewAssignment $iRBReviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
+        ////Ultimate irbreviewers page
         
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
-        // $id=  $review->getReviewAssignment()->getId();
-        
- 
-        $submissionOfreviewer = $entityManager->getRepository(ReviewAssignment::class)->find($reviewAssignment);
+        // $id=  $review->getIRBReviewAssignment()->getId();  
+        $applicationOfirbreviewer = $entityManager->getRepository(IRBReviewAssignment::class)->find($iRBReviewAssignment);
         $metoo = $this->getUser();
-        $me_as_a_reviewer = $submissionOfreviewer->getReviewer()->getId();
-        $submissions = $submissionOfreviewer->getSubmission();
-        $editorialDecisions = $entityManager->getRepository(EditorialDecision::class)->find($submissions);
-        #dd($me_as_a_reviewer.$me);
-        $iamareviewers = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submissions, 'reviewer' => $metoo]);
+        $me_as_a_irbreviewer = $applicationOfirbreviewer->getIrbreviewer()->getId();
+        $applications = $applicationOfirbreviewer->getApplication();
+        $editorialDecisions = $entityManager->getRepository(EditorialDecision::class)->find($applications);
+        #dd($me_as_a_irbreviewer.$me);
+        $iamairbreviewers = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['application' => $applications, 'irbreviewer' => $metoo]);
 
-        // $myassigned =  $entityManager->getRepository(ReviewAssignment::class)->findBy($reviewAssignment);
+        // $myassigned =  $entityManager->getRepository(IRBReviewAssignment::class)->findBy($iRBReviewAssignment);
         #######################
-        if ($reviewAssignment->getClosed() == 1) {
-            return $this->redirectToRoute('myassigned');
+        if ($iRBReviewAssignment->getClosed() == 1) {
+            return $this->redirectToRoute('myassignedirb');
 
         }
         #######################
-        foreach ($submissionOfreviewer as $muke) {
-            $dd = $muke->getReviewer()->getId();
-            echo $dd; #=  $muke->getReviewer()->getId();
+        foreach ($applicationOfirbreviewer as $muke) {
+            $dd = $muke->getIrbreviewer()->getId();
+            echo $dd; #=  $muke->getIrbreviewer()->getId();
 
             $lala = $dd . 'compare' . $me;
             /////////
             $me = $this->getUser()->getId();
-            $thereviewerone = $reviewAssignment->getReviewer()->getId();
+            $theirbreviewerone = $iRBReviewAssignment->getIrbreviewer()->getId();
             if ($dd == $me) {
 
                 return $this->redirectToRoute('myreviews');
@@ -406,31 +319,30 @@ $entityManager = $this->getDoctrine()->getManager();
 
             /////
         }
-        $measareviewer = $this->getUser();
-        $author = $submissions->getAuthor();
-        //   $reviews=$entityManager->getRepository(Review::class)->findBy(['submission' => $submissions ] );
+        $measairbreviewer = $this->getUser();
+        $author = $applications->getAuthor();
+        //   $reviews=$entityManager->getRepository(IRBReview::class)->findBy(['application' => $applications ] );
 
-        if ($measareviewer == $author) {
+        if ($measairbreviewer == $author) {
             ////if you are the author then you can't review it///////
             $this->addFlash(
                 'warining',
-                'You can not see the submission you made in this page!'
+                'You can not see the application you made in this page!'
             );
             return $this->redirectToRoute('myreviews');
         }
         // $review = new Review();
          
-        $reviewid = $entityManager->getRepository(Review::class)->findOneBy(['reviewAssignment'=>$reviewAssignment->getId(), 'reviewed_by'=> $this->getUser()]);
-        $review = $entityManager->getRepository(Review::class)->find($reviewid);
+        $reviewid = $entityManager->getRepository(IRBReview::class)->findOneBy(['iRBReviewAssignment'=>$iRBReviewAssignment->getId(), 'reviewed_by'=> $this->getUser()]);
+        $review = $entityManager->getRepository(IRBReview::class)->find($reviewid);
 
-        $review->setReviewAssignment($reviewAssignment);
-        $review->setSubmission($reviewAssignment->getSubmission());
-        $review->setReviewedBy($measareviewer);
+        $review->setIRBReviewAssignment($iRBReviewAssignment);
+        $review->setApplication($iRBReviewAssignment->getApplication());
+        $review->setReviewedBy($measairbreviewer);
 
         // $review = new Review();
-        $form = $this->createForm(ReviewType::class, $review);
+        $form = $this->createForm(IRBReviewType::class, $review);
         $form->handleRequest($request);
-
  
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -464,7 +376,7 @@ $entityManager = $this->getDoctrine()->getManager();
 
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
-            $reviewAssignment->setClosed(1);
+            $iRBReviewAssignment->setClosed(1);
 
             $entityManager->persist($review);
             $entityManager->flush();
@@ -472,7 +384,7 @@ $entityManager = $this->getDoctrine()->getManager();
                 'success',
                 'You have  completed a revision successfully!'
             );
-            return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
+            return $this->redirectToRoute('reviewapplication', array('id' => $iRBReviewAssignment->getId()));
         }
 
         $editorialDecision = new EditorialDecision();
@@ -489,12 +401,12 @@ $entityManager = $this->getDoctrine()->getManager();
 
 
        
-        $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $reviewAssignment->getSubmission(), 'reviewed_by' => $measareviewer]);
+        $reviews = $entityManager->getRepository(IRBReview::class)->findBy(['application' => $iRBReviewAssignment->getApplication(), 'reviewed_by' => $measairbreviewer]);
 
-        return $this->render('submission/review_byreviewer.html.twig', [
-            'review_assignment' => $reviewAssignment,
+        return $this->render('application/review_byirbreviewer.html.twig', [
+            'review_assignment' => $iRBReviewAssignment,
             'review_assignments' => $reviews,
-            'submission' => $submissions,
+            'application' => $applications,
             'editorialDecisions' => $editorialDecisions,
             'editorialDecisionform' => $editorialDecisionform->createView(),
             'form' => $form->createView(),
@@ -502,138 +414,27 @@ $entityManager = $this->getDoctrine()->getManager();
         ]);
     }
  
-    /**
-     * @Route("/{id}/granted", name="grant_winner", methods={"GET","POST"})
-     */
-    public function grantwinner(Submission $submission,  MailerInterface $mailer ): Response {
-        ////Ultimate reviewers page
-        $this->denyAccessUnlessGranted('ROLE_USER');
-         
-        $submission->setAwardgranted(1);
-        $this->getDoctrine()->getManager()->flush();
-        
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $query = $entityManager->createQuery(
-            "SELECT u.email , s.id ,  u.username,   s.title 
-                      , pi.first_name  , ui.alternative_email
-                    FROM App:CoAuthor c
-                    JOIN c.researcher u
-                    JOIN u.userInfo ui
-                    JOIN c.submission s
-                    JOIN s.author p
-                    JOIN p.userInfo pi 
-                    WHERE   s.awardgranted=:awardgranted  and 
-        c.submission = :submission "   )
-         ->setParameter('submission', $submission)  
-        ->setParameter('awardgranted', 1);
-        $recepients = $query->getResult();
-        // dd($recepients);
-
-        $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_GRANTED_AWARDED_CO_PI']);
-        $subject = $messages->getSubject();
-        $body = $messages->getBody();
-
-        foreach ($recepients as $row) {
-            $theEmails[]             = $row['email'] . ' ';
-            $theNames[] = $row['username'] . ' ';
-            $theFirstNames[] = $row['username'] . ' ';
-            $pi_name[] = $row['first_name'] . ' ';
-            $titles[] = $row['title'] . ' ';
-            $alternative_email[] = $row['alternative_email'] . ' ';
-            $copi_id[] = $row['id'] . ' ';
-            // dd($row[0]);
-
-        }
-        ////////////
-        $length = count($recepients);
-        for ($i = 0; $i < $length; $i++) {
-            ///////////////
-            $theFirstName = $theFirstNames[$i];
-            if ($theFirstName == '') {
-                $theFirstName = $theNames[$i];
-                // dd($theFirstName);
-            }
-            if ($alternative_email[$i] == '') {
-                $alternative_email[$i] = $theEmails[$i];
-            }
-            $pi_name = $theEmails[$i];
-            $theEmail = $theEmails[$i];
-            // $titles = $titles[$i];
-             
-            $invitation_url = 'submission/my-membership-details/' . $copi_id[$i];
-            $email = (new TemplatedEmail())
-                ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
-                ->to(new Address($theEmails[$i], $theFirstNames[$i]))
-                // ->cc(new Address($alternative_email[$i], $theFirstNames[$i]))
-                ->subject($subject)
-                ->htmlTemplate('emails/granted-award-notice.html.twig')
-                ->context([
-                    'subject' => $subject,
-                    'body' => $body,
-                    'title' => $titles[$i],
-                    'pi' => $submission->getAuthor()->getUserInfo(),
-                    'submission_url' => $invitation_url,
-                    'college' => $submission->getCallForProposal()->getCollege()->getPrincipalContact(),
-                    'name' => $theFirstName,
-                    'Authoremail' => $theEmail,
-                ]);
-            $mailer->send($email);
-        }
-        ########### For PI##############
-        $applicantmessages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_GRANTED_AWARDED_PI']);
-        $applicantsubject = $applicantmessages->getSubject();
-        $applicantbody = $applicantmessages->getBody(); 
-        $submission_url = 'submission/' . $submission->getId() . '/status';
-        $applicant = $submission->getAuthor()->getEmail();
-        $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
-        $emailtwo = (new TemplatedEmail())
-            ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
-            ->to($applicant)
-            ->subject($applicantsubject)
-            ->htmlTemplate('emails/granted-award-notice.html.twig')
-            ->context([
-                'subject' => $applicantsubject,
-                'body' => $applicantbody,
-                'title' => $submission->getTitle(),
-                'submission_url' => $submission_url,
-                'college' => $submission->getCallForProposal()->getCollege()->getPrincipalContact(),
-
-                'name' => $applicantname,
-                'Authoremail' => $applicant
-            ]);
-
-        $mailer->send($emailtwo);
-        ##########
-// dd();
-$this->addFlash( 
-    'success',
-    'You announced this submission as a winner successfully!'
-); 
-        return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
-
-    }
-
+    
 
       
   /**
-     * @Route("/{id}/decline/", name="decline_invitation", methods={"GET","POST"})
+     * @Route("/{id}/IRBdecline/", name="irbdecline_invitation", methods={"GET","POST"})
      */
-    public function declineinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
+    public function declineinvitation(Request $request, IRBReviewAssignment $iRBReviewAssignment): Response
     {
         
 
 	$entityManager = $this->getDoctrine()->getManager();
     $mew= $this->getUser()->getId();
-	$deadline= $reviewAssignment->getDuedate();
+	$deadline= $iRBReviewAssignment->getDuedate();
 	$today= new \DateTime();
 	$message='';
  	if ($deadline<=$today){
  	$message="Overdue!";
 #	echo $day;
 	}
-	////if he is not the one he has been assigned to this proposal then redirect the page to the list of the submission he hasd been assigned to
-	$reviewAssignment->setDeclined(1);
+	////if he is not the one he has been assigned to this proposal then redirect the page to the list of the application he hasd been assigned to
+	$iRBReviewAssignment->setDeclined(1);
 	$this->getDoctrine()->getManager()->flush();
 	$this->addFlash( 
             'danger',
@@ -642,47 +443,47 @@ $this->addFlash(
 	return $this->redirectToRoute('myreviews');
 }
     /**
-     * @Route("/{id}", name="unassign", methods={"DELETE", "GET","POST"})
+     * @Route("/{id}", name="irbunassign", methods={"DELETE", "GET","POST"})
      */
-    public function unassign(Request $request, ReviewAssignment $reviewAssignment  ): Response
+    public function unassign(Request $request, IRBReviewAssignment $iRBReviewAssignment  ): Response
     {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
-        if ($this->isCsrfTokenValid('delete'.$reviewAssignment->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$iRBReviewAssignment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-            // $entityManager->remove($reviewAssignment);
-            $reviewAssignment->setInactiveAssignment(1);
+            // $entityManager->remove($iRBReviewAssignment);
+            $iRBReviewAssignment->setInactiveAssignment(1);
               $this->addFlash(
             'success',
-            'Reviewer unassigned!'
+            'Irbreviewer unassigned!'
         ); 
             $entityManager->flush();
         }
-            return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
+            return $this->redirectToRoute('review_assignment_new', array('id'=>$iRBReviewAssignment->getApplication()->getId()));
  
     }
 
 
     /**
-     * @Route("/{id}", name="reassign", methods={"DELETE", "GET","POST"})
+     * @Route("/{id}", name="irbreassign", methods={"DELETE", "GET","POST"})
      */
-    public function reassign( ReviewAssignment $reviewAssignment  ): Response
+    public function reassign( IRBReviewAssignment $iRBReviewAssignment  ): Response
     {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
              $entityManager = $this->getDoctrine()->getManager();
-            // $entityManager->remove($reviewAssignment);
-            $reviewAssignment->setInactiveAssignment(NULL);
-            $reviewAssignment->setClosed(NULL);
-            $reviewAssignment->setReassigned(1);
+            // $entityManager->remove($iRBReviewAssignment);
+            $iRBReviewAssignment->setInactiveAssignment(NULL);
+            $iRBReviewAssignment->setClosed(NULL);
+            $iRBReviewAssignment->setReassigned(1);
             
               $this->addFlash(
             'success',
-            'Reviewer allowed to edit the review  successfully!'
+            'Irbreviewer allowed to edit the review  successfully!'
         ); 
             $entityManager->flush();
         
-            return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
+            return $this->redirectToRoute('review_assignment_new', array('id'=>$iRBReviewAssignment->getApplication()->getId()));
  
     }
 
@@ -690,48 +491,46 @@ $this->addFlash(
   
 
   /**
-     * @Route("/{id}/accept/", name="accept_invitation", methods={"GET","POST"})
+     * @Route("/{id}/accept/", name="accept_irb_invitation", methods={"GET","POST"})
      */
-    public function acceptinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
+    public function acceptinvitation(Request $request, IRBReviewAssignment $iRBReviewAssignment): Response
     {
         
 
     $entityManager = $this->getDoctrine()->getManager();
-    if($this->getUser() != $reviewAssignment->getReviewer()){
+    if($this->getUser() != $iRBReviewAssignment->getIrbreviewer()){
         
         $this->addFlash("danger", "Sorry you are not allowed for this service !" );
-        return $this->redirectToRoute('myassigned');
+        return $this->redirectToRoute('myassignedirb');
     }
    
-    if(  $reviewAssignment->getDeclined()==1){
+    if(  $iRBReviewAssignment->getDeclined()==1){
        
         
         $this->addFlash("danger", "Sorry invitation has declined !" );
 
-        return $this->redirectToRoute('myassigned');
+        return $this->redirectToRoute('myassignedirb');
     }
     
-    if ($reviewAssignment->getIsAccepted()){
-        return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
+    if ($iRBReviewAssignment->getIsAccepted()){
+        return $this->redirectToRoute('reviewapplication', array('id' => $iRBReviewAssignment->getId()));
 }
-    if ($reviewAssignment->getIsRejected()){
+    if ($iRBReviewAssignment->getIsRejected()){
         // echo"'dsada'";
         // dd();
-        return $this->redirectToRoute('myassigned');
+        return $this->redirectToRoute('myassignedirb');
 }
 
-if ($reviewAssignment->getIsRejected()){
+if ($iRBReviewAssignment->getIsRejected()){
     // echo"'dsada'";
     // dd();
-    return $this->redirectToRoute('rereviewsubmission' );
+    return $this->redirectToRoute('rereviewapplication' );
 }
-
-
-        $submission=$reviewAssignment->getSubmission();
-                 $workunit=$reviewAssignment->getSubmission();
-	 $guideline_for_reviewers = $entityManager->getRepository(GuidelineForReviewer::class)->findAll()[0];
-	$Allsubmission = $entityManager->getRepository(Submission::class)->findBy(['id' => $submission ] );
-	$deadline= $reviewAssignment->getDuedate();
+    $application=$iRBReviewAssignment->getApplication();
+    $workunit=$iRBReviewAssignment->getApplication();
+	$guideline_for_irbreviewers = $entityManager->getRepository(GuidelineForIrbreviewer::class)->findAll()[0];
+	$Allapplication = $entityManager->getRepository(Application::class)->findBy(['id' => $application ] );
+	$deadline= $iRBReviewAssignment->getDuedate();
 	$today= new \DateTime();
 	$message='';
  	if ($deadline<=$today){
@@ -739,24 +538,22 @@ if ($reviewAssignment->getIsRejected()){
         $this->addFlash("danger", "Sorry Invitation overdue !" );
 
         //  $this->addFlash('error',"!!");
-        return $this->redirectToRoute('myassigned');
+        return $this->redirectToRoute('myassignedirb');
 }
  
         if ($request->request->get('accept-invitation')) {
             $this->checkCsrf('accept-invitation');
-            $reviewAssignment->setAcceptedAt(new DateTime());
+            $iRBReviewAssignment->setAcceptedAt(new DateTime());
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('reviewsubmission', array('id' =>$reviewAssignment->getId()));
+            return $this->redirectToRoute('reviewapplication', array('id' =>$iRBReviewAssignment->getId()));
         }
  
 	return $this->render('review_assignment/accept_invitation.html.twig', [
-	'review_assignment' => $reviewAssignment,
-	'guideline' => $guideline_for_reviewers,
+	'review_assignment' => $iRBReviewAssignment,
+	'guideline' => $guideline_for_irbreviewers,
         ]);
     }  
-
-    
-
+ 
 }
  
  

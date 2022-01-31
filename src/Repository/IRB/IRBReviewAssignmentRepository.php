@@ -7,20 +7,20 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ReviewAssignment|null find($id, $lockMode = null, $lockVersion = null)
- * @method ReviewAssignment|null findOneBy(array $criteria, array $orderBy = null)
- * @method ReviewAssignment[]    findAll()
- * @method ReviewAssignment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method IRBReviewAssignment|null find($id, $lockMode = null, $lockVersion = null)
+ * @method IRBReviewAssignment|null findOneBy(array $criteria, array $orderBy = null)
+ * @method IRBReviewAssignment[]    findAll()
+ * @method IRBReviewAssignment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class IRBReviewAssignmentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ReviewAssignment::class);
+        parent::__construct($registry, IRBReviewAssignment::class);
     }
 
     // /**
-    //  * @return ReviewAssignment[] Returns an array of ReviewAssignment objects
+    //  * @return IRBReviewAssignment[] Returns an array of IRBReviewAssignment objects
     //  */
     /*
     public function findByExampleField($value)
