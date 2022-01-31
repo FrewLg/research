@@ -60,7 +60,7 @@ class IRBReview
 
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="irbreviews")
+     * @ORM\ManyToOne(targetEntity=App\Entity\User::class, inversedBy="irbreviews")
      */
     private $reviewed_by;
 
