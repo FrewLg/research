@@ -28,22 +28,21 @@
 									<div class="ps-3">
 										<i class="">Submited by
 										</i>
-										<p class="text-muted mb-0">{{ application.submittedBy }}</p>
-										<p class="text-muted mb-0">www.qrstuvwxyz.com</p>
+										<p>
+										 Name:<span class="text-muted mb-0"> {{ application.submittedBy }}</span></p>
+										<p>Role:<span class="text-muted mb-0"> {{ application.pi ? "PI" : "Advisor"  }}</span></p>
+
 									</div>
 								</li>
 								<li class="list-inline-item">
-									<div class="ps-3">
-										<i class="mdi mdi-phone"></i>
-										<p class="text-muted mb-0">+123 123456789</p>
-										<p class="text-muted mb-0">+123 123456789</p>
-									</div>
+								
 								</li>
 								<li class="list-inline-item">
 									<div class="ps-3">
-										<i class="mdi mdi-map-marker"></i>
-										<p class="text-muted mb-0">2821 Kensington Road,</p>
-										<p class="text-muted mb-0">Avondale Estates, GA 30002 USA.</p>
+										<p>Sumitted At: <span class="text-muted mb-0">{{application.createdAt | date('Y-m-d h:i')}}</span></p>
+									
+										<p class="">Status : <span class="badge bg-warning">Pending</span></p>
+									
 									</div>
 								</li>
 							</ul>
@@ -86,7 +85,7 @@
 									<!-- Nav tabs -->
 									<ul class="nav nav-tabs" role="tablist">
 										<li class="nav-item">
-											<a class="nav-link" data-bs-toggle="tab" href="#members" role="tab" aria-selected="false">Members</a>
+											<a class="nav-link active" data-bs-toggle="tab" href="#members" role="tab" aria-selected="true">Members</a>
 										</li>
 										<li class="nav-item">
 											<a class="nav-link" data-bs-toggle="tab" href="#subject" role="tab" aria-selected="false">Research subject</a>
@@ -101,13 +100,13 @@
 											<a class="nav-link" data-bs-toggle="tab" href="#attachments" role="tab" aria-selected="false">Attachments</a>
 										</li>
 										<li class="nav-item">
-											<a class="nav-link active" data-bs-toggle="tab" href="#amendment" role="tab" aria-selected="true">Amendment</a>
+											<a class="nav-link" data-bs-toggle="tab" href="#amendment" role="tab" aria-selected="false">Amendment</a>
 										</li>
 									</ul>
 
 									<!-- Tab panes -->
 									<div class="tab-content">
-										<div class="tab-pane p-3" id="members" role="tabpanel">
+										<div class="tab-pane p-3 active" id="members" role="tabpanel">
 															<h4 class='text-'>Research team({{  application.members|length +1}})</h4>
 
 											{% for co_author in  application.members %}
@@ -137,6 +136,8 @@
 																			</div>
 																		</div>
 																	</div>
+																	{% else %}
+																		No members 
 																{% endfor %}
 
 										</div>
@@ -188,7 +189,9 @@
                                                 <td>{{loop.index}}</td>
                                                 <td>{{ (amendment.purpose |length > 50 ?amendment.purpose|slice(0, 50) ~ "..." :  amendment.purpose)| raw}}</td>
                                                 <td>{{ amendment.createdAt |date('Y-m-d h:i')  }}</td>
-                                                <td><span class="badge badge-soft-success">Approved</span></td>
+                                                <td>
+												<span class="badge badge-soft-success">Approved</span>
+												</td>
                                                 <td class="text-right">
                                                     <div class="dropdown d-inline-block">
                                                         <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -197,7 +200,6 @@
                                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">
                                                             <a class="dropdown-item" href="#">Detail</a>
                                                             <a class="dropdown-item" href="#"></a>
-                                                            <a class="dropdown-item" href="#">Tasks Details</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -224,7 +226,8 @@
 						{% for subject in application.applicationResearchSubjects | filter(sub => sub.subject.category == category) %}
 							
                <li> {{ subject.subject }}  {{ subject.number ? "#" ~ subject.number :"" }}</li>
-             
+             {% else %}
+				 <p>No research subject specified</p>
 							{% endfor %}
 						</div>
 					{% endfor %}
@@ -243,12 +246,16 @@
                   {{ review.review }}
                   </label>
                 </div>
+				{% else %}
+					
+				 <p>No research subject specified</p>
+
 				{% endfor %}
 					</div>
 			{% endfor %}
 										</div>
 									
-                    <div class="tab-pane p-3 active" id="attachments" role="tabpanel">
+                    <div class="tab-pane p-3 " id="attachments" role="tabpanel">
 										{% for attachment in application.applicationAttachments %}
 		                  <a style="margin-top:3px;" href="{{ asset('/uploads/application/'~ attachment.file ) }}" class="mx-1 btn btn-info btn-xs float-right">
 			                              {{attachment}}
@@ -281,10 +288,10 @@
 </div>
 
 
-<a href="{{ path('application_index') }}">back to list</a>
-
-      <div class="modal fade" id="exampleModalSecondary" tabindex="-1" role="dialog" aria-labelledby="exampleModalSecondary1" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
+<a href="{{ path('application_index') }}" class="btn btn-primary">back to list</a>
+    <div class="modal fade bd-example-modal-xl" id="exampleModalSecondary" tabindex="-1" role="dialog" aria-labelledby="exampleModalSecondary1" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl" role="document">
+  
                                             <div class="modal-content">
                                                 <div class="modal-header bg-primary">
                                                     <h6 class="modal-title m-0 text-white" id="exampleModalSecondary1">New amendment request</h6>
@@ -299,8 +306,8 @@
                                                 </div><!--end modal-body-->
                                                 <div class="modal-footer">                                                    
                                                   
-                                                        <button class="btn btn-soft-secondary btn-sm">{{ button_label|default('Send request') }}</button>
-                                                    <button type="button" class="btn btn-soft-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                                        <button class="btn btn-success ">{{ button_label|default('Send request') }}</button>
+                                                    <button type="button" class="btn btn-danger " data-bs-dismiss="modal">Close</button>
                                                 </div><!--end modal-footer-->
             {{ form_end(form) }}
                                             </div><!--end modal-content-->

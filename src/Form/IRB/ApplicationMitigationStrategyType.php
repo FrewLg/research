@@ -4,6 +4,7 @@ namespace App\Form\IRB;
 
 use App\Entity\IRB\ApplicationMitigationStrategy;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,7 +16,7 @@ class ApplicationMitigationStrategyType extends AbstractType
             
             ->add('strategy')
             ->add('checked',null,["label"=>false,"attr"=>["class"=>"col-5"]])
-            ->add('description')
+            ->add('description',TextareaType::class)
            
 
             ;
