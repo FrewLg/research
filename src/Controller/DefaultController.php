@@ -33,11 +33,11 @@ class DefaultController extends AbstractController
 	$qb = $em->createQueryBuilder();
     	
         $result = $qb
-     	->select('COUNT(e.id) as proposals , e.submission_type as research')
+     	->select('COUNT(e.id) as proposals , e.id as research')
     	->from( 'App\Entity\Submission ' , 'e'   ) 
     	->where('e.complete = :status' ) 
     	->setParameter( 'status', 0 ) 
-    	->groupBy('e.submission_type')
+    	->groupBy('e.id')
     	->getQuery()->getResult(); 
 
    	    $totalsubmissions = $submissionRepository->createQueryBuilder('a')

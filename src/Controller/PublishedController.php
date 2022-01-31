@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\IRB\CoAuthor;
 use App\Entity\PublishedSubmission;
 use App\Entity\Submission;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +17,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Form\Extension\Core\Type\DateType; 
 /**
- * @Route("/publish")
+ * @Route("/publications")
  */
 class PublishedController extends AbstractController
 {
@@ -29,7 +31,6 @@ class PublishedController extends AbstractController
         $published = new PublishedSubmission();
           
       	$entityManager = $this->getDoctrine()->getManager(); 
-#      	$contributors=$entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission ] ); 
      	$form = $this->createFormBuilder($published)  
           ->add('final_report', EntityType::class, array(
                       'placeholder' => '-- Select Attachment Type --',
@@ -170,6 +171,37 @@ class PublishedController extends AbstractController
     }
 
     
+
+    /**
+     * @Route("/publications", name="publications", methods={"GET"})
+     */
+    public function publications(Request $request,   PaginatorInterface $paginator ): Response
+    { 
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $entityManager = $this->getDoctrine()->getManager();
+        $publications = $entityManager->getRepository(Publication::class)
+        ->findBy(['college' => 1]);
+        $paginatedpublications = $paginator->paginate(
+            $publications,
+            $request->query->getInt('page', 1),
+            15
+        ); 
+         ///////////////Confirmation code=================//////////
+        //  $prefix = 'VC';
+        //  $id = $application->getId();
+        //  $date = date("Y");
+        //  $randnum = rand(100, 10000);
+        //  $confcode = $prefix . "-" . $date . "-" . $randnum . "-" . $id;
+        //  $application->setConfirmationCode($confcode);
+        //  // /dd($confcode);
+     
+     ///////////////Confirmation code=================//////////
+
+        return $this->render('dashboard/publications.html.twig', [
+            'co_author' => $paginatedpublications,
+        ]);
+    }
+ 
 
     /**
      * @Route("/{id}", name="co_author_delete", methods={"DELETE"})
