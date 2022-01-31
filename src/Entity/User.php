@@ -79,7 +79,7 @@ class User implements UserInterface
     
 
       /**
-     * @ORM\OneToMany(targetEntity=App\Entity\IRB\RIRBeviewAssignment::class, mappedBy="irbreviewer")
+     * @ORM\OneToMany(targetEntity=App\Entity\IRB\IRBReviewAssignment::class, mappedBy="irbreviewer")
      */
     private $iRBReviewAssignments;
 
