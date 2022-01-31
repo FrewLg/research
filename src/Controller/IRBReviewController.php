@@ -100,10 +100,8 @@ $entityManager = $this->getDoctrine()->getManager();
         FROM App:Review s 
         JOIN s.submission b     
         JOIN s.reviewAssignment ass      
-        WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed
-        -- HAVING     s.remark=:remarktwo
-
-        ')  
+        WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed 
+')  
         ->setParameter('closed', 1 )  
         ->setParameter('reviewer', $this_is_me   ) 
         ;

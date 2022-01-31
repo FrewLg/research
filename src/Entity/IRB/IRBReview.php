@@ -68,7 +68,8 @@ class IRBReview
      * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="irbreviews")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $application;
+    private $application; 
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
