@@ -30,35 +30,35 @@ class ApplicationRepository extends ServiceEntityRepository
         if (isset($filter['projectType']) and sizeof($filter['projectType']) > 0) {
 
 
-            $qb->andWhere("s.projectType in  (:projectType)")
+            $qb->andWhere("a.projectType in  (:projectType)")
                 ->setParameter("projectType", $filter['projectType']);
         }
         if (isset($filter['type']) and $filter['type']) {
 
 
-            $qb->andWhere("s.type =  :type")
+            $qb->andWhere("a.type =  :type")
                 ->setParameter("type", $filter['type']);
         }
         if (isset($filter['startDate'])  && $filter['startDate']) {
             $date = $this->exploadeDates($filter['startDate']);
 
             // dd($date);
-            $qb->andWhere("s.startDate <= '" . $date[1] . "'");
-            $qb->andWhere("s.startDate >= '" . $date[0]. "'");
+            $qb->andWhere("a.startDate <= '" . $date[1] . "'");
+            $qb->andWhere("a.startDate >= '" . $date[0]. "'");
         }
         if (isset($filter['endDate'])  && $filter['endDate']) {
             $date = $this->exploadeDates($filter['endDate']);
 
             // dd($date);
-            $qb->andWhere("s.endDate <= '" . $date[1] . "'");
-            $qb->andWhere("s.endDate >= '" . $date[0] . "'");
+            $qb->andWhere("a.endDate <= '" . $date[1] . "'");
+            $qb->andWhere("a.endDate >= '" . $date[0] . "'");
         }
         if (isset($filter['submittedAt'])  && $filter['submittedAt']) {
             $date = $this->exploadeDates($filter['submittedAt']);
 
             // dd($date);
-            $qb->andWhere("s.submittedAt <= '" . $date[1] . "'");
-            $qb->andWhere("s.submittedAt >= '" . $date[0] . "'");
+            $qb->andWhere("a.submittedAt <= '" . $date[1] . "'");
+            $qb->andWhere("a.submittedAt >= '" . $date[0] . "'");
         }
 
       

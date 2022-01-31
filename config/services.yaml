@@ -78,3 +78,6 @@ services:
     # App\EventListener\ExceptionListener:
     #     tags:
     #         - { name: kernel.event_listener, event: kernel.exception }
+lexik_translation:
+    fallback_locale: [en]
+    managed_locales: [en, am, or] 

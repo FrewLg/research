@@ -8,6 +8,7 @@ use App\Entity\ResearchReportSubmissionSetting;
 use App\Entity\Submission;
 use App\Entity\SubmissionFinalReport;
 use App\Entity\User;
+use App\Utils\Constants;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -208,13 +209,13 @@ class SubmissionHelper
             $researchReport->setSubmissionStatus(ResearchReport::STATUS_APPROVED);
             $researchReport->setApprovedBy($this->user);
             $researchReport->setApprovedAt(new \DateTime());
-            $this->em->flush();
-            $this->flashBagInterface->add("success", "Approved successfully!!");
-
+          
             //note here
             // send email for all members
 
             if ($request->request->get('approve_research_generate')) {
+
+                $submission->setStatus(Constants::SUBMISSION_STATUS_CLOSED);
                 $this->mailHelper->sendEmail(
                     $submission->getAuthor()->getEmail(),
                     "Your submission is Complete",
@@ -238,6 +239,10 @@ class SubmissionHelper
                     );
                 }
             }
+
+            $this->em->flush();
+            $this->flashBagInterface->add("success", "Approved successfully!!");
+
 
 
             return $this->redirectBack($submission);

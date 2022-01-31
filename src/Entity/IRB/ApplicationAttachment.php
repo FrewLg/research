@@ -66,6 +66,10 @@ class ApplicationAttachment
         //     $this->updatedAt = new \DateTimeImmutable();
         // }
     }
+    public function __toString()
+    {
+       return $this->type;
+    }
 
     public function getUploadFile(): ?File
     {

@@ -44,16 +44,17 @@ class ApplicationFilterType extends AbstractType
             ])
           
             ->add('projectType',EntityType::class,[
+                "multiple"=>true,
                 "class"=>ProjectType::class,
                 "attr"=>[
-                    "class"=>"select2"
+                    "class"=>"select2 col-6"
                 ],
             ])
             ->add('submittedBy',EntityType::class,[
                 "class"=>User::class,
                 "multiple"=>true,
                 "attr"=>[
-                    "class"=>"select2"
+                    "class"=>"select2 col-6"
                 ],
                 'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('u')
