@@ -486,9 +486,7 @@ $entityManager = $this->getDoctrine()->getManager();
             return $this->redirectToRoute('review_assignment_new', array('id'=>$iRBReviewAssignment->getApplication()->getId()));
  
     }
-
-
-  
+ 
 
   /**
      * @Route("/{id}/accept/", name="accept_irb_invitation", methods={"GET","POST"})

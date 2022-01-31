@@ -79,21 +79,19 @@
 								<a class="nav-link" >
 									<i class="ti-control-record"></i>Dashboard</a>
 							</li>
-
+	
 							{% endif%}
 							<li class="nav-item">
 								<a class="nav-link" href="{{ path('application_index') }}"> 
 								<i class="ti-control-record"></i>
-						{% if is_granted("ROLE_ADMIN") %}
+								{% if is_granted("ROLE_ADMIN") %}
 									Requests
 									{% else %}
 									My Request
-										{% endif %}
-									
+										{% endif %} 
 									</a>
-							</li>
+							</li> 
 							
-
 						</ul>
 					</li>
 				</li>
@@ -116,13 +114,11 @@
 									Call for proposals
 
 								</a>
-							</li>
-
+							</li> 
 							<li class="nav-item">
 								<a class="nav-link" href="{{ path('call_for_training_index') }}">
 									<i class="ti-control-record"></i>
-									Call for  training 
-
+									Call for  training  
 								</a>
 							</li>
 
