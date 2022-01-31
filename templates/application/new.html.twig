@@ -38,7 +38,7 @@
 {% endmacro %}
 
 {% macro displayMitigation(strategy) %}
-	<div class="col-md-6 parent">
+	<div class="col-md-12 parent">
 		<div class="row">
 		{% if strategy.strategy.vars.data.formGroup %}
 	
@@ -51,7 +51,7 @@
 		{{form_widget(strategy.checked,{"attr":{"hidden":true ,"checked":true}})}}
 	{% endif %}
 		
-			<div class="col-4">
+			<div class="col-6">
 				{{form_widget(strategy.strategy,{"attr":{"hidden":true }})}}
 
 				{{strategy.strategy.vars.data}}
@@ -61,7 +61,7 @@
 			</div>
 			{% if  strategy.strategy.vars.data.type == 1 or strategy.strategy.vars.data.formGroup == null %}
 
-					<div class="col-4   {{ strategy.strategy.vars.data.formGroup ? "my-hidden  d-none":"" }}">
+					<div class="col-7   {{ strategy.strategy.vars.data.formGroup ? "my-hidden  d-none":"" }}">
 						{{form_widget(strategy.description,{"attr":{"required":strategy.strategy.vars.data.formGroup ? false:true}})}}
 					</div>
 				{% endif %}
@@ -70,7 +70,7 @@
 
 		</div>
 	</div>
-
+<hr>
 
 {% endmacro %}
 {% macro displayReview(review) %}
@@ -89,7 +89,7 @@
 
 {% endmacro %}
 {% macro displayAttachment(attachment) %}
-	<div class="col-md-6">
+	<div class="col-md-12 parent">
 		<div class="row">
 			<div class="col-1 my-checkbox">
 				{{form_widget(attachment.checked)}}
@@ -363,9 +363,7 @@
 	</fieldset>
 			<h3>Confirmation</h3>
 			<fieldset>
-				<label class="form-label mt-3 mb-1">Check all possible items that apply to your project and attach each checked item to your proposal.
-					<span class='text-danger'>*</span>
-				</label>
+			
 				In making this application, I certify that I:
 				<ol>
 					<li>Have reviewed all information on the Jimma University Institutional Review Board for Human Subjects’ Protection on the Portal at
@@ -418,12 +416,11 @@ form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
 }
 
 form.validate().settings.ignore = ":disabled,:hidden";
-return true;
 
 return form.valid();
 },
 onStepChanged: function (event, currentIndex, priorIndex) {
-if(currentIndex== 1){
+if(currentIndex== 6){
 	if($( "input[name^='application[applicationReviews]']:checked" ).length == 0){
 		$("#additional").removeClass("d-none")
 		$("#application_uploadFile_file").prop("required",true)
@@ -436,6 +433,9 @@ if(currentIndex== 1){
 
 },
 onFinishing: function (event, currentIndex) {
+this.submit()
+
+
 form.validate().settings.ignore = ":disabled";
 return form.valid();
 },

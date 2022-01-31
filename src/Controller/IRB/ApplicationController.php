@@ -78,7 +78,7 @@ class ApplicationController extends AbstractController
 
             $entityManager->persist($application);
             $entityManager->flush();
-
+            $this->addFlash("success","Request sent successfully");
             return $this->redirectToRoute('application_index', [], Response::HTTP_SEE_OTHER);
         }
 
