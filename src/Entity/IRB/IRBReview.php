@@ -36,10 +36,10 @@ class IRBReview
     private $comment;
 
     /**
-     * @ORM\ManyToOne(targetEntity=IRBReviewAssignment::class, inversedBy="reviews"  )
+     * @ORM\ManyToOne(targetEntity=IRBReviewAssignment::class, inversedBy="irbreviews"  )
      * @ORM\JoinColumn(nullable=true)
      */
-    private $reviewAssignment;
+    private $iRBReviewAssignment;
 
     /**
      * @ORM\Column(type="datetime")
@@ -60,12 +60,12 @@ class IRBReview
 
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reviews")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="irbreviews")
      */
     private $reviewed_by;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="reviews")
+     * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="irbreviews")
      * @ORM\JoinColumn(nullable=false)
      */
     private $application;
@@ -139,12 +139,12 @@ class IRBReview
 
     public function getIRBReviewAssignment(): ?\App\Entity\IRB\IRBReviewAssignment
     {
-        return $this->reviewAssignment;
+        return $this->iRBReviewAssignment;
     }
 
-    public function setIRBReviewAssignment(?\App\Entity\IRB\IRBReviewAssignment $reviewAssignment): self
+    public function setIRBReviewAssignment(?\App\Entity\IRB\IRBReviewAssignment $iRBReviewAssignment): self
     {
-        $this->reviewAssignment = $reviewAssignment;
+        $this->iRBReviewAssignment = $iRBReviewAssignment;
 
         return $this;
     }
