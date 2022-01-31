@@ -106,7 +106,7 @@ class IRBReviewAssignment
     /**
      * @ORM\OneToMany(targetEntity=Review::class, mappedBy="iRBReviewAssignment", orphanRemoval=true)
      */
-    private $reviews;
+    private $irbreviews;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -120,7 +120,7 @@ class IRBReviewAssignment
 
     public function __construct()
     {
-        $this->reviews = new ArrayCollection();
+        $this->irbreviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -328,15 +328,15 @@ class IRBReviewAssignment
     /**
      * @return Collection|Review[]
      */
-    public function getReviews(): Collection
+    public function getIrbreviews(): Collection
     {
-        return $this->reviews;
+        return $this->irbreviews;
     }
 
     public function addReview(\App\Entity\IRB\IRBReview $review): self
     {
-        if (!$this->reviews->contains($review)) {
-            $this->reviews[] = $review;
+        if (!$this->irbreviews->contains($review)) {
+            $this->irbreviews[] = $review;
             $review->setIRBReviewAssignment($this);
         }
 
@@ -345,7 +345,7 @@ class IRBReviewAssignment
 
     public function removeReview(\App\Entity\IRB\IRBReview $review): self
     {
-        if ($this->reviews->removeElement($review)) {
+        if ($this->irbreviews->removeElement($review)) {
             // set the owning side to null (unless already changed)
             if ($review->getIRBReviewAssignment() === $this) {
                 $review->setIRBReviewAssignment(null);
