@@ -21,9 +21,9 @@ class IRBReviewAssignment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Submission::class, inversedBy="submission_iRBReviewAssignments")
+     * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="application_iRBReviewAssignments")
      */
-    private $submission;
+    private $application;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rewiewer_iRBReviewAssignments")
@@ -128,14 +128,14 @@ class IRBReviewAssignment
         return $this->id;
     }
 
-    public function getSubmission(): ?Submission
+    public function getApplication(): ?Application
     {
-        return $this->submission;
+        return $this->application;
     }
 
-    public function setSubmission(?Submission $submission): self
+    public function setApplication(?Application $application): self
     {
-        $this->submission = $submission;
+        $this->application = $application;
 
         return $this;
     }
@@ -145,7 +145,7 @@ class IRBReviewAssignment
         return $this->reviewer;
     }
 
-    public function setReviewer(?User $reviewer): self
+    public function setReviewer(?\App\Entity\User $reviewer): self
     {
         $this->reviewer = $reviewer;
 
@@ -333,7 +333,7 @@ class IRBReviewAssignment
         return $this->reviews;
     }
 
-    public function addReview(Review $review): self
+    public function addReview(\App\Entity\IRB\IRBReview $review): self
     {
         if (!$this->reviews->contains($review)) {
             $this->reviews[] = $review;
@@ -343,7 +343,7 @@ class IRBReviewAssignment
         return $this;
     }
 
-    public function removeReview(Review $review): self
+    public function removeReview(\App\Entity\IRB\IRBReview $review): self
     {
         if ($this->reviews->removeElement($review)) {
             // set the owning side to null (unless already changed)
