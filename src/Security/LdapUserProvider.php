@@ -73,28 +73,17 @@ class LdapUserProvider implements UserProviderInterface
      */
     public function getUserEntityCheckedFromLdap(string $username, string $password)
     {
-        //  dd(sprintf($this->ldapSearchDnString, $username));
-
+       
         try {
-            //     // code...
-            //    dump($username);
-            //    dump($this->ldapSearchDnString);
-            //    dd($password);
+          
 
             $this->ldap->bind(sprintf($this->ldapSearchDnString, $username), $password);
-        } catch (ConnectionException $th) {
-            //  $th;
-            // dd($th);
-
-            return null;
-            throw new CustomUserMessageAuthenticationException('Cant connect to server,try again');
         } catch (\Throwable $th) {
-            //  $th;
-            //   dd($th);
+          
 
             return null;
         }
-        // dd("bind");
+       
 
         $username = $this->ldap->escape($username, '', LdapInterface::ESCAPE_FILTER);
         $search = $this->ldap->query($this->ldapBaseDn, 'uid=' . $username);
@@ -138,8 +127,7 @@ class LdapUserProvider implements UserProviderInterface
         $middleName=$fullName[1];
         $lastName=$fullName[2];
 
-        // dd($firstName);
-        //   dd($ldapEntry);
+      
         $userinfo = new UserInfo();
 
         $user = new User();

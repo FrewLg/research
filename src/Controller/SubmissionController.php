@@ -568,7 +568,7 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/{id}/status", name="submission_status", methods={"GET","POST"})
      */
-    public function statusubmission(Request $request, Submission $submission,SubmissionHelper $submissionHelper): Response
+    public function statusubmission(Request $request, Submission $submission, SubmissionHelper $submissionHelper): Response
     {
         ////Ultimate reviewers page
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -698,13 +698,26 @@ class SubmissionController extends AbstractController
 
         $researchReportPhase = $submission->getCallForProposal()?->getResearchReportPhase();
 
-    
+
         $submission_report_schedule_form =  $this->createForm(ResearchReportSubmissionSettingType::class, null, ["researchReportPhase" => $researchReportPhase]);
         $submission_report_schedule_form->handleRequest($request);
 
         if ($submission_report_schedule_form->isSubmitted()) {
             //create schedule
-           return $submissionHelper->createSubmissionReportSchedule($request, $submission);
+            return $submissionHelper->createSubmissionReportSchedule($request, $submission);
+        }
+
+
+        /**
+         * co pi responses to report
+         */
+        if ($request->request->get('copi_response') || $request->request->get('pi_response')) {
+
+            return $submissionHelper->copiReportResponse($request, $submission);
+        }
+
+        if ($request->request->get('approve_research_report')) {
+            return   $submissionHelper->approveResearchReport($request, $submission);
         }
 
 
@@ -715,7 +728,7 @@ class SubmissionController extends AbstractController
         if ($research_report_form->isSubmitted() && $research_report_form->isValid()) {
 
             //create research report
-           return $submissionHelper->createResearchReport($research_report_form, $researchReport, $submission);
+            return $submissionHelper->createResearchReport($research_report_form, $researchReport, $submission);
         }
 
 
@@ -973,7 +986,7 @@ class SubmissionController extends AbstractController
             'co_authors' => $contributors,
             'collaborating_institutions' => $CollaboratingInstitutions,
             'expenses' => $Expenses,
-           
+
         ]);
     }
 

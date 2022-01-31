@@ -230,16 +230,16 @@
 				</div>
 
 
-				<ul id="contact-fields-list" class="m-t-5">
+				<ul  class="m-t-5">
 					{% for category in subject_category %}
 						<label class="form-label mt-3 mb-1">Research Subjects({{category.name}}):<span class='text-danger'>*</span>
 						</label>
 
+						<div class="row ">
 						{% for subject in form.applicationResearchSubjects | filter(sub => sub.vars.data.subject.category == category) %}
-							<div class="row ">
 								{{ _self.displayResearchSubject(subject) }}
-							</div>
-						{% endfor %}
+							{% endfor %}
+						</div>
 					{% endfor %}
 				</ul>
 
@@ -418,6 +418,8 @@ form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
 }
 
 form.validate().settings.ignore = ":disabled,:hidden";
+return true;
+
 return form.valid();
 },
 onStepChanged: function (event, currentIndex, priorIndex) {
@@ -438,8 +440,9 @@ form.validate().settings.ignore = ":disabled";
 return form.valid();
 },
 onFinished: function (event, currentIndex) {
-$("#submission_step").val(10)
-form.submit();
+
+this.submit()
+
 }
 }).validate({
 errorPlacement: function errorPlacement(error, element) {
@@ -539,8 +542,7 @@ var list = jQuery(jQuery(this).attr('data-list-selector'));
 
 var counter = list.data('widget-counter') || list.children().length;
 var newWidget = list.attr('data-prototype');
-console.log(newWidget)
-console.log(list)
+
 newWidget = newWidget.replace(/__name__/g, counter);
 counter++;
 list.data('widget-counter', counter);
