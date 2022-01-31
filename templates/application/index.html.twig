@@ -14,8 +14,8 @@
             <tr>
                 <th>#</th>
                 <th>Title</th>
-                <th>Start Date</th>
-                <th>End Date</th>
+                <th>Project Type</th>
+                <th>Submitted Date</th>
                 <th>Status</th>
                 <th>actions</th>
             </tr>
@@ -25,12 +25,15 @@
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ application.title }}</td>
-                <td>{{ application.startDate ? application.startDate|date('Y-m-d') : '' }}</td>
-                <td>{{ application.endDate ? application.endDate|date('Y-m-d') : '' }}</td>
+                <td>{{ application.projectType }}</td>
+                <td>{{ application.createdAt|date('Y-m-d h:i') }}</td>
+          
                 <td>
-                {% if application %}{% endif %}
+                {% if not application.status %}
+
+            <span class="badge badge-soft-warning">Pending</span>
+                {% endif %} 
                 
-                <span class="badge badge-soft-success">Approved</span>
                 </td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('application_show', {'id': application.id}) }}">show</a>
