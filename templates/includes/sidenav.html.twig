@@ -65,6 +65,48 @@
 						</ul>
 					</li>
 				</li>
+				<li>
+					<a href="javascript: void(0);">
+						<i class=" fas fa-home align-self-center menu-icon"></i>
+						<span>IRB</span>
+						<span class="menu-arrow">
+							<i class="mdi mdi-chevron-right"></i>
+						</span>
+					</a>
+					<ul class="nav-second-level" aria-expanded="false">
+						{% if is_granted("ROLE_ADMIN") %}
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('dashboard') }}">
+									<i class="ti-control-record"></i>Dashboard</a>
+							</li>
+
+							{% endif%}
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('submission_index') }}">
+									<i class="ti-control-record"></i>My Request</a>
+							</li>
+							
+
+						
+						
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('myassigned') }}">
+									<i class="ti-control-record"></i>
+									My assigned</a>
+							</li>
+
+				{% if is_granted("assn_clg_cntr") %}
+
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('published_research_index') }}">
+									<i class="ti-control-record"></i>
+									Granted Researches  </a>
+							</li>
+				{% endif  %}
+
+						</ul>
+					</li>
+				</li>
 				{% if is_granted("assn_clg_cntr") %}
 
 					<li>

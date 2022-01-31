@@ -838,5 +838,19 @@ $('.schedule-submit-button').prop('disabled', true);
 }
 }
 
+
+//co pi agreement text box toggle
+$(document).ready(function () {
+    $(".disagree_textbox_div").hide();
+    $("#disagree_radio").click(function () {
+        $(".disagree_textbox_div").fadeIn();
+        $(".disagree_textbox").prop('required', true);
+    });
+    $("#agree_radio").click(function () {
+        $(".disagree_textbox_div").fadeOut();
+        $(".disagree_textbox").prop('required', false);
+    });
+});
+
   </script>
 {% endblock %}

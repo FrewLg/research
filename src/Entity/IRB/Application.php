@@ -2,8 +2,11 @@
 
 namespace App\Entity\IRB;
 
+use App\Entity\IRB\Amendment;
 use App\Entity\User;
+use App\Entity\IRB\CoAuthor as CoAuthor;
 use App\Repository\IRB\ApplicationRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -84,18 +87,18 @@ class Application
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $additionalAttachemet;
+    private $additionalAttachmet;
 
     /**
      * 
-     * @Vich\UploadableField(mapping="application_file", fileNameProperty="additionalAttachemet")
+     * @Vich\UploadableField(mapping="application_file", fileNameProperty="additionalAttachmet")
      * 
      * @var File|null
      */
     private $uploadFile;
 
     /**
-     * @ORM\OneToMany(targetEntity=CoAuthor::class, mappedBy="application")
+     * @ORM\OneToMany(targetEntity=CoAuthor::class, mappedBy="application",cascade={"persist"})
      */
     private $members;
 
@@ -121,15 +124,27 @@ class Application
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Amendment::class, mappedBy="application", orphanRemoval=true)
+     */
+    private $amendments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=IRBStatus::class)
+     */
+    private $status;
+
 
 
     public function __construct()
     {
+        $this->createdAt=new DateTime();
         $this->applicationResearchSubjects = new ArrayCollection();
         $this->applicationMitigationStrategies = new ArrayCollection();
         $this->applicationReviews = new ArrayCollection();
         $this->applicationAttachments = new ArrayCollection();
         $this->members = new ArrayCollection();
+        $this->amendments = new ArrayCollection();
     }
 
     public function setUploadFile(?File $imageFile = null): void
@@ -357,14 +372,14 @@ class Application
         return $this;
     }
 
-    public function getAdditionalAttachemet(): ?string
+    public function getAdditionalAttachmet(): ?string
     {
-        return $this->additionalAttachemet;
+        return $this->additionalAttachmet;
     }
 
-    public function setAdditionalAttachemet(?string $additionalAttachemet): self
+    public function setAdditionalAttachmet(?string $additionalAttachmet): self
     {
-        $this->additionalAttachemet = $additionalAttachemet;
+        $this->additionalAttachmet = $additionalAttachmet;
 
         return $this;
     }
@@ -443,6 +458,70 @@ class Application
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function addMember(CoAuthor $member): self
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+            $member->setApplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(CoAuthor $member): self
+    {
+        if ($this->members->removeElement($member)) {
+            // set the owning side to null (unless already changed)
+            if ($member->getApplication() === $this) {
+                $member->setApplication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Amendment[]
+     */
+    public function getAmendments(): Collection
+    {
+        return $this->amendments;
+    }
+
+    public function addAmendment(Amendment $amendment): self
+    {
+        if (!$this->amendments->contains($amendment)) {
+            $this->amendments[] = $amendment;
+            $amendment->setApplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAmendment(Amendment $amendment): self
+    {
+        if ($this->amendments->removeElement($amendment)) {
+            // set the owning side to null (unless already changed)
+            if ($amendment->getApplication() === $this) {
+                $amendment->setApplication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStatus(): ?IRBStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?IRBStatus $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
