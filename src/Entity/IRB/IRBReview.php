@@ -2,13 +2,13 @@
 
 namespace App\Entity\IRB;
 
-use App\Repository\ReviewRepository;
+use App\Repository\IRB\IRBReviewRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ReviewRepository::class)
+ * @ORM\Entity(repositoryClass=IRBReviewRepository::class)
  */
 class IRBReview
 {

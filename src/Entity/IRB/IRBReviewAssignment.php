@@ -2,7 +2,7 @@
 
 namespace App\Entity\IRB;
 
-use App\Repository\IRBReviewAssignmentRepository;
+use App\Repository\IRB\IRBReviewAssignmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
