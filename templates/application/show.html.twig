@@ -107,8 +107,34 @@
 									<!-- Tab panes -->
 									<div class="tab-content">
 										<div class="tab-pane p-3 active" id="members" role="tabpanel">
-															<h4 class='text-'>Research team({{  application.members|length +1}})</h4>
+															<h4 class='text-'>Research team({{  application.members|length}})</h4>
+															<div class="row">
+															{% set co_author = application.pi ? application.pi : application.submittedBy  %}
+													<div class="col-lg-4">
 
+																		<div class="card">
+
+																			<div class="card-body text-center">
+
+
+
+																				<h5 class="fw-bold mt-3 mb-1">{{ co_author.userInfo}}
+																					<span class="text-muted mb-0">({{ co_author.userInfo.educationLevel }})</span>
+																				</h5>
+																				<p class="text-muted mb-0">{{ co_author.userInfo.college }}</p>
+																				<p class="text-muted mb-0">{{ co_author.userInfo.department }}</p>
+																				<p class="text-muted mb-0">{{ co_author.userInfo.academicRank }}</p>
+																				<div class="mb-3">
+																					<a href="apps-tasks.html#" class="me-3 text-warning">
+																						PI</a>
+																				
+																				</div>
+
+																				<a href='{{path('researcher',{'id':co_author.id})}}' class="btn btn-sm btn-soft-primary">More details</a>
+
+																			</div>
+																		</div>
+																	</div>
 											{% for co_author in  application.members %}
 																	<div class="col-lg-4">
 
@@ -139,6 +165,7 @@
 																	{% else %}
 																		No members 
 																{% endfor %}
+																</div>
 
 										</div>
 										<div class="tab-pane p-3" id="covid" role="tabpanel">
