@@ -6,7 +6,9 @@ use App\Entity\ResearchReport;
 use App\Entity\ResearchReportComment;
 use App\Entity\ResearchReportSubmissionSetting;
 use App\Entity\Submission;
+use App\Entity\SubmissionFinalReport;
 use App\Entity\User;
+use App\Utils\Constants;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -53,8 +55,17 @@ class SubmissionHelper
         $newFilename = $this->user->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
         $uploadedFile->move($destination, $newFilename);
 
-
         $researchReport->setFinancialClearance($newFilename);
+
+        if (isset($research_report_form['manuscript'])) {
+
+            $uploadedFile = $research_report_form['manuscript']->getData();
+            $destination = $this->containerInterface->getParameter('kernel.project_dir') . '/public/uploads/research-report';
+            $newFilename = $this->user->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
+            $uploadedFile->move($destination, $newFilename);
+
+            $submission->setManuscript($newFilename);
+        }
         $researchReport->setFileType($uploadedFile->getClientOriginalExtension());
         $researchReport->setSubmission($submission);
         $researchReport->setSubmittedBy($this->user);
@@ -69,14 +80,14 @@ class SubmissionHelper
 
             $this->mailHelper->sendEmail(
                 $value->getResearcher()->getEmail(),
-                "Co-PI response on your submission",
+                "new research report submitted",
                 "emails/general.html.twig",
                 [
-                    "info" => "Co-PI response on your submission",
-                    "subject" => "Co-PI response on your submission",
+                    "info" => "new research report submitted",
+                    "subject" => "new research report submitted",
                     "body" => "
-                    The project titled as " . $submission->getTitle() . " you assigned as a CO-PI submitted the phase 1 report on " . ((new \DateTime())->format('Y-m-d H:iA')) . "date. Please confirm that you are aware and agree on the report
-                    following the link below <a href='" . $this->urlGenerator->generate("submission_status", ['id' => $submission->getId()]) . "'>Click here to get the report</a>
+                    The project titled as <b>" . $submission->getTitle() . "</b> you assigned as a CO-PI submitted new report on <b>" . ((new \DateTime())->format('Y-m-d H:iA')) . "</b> date. Please confirm that you are aware and agree on the report
+                    following the link below <a href='" . $this->urlGenerator->generate("submission_status", ['id' => $submission->getId()], UrlGeneratorInterface::ABSOLUTE_URL) . "'>Click here to get the report</a>
                     ",
                 ]
             );
@@ -87,6 +98,34 @@ class SubmissionHelper
         return $this->redirectBack($submission);
     }
 
+    public function finalReport(Request $request, SubmissionFinalReport $terminal_report, Submission $submission)
+    {
+
+        $files = $request->files->get('submission_final_report');
+
+        $uploadedFile = $files['fullReport'];
+        $destination = $this->containerInterface->getParameter('kernel.project_dir') . '/public/uploads/research-report';
+        $newFilename = $this->user->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
+        $uploadedFile->move($destination, $newFilename);
+
+
+        $terminal_report->setFullReport($newFilename);
+        $uploadedFile = $files['manuscript'];
+        $destination = $this->containerInterface->getParameter('kernel.project_dir') . '/public/uploads/research-report';
+        $newFilename = $this->user->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
+        $uploadedFile->move($destination, $newFilename);
+
+
+        $terminal_report->setManuscript($newFilename);
+        $terminal_report->setSubmission($submission);
+
+        $this->em->persist($terminal_report);
+
+        $this->em->flush();
+
+        $this->flashBagInterface->add("success", "Report submitted successfully!!");
+        return $this->redirectBack($submission);
+    }
     public function createSubmissionReportSchedule(Request $request, Submission $submission)
     {
         foreach ($request->request->get('research_report_submission_setting') as $key => $value) {
@@ -151,7 +190,7 @@ class SubmissionHelper
                     [
                         "info" => "Co-PI response on your submission",
                         "subject" => "Co-PI response on your submission",
-                        "body" => "Co-PI response on your submission <a href='" . $this->urlGenerator->generate("submission_status", ['id' => $submission->getId()]) . "'>Click here to get your submission</a>",
+                        "body" => "Co-PI response on your submission <a href='" . $this->urlGenerator->generate("submission_status", ['id' => $submission->getId()], UrlGeneratorInterface::ABSOLUTE_URL) . "'>Click here to get your submission</a>",
                     ]
                 );
             }
@@ -170,11 +209,41 @@ class SubmissionHelper
             $researchReport->setSubmissionStatus(ResearchReport::STATUS_APPROVED);
             $researchReport->setApprovedBy($this->user);
             $researchReport->setApprovedAt(new \DateTime());
+          
+            //note here
+            // send email for all members
+
+            if ($request->request->get('approve_research_generate')) {
+
+                $submission->setStatus(Constants::SUBMISSION_STATUS_CLOSED);
+                $this->mailHelper->sendEmail(
+                    $submission->getAuthor()->getEmail(),
+                    "Your submission is Complete",
+                    "emails/general.html.twig",
+                    [
+                        "info" => "Your submission is Complete",
+                        "subject" => "Your submission is Complete",
+                        "body" => "your research is complete <a href='" . $this->urlGenerator->generate("submission_status", ['id' => $submission->getId()], UrlGeneratorInterface::ABSOLUTE_URL) . "'>Click here to view the submission</a>",
+                    ]
+                );
+                foreach ($submission->getCoAuthors() as $key => $value) {
+                    $this->mailHelper->sendEmail(
+                        $value->getEmail(),
+                        "Your submission is Complete",
+                        "emails/general.html.twig",
+                        [
+                            "info" => "Your submission is Complete",
+                            "subject" => "Your submission is Complete",
+                            "body" => "your research is complete <a href='" . $this->urlGenerator->generate("submission_status", ['id' => $submission->getId()], UrlGeneratorInterface::ABSOLUTE_URL) . "'>Click here to view the submission</a>",
+                        ]
+                    );
+                }
+            }
+
             $this->em->flush();
             $this->flashBagInterface->add("success", "Approved successfully!!");
 
-            //note here
-            // send email for all members
+
 
             return $this->redirectBack($submission);
         }

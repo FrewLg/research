@@ -47,10 +47,10 @@
 				<ul class="nav nav-pills nav-justified" role="tablist">
 					<li class="nav-item  waves-effect waves-light">
 						<a class="nav-link " data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
+					</li><li class="nav-item  waves-effect waves-light">
+						<a class="nav-link" data-bs-toggle="tab" href="#evaluation" role="tab" aria-selected="false">Evaluation</a>
 					</li>
-					{# <li class="nav-item  waves-effect waves-light">
-																																							<a class="nav-link" data-bs-toggle="tab" href="#evaluation" role="tab" aria-selected="false">Evaluation</a>
-																																						</li> #}
+					
 					<li class="nav-item  waves-effect waves-light">
 						<a class="nav-link active" data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
 					</li>
@@ -221,25 +221,16 @@
 						class="text-">
 						{# {{ review_assignment.submission.callForProposal}} #}
 
-						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.attachment ) }}">
-							Assessment Guideline   PDF
-							<i class="fa fa-download"></i>
-						</a>
+					
 
 						<br>
 						<br>
 
-						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.evaluationfrom ) }}">
-							Grading Form PDF
-							<i class="fa fa-download"></i>
-						</a>
+					
 
 <br>
 
-						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ review_assignment.submission.callForProposal.college.guidelineForReviewer.commentfrom ) }}">
-							Evaluation Report Form PDF
-							<i class="fa fa-download"></i>
-						</a>
+					
 						
 						
 						<br>
