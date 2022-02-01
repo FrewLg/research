@@ -2,7 +2,10 @@
 
 namespace App\Form\IRB;
 
+use App\Entity\InstitutionalReviewersBoard;
 use App\Entity\IRB\IRBReviewAssignment;
+use App\Entity\User;
+use App\Repository\InstitutionalReviewersBoardRepository;
 use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,23 +17,35 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 class IRBReviewAssignmentType extends AbstractType
 {
+    public function __construct(InstitutionalReviewersBoardRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $reviewAssignment=$options['data'];
         if (!$reviewAssignment  instanceof IRBReviewAssignment ) {
            return;
         }
+        
         $builder
-        ->add('reviewer', EntityType::class, array(
-            'placeholder' => '---Select reviewer   ---',
-          
-            'class' => 'App\Entity\User',
-            'attr' => array(
-                'empty' => 'Reviewers from System',
-                'required' => true,
-                'class' => 'select2 chosen-select form-control',
-            )
-         ))
+        ->add('irbreviewer', 
+          EntityType::class, [
+            'class' => User::class,
+            // 'mapped'=>false,
+           
+        ])
+
+        // ->add('irbreviewer', EntityType::class, [
+        //     'class' => \App\Entity\User::class,
+        //     'choice_label' => function(\App\Entity\User $user) {
+        //         return sprintf('(%d) %s', $user->getId(), $user->getUserInfo());
+        //     },
+        //     'placeholder' => 'Choose an author',
+        //     'choices' => $this->userRepository->findAll(),
+        // ])
+      
 
          ->add('file_tobe_reviewed', FileType::class, [
             'label' => 'Upload proposal attachment',
@@ -51,8 +66,7 @@ class IRBReviewAssignmentType extends AbstractType
       'format' => 'yyyy-MM-dd',
          'attr' => array(
             'min'=>(new DateTime('now'))->format('Y-m-d'),
-'max'=> (new DateTime('now'))->format('Y-m-d'),
-
+ 
    'required' => true,
 'class'=>'form-control',
 )              
@@ -65,8 +79,7 @@ class IRBReviewAssignmentType extends AbstractType
   'format' => 'yyyy-MM-dd',
      'attr' => array(
 'min'=>(new DateTime('now'))->format('Y-m-d'), 
-'max'=>(new DateTime('now'))->format('Y-m-d'),
-'required' => true,
+ 'required' => true,
 'class'=>'form-control',
 )              
 ))
@@ -146,13 +159,9 @@ TextType::class, [
 'required' => true,
 'class'=>'form-control',
 )              
-))
+)) 
 
-
-
-   
-            
-        ;
+;
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PublishedResearch index{% endblock %}
+
+{% block body %}
+ 	<h5 class="font-18 m-0 fw-bold">Publications  </h5>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="font-14 m-0 fw-bold" >
+                <th>#</th>
+                <th>Title</th>
+                <th>Journal name</th>
+                <th>Impact Factor
+                  </th>
+                <th>Author</th>
+                <th>Citation Score</th>
+                <th>Year</th>
+                 <th>DOI</th>
+              </tr>
+        </thead>
+        <tbody>
+        {% for published_research in published_researches %}
+            <tr>
+                <td>{{ loop.index}}</td>
+                <td>{{ published_research.title }}</td>
+                 <td>{{ published_research.journalName }}</td>
+                <td>{{ published_research.impactFactor   }}</td>
+                <td>{{ published_research.author }}</td>
+                <td>{{ published_research.citationScore }}</td>
+                <td>{{ published_research.publishedAt|date('Y-m-d') }}</td>
+                <td>{{ published_research.doi }}</td>
+               
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+ 
+{% endblock %}

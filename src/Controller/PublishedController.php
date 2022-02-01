@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\IRB\CoAuthor;
+use App\Entity\Publication;
 use App\Entity\PublishedSubmission;
 use App\Entity\Submission;
 use Knp\Component\Pager\PaginatorInterface;
@@ -22,6 +23,37 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 class PublishedController extends AbstractController
 {
     
+    
+
+    /**
+     * @Route("/publications", name="all_publications", methods={"GET"})
+     */
+    public function publications(Request $request,   PaginatorInterface $paginator ): Response
+    { 
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $entityManager = $this->getDoctrine()->getManager();
+        $publications = $entityManager->getRepository(Publication::class)
+        ->findAll();
+        $paginatedpublications = $paginator->paginate(
+            $publications,
+            $request->query->getInt('page', 1),
+            15
+        ); 
+         ///////////////Confirmation code=================//////////
+        //  $prefix = 'VC';
+        //  $id = $application->getId();
+        //  $date = date("Y");
+        //  $randnum = rand(100, 10000);
+        //  $confcode = $prefix . "-" . $date . "-" . $randnum . "-" . $id;
+        //  $application->setConfirmationCode($confcode);
+        //  // /dd($confcode);
+     
+     ///////////////Confirmation code=================//////////
+
+        return $this->render('published_research/publications.html.twig', [
+            'published_researches' => $paginatedpublications,
+        ]);
+    }
     
     /**
      * @Route("/{uniques}/", name="publication_new", methods={"GET","POST"})
@@ -172,35 +204,6 @@ class PublishedController extends AbstractController
 
     
 
-    /**
-     * @Route("/publications", name="publications", methods={"GET"})
-     */
-    public function publications(Request $request,   PaginatorInterface $paginator ): Response
-    { 
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $entityManager = $this->getDoctrine()->getManager();
-        $publications = $entityManager->getRepository(Publication::class)
-        ->findBy(['college' => 1]);
-        $paginatedpublications = $paginator->paginate(
-            $publications,
-            $request->query->getInt('page', 1),
-            15
-        ); 
-         ///////////////Confirmation code=================//////////
-        //  $prefix = 'VC';
-        //  $id = $application->getId();
-        //  $date = date("Y");
-        //  $randnum = rand(100, 10000);
-        //  $confcode = $prefix . "-" . $date . "-" . $randnum . "-" . $id;
-        //  $application->setConfirmationCode($confcode);
-        //  // /dd($confcode);
-     
-     ///////////////Confirmation code=================//////////
-
-        return $this->render('dashboard/publications.html.twig', [
-            'co_author' => $paginatedpublications,
-        ]);
-    }
  
 
     /**

@@ -744,13 +744,17 @@ $("#showEditRequestContent").html("Problem");
   <script type="text/javascript">
 
 var isvalid=false;
-  {% set phase = submission.callForProposal.researchReportPhase %}
+ 
+
+         $(function () {
+{% if submission.callForProposal.researchReportPhase %}
+
+ {% set phase = submission.callForProposal.researchReportPhase %}
 
 var startDate="{{phase.startDate|date('Y-m-d H:i:s')}}";
 var endDate="{{phase.endDate|date('Y-m-d H:i:s')}}";
 var minimumDays={{phase.maximumDuration}};
 
-         $(function () {
          $('.js-datepicker').datetimepicker({timepicker:false,
 		   onChangeDateTime:function(dp,input){
 
@@ -812,6 +816,8 @@ valid(input)
   }
   toggleSubmit();
   },}
+
+  {% endif %}
   )
 		                });
 

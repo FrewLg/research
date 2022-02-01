@@ -16,6 +16,7 @@ use App\Entity\ReviewAssignment;
 use App\Entity\Submission;
 use App\Entity\SubmissionAttachement;
 use App\Entity\SubmissionBudget;
+use App\Entity\SubmissionFinalReport;
 use App\Filter\Type\FilterFunctions;
 use App\Filter\Type\SubmissionFilterType;
 use App\Form\EditorialDecisionType;
@@ -24,6 +25,7 @@ use App\Form\ResearchReportType;
 use App\Form\ReviewType;
 use App\Form\ReviewDecisionType;
 use App\Form\SubmissionFilterType as FormSubmissionFilterType;
+use App\Form\SubmissionFinalReportType;
 use App\Form\SubmissionType;
 use App\Helper\SmsHelper;
 use App\Helper\SubmissionHelper;
@@ -696,6 +698,7 @@ class SubmissionController extends AbstractController
 
         $submission_report_schedule_count = sizeof($submission->getResearchReportSubmissionSettings());
 
+       
         $researchReportPhase = $submission->getCallForProposal()?->getResearchReportPhase();
 
 
@@ -723,8 +726,23 @@ class SubmissionController extends AbstractController
 
 
         $researchReport = new ResearchReport();
-        $research_report_form = $this->createForm(ResearchReportType::class, $researchReport)->handleRequest($request);
+        $research_report_form = $this->createForm(ResearchReportType::class, $researchReport);
 
+      
+        if ($submission_report_schedule_count == count($submission->getResearchReports())+1) {
+        
+            $research_report_form->add('manuscript',FileType::class,[
+                "label"=>"Manuscript",
+                "help"=>"Upload Financial clearance",
+                "mapped"=>false,
+                "attr"=>[
+                    "accept"=>"application/pdf",
+                    "class"=>"form-control",
+                ]
+                
+                ]);
+        }
+        $research_report_form->handleRequest($request);
         if ($research_report_form->isSubmitted() && $research_report_form->isValid()) {
 
             //create research report
@@ -981,7 +999,7 @@ class SubmissionController extends AbstractController
             'submission' => $submission,
             'Overall_budger_request' => $Overall_budger_request,
             'review_assignments' => $reviewers,
-            'reviews' => $reviews, 
+            'reviews' => $reviews,
             'adminvevisionform' => $form->createView(),
             'co_authors' => $contributors,
             'collaborating_institutions' => $CollaboratingInstitutions,
