@@ -74,6 +74,9 @@ class LdapUserProvider implements UserProviderInterface
     public function getUserEntityCheckedFromLdap(string $username, string $password)
     {
        
+       if(!$_ENV['HAS_LDAP'])
+       return null;
+       
         try {
           
 

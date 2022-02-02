@@ -4,8 +4,8 @@
 {% endblock %}
  {% block styles %}
  
-{# <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}"> #}
-{# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> #}
+<link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 {% endblock %} 
 
@@ -28,7 +28,7 @@
 							<div class="panel-options">
 								<ul class="nav nav-pills nav-justified">
 									<li>
-										<a class="nav-link active" href="#tab-1" data-bs-toggle="tab">Metadata</a>
+										<a class="nav-link " href="#tab-1" data-bs-toggle="tab">Metadata</a>
 									</li>
 									<li>
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
@@ -42,7 +42,7 @@
 									{% endif %}
 								
 										<li>
-											<a class="nav-link" href="#progress-report" data-bs-toggle="tab">Progress report</a>
+											<a class="nav-link active" href="#progress-report" data-bs-toggle="tab">Progress report</a>
 										</li>
 								
 
@@ -70,7 +70,7 @@
 					<div class="panel-body">
 
 						<div class="tab-content">
-							<div class="tab-pane active" id="tab-1">
+							<div class="tab-pane " id="tab-1">
 								<div class="row">
 									<div class="col-md-12">
 
@@ -739,8 +739,8 @@ $("#showEditRequestContent").html("Problem");
 </div></div>{% endblock %}
 
 {% block script %}
-	{# <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script> #}
-{# <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  #}
+	<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
   <script type="text/javascript">
 
 var isvalid=false;
