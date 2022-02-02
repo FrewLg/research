@@ -1,10 +1,10 @@
-{% set phase = submission.callForProposal.researchReportPhase %}
-<div class="tab-pane " id="progress-report">
 
+{% set phase = submission.callForProposal.researchReportPhase %}
+<div class="tab-pane active" id="progress-report">
 
 	{% set schedule_count  = submission.researchReportSubmissionSettings|length %}
 	{% if schedule_count > 0 %}
-		<button type="button" class="btn btn-info float-right" data-bs-toggle="modal" data-bs-target="#exampleModalSmall">
+		<button type="button" class="btn btn-info float-right my-4" data-bs-toggle="modal" data-bs-target="#exampleModalSmall">
 			View Your Report Schedule
 		</button>
 
@@ -57,7 +57,7 @@
 				</div>
 			{% else %}
 				<div>
-					<span class="h2 text-red">{{ timeAgo(submission.researchReportSubmissionSettings[research_reports|length].submissionDate,null) }}
+					<span class="h2 text-danger">{{ timeAgo(submission.researchReportSubmissionSettings[research_reports|length].submissionDate,null) }}
 					</span>for next report submission</div>
 			{% endif %}
 
@@ -115,12 +115,12 @@
 				<div class="font-24 my-2 fw-bold">
 					Report for phase
 					{{loop.index}}{{loop.last and schedule_count==loop.index ?"(Terminal report)":""}}</div>
-				<div class="font-17 m-0 fw-bold">
-					{{report.title}}</div>
+				
 				<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.file}}">Full Progress report</a>
 				{% if report.financialClearance %}
 					<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.financialClearance}}">Financial clearance</a>
 				{% endif %}
+
 
 				{% if loop.last and submission.manuscript %}
 					<a class="btn btn-bd-download btn-secondary" href="{{asset('uploads/research-report/')~submission.manuscript}}">Manuscript</a>
@@ -159,10 +159,10 @@
 					Submission Date:-
 					{{report.submittedAt|date('Y-m-d')}}
 
-					<span class="badge  {{report.submissionStatus == 4 ? " badge-success":" badge-warning"}}">{{report.submissionStatus == 4 ? "Approved":"pending approval"}}</span>
+					<span class="badge  {{report.submissionStatus == 4 ? " badge-soft-success":" badge-soft-warning"}}">{{report.submissionStatus == 4 ? "Approved":"pending approval"}}</span>
 
 				</div>
-				<div class=" text-bold text-info my-3">Co-PI responses</div>
+				<div class=" text-bold text-info my-3">Co-PI confirmation</div>
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>

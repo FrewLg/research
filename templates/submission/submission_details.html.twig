@@ -440,7 +440,10 @@
 
 {# start of report tab #}
 
+{% if research_reports  is defined %}
+
 {% include "submission/tabs/report.html.twig" %}
+{% endif %}
 {# end of report tab #}
 
 									<div class="tab-pane" id="Revision">

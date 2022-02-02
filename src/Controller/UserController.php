@@ -326,26 +326,32 @@ class UserController extends AbstractController
     public function new(Request $request): Response
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
-        $user = new User();
-        $form = $this->createFormBuilder($user)
+        $userInfo = new UserInfo();
+        $form = $this->createForm(UserType::class, $userInfo)
             ->add('image', FileType::class, array(
                 'label' => 'Upload document',
-                'required' => false
+                'required' => false,
+                'mapped' => false
             ))
-            ->getForm();
+            ;
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user= new User();
+            $user_data=$request->request->get("user");
+        
+            $user->setUsername($user_data['username']);
+            $user->setPassword($user_data['username']);
             $em = $this->getDoctrine()->getManager();
-            $file3 = $user->getImage();
-            if ($file3 == NULL) {
+            $file3 = $userInfo->getImage();
+            // if ($file3 == NULL) {
                 
-                $this->addFlash("warning", "Sorry you have to upload your original or temporary document !");
-            }
-            if ($file3) {
-                $fundeddocDocsfileName3 = md5(uniqid()) . '.' . $file3;
-                $file3->move($this->getParameter('letters_directory'), $fundeddocDocsfileName3);
-                $user->setImage($fundeddocDocsfileName3);
-            }
+            //     $this->addFlash("warning", "Sorry you have to upload your original or temporary document !");
+            // }
+            // if ($file3) {
+            //     $fundeddocDocsfileName3 = md5(uniqid()) . '.' . $file3;
+            //     $file3->move($this->getParameter('letters_directory'), $fundeddocDocsfileName3);
+            //     $user->setImage($fundeddocDocsfileName3);
+            // }
 
             return $this->redirectToRoute('user_new');
         }

@@ -215,6 +215,7 @@ class SubmissionHelper
 
             if ($request->request->get('approve_research_generate')) {
 
+              //  $submission->setUidentifier(rand(1000,1000000));
                 $submission->setStatus(Constants::SUBMISSION_STATUS_CLOSED);
                 $this->mailHelper->sendEmail(
                     $submission->getAuthor()->getEmail(),
