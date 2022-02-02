@@ -148,6 +148,12 @@ class Application
      */
     private $iRBReviewAssignments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ApplicationType::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $applicationType;
+
 
     public function __construct()
     {
@@ -568,6 +574,18 @@ class Application
     public function setStatus(?IRBStatus $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getApplicationType(): ?ApplicationType
+    {
+        return $this->applicationType;
+    }
+
+    public function setApplicationType(?ApplicationType $applicationType): self
+    {
+        $this->applicationType = $applicationType;
 
         return $this;
     }
