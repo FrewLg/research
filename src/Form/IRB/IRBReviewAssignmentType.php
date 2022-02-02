@@ -44,8 +44,8 @@ class IRBReviewAssignmentType extends AbstractType
         //     },
         //     'placeholder' => 'Choose an author',
         //     'choices' => $this->userRepository->findAll(),
-        // ])
-      
+        // ]) 
+       
 
          ->add('file_tobe_reviewed', FileType::class, [
             'label' => 'Upload proposal attachment',
@@ -82,11 +82,7 @@ class IRBReviewAssignmentType extends AbstractType
  'required' => true,
 'class'=>'form-control',
 )              
-))
-
-
-   
-            
+))       
         ;
     }
 
