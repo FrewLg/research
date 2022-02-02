@@ -163,19 +163,7 @@
 		{{ form_start(form,{ "attr":{"id":"form-horizontal", "class":"form-group"}}) }}
 
 	
-	<h3> {% trans %} ATTACHMENTS {% endtrans %}</h3>
-		<fieldset>
-			<label class="form-label mt-3 mb-1">{% trans %} DOCUMENT ATTACHMENTS{% endtrans %}<span class='text-danger'>*</span>
-			</label>
-
-			<div class="row ">
-			{% for attachment in form.applicationAttachments %}
-					{{ _self.displayAttachment(attachment) }}
-				{% endfor %}
-			</div>
-
-
-		</fieldset>
+	
 
 
 
@@ -316,7 +304,19 @@
 				{% endfor %}
 			</fieldset>
 
-		
+		<h3> {% trans %} ATTACHMENTS {% endtrans %}</h3>
+			<fieldset>
+				<label class="form-label mt-3 mb-1">{% trans %} DOCUMENT ATTACHMENTS{% endtrans %}<span class='text-danger'>*</span>
+				</label>
+	
+				<div class="row ">
+				{% for attachment in form.applicationAttachments %}
+						{{ _self.displayAttachment(attachment) }}
+					{% endfor %}
+				</div>
+	
+	
+			</fieldset>
 
 	{# <h3> {% trans %} REVIEW STATUS {% endtrans %}</h3>
 		<fieldset>
