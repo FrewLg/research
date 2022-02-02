@@ -514,8 +514,8 @@ $entityManager = $this->getDoctrine()->getManager();
 
         $entityManager = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery(
-            "SELECT u.email , s.id ,  u.username,   s.title 
-                      , pi.first_name  , ui.alternative_email
+            "SELECT u.email , s.id ,  u.username,   s.title  
+                      , pi.first_name  , ui.alternative_email 
                     FROM App:CoAuthor c
                     JOIN c.researcher u
                     JOIN u.userInfo ui

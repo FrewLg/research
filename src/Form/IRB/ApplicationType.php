@@ -22,10 +22,11 @@ class ApplicationType extends AbstractType
     {
         $builder
             ->add('type',ChoiceType::class,[
-                'choices'=>["PI of the project"=>1,"Advisor of the project"=>2],
+                'choices'=>["PI of the project"=>1,"Advisor of student thesis/dissertation"=>2],
                 'expanded'=>true
             ])
             ->add('title')
+            ->add('applicationType')
             ->add('pi' , null, array(
                 'required'=>false,
                                  
@@ -50,7 +51,8 @@ class ApplicationType extends AbstractType
             'error_bubbling'=>false,
             'allow_delete' => true,
             'required'=>false,
-        ])->add('applicationMitigationStrategies',CollectionType::class,[
+        ])
+        ->add('applicationMitigationStrategies',CollectionType::class,[
             'entry_type' => ApplicationMitigationStrategyType::class,
             'entry_options' => ['label' => false],
             'allow_add' => true,
@@ -58,15 +60,17 @@ class ApplicationType extends AbstractType
             'error_bubbling'=>false,
             'allow_delete' => true,
             'required'=>false,
-        ])->add('applicationReviews',CollectionType::class,[
-            'entry_type' => ApplicationReviewType::class,
-            'entry_options' => ['label' => false],
-            'allow_add' => true,
-            'by_reference' => false,
-            'error_bubbling'=>false,
-            'allow_delete' => true,
-            'required'=>false,
-        ])->add('applicationAttachments',CollectionType::class,[
+        ])
+        // ->add('applicationReviews',CollectionType::class,[
+        //     'entry_type' => ApplicationReviewType::class,
+        //     'entry_options' => ['label' => false],
+        //     'allow_add' => true,
+        //     'by_reference' => false,
+        //     'error_bubbling'=>false,
+        //     'allow_delete' => true,
+        //     'required'=>false,
+        // ])
+        ->add('applicationAttachments',CollectionType::class,[
             'entry_type' => ApplicationAttachmentType::class,
             'entry_options' => ['label' => false],
             'allow_add' => true,

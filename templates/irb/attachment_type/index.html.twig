@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AttachmentType index{% endblock %}
+
+{% block body %}
+    <h1>AttachmentType index</h1>
+
+    <div class="card"><table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attachment_type in attachment_types %}
+            <tr>
+                <td>{{ attachment_type.id }}</td>
+                <td>{{ attachment_type.name }}</td>
+                <td>{{ attachment_type.description }}</td>
+                <td>{{ attachment_type.type }}</td>
+                <td>
+                    <a href="{{ path('i_r_b_attachment_type_show', {'id': attachment_type.id}) }}" class="btn btn-primary">show</a>
+                    <a href="{{ path('i_r_b_attachment_type_edit', {'id': attachment_type.id}) }}" class="btn btn-warning">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+    <a href="{{ path('i_r_b_attachment_type_new') }}" class="btn btn-primary">Create new</a>
+{% endblock %}

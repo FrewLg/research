@@ -10,6 +10,7 @@ parameters:
     site_backup_file: '/home/ghost/Desktop/projects/harona/jubackup.sh'
     project_dir: '%kernel.project_dir%/' 
     review_files: '%kernel.project_dir%/public/files/proposals/review_files'
+    irb_uploads: '%kernel.project_dir%/public/files/irb_uploads'
     profile_pictures: '%kernel.project_dir%/public/files/profile_pictures'
     site_setting: '%kernel.project_dir%/public/files/site_setting'
     collaborators_cv: '%kernel.project_dir%/public/files/collaborators_cv'

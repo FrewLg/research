@@ -5,23 +5,30 @@
 {% endblock %}
 
 {% block body %}
-	<h1>
+	<h4>
 		Application
-	</h1>
+	</h4>
 
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-body invoice-head">
 					<div class="row">
-						<div class="col-md-4 align-self-center">
+						<div class="col-md-6 align-self-center">
 							<h6 class="mb-0">
 								<b>Title:</b>
 								{{ application.title }}</h6>
 							<p class="mt-2 mb-0 text-muted">{{ application.description }}</p>
 						</div>
 						<!--end col-->
-						<div class="col-md-8">
+						<div class="col-md-6">
+
+<div class="card-header ">
+	<h5 class="font-18 m-0 fw-bold">Reviewers ({{application.IRBreviewAssignments|length}})
+		<a href="{{ path('irb_review_assignment_new', {'id': application.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
+			Add  Reviewer</a>
+	</h5>
+</div>
 
 							<ul class="list-inline mb-0 contact-detail float-end">
 								<li class="list-inline-item">
@@ -29,20 +36,26 @@
 										<i class="">Submited by
 										</i>
 										<p>
-										 Name:<span class="text-muted mb-0"> {{ application.submittedBy }}</span></p>
-										<p>Role:<span class="text-muted mb-0"> {{ application.pi ? "PI" : "Advisor"  }}</span></p>
+											Name:<span class="text-muted mb-0">
+												{{ application.submittedBy }}</span>
+										</p>
+										<p>Role:<span class="text-muted mb-0">
+												{{ application.pi ? "PI" : "Advisor"  }}</span>
+										</p>
 
 									</div>
 								</li>
-								<li class="list-inline-item">
-								
-								</li>
+								<li class="list-inline-item"></li>
 								<li class="list-inline-item">
 									<div class="ps-3">
-										<p>Sumitted At: <span class="text-muted mb-0">{{application.createdAt | date('Y-m-d h:i')}}</span></p>
-									
-										<p class="">Status : <span class="badge bg-warning">Pending</span></p>
-									
+										<p>Sumitted At:
+											<span class="text-muted mb-0">{{application.createdAt | date('Y-m-d h:i')}}</span>
+										</p>
+
+										<p class="">Status :
+											<span class="badge bg-warning">Pending</span>
+										</p>
+
 									</div>
 								</li>
 							</ul>
@@ -73,7 +86,7 @@
 						</div>
 						<!--end col-->
 
-						<div class="col-md-12 col-lg-6 mt-2">
+						<div class="col-md-12 col-lg-9 mt-2">
 							<div class="card">
 								<div class="card-header">
 									<h4 class="card-title">Details</h4>
@@ -107,8 +120,8 @@
 									<!-- Tab panes -->
 									<div class="tab-content">
 										<div class="tab-pane p-3 active" id="members" role="tabpanel">
-															<h4 class='text-'>Research team({{  application.members|length}})</h4>
-															<div class="row">
+											<h4 class='text-'>Research team({{  application.members|length +1}})</h4>
+ 															<div class="row">
 															{% set co_author = application.pi ? application.pi : application.submittedBy  %}
 													<div class="col-lg-4">
 
@@ -136,162 +149,174 @@
 																		</div>
 																	</div>
 											{% for co_author in  application.members %}
-																	<div class="col-lg-4">
+												<div class="col-lg-4">
 
-																		<div class="card">
+													<div class="card">
 
-																			<div class="card-body text-center">
+														<div class="card-body text-center">
 
 
+															<h5 class="fw-bold mt-3 mb-1">{{ co_author.researcher.userInfo}}
+																<span class="text-muted mb-0">({{ co_author.researcher.userInfo.educationLevel }})</span>
+															</h5>
+															<p class="text-muted mb-0">{{ co_author.researcher.userInfo.college }}</p>
+															<p class="text-muted mb-0">{{ co_author.researcher.userInfo.department }}</p>
+															<p class="text-muted mb-0">{{ co_author.researcher.userInfo.academicRank }}</p>
+															<div class="mb-3">
+																<a href="apps-tasks.html#" class="me-3 text-warning">
+																	{{ co_author.role }}</a>
+																{# {{ co_author.researcher|length}} #}
+																{# <a href="apps-tasks.html#" class=" text-warning">295 Coauthorship</a> #}
+															</div>
 
-																				<h5 class="fw-bold mt-3 mb-1">{{ co_author.researcher.userInfo}}
-																					<span class="text-muted mb-0">({{ co_author.researcher.userInfo.educationLevel }})</span>
-																				</h5>
-																				<p class="text-muted mb-0">{{ co_author.researcher.userInfo.college }}</p>
-																				<p class="text-muted mb-0">{{ co_author.researcher.userInfo.department }}</p>
-																				<p class="text-muted mb-0">{{ co_author.researcher.userInfo.academicRank }}</p>
-																				<div class="mb-3">
-																					<a href="apps-tasks.html#" class="me-3 text-warning">
-																						{{ co_author.role }}</a>
-																					{# {{ co_author.researcher|length}} #}
-																					{# <a href="apps-tasks.html#" class=" text-warning">295 Coauthorship</a> #}
-																				</div>
+															<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">More details</a>
 
-																				<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">More details</a>
-
-																			</div>
-																		</div>
-																	</div>
-																	{% else %}
-																		No members 
-																{% endfor %}
+														</div>
+													</div>
+												</div>
+											{% else %}
+												No members
+											{% endfor %}
+											 
 																</div>
 
 										</div>
 										<div class="tab-pane p-3" id="covid" role="tabpanel">
-										<h5>COVID-19 Mitigation Strategies Associated with Data Collection</h5>
-				      {% for group in mitigation_strategy_group %}
-					<label class="form-label mt-3 mb-1">{{group.name}}
-					</label>
-	
-						<div class="row">
-					{% for strategy in application.applicationMitigationStrategies | filter(strat => strat.strategy.formGroup == group) %}
-							
-               <div class="form-check">
-                  <input class="form-check-input" checked type="checkbox" value="" id="s{{strategy.id}}" disabled>
-                  <label class="form-check-label" for="s{{strategy.id}}">
-                  {{ strategy.strategy }}
-                  </label>
-                </div>
-             
-					{% endfor %}
-						</div>
-				{% endfor %}
-			
-										</div>
-                    	<div class="tab-pane p-3" id="amendment" role="tabpanel">
-                        <button type="button" class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalSecondary">Request amendment</button>
-										<div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Amendments</h4>
-                                  
-                                </div><!--end card-header-->
-                                <div class="card-body">
-                                    <div class="">
-                                        <table class="table table-bordered mb-0 table-centered">
-                                            <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Purpose</th>
-                                                <th>Requested At</th>
-                                                <th>Status</th>
-                                                <th class="text-right">Action</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for amendment in application.amendments %}
-                                              
- <tr>
-                                                <td>{{loop.index}}</td>
-                                                <td>{{ (amendment.purpose |length > 50 ?amendment.purpose|slice(0, 50) ~ "..." :  amendment.purpose)| raw}}</td>
-                                                <td>{{ amendment.createdAt |date('Y-m-d h:i')  }}</td>
-                                                <td>
-												<span class="badge badge-soft-success">Approved</span>
-												</td>
-                                                <td class="text-right">
-                                                    <div class="dropdown d-inline-block">
-                                                        <a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                                            <i class="las la-ellipsis-v font-20 text-muted"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">
-                                                            <a class="dropdown-item" href="#">Detail</a>
-                                                            <a class="dropdown-item" href="#"></a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                           
+											<h5>COVID-19 Mitigation Strategies Associated with Data Collection</h5>
+											{% for group in mitigation_strategy_group %}
+												<label class="form-label mt-3 mb-1">{{group.name}}
+												</label>
 
-                                            {% else %}
-                                              <tr><td colspan="4">No record</td></tr>
-                                            {% endfor %}
-                            
-                                            </tbody>
-                                        </table><!--end /table-->
-                                    </div><!--end /tableresponsive-->
-                                </div><!--end card-body-->
-                            </div><!--end card-->
-                        </div>
-										</div>
-                    <div class="tab-pane p-3" id="subject" role="tabpanel">
-										{% for category in subject_category %}
-						<label class="form-label mt-3 mb-1">Research Subjects({{category.name}})
-						</label>
+												<div class="row">
+													{% for strategy in application.applicationMitigationStrategies | filter(strat => strat.strategy.formGroup == group) %}
 
-						<div class="row ">
-						{% for subject in application.applicationResearchSubjects | filter(sub => sub.subject.category == category) %}
-							
-               <li> {{ subject.subject }}  {{ subject.number ? "#" ~ subject.number :"" }}</li>
-             {% else %}
-				 <p>No research subject specified</p>
-							{% endfor %}
-						</div>
-					{% endfor %}
+														<div class="form-check">
+															<input class="form-check-input" checked type="checkbox" value="" id="s{{strategy.id}}" disabled>
+															<label class="form-check-label" for="s{{strategy.id}}">
+																{{ strategy.strategy }}
+															</label>
+														</div>
+
+													{% endfor %}
+												</div>
+											{% endfor %}
+
+										</div>
+										<div class="tab-pane p-3" id="amendment" role="tabpanel">
+										{% if app.user == application.submittedBy %}
+										
+											<button type="button" class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalSecondary">Request amendment</button>
+										{% endif %}
+											
+											<div class="col-md-12">
+												<div class="card">
+													<div class="card-header">
+														<h4 class="card-title">Amendments</h4>
+
+													</div>
+													<!--end card-header-->
+													<div class="card-body">
+														<div class="">
+															<table class="table table-bordered mb-0 table-centered">
+																<thead>
+																	<tr>
+																		<th>#</th>
+																		<th>Purpose</th>
+																		<th>Requested At</th>
+ 																		<th class="text-right">Action</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	{% for amendment in application.amendments %}
+
+																		<tr>
+																			<td>{{loop.index}}</td>
+																			<td>{{ (amendment.purpose |length > 50 ?amendment.purpose|slice(0, 50) ~ "..." :  amendment.purpose)| raw}}</td>
+																			<td>{{ amendment.createdAt |date('Y-m-d h:i')  }}</td>
+																			<td>
+																				<span class="badge badge-soft-warning">Pending</span>
+																			</td>
+																			<td class="text-right">
+																				<div class="dropdown d-inline-block">
+																					<a class="dropdown-toggle arrow-none" id="dLabel11" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+																						<i class="las la-ellipsis-v font-20 text-muted"></i>
+																					</a>
+																					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel11">
+																						<a class="dropdown-item" href="#">Detail</a>
+																						<a class="dropdown-item" href="#"></a>
+																					</div>
+																				</div>
+																			</td>
+																		</tr>
+
+
+																	{% else %}
+																		<tr>
+																			<td colspan="4">No record</td>
+																		</tr>
+																	{% endfor %}
+
+																</tbody>
+															</table>
+															<!--end /table-->
+														</div>
+														<!--end /tableresponsive-->
+													</div>
+													<!--end card-body-->
+												</div>
+												<!--end card-->
+											</div>
+										</div>
+										<div class="tab-pane p-3" id="subject" role="tabpanel">
+											{% for category in subject_category %}
+												<label class="form-label mt-3 mb-1">Research Subjects({{category.name}})
+												</label>
+
+												<div class="row ">
+													{% for subject in application.applicationResearchSubjects | filter(sub => sub.subject.category == category) %}
+
+														<li>
+															{{ subject.subject }}
+															{{ subject.number ? "#" ~ subject.number :"" }}</li>
+													{% else %}
+														<p>No research subject specified</p>
+													{% endfor %}
+												</div>
+											{% endfor %}
 										</div>
 										<div class="tab-pane p-3" id="reviews" role="tabpanel">
-                        	{% for review_group in review_status_group %}
-				<label class="form-label mt-3 mb-1">{{review_group.name}}
-				</label>
+											{% for review_group in review_status_group %}
+												<label class="form-label mt-3 mb-1">{{review_group.name}}
+												</label>
 
-					<div class="row ">
-				{% for review in application.applicationReviews | filter(strat => strat.review.reviewGroup == review_group) %}
-              
-                <div class="form-check">
-                  <input class="form-check-input" checked type="checkbox" value="" id="r{{review.id}}" disabled>
-                  <label class="form-check-label" for="r{{review.id}}">
-                  {{ review.review }}
-                  </label>
-                </div>
-				{% else %}
-					
-				 <p>No research subject specified</p>
+												<div class="row ">
+													{% for review in application.applicationReviews | filter(strat => strat.review.reviewGroup == review_group) %}
 
-				{% endfor %}
-					</div>
-			{% endfor %}
+														<div class="form-check">
+															<input class="form-check-input" checked type="checkbox" value="" id="r{{review.id}}" disabled>
+															<label class="form-check-label" for="r{{review.id}}">
+																{{ review.review }}
+															</label>
+														</div>
+													{% else %}
+
+														<p>No research subject specified</p>
+
+													{% endfor %}
+												</div>
+											{% endfor %}
 										</div>
-									
-                    <div class="tab-pane p-3 " id="attachments" role="tabpanel">
-										{% for attachment in application.applicationAttachments %}
-		                  <a style="margin-top:3px;" href="{{ asset('/uploads/application/'~ attachment.file ) }}" class="mx-1 btn btn-info btn-xs float-right">
-			                              {{attachment}}
-			<i class="fa fa-download material-icons warning"></i>
-		</a>
-	{% else %}
-		<span class="label label-danger">
-			{% trans %}No attachment found{% endtrans %}</span>
-	{% endfor %}
+
+										<div class="tab-pane p-3 " id="attachments" role="tabpanel">
+											{% for attachment in application.applicationAttachments %}
+												<a style="margin-top:3px;" href="{{ asset('/uploads/application/'~ attachment.file ) }}" class="mx-1 btn btn-info btn-xs float-right">
+													{{attachment}}
+													<i class="fa fa-download material-icons warning"></i>
+												</a>
+											{% else %}
+												<span class="label label-danger">
+													{% trans %}No attachment found{% endtrans %}</span>
+											{% endfor %}
 										</div>
 									</div>
 								</div>
@@ -310,35 +335,40 @@
 			<!--end card-body-->
 		</div>
 		<!--end card-->
-	</div>
-	<!--end col-->
-</div>
+	</div> 
 
 
 <a href="{{ path('application_index') }}" class="btn btn-primary">back to list</a>
-    <div class="modal fade bd-example-modal-xl" id="exampleModalSecondary" tabindex="-1" role="dialog" aria-labelledby="exampleModalSecondary1" aria-hidden="true">
-                                        <div class="modal-dialog modal-xl" role="document">
-  
-                                            <div class="modal-content">
-                                                <div class="modal-header bg-primary">
-                                                    <h6 class="modal-title m-0 text-white" id="exampleModalSecondary1">New amendment request</h6>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div><!--end modal-header-->
-                                                     {{ form_start(form) }}
-                                                <div class="modal-body">
-                                                    <div class="row">
-                {{ form_widget(form) }}
-            
-                                                    </div><!--end row-->                                                
-                                                </div><!--end modal-body-->
-                                                <div class="modal-footer">                                                    
-                                                  
-                                                        <button class="btn btn-success ">{{ button_label|default('Send request') }}</button>
-                                                    <button type="button" class="btn btn-danger " data-bs-dismiss="modal">Close</button>
-                                                </div><!--end modal-footer-->
-            {{ form_end(form) }}
-                                            </div><!--end modal-content-->
-                                        </div><!--end modal-dialog-->
-                                    </div><!--end modal-->
+	<br>
+<div class="modal fade bd-example-modal-xl" id="exampleModalSecondary" tabindex="-1" role="dialog" aria-labelledby="exampleModalSecondary1" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
 
-{# {{ include('application/_delete_form.html.twig') }} #}{% endblock %}
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<h6 class="modal-title m-0 text-white" id="exampleModalSecondary1">New amendment request</h6>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<!--end modal-header-->
+			{{ form_start(form) }}
+			<div class="modal-body">
+				<div class="row">
+					{{ form_widget(form) }}
+
+				</div>
+				<!--end row-->
+			</div>
+			<!--end modal-body-->
+			<div class="modal-footer">
+
+				<button class="btn btn-success ">{{ button_label|default('Send request') }}</button>
+				<button type="button" class="btn btn-danger " data-bs-dismiss="modal">Close</button>
+			</div>
+			<!--end modal-footer-->
+			{{ form_end(form) }}
+		</div>
+		<!--end modal-content-->
+	</div>
+	<!--end modal-dialog-->
+</div>
+
+{% endblock %}

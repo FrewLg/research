@@ -31,8 +31,7 @@ class DefaultController extends AbstractController
 	$em = $this->getDoctrine()->getManager();
 	$news = $em->getRepository(Announcement::class)->getPosted();
 	$qb = $em->createQueryBuilder();
-    	
-        $result = $qb
+    	 $result = $qb
      	->select('COUNT(e.id) as proposals , e.id as research')
     	->from( 'App\Entity\Submission ' , 'e'   ) 
     	->where('e.complete = :status' ) 

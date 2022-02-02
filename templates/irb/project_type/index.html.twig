@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ProjectType index{% endblock %}
+
+{% block body %}
+    <h1>ProjectType index</h1>
+
+    <div class="card"><table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for project_type in project_types %}
+            <tr>
+                <td>{{ project_type.id }}</td>
+                <td>{{ project_type.name }}</td>
+                <td>{{ project_type.description }}</td>
+                <td>
+                    <a href="{{ path('i_r_b_project_type_show', {'id': project_type.id}) }}" class="btn btn-primary">show</a>
+                    <a href="{{ path('i_r_b_project_type_edit', {'id': project_type.id}) }}" class="btn btn-warning">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+    <a href="{{ path('i_r_b_project_type_new') }}" class="btn btn-primary">Create new</a>
+{% endblock %}

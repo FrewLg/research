@@ -18,9 +18,8 @@ class IRBReviewType extends AbstractType
         ->add('remark', ChoiceType::class, [
             'placeholder' => '--Select Editorial decision--',
             'choices' => [
-                'Accepted' => 4,
-                'Accepted with minor revision' =>3, 
-                'Accepted with major revision' => 2,
+                'Accepted' => 3,
+                 'Accepted with condition' => 2,
                 'Declined' => 1,
 
             ],
@@ -30,6 +29,7 @@ class IRBReviewType extends AbstractType
             ],
         ])
         ->add('comment' ,   CKEditorType::class,[
+            'label'=>'Comments and feedbacks regarding with the decision',
             'attr'=>['placeholder'=>'Comments ',
             'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
                          'required' => false,
@@ -38,7 +38,7 @@ class IRBReviewType extends AbstractType
             
 
         ->add('attachment', FileType::class, [
-            'label' => 'Evaluation Report        file',
+            'label' => '  Report        file',
             'mapped' => false,
             'required' => true,
             'attr' => [
@@ -50,18 +50,18 @@ class IRBReviewType extends AbstractType
             ],
         ])
 
-        ->add('evaluation_attachment', FileType::class, [
-            'label' => 'Grading    file',
-            'mapped' => false,
-            'required' => true,
-            'attr' => [
+        // ->add('evaluation_attachment', FileType::class, [
+        //     'label' => 'Grading    file',
+        //     'mapped' => false,
+        //     'required' => true,
+        //     'attr' => [
  
-                'class' => 'form-control',
+        //         'class' => 'form-control',
 
-                'required' => true,
+        //         'required' => true,
 
-            ],
-        ])
+        //     ],
+        // ])
 
         ;
     }

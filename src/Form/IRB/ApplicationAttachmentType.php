@@ -16,6 +16,8 @@ class ApplicationAttachmentType extends AbstractType
             
         ->add('uploadFile',VichFileType::class,[
             'allow_delete' => false,
+            'label'=>false,
+            "label_attr"=>["class"=>"d-none"],
 
            'download_label' => 'Download file',
         ])
