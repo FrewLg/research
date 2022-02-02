@@ -35,6 +35,11 @@ class AttachmentType
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isRequired;
+
 
     public function __construct()
     {
@@ -85,6 +90,18 @@ class AttachmentType
     public function setType(?int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getIsRequired(): ?bool
+    {
+        return $this->isRequired;
+    }
+
+    public function setIsRequired(bool $isRequired): self
+    {
+        $this->isRequired = $isRequired;
 
         return $this;
     }

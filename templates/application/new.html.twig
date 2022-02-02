@@ -98,8 +98,8 @@
 				{{attachment.type.vars.data}}
 				{{form_widget(attachment.type,{"attr":{"hidden":true }})}}
 			</div>
-			<div class="col-4 my-hidden d-none">
-				{{form_widget(attachment.uploadFile,{"attr":{"class":"form-control" }})}}
+			<div class="col-4 {{ attachment.type.vars.data.isRequired ? "":"my-hidden d-none" }}">
+				{{form_widget(attachment.uploadFile,{"attr":{"class":"form-control" ,"required":attachment.type.vars.data.isRequired}})}}
 			</div>
 		</div>
 	</div>
