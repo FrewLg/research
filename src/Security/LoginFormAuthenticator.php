@@ -164,6 +164,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
 
 
+    if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+      return new RedirectResponse($targetPath);
+    }
+
 
     $roles = $token->getUser()->getRoles();
     if ($user->getIsSuperAdmin() || in_array("ROLE_ADMIN", $roles)) {
@@ -174,9 +178,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     }
 
 
-    if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-      return new RedirectResponse($targetPath);
-    }
 
 
     if ($user->getUserInfo() && !$user->getUserInfo()->getHasCompleteProfile()) {
@@ -195,4 +196,3 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     return $this->urlGenerator->generate(self::LOGIN_ROUTE);
   }
 }
-

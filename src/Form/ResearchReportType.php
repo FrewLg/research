@@ -14,12 +14,7 @@ class ResearchReportType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title',TextareaType::class,[
-                "attr"=>[
-                  
-                    "class"=>"form-control",
-                ]
-            ])
+           
             ->add('file',FileType::class,[
                 "label"=>"Progress report",
                 "help"=>"Upload Progress report",

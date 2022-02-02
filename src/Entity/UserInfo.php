@@ -63,14 +63,9 @@ class UserInfo
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-      * @Assert\Regex( pattern="/^(\+|)[0-9]{12}$/",   message="the phone number '{{ value }}' is not valid.  ")
+      * @Assert\Regex( pattern="/^(\+251|09)[0-9]{8}$/",   message="the phone number '{{ value }}' is not valid.  ")
        */
-   
-//    /* 
-//      * @ORM\Column(type="string", length=255, nullable=true)
-//      *  @Assert\Length(min = 8, max = 20, minMessage = "min_lenght", maxMessage = "max_lenght")
-//     *@Assert\Regex(pattern="/^[0-9]*$/", message="number_only") 
-//     */
+    
     private $phoneNumber;
     /**
     * @ORM\Column(type="string", length=250, nullable=true)
@@ -159,7 +154,7 @@ class UserInfo
         
   
     
-        return $this->getFirstName()." ".$this->getMidleName()." ".$this->getLastName();
+        return ucwords($this->getFirstName()." ".$this->getMidleName()." ".$this->getLastName());
      
     }
 

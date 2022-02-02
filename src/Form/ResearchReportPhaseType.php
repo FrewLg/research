@@ -28,14 +28,14 @@ class ResearchReportPhaseType extends AbstractType
                 ]
             ])
             ->add('maximumDuration',IntegerType::class,[
-                "help"=>"minimum days after last report ",
-                "label"=>"minimum days after last report(days)",
+                "help"=>"Minimum days after previous report ",
+                "label"=>"Minimum days after previous report ",
                 "attr"=>[
                     "min"=>1,
                 ]
             ])
             ->add('tolerableDay',ChoiceType::class,[
-
+                "label"=>"Tolerable Days",
                 "choices"=>array_combine(range(1,10),range(1,10)),
                 "help"=>"Tolerable Days",
                 "attr"=>[
@@ -43,7 +43,7 @@ class ResearchReportPhaseType extends AbstractType
                 ]
             ])
             ->add('startDate',TextType::class,[
-                 "label"=>"Starts on",
+                 "label"=>"Start Date",
                 "mapped"=>false,
                 
                 

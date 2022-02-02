@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\IRB\BoardMember;
 use App\Repository\CollegeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -95,9 +96,14 @@ class College
      */
     private $callForTrainings;
 
- 
+    /**
+     * @ORM\OneToMany(targetEntity=BoardMember::class, mappedBy="college")
+     */
+    private $boardMembers;
 
-    
+
+ 
+   
 
     public function __construct()
     {
@@ -109,6 +115,7 @@ class College
         $this->institutionalReviewersBoards = new ArrayCollection();
         $this->guidelines = new ArrayCollection();
         $this->callForTrainings = new ArrayCollection();
+        $this->boardMembers = new ArrayCollection();
       }
  
 
@@ -442,7 +449,37 @@ class College
         return $this;
     }
 
-     
+    /**
+     * @return Collection|BoardMember[]
+     */
+    public function getBoardMembers(): Collection
+    {
+        return $this->boardMembers;
+    }
+
+    public function addBoardMember(BoardMember $boardMember): self
+    {
+        if (!$this->boardMembers->contains($boardMember)) {
+            $this->boardMembers[] = $boardMember;
+            $boardMember->setCollege($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoardMember(BoardMember $boardMember): self
+    {
+        if ($this->boardMembers->removeElement($boardMember)) {
+            // set the owning side to null (unless already changed)
+            if ($boardMember->getCollege() === $this) {
+                $boardMember->setCollege(null);
+            }
+        }
+
+        return $this;
+    }
+
+       
 
   
 }
