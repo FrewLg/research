@@ -229,7 +229,17 @@ class Submission
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $awardgranted; 
+    private $awardgranted;
+
+    /**
+     * @ORM\OneToOne(targetEntity=SubmissionFinalReport::class, mappedBy="submission", cascade={"persist", "remove"})
+     */
+    private $submissionFinalReport;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $manuscript; 
  
     public function __construct()
     {
@@ -949,6 +959,35 @@ class Submission
     public function setAwardgranted(?bool $awardgranted): self
     {
         $this->awardgranted = $awardgranted;
+
+        return $this;
+    }
+
+    public function getSubmissionFinalReport(): ?SubmissionFinalReport
+    {
+        return $this->submissionFinalReport;
+    }
+
+    public function setSubmissionFinalReport(SubmissionFinalReport $submissionFinalReport): self
+    {
+        // set the owning side of the relation if necessary
+        if ($submissionFinalReport->getSubmission() !== $this) {
+            $submissionFinalReport->setSubmission($this);
+        }
+
+        $this->submissionFinalReport = $submissionFinalReport;
+
+        return $this;
+    }
+
+    public function getManuscript(): ?string
+    {
+        return $this->manuscript;
+    }
+
+    public function setManuscript(?string $manuscript): self
+    {
+        $this->manuscript = $manuscript;
 
         return $this;
     }

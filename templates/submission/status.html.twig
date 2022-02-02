@@ -4,8 +4,10 @@
 {% endblock %}
  {% block styles %}
  
-  <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> {% endblock %}
+{# <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}"> #}
+{# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> #}
+
+{% endblock %} 
 
 {% block container_title %}Submission details
 {% endblock %}
@@ -75,15 +77,9 @@
 										<div class="ibox">
 
 											<div class="ibox-content">
-
-
-												<div class="row">
-
-
-													<h4 class='text-primary m-3'>
-														Research details</h4>
-
-
+  											<div class="row">
+ 													<h4 class='text-primary m-3'>
+														Research details</h4> 
 													<div class="accordion" id="accordionExample">
 														<div class="accordion-item active">
 															<h5 class="accordion-header m-0" id="headingOne">
@@ -743,18 +739,22 @@ $("#showEditRequestContent").html("Problem");
 </div></div>{% endblock %}
 
 {% block script %}
-	<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+	{# <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script> #}
+{# <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  #}
   <script type="text/javascript">
 
 var isvalid=false;
-  {% set phase = submission.callForProposal.researchReportPhase %}
+ 
+
+         $(function () {
+{% if submission.callForProposal.researchReportPhase %}
+
+ {% set phase = submission.callForProposal.researchReportPhase %}
 
 var startDate="{{phase.startDate|date('Y-m-d H:i:s')}}";
 var endDate="{{phase.endDate|date('Y-m-d H:i:s')}}";
 var minimumDays={{phase.maximumDuration}};
 
-         $(function () {
          $('.js-datepicker').datetimepicker({timepicker:false,
 		   onChangeDateTime:function(dp,input){
 
@@ -816,6 +816,8 @@ valid(input)
   }
   toggleSubmit();
   },}
+
+  {% endif %}
   )
 		                });
 

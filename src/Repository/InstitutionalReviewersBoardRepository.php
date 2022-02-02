@@ -37,6 +37,47 @@ class InstitutionalReviewersBoardRepository extends ServiceEntityRepository
         ;
     }
    
+    public function Irbmembersbycollege( $college )
+{
+    return $this->createQueryBuilder( 't' )
+        ->select('t') // in this way
+        ->leftJoin("App:User", "r", "with", "s.id=r.submission")
+
+        ->orderBy( 't.id', 'ASC' )
+        ->where( 't.college = :par1' )
+        ->setParameter( 'par1', $college )
+        ->getQuery()
+        ->getResult()
+        ;
+}
+
+
+    public function findByCollege($college)
+        {
+
+            return $this->createQueryBuilder('a')
+                ->innerJoin('a.reviewer', 'd')
+                ->innerJoin('d.userInfo', 'c') 
+                ->andWhere('c.college = :e') 
+                ->setParameter('e',$college)
+                ->orderBy('a.id', 'ASC') 
+                ->getQuery()
+                ->getResult();
+
+    //     $em = $this->getDoctrine()->getManager();
+    //     $query = $em->createQuery(
+    //         'SELECT   ui.first_name,  ui.last_name
+    // FROM App:InstitutionalReviewersBoard s
+    // JOIN s.reviewer u
+    // JOIN u.userInfo ui
+    //  WHERE  
+    // ui.college = :college')
+    //         ->setParameter('college', $college) ;
+    //      $reviewers = $query->getResult();
+
+    //         return   $reviewers 
+    //         ;
+        }   
 
     /*
     public function findOneBySomeField($value): ?InstitutionalReviewersBoard

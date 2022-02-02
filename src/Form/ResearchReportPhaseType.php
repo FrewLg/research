@@ -48,10 +48,11 @@ class ResearchReportPhaseType extends AbstractType
                 
                 
                 "attr"=>[
-                    "value"=>$options['data']?->getStartDate()->format('Y/m/d H:i'),
+                    "value"=>$options['data']?->getStartDate()?->format('Y/m/d H:i'),
                     // "min"=>(new \DateTime())->format("Y-m-d H:i:s"),
                     "placeholder"=> "Select Start date" ,
-                    "class"=>"js-datepicker"
+                    "class"=>"js-datepicker",
+                    "autocomplete"=>"off"
                 ]
             ])
             ->add('endDate',TextType::class,[
@@ -61,7 +62,7 @@ class ResearchReportPhaseType extends AbstractType
              
               
               "attr"=>[
-                "value"=>$options['data']?->getEndDate()->format('Y/m/d H:i'),
+                "value"=>$options['data']?->getEndDate()?->format('Y/m/d H:i'),
                    
                   "placeholder"=>
                   "Select Start date",

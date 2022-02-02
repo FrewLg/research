@@ -6,9 +6,7 @@
 		<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
 		<title>
-			{{ app_name}}
-			|
-			{%block title%}{%endblock%}
+			{{ app_name}} 	| 	{%block title%}{%endblock%}
 		</title>
 		<meta content="" name="description">
 		<meta
@@ -82,6 +80,11 @@
 							<a href="{{path('call_for_proposal_all')}}" class="nav-link scrollto">Call for proposals</a>
 
 						</li>
+ 						<li>
+ 							<a href="{{path('application_new')}}" class="nav-link scrollto">IRB Request</a>
+
+						</li>
+						
 
 						<li class="dropdown">
 							<a href="#">
@@ -97,9 +100,7 @@
 						</li>
 						{% if is_granted("ROLE_USER")%}
 
-							<li>
-								<a class="nav-link scrollto" href="{{ path('myreviews') }}">My research</a>
-							</li>
+							 
 
 
 							<li class="dropdown">

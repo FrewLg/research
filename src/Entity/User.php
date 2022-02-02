@@ -76,6 +76,13 @@ class User implements UserInterface
      */
     private $reviewAssignments;
 
+    
+
+      /**
+     * @ORM\OneToMany(targetEntity=App\Entity\IRB\IRBReviewAssignment::class, mappedBy="irbreviewer")
+     */
+    private $iRBReviewAssignments;
+
     /**
      * @ORM\OneToMany(targetEntity=InstitutionalReviewersBoard::class, mappedBy="name")
      */
@@ -185,6 +192,7 @@ class User implements UserInterface
         $this->proposals = new ArrayCollection(); 
         $this->institutionalReviewersBoards = new ArrayCollection();
         $this->reviewAssignments = new ArrayCollection();
+        $this->IRBreviewAssignments = new ArrayCollection();
         $this->i_r_b_member = new ArrayCollection();
         $this->directorateOfficeUsers = new ArrayCollection();
         $this->permissions = new ArrayCollection();
@@ -513,6 +521,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($reviewAssignment->getReviewer() === $this) {
                 $reviewAssignment->setReviewer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|iRBReviewAssignments[]
+     */
+    public function getIRBReviewAssignments(): Collection
+    {
+        return $this->iRBReviewAssignments;
+    }
+
+    public function addIRBReviewAssignment(\App\Entity\IRB\IRBReviewAssignment $iRBReviewAssignments): self
+    {
+        if (!$this->iRBReviewAssignments->contains($iRBReviewAssignments)) {
+            $this->iRBReviewAssignments[] = $iRBReviewAssignments;
+            $iRBReviewAssignments->setIRBReviewer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIRBReviewAssignment(\App\Entity\IRB\IRBReviewAssignment $iRBReviewAssignments): self
+    {
+        if ($this->iRBReviewAssignments->removeElement($iRBReviewAssignments)) {
+            // set the owning side to null (unless already changed)
+            if ($iRBReviewAssignments->getIRBReviewer() === $this) {
+                $iRBReviewAssignments->setIRBReviewer(null);
             }
         }
 

@@ -19,6 +19,10 @@ class ResearchReport
     const STATUS_NOT_AGREED=3;
     const STATUS_APPROVED=4;
 
+
+    const TYPE_ORIGINAL=1;
+    const TYPE_AMMENDED=2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -103,13 +107,30 @@ class ResearchReport
      */
     private $approvedAt;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ResearchReport::class, inversedBy="researchReports")
+     */
+    private $parentReport;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ResearchReport::class, mappedBy="parentReport")
+     */
+    private $researchReports;
+
    
     public function __construct()
     {
         $this->submissionStatus=self::STATUS_CREATED;
+        $this->type=self::TYPE_ORIGINAL;
         $this->submittedAt=new \DateTime('now');
         $this->researchReportReviews = new ArrayCollection();
         $this->researchReportComments = new ArrayCollection();
+        $this->researchReports = new ArrayCollection();
     }
 
     public function approveResearchReport(){
@@ -333,6 +354,60 @@ class ResearchReport
     public function setApprovedAt(?\DateTimeInterface $approvedAt): self
     {
         $this->approvedAt = $approvedAt;
+
+        return $this;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(int $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getParentReport(): ?self
+    {
+        return $this->parentReport;
+    }
+
+    public function setParentReport(?self $parentReport): self
+    {
+        $this->parentReport = $parentReport;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getResearchReports(): Collection
+    {
+        return $this->researchReports;
+    }
+
+    public function addResearchReport(self $researchReport): self
+    {
+        if (!$this->researchReports->contains($researchReport)) {
+            $this->researchReports[] = $researchReport;
+            $researchReport->setParentReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResearchReport(self $researchReport): self
+    {
+        if ($this->researchReports->removeElement($researchReport)) {
+            // set the owning side to null (unless already changed)
+            if ($researchReport->getParentReport() === $this) {
+                $researchReport->setParentReport(null);
+            }
+        }
 
         return $this;
     }

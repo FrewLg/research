@@ -100,10 +100,8 @@ $entityManager = $this->getDoctrine()->getManager();
         FROM App:Review s 
         JOIN s.submission b     
         JOIN s.reviewAssignment ass      
-        WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed
-        -- HAVING     s.remark=:remarktwo
-
-        ')  
+        WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed 
+')  
         ->setParameter('closed', 1 )  
         ->setParameter('reviewer', $this_is_me   ) 
         ;
@@ -516,8 +514,8 @@ $entityManager = $this->getDoctrine()->getManager();
 
         $entityManager = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery(
-            "SELECT u.email , s.id ,  u.username,   s.title 
-                      , pi.first_name  , ui.alternative_email
+            "SELECT u.email , s.id ,  u.username,   s.title  
+                      , pi.first_name  , ui.alternative_email 
                     FROM App:CoAuthor c
                     JOIN c.researcher u
                     JOIN u.userInfo ui

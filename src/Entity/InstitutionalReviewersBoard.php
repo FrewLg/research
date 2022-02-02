@@ -49,10 +49,7 @@ class InstitutionalReviewersBoard
 
     public function __toString(): string
     {
-        return  $this->name.''.$this->id;
-     #           return $this->User . "/" . $this->name;
-#    return $this->name->getName();
-    #. "/" .$this->AssetGroup. "/" . $this->name;
+        return  $this->name.''.$this->id; 
     }
     
     public function getId(): ?int
