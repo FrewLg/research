@@ -46,10 +46,10 @@ class CallForProposal
      */
     private $updated_date;
 
-    // /**
-    //  * @ORM\OneToMany(targetEntity=Submission::class, mappedBy="callForProposal")
-    //  */
-    // private $submissions;
+    /**
+     * @ORM\OneToMany(targetEntity=Submission::class, mappedBy="callForProposal")
+     */
+    private $submissions;
 
     /**
      * @ORM\ManyToOne(targetEntity=ThematicArea::class, inversedBy="callForProposals")
@@ -496,5 +496,14 @@ class CallForProposal
         return $this;
     }
 
+      /**
+     * @return Collection|Submission[]
+     */
+    public function getSubmissions(): Collection
+    {
+        return $this->submissions;
+    }
+     
+     
  
 }
