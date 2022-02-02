@@ -855,4 +855,93 @@ $(document).ready(function () {
 });
 
   </script>
+  <script>
+  document
+    .querySelectorAll('.challeges li')
+    .forEach((tag) => {
+	 
+        addTagFormDeleteLink(tag)
+    })
+
+// ... the rest of the block from above
+
+const addFormToCollection = (e) => {
+    // ...
+
+    // add a delete link to the new form
+    addTagFormDeleteLink(item);
+}
+const addTagFormDeleteLink = (item) => {
+    const removeFormButton = document.createElement('button');
+    removeFormButton.innerText = 'Delete this challenge';
+    removeFormButton.classList.add('btn');
+    removeFormButton.classList.add('btn-danger');
+    removeFormButton.classList.add('btn-sm');
+    removeFormButton.classList.add('float-right');
+
+    item.append(removeFormButton);
+
+    removeFormButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        // remove the li for the tag form
+        item.remove();
+    });
+}
+  // add-collection-widget.js
+jQuery(document).ready(function () {
+    jQuery('.add-another-collection-widget').click(function (e) {
+        var list = jQuery(jQuery(this).attr('data-list-selector'));
+        // Try to find the counter of the list or use the length of the list
+        var counter = list.data('widget-counter') || list.children().length;
+
+        // grab the prototype template
+        var newWidget = list.attr('data-prototype');
+        // replace the "__name__" used in the id and name of the prototype
+        // with a number that's unique to your emails
+        // end name attribute looks like name="contact[emails][2]"
+        newWidget = newWidget.replace(/__name__/g, counter);
+        // Increase the counter
+        counter++;
+        // And store it, the length cannot be used if deleting widgets is allowed
+        list.data('widget-counter', counter);
+
+        // create a new list element and add it to the list
+        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+		addTagFormDeleteLink(newElem);
+        newElem.appendTo(list);
+    });
+});
+  </script>
+
+
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date($('#demo').attr('data-value')).getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+</script>
 {% endblock %}

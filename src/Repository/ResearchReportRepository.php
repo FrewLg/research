@@ -22,19 +22,26 @@ class ResearchReportRepository extends ServiceEntityRepository
     // /**
     //  * @return ResearchReport[] Returns an array of ResearchReport objects
     //  */
-    /*
-    public function findByExampleField($value)
+   
+    public function getData($filters = [])
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('r');
+        // if (isset($filters['search']) && $filters['search']) {
+        //     $qb
+        //         ->andWhere("r.label LIKE '%" . $filters['search'] . "%'");
+        // }
+        if (isset($filters['call']) && $filters['call']) {
+            $qb
+            ->join('r.submission',"s")
+           
+                ->andWhere("s.callForProposal = :call")
+                ->setParameter("call",$filters['call'])
+                ;
+        }
+        return $qb->orderBy('r.id', 'DESC')
+            ->getQuery();
     }
-    */
+  
 
     /*
     public function findOneBySomeField($value): ?ResearchReport

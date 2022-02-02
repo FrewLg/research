@@ -33,6 +33,16 @@ class ResearchReportSubmissionSetting
      */
     private $submissionDate;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isSubmitted;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $wasAllCOPIComfirmed;
+
 
 
     public function getId(): ?int
@@ -72,6 +82,30 @@ class ResearchReportSubmissionSetting
     public function setSubmissionDate(\DateTimeInterface $submissionDate): self
     {
         $this->submissionDate = $submissionDate;
+
+        return $this;
+    }
+
+    public function getIsSubmitted(): ?bool
+    {
+        return $this->isSubmitted;
+    }
+
+    public function setIsSubmitted(bool $isSubmitted): self
+    {
+        $this->isSubmitted = $isSubmitted;
+
+        return $this;
+    }
+
+    public function getWasAllCOPIComfirmed(): ?bool
+    {
+        return $this->wasAllCOPIComfirmed;
+    }
+
+    public function setWasAllCOPIComfirmed(?bool $wasAllCOPIComfirmed): self
+    {
+        $this->wasAllCOPIComfirmed = $wasAllCOPIComfirmed;
 
         return $this;
     }

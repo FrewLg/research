@@ -131,6 +131,22 @@ class SubmissionController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/call-reports', name: 'call_research_reports', methods: ['GET',"POST"])]
+    public function submissionReports(CallForProposal $callForProposal,PaginatorInterface $paginator, Request $request, SubmissionRepository  $submissionRepository): Response
+    {
+        $queryBulder = $submissionRepository->getSubmissions(["callForProposal"=>$callForProposal,"awardGranted"=>1]);
+        $submissions = $paginator->paginate(
+            $queryBulder,
+            $request->query->getInt('page', 1),
+            10
+        );
+       
+        return $this->render('research_report/index.html.twig', [
+            'submissions' => $submissions,
+            'callForProposal' => $callForProposal,
+        ]);
+    }
+
 
     /**
      * @Route("/alert/", name="alert", methods={"GET","POST"})
