@@ -112,14 +112,14 @@
 
 	<div class="col-md-1">
 		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">Title</label>
+			<label class="bmd-label-floating">{% trans %}Title{% endtrans %}</label>
 			{{form_widget(coAuthor.title)}}
 
 		</div>
 	</div>
 	<div class="col-md-3">
 		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">Name of CO-PI</label>
+			<label class="bmd-label-floating">{% trans %}Name of CO-PI{% endtrans %} </label>
 			{{form_widget(coAuthor.researcher)}}
 
 		</div>
@@ -127,7 +127,7 @@
 
 	<div class="col-md-3">
 		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">Department</label>
+			<label class="bmd-label-floating">{% trans %}Department{% endtrans %}</label>
 			{{form_widget(coAuthor.department)}}
 
 		</div>
@@ -160,7 +160,7 @@
 
 
 
-		<h3>Overview</h3>
+		<h3> {% trans %}Overview{% endtrans %}</h3>
 		<fieldset>
 
 
@@ -174,7 +174,7 @@
 			</div>
 			<div class="form-material d-none" id="div-pi">
 				<div class="form-group">
-					<label class="form-label mt-3 mb-1">Project /Research PI<span class='text-danger'>*</span>
+					<label class="form-label mt-3 mb-1">{% trans %} Project /Research PI{% endtrans %}<span class='text-danger'>*</span>
 					</label>
 					{{ form_widget(form.pi,{'attr':{'class':'form-control'}}) }}
 
@@ -182,7 +182,7 @@
 			</div>
 			<div class="form-material">
 				<div class="form-group">
-					<label class="form-label mt-3 mb-1">Project /Research Title<span class='text-danger'>*</span>
+					<label class="form-label mt-3 mb-1">{% trans %} Project /Research Title{% endtrans %}<span class='text-danger'>*</span>
 					</label>
 
 					{{ form_widget(form.title,{'attr':{'class':'form-control'}}) }}
@@ -190,8 +190,8 @@
 				<div class="form-group">
 
 
-					<label for="txtLastNameBilling" class="form-label mt-3 mb-1">
-						Project Description (provide a one paragraph description of your project or study)</label>
+					<label for="txtLastNameBilling" class="form-label mt-3 mb-1">{% trans %} 
+						Project Description (provide a one paragraph description of your {% endtrans %}project or study)</label>
 					<span class='text-danger'>*</span>
 					{{ form_widget(form.description,{'attr':{'class':'form-control'}}) }}
 					<br>
@@ -200,39 +200,49 @@
 
 				<div class="form-group row">
 					<div class="form-group col-md-6">
-						<label class="form-label mt-3 mb-1">Project Start Date<span class='text-danger'>*</span>
+						<label class="form-label mt-3 mb-1">{% trans %} Project Start Date{% endtrans %}<span class='text-danger'>*</span>
 						</label>
 						{{ form_widget(form.startDate,{'attr':{'class':'form-control'}}) }}
 					</div>
 					<div class="form-group col-md-6">
-						<label class="form-label mt-3 mb-1">Project End Date<span class='text-danger'>*</span>
+						<label class="form-label mt-3 mb-1">{% trans %} Project End Date{% endtrans %}<span class='text-danger'>*</span>
 						</label>
 						{{ form_widget(form.endDate,{'attr':{'class':'form-control'}}) }}
 					</div>
 
 
 				</div>
-
 				<div class="form-group">
 
-					<label class="form-label mt-3 mb-1">Project Location (where work will be done):<span class='text-danger'>*</span>
+					<label class="form-label mt-3 mb-1">{% trans %} Project Location (where work will be done){% endtrans %}<span class='text-danger'>*</span>
 					</label>
 
 					{{ form_widget(form.location,{'attr':{'class':'form-control'}}) }}
 				</div>
+				<div class="form-group row">
+				
 
-				<div class="form-group">
+				<div class="form-group col-md-6">
 
-					<label class="form-label mt-3 mb-1">Project Type:<span class='text-danger'>*</span>
+					<label class="form-label mt-3 mb-1">{% trans %} Project Type{% endtrans %}<span class='text-danger'>*</span>
 					</label>
 
 					{{ form_widget(form.projectType,{'attr':{'class':'form-control'}}) }}
 				</div>
+				<div class="form-group col-md-6">
+
+			<label class="form-label mt-3 mb-1">{% trans %} Application Type{% endtrans %}<span class='text-danger'>*</span>
+			</label>
+
+			{{ form_widget(form.applicationType,{'attr':{'class':'form-control'}}) }}
+		</div>
+			</div>
+			
 
 
 				<ul  class="m-t-5">
 					{% for category in subject_category %}
-						<label class="form-label mt-3 mb-1">Research Subjects({{category.name}}):<span class='text-danger'>*</span>
+						<label class="form-label mt-3 mb-1">{% trans %} Research Subjects{% endtrans %}({{category.name}})<span class='text-danger'>*</span>
 						</label>
 
 						<div class="row ">
@@ -245,7 +255,7 @@
 
 
 			</fieldset>
-			<h3>Members</h3>
+			<h3> {% trans %} Members {% endtrans %}</h3>
 			<fieldset>
 				<div>
 					<div class="row">
@@ -268,7 +278,7 @@
 				</div>
 			</fieldset>
 
-		<h3>Mitigation Strategies</h3>
+		<h3> {% trans %} Mitigation Strategies {% endtrans %}</h3>
 			<fieldset>
 				<h5>COVID-19 Mitigation Strategies Associated with Data Collection</h5>
 				{% for group in mitigation_strategy_group %}
@@ -288,9 +298,9 @@
 				{% endfor %}
 			</fieldset>
 
-			<h3>ATTACHMENTS</h3>
+			<h3> {% trans %} ATTACHMENTS {% endtrans %}</h3>
 			<fieldset>
-				<label class="form-label mt-3 mb-1">DOCUMENT ATTACHMENTS<span class='text-danger'>*</span>
+				<label class="form-label mt-3 mb-1">{% trans %} DOCUMENT ATTACHMENTS{% endtrans %}<span class='text-danger'>*</span>
 				</label>
 
 				{% for attachment in form.applicationAttachments %}
@@ -303,11 +313,11 @@
 			</fieldset>
 
 
-	<h3>REVIEW STATUS</h3>
+	<h3> {% trans %} REVIEW STATUS {% endtrans %}</h3>
 		<fieldset>
 			<h5>DETERMINING REVIEW STATUS: Exempt, Expedited, or Full</h5>
 			{% for review_group in review_status_group %}
-				<label class="form-label mt-3 mb-1">{{review_group.name}}<span class='text-danger'>*</span>
+				<label class="form-label mt-3 mb-1"> {{review_group.name}}<span class='text-danger'>*</span>
 				</label>
 
 				{% for review in form.applicationReviews | filter(strat => strat.vars.data.review.reviewGroup == review_group) %}
@@ -317,7 +327,7 @@
 				{% endfor %}
 			{% endfor %}
 		</fieldset>
-	<h3>Other</h3>
+	<h3> {% trans %} Other {% endtrans %}</h3>
 	<fieldset>
 		<div class="">
 	<h4>NOTE FOR STUDENT PROJECTS: any cover letters, consent forms, and/or questionnaires that students give to research participants must include the following statement:</h4>
@@ -361,7 +371,7 @@
 	</ol>
 </div>
 	</fieldset>
-			<h3>Confirmation</h3>
+			<h3> {% trans %} Confirmation {% endtrans %}</h3>
 			<fieldset>
 			
 				In making this application, I certify that I:
@@ -394,6 +404,10 @@
 		<script src="{{ asset('plugins/jquery-steps/jquery.steps.min.js')}}"></script>
 		<script>
 			$(document).ready(function () {
+				jQuery.validator.addMethod("greaterStart", function (value, element, params) {
+			
+    return this.optional(element) || new Date(value) >= new Date($(params).val());
+},'Must be greater than start date.');
 
 
 var form = $("#form-horizontal");
@@ -455,7 +469,11 @@ minlength: 5
 },
 "#submission_agree_to_the_terms_0": {
 required: true
-}
+},
+"application[endDate]": {
+	required: true,
+        greaterStart: "#application_startDate"
+      }
 
 },
 messages: {
@@ -464,7 +482,9 @@ required: "You need to agree with the Terms and Conditions before you continue."
 
 }
 }
-});
+
+}
+);
 
 $.fn.steps.setStep = function (step) {
 var currentIndex = $(this).steps('getCurrentIndex');

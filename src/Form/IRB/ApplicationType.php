@@ -26,6 +26,7 @@ class ApplicationType extends AbstractType
                 'expanded'=>true
             ])
             ->add('title')
+            ->add('applicationType')
             ->add('pi' , null, array(
                 'required'=>false,
                                  
