@@ -17,9 +17,18 @@
 			<ul class="metismenu left-sidenav-menu">
 				<li class="menu-label mt-0">{{ app_name}}</li>
 				
+				{% if is_granted("ROLE_ADMIN") %}  
 				<li>
-					<a href="javascript: void(0);">
+					<a href="{{ path('dashboard') }}">
 						<i class=" fas fa-home align-self-center menu-icon"></i>
+						<span>Dashboard </span> 	</a>
+
+				</li>
+							{% endif %}
+				<li>
+
+					<a href="javascript: void(0);">
+						<i class=" fas fa-paper-plane align-self-center menu-icon"></i>
 						<span>Submissions</span>
 						<span class="menu-arrow">
 							<i class="mdi mdi-chevron-right"></i>
@@ -55,24 +64,17 @@
 						</ul>
 					</li>
 				</li>
-				
+
 				<li>
 					<a href="javascript: void(0);">
-						<i class=" fas fa-home align-self-center menu-icon"></i>
+						<i class=" fas fa-globe align-self-center menu-icon"></i>
 						<span>Researches</span>
 						<span class="menu-arrow">
 							<i class="mdi mdi-chevron-right"></i>
 						</span>
 					</a>
 					<ul class="nav-second-level" aria-expanded="false">
-						{% if is_granted("ROLE_ADMIN") %}
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('dashboard') }}">
-									<i class="ti-control-record"></i>Dashboard</a>
-							</li>
-							 
-
-							{% endif%}
+						
  
 
 							{% if is_granted("assn_clg_cntr") %}
@@ -99,7 +101,7 @@
 
 				<li>
 					<a href="javascript: void(0);">
-						<i class=" fas fa-home align-self-center menu-icon"></i>
+						<i class="fas fa-check-circle align-self-center menu-icon"></i>
 						<span>IRB</span>
 						<span class="menu-arrow">
 							<i class="mdi mdi-chevron-right"></i>
@@ -214,7 +216,7 @@
 						<a
 							href="javascript: void(0);">
 							<!-- <i data-feather="home" class="align-self-center menu-icon"></i> -->
-							<i class="fas fa-align-justify align-self-center menu-icon"></i>
+							<i class="fas fa-network-wired align-self-center menu-icon"></i>
 							<span>Work units</span>
 							<span class="menu-arrow">
 								<i class="mdi mdi-chevron-right"></i>
@@ -248,7 +250,7 @@
 						<a
 							href="javascript: void(0);">
 							<!-- <i data-feather="home" class="align-self-center menu-icon"></i> -->
-							<i class="fas fa-align-justify align-self-center menu-icon"></i>
+							<i class="fas fa-cart-plus align-self-center menu-icon"></i>
 							<span>Services</span>
 							<span class="menu-arrow">
 								<i class="mdi mdi-chevron-right"></i>
