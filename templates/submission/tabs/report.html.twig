@@ -8,7 +8,7 @@
 			View Your Report Schedule
 		</button>
 
-		{% if  research_reports|length  < phase.numberOfPhases   %}
+		{% if research_reports is defined and  research_reports|length  < phase.numberOfPhases   %}
 			{% if  allowedToSubmitReport(submission.researchReportSubmissionSettings,research_reports)  %}
 				{% if ((research_reports|length)+1)  == phase.numberOfPhases %}
 
