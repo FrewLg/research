@@ -31,7 +31,7 @@ class BoardMember
 
     /**
      * @ORM\OneToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="SET NULL")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $user;
 

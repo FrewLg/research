@@ -1,47 +1,92 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ResearchReport index{% endblock %}
+{% block title %}ResearchReport index
+{% endblock %}
 
 {% block body %}
-    <h1>ResearchReport index</h1>
+	<div class="">
+		<h5><a href="{{path('call__details',{"id":callForProposal.id})}}">Reports for call:-{{callForProposal|raw}}</a>
+			<span class="d-inline ">
+				<a class="btn btn-sm btn-secondary" href="{{path('call_research_report_phase',{'id':callForProposal.id})}}">modify report setting</a>
+			</span>
+		</h5>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>File</th>
-                <th>FileType</th>
-                <th>SubmittedAt</th>
-                <th>SubmissionStatus</th>
-                <th>Remark</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for research_report in research_reports %}
-            <tr>
-                <td>{{ research_report.id }}</td>
-                <td>{{ research_report.title }}</td>
-                <td>{{ research_report.file }}</td>
-                <td>{{ research_report.fileType }}</td>
-                <td>{{ research_report.submittedAt ? research_report.submittedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ research_report.submissionStatus }}</td>
-                <td>{{ research_report.remark }}</td>
-                <td>{{ research_report.updatedAt ? research_report.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('research_report_show', {'id': research_report.id}) }}">show</a>
-                    <a href="{{ path('research_report_edit', {'id': research_report.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>#</th>
 
-    <a href="{{ path('research_report_new') }}">Create new</a>
+					<th>Submission</th>
+					{% set numberOfPhases = callForProposal.researchReportPhase.numberOfPhases %}
+					{% for phase in 1..numberOfPhases %}
+
+						<th>Phase
+                            {% if loop.last %}
+                            {{loop.index}}(Terminal Report)
+							{% else %}
+                                
+                            {{loop.index}}
+                            {% endif %}
+                            
+                            </th>
+					{% endfor %}
+
+					<th>actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for submission in submissions %}
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td>
+							<a href="{{path('submission_status',{'id':submission.id})}}">{{ submission|split('',50)[0]~'...' }}</a>
+						</td>
+
+						{% for schedule in submission.researchReportSubmissionSettings %}
+							<td>
+								{% if schedule.wasAllCOPIComfirmed %}
+									<span class="badge badge-soft-primary">{{schedule.submissionDate|date('F d,Y')}}</span>
+									<p>Submitted</p>
+								{% elseif schedule.isSubmitted %}
+									<span class="badge badge-soft-primary">{{schedule.submissionDate|date('F d,Y')}}</span>
+									<p>
+										<span class="badge badge-soft-success">Confirmed</span>
+									</p>
+								{% else %}
+
+									<span class="badge badge-soft-info">{{schedule.submissionDate|date('F d,Y')}}</span>
+									<p>not submitted yet</p>
+								{% endif %}
+
+							</td>
+						{% else %}
+							{% for phase in 1..numberOfPhases %}
+
+								<td>
+									<span class="badge badge-soft-warning">Not Scheduled yet</span>
+								</td>
+							{% endfor %}
+						{% endfor %}
+						{# <td>{{ research_report.file }}</td> #}
+						{# <td>{{ research_report.submittedAt ? research_report.submittedAt|date('Y-m-d H:i:s') : '' }}</td> #}
+
+						<td>
+							{% if submission.researchReportSubmissionSettings|length > 0 %}
+
+								<a class="btn btn-secondary btn-sm" href="#">Allow Edit</a>
+							{% else %}
+
+								<a class="btn btn-secondary btn-sm" href="#">Email</a>
+							{% endif %}
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="9">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="float-right" id="custompag	inator">{{ knp_pagination_render(submissions) }}</div>
 {% endblock %}

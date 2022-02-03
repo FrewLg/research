@@ -69,6 +69,14 @@ class SubmissionFilterType extends AbstractType
                     "not Published" => 0,
                 ]
             ])
+            ->add('awardGranted', ChoiceType::class, [
+                "placeholder"=>"Select Grant status",
+               
+                "choices" => [
+                    "Granted" => 1,
+                    "not granted" => 0,
+                ]
+            ])
             //->add('status')
             ->add('keywords')
             ->add('methodology')

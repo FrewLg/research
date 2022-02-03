@@ -69,26 +69,18 @@
 							<div class="panel-options">
 								<ul class="nav nav-pills nav-justified">
 									<li>
-										<a class="nav-link active" href="#tab-1" data-bs-toggle="tab">Research detail</a>
+										<a class="nav-link " href="#tab-1" data-bs-toggle="tab">Research detail</a>
 									</li>
 									<li>
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
 									</li>
 									<li>
-										<a class="nav-link "  href="#report" data-bs-toggle="tab">Reports</a>
+										<a class="nav-link active"  href="#progress-report" data-bs-toggle="tab">Progress reports</a>
 									</li>
-									{% if submission.copyedit is  not empty %}
-										<li>
-											<a class="nav-link" href="#copyedit" data-bs-toggle="tab">Progress report</a>
-										</li>
+										
 
-									{% endif %}
-									{% if submission.copyedit is  not empty %}
-
-										<li>
-											<a class="nav-link" href="#progress-report" data-bs-toggle="tab">Progress report</a>
-										</li>
-									{% endif %}
+									
+				
 
 
 									{% if submission.copyedit is  not empty %}
@@ -439,10 +431,9 @@
 
 {# start of report tab #}
 
-{% if research_reports  is defined %}
 
 {% include "submission/tabs/report.html.twig" %}
-{% endif %}
+
 {# end of report tab #}
 
 									<div class="tab-pane" id="Revision">

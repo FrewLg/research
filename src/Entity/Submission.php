@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SubmissionRepository::class)
-  *
+ *
  */
 class Submission
 {
@@ -24,8 +24,8 @@ class Submission
      */
     private $id;
 
- 
- 
+
+
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -42,8 +42,8 @@ class Submission
      */
     private $sub_title;
 
-   
- 
+
+
     /**
      * @ORM\ManyToOne(targetEntity=CallForProposal::class, inversedBy="submissions")
      */
@@ -52,9 +52,9 @@ class Submission
     /**
      * @ORM\OneToMany(targetEntity=CoAuthor::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
      */
- 
-       protected $coAuthors;
-       
+
+    protected $coAuthors;
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -96,26 +96,26 @@ class Submission
      */
     private $background_and_rationale;
 
-    
+
     /**
      * @ORM\Column(type="text",  nullable=true)
      */
     private $methodology;
-    
-       /**
+
+    /**
      * @ORM\Column(type="text",  nullable=true)
      */
     private $reference;
-    
-  
- 
+
+
+
     /**
      * @ORM\Column(type="text",  nullable=true)
      */
     private $GeneralObjective;
 
-    
-   
+
+
     /**
      * @ORM\Column(type="date", nullable=true)
      */
@@ -136,7 +136,7 @@ class Submission
      */
     private $is_author_pi;
 
-    
+
 
     /**
      * @ORM\OneToMany(targetEntity=EditorialDecision::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
@@ -158,28 +158,28 @@ class Submission
      */
     private $published;
 
-     
+
 
     /**
      * @ORM\Column(type="integer")
      */
     private $status;
- 
-     
-      /**
+
+
+    /**
      * @ORM\OneToMany(targetEntity=SubmissionBudget::class, mappedBy="submission", orphanRemoval=true,cascade={"persist"})
      */
     private $submissionBudgets;
-   /**
-    * @ORM\OneToMany(targetEntity=ResearchTimeTable::class, mappedBy="submission", orphanRemoval=true,cascade={"persist"})
-    */
-   private $researchTimeTables;
+    /**
+     * @ORM\OneToMany(targetEntity=ResearchTimeTable::class, mappedBy="submission", orphanRemoval=true,cascade={"persist"})
+     */
+    private $researchTimeTables;
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $keywords;
 
-   
+
 
     /**
      * @ORM\OneToMany(targetEntity=SubmissionAttachement::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
@@ -189,7 +189,7 @@ class Submission
     /**
      * @ORM\Column(type="integer")
      */
-    private $step=0;
+    private $step = 0;
 
     /**
      * @ORM\OneToMany(targetEntity=SpecificObjective::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
@@ -231,19 +231,19 @@ class Submission
      */
     private $awardgranted;
 
-     
+
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $manuscript; 
- 
+    private $manuscript;
+
     public function __construct()
     {
- 
+
         $this->coAuthors = new ArrayCollection();
-        $this->reviewAssignments = new ArrayCollection(); 
-         $this->editorialDecisions = new ArrayCollection(); 
+        $this->reviewAssignments = new ArrayCollection();
+        $this->editorialDecisions = new ArrayCollection();
         $this->submissionBudgets = new ArrayCollection();
         $this->researchTimeTables = new ArrayCollection();
         $this->submissionAttachements = new ArrayCollection();
@@ -258,13 +258,13 @@ class Submission
         return $this->id;
     }
 
- 
-    
-    
-   
-        public function __toString(): string
+
+
+
+
+    public function __toString(): string
     {
-        return $this->id;
+        return $this->title;
     }
 
     public function getAbstract(): ?string
@@ -290,8 +290,8 @@ class Submission
 
         return $this;
     }
-    
-    
+
+
     public function getAuthor(): ?User
     {
         return $this->author;
@@ -315,10 +315,10 @@ class Submission
 
         return $this;
     }
- 
 
-    
-   
+
+
+
 
     public function getCallForProposal(): ?CallForProposal
     {
@@ -353,8 +353,8 @@ class Submission
     public function removeCoAuthor(CoAuthor $coAuthor): self
     {
         if ($this->coAuthors->removeElement($coAuthor)) {
-        
-        
+
+
             if ($coAuthor->getSubmission() === $this) {
                 $coAuthor->setSubmission(null);
             }
@@ -387,7 +387,7 @@ class Submission
         return $this;
     }
 
-    public function getResearchOutcome() 
+    public function getResearchOutcome()
     {
         return $this->research_outcome;
     }
@@ -476,8 +476,8 @@ class Submission
 
         return $this;
     }
-    
-     
+
+
     public function getMethodology(): ?string
     {
         return $this->methodology;
@@ -489,7 +489,7 @@ class Submission
 
         return $this;
     }
-    
+
     public function getReference(): ?string
     {
         return $this->reference;
@@ -501,10 +501,10 @@ class Submission
 
         return $this;
     }
-    
- 
 
-    
+
+
+
 
     public function getGeneralObjective(): ?string
     {
@@ -518,9 +518,9 @@ class Submission
         return $this;
     }
 
-    
 
-    
+
+
 
     public function getProjectStartAt(): ?\DateTimeInterface
     {
@@ -636,7 +636,7 @@ class Submission
         return $this;
     }
 
-     
+
 
     /**
      * @return Collection|PublishedSubmission[]
@@ -711,7 +711,7 @@ class Submission
     }
 
 
-     /**
+    /**
      * @return Collection|ResearchTimeTable[]
      */
     public function getResearchTimeTables(): Collection
@@ -946,7 +946,7 @@ class Submission
                 $researchReportSubmissionSetting->setSubmission(null);
             }
         }
-    return $this;
+        return $this;
     }
     public function getAwardgranted(): ?bool
     {
@@ -960,8 +960,8 @@ class Submission
         return $this;
     }
 
-   
-   
+
+
 
     public function getManuscript(): ?string
     {
@@ -974,8 +974,4 @@ class Submission
 
         return $this;
     }
-
-    
-
-    
 }

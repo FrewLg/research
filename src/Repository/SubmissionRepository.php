@@ -108,6 +108,10 @@ class SubmissionRepository extends ServiceEntityRepository
             $qb->andWhere("s.complete =  :complete")
                 ->setParameter("complete", $filter['complete']);
         }
+        if (isset($filter['awardGranted'])) {
+            $qb->andWhere("s.awardgranted =  :awardgranted")
+                ->setParameter("awardgranted", $filter['awardGranted']);
+        }
         if (isset($filter['published'])) {
             $qb->andWhere("s.published =  :published")
                 ->setParameter("published", $filter['published']);

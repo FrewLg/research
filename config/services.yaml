@@ -11,6 +11,7 @@ parameters:
     project_dir: '%kernel.project_dir%/' 
     review_files: '%kernel.project_dir%/public/files/proposals/review_files'
     irb_uploads: '%kernel.project_dir%/public/files/irb_uploads'
+    uploads_folder: '%kernel.project_dir%/public/files/uploads'
     profile_pictures: '%kernel.project_dir%/public/files/profile_pictures'
     site_setting: '%kernel.project_dir%/public/files/site_setting'
     collaborators_cv: '%kernel.project_dir%/public/files/collaborators_cv'
@@ -75,7 +76,9 @@ services:
             $ldapSearchDn: '%env(LDAP_SEARCH_DN)%'
             $ldapSearchPassword: '%env(LDAP_SEARCH_PASSWORD)%'
             $ldapSearchDnString:  '%env(LDAP_SEARCH_DN_STRING)%'
-
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%uploads_folder%'
     # App\EventListener\ExceptionListener:
     #     tags:
     #         - { name: kernel.event_listener, event: kernel.exception }

@@ -33,5 +33,9 @@ class Constants{
      //email keys
      const EMAIL_KEY_SUBMISSION_ACKNOWLEDGEMENT="SUBMISSION_SUCCESS";
 
+     //general setting types
+     const SETTINGS_TYPE_BOOLEAN = 1;
+     const SETTINGS_TYPE_JSON = 2;
+     const SETTINGS_TYPE_SINGLE = 3;
 
 }

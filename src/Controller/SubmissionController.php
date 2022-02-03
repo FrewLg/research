@@ -131,6 +131,26 @@ class SubmissionController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/call-reports', name: 'call_research_reports', methods: ['GET',"POST"])]
+    public function submissionReports(CallForProposal $callForProposal,PaginatorInterface $paginator, Request $request, SubmissionRepository  $submissionRepository): Response
+    {
+        if(!$callForProposal->getResearchReportPhase()){
+           $this->addFlash("warning","this call has no report settings");
+           return $this->redirect( $request->headers->get('referer'));
+        }
+        $queryBulder = $submissionRepository->getSubmissions(["callForProposal"=>$callForProposal,"awardGranted"=>1]);
+        $submissions = $paginator->paginate(
+            $queryBulder,
+            $request->query->getInt('page', 1),
+            10
+        );
+       
+        return $this->render('research_report/index.html.twig', [
+            'submissions' => $submissions,
+            'callForProposal' => $callForProposal,
+        ]);
+    }
+
 
     /**
      * @Route("/alert/", name="alert", methods={"GET","POST"})
@@ -774,8 +794,7 @@ class SubmissionController extends AbstractController
             'research_report_form' => $research_report_form->createView(),
             'submission_report_schedule_form' => $submission_report_schedule_form->createView(),
             'submission_report_schedule_count' => $submission_report_schedule_count,
-            'research_reports' => $submission->getResearchReports(),
-        ]);
+          ]);
     }
 
     /**
