@@ -23,10 +23,8 @@
 							<h4 class="card-title">
 								All call for papers
 							</h4>
-							Total: ({{call_for_proposals|length}}) Call for proposal so far
-							{%if call_for_proposals|length <=1   %}
-								{%else%}s{%endif%}
-
+							Total: ({{call_for_proposals.totalItemCount}})
+							
 							</div>
 							<!--end col-->
 							<div class="col-auto">
@@ -68,14 +66,17 @@
 												</td>
 												<td class='text-center'>
 													{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d H:i') : '' }}
-												</td> 
+												</td>
 												<td nowrap="nowrap">
 													<a href="{{ path('call__details', {'id': call_for_proposal.id }) }}" class='btn btn-success btn-xs'>
 														Details
 													</a>
-													<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}" class='btn btn-secondary btn-xs'>
-														Reports
-													</a>
+													{% if call_for_proposal.researchReportPhase %}
+
+														<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}" class='btn btn-secondary btn-xs'>
+															Reports
+														</a>
+													{% endif %}
 													<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-xs btn-primary">Edit</a>
 													<a href="{{ path('allawarded', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-primary btn-xs'>Winners</a>
 												</td>

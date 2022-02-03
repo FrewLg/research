@@ -118,7 +118,7 @@ class Application
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="projects")
      */
     private $pi;
-    
+
 
     /**
      * @ORM\Column(type="datetime")
@@ -140,11 +140,11 @@ class Application
      */
     private $status;
 
- 
 
 
-      /**
-     * @ORM\OneToMany(targetEntity=App\Entity\IRB\IRBReviewAssignment::class, mappedBy="irbreviewer" , orphanRemoval=true,cascade={"persist"})
+
+    /**
+     * @ORM\OneToMany(targetEntity=IRBReviewAssignment::class, mappedBy="irbreviewer" , orphanRemoval=true,cascade={"persist"})
      */
     private $iRBReviewAssignments;
 
@@ -157,7 +157,7 @@ class Application
 
     public function __construct()
     {
-        $this->createdAt=new DateTime();
+        $this->createdAt = new DateTime();
         $this->applicationResearchSubjects = new ArrayCollection();
         $this->applicationMitigationStrategies = new ArrayCollection();
         $this->applicationReviews = new ArrayCollection();
@@ -165,7 +165,6 @@ class Application
         $this->members = new ArrayCollection();
         $this->amendments = new ArrayCollection();
         $this->IRBreviewAssignments = new ArrayCollection();
-
     }
 
     public function setUploadFile(?File $imageFile = null): void
@@ -486,9 +485,9 @@ class Application
     public function setPi(?User $pi): self
     {
         $this->pi = $pi;
-    return $this;
+        return $this;
     }
-   
+
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
@@ -589,6 +588,4 @@ class Application
 
         return $this;
     }
-
-    
 }

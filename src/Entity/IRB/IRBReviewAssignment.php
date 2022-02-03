@@ -83,10 +83,6 @@ class IRBReviewAssignment
     private $file_tobe_reviewed;
 
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $invitationDueDate;
 
     /**
      * @ORM\Column(type="integer")
@@ -269,17 +265,7 @@ class IRBReviewAssignment
     }
     
 
-    public function getInvitationDueDate(): ?\DateTimeInterface
-    {
-        return $this->invitationDueDate;
-    }
-
-    public function setInvitationDueDate(\DateTimeInterface $invitationDueDate): self
-    {
-        $this->invitationDueDate = $invitationDueDate;
-
-        return $this;
-    }
+   
 
     public function getStatus(): ?int
     {

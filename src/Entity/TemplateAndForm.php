@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TemplateAndForm
 {
+    const TYPE_RESEARCH = 1;
+    const TYPE_IRB = 2;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -63,6 +65,11 @@ class TemplateAndForm
      * @ORM\JoinColumn(nullable=false)
      */
     private $uploadedBy;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $type;
 
     public function getId(): ?int
     {
@@ -179,6 +186,18 @@ class TemplateAndForm
     public function setUploadedBy(?User $uploadedBy): self
     {
         $this->uploadedBy = $uploadedBy;
+
+        return $this;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(int $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

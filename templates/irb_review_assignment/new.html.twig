@@ -11,7 +11,9 @@
 		<div class="col-lg-4">
 			<section class="panel" id="formside_permission">
 				{% block side_body %}
-					<h4 class='text-'>New Irbreviewer Assignment</h4>
+					<h4 class='text-'>New IRB reviewer Assignment
+				
+					</h4>
 
 					<div class="panel blank-panel">
 						<div class="panel-heading">
@@ -19,7 +21,7 @@
 								<ul class="nav nav-pills nav-justified">
 									<li>
 										<a class="nav-link active " href="#tab-1" data-bs-toggle="tab">
-											IRB Borad Members  Irbreviewer
+											IRB Board Members 
 										</a>
 									</li>
 
@@ -36,14 +38,14 @@
 									<div class="card">
 										<div class="card-body">
 											<div class="card-header">
-												<h4 class='text-'>Internal irbreviewer from system</h4>
+												<h4 class='text-'>Internal iRB reviewer from system</h4>
 
 											</div>
 											<br>
 											{{ form_start(form) }}
 											{{ form_widget(form) }}
 											<button type="submit" class="btn btn-outline-primary btn-sm">
-												Assign Irbreviewer
+												Assign IRB reviewer
 											</button>
 											{{ form_end(form) }}
 										</div>
@@ -64,8 +66,13 @@
 
 		<div class="col-lg-8">
 			<h4 class="text-d">
-				Assigned irbreviewers
+				Assigned iRB reviewers
+			{% if is_granted('mng_brd_mbr') %}
+			
+				<a class="btn btn-link" href="{{path('board_member_index')}}">View Board Members</a>
+			{% endif %}
 			</h4>
+			
 			{% set selected = 0 %}
 			<table class="table table-bordered">
 				<thead>
@@ -189,9 +196,9 @@
 																</p>
 																<div class="mb-3">
 																	{% if review_assignment.irbreviewer.isreviewer %}
-																		<a href="#" class="me-3 text-warning">External Irbreviewer</a>
+																		<a href="#" class="me-3 text-warning">External IRB reviewer</a>
 																	{% else %}
-																		<a href="#" class="me-3 text-success">Internal Irbreviewer</a>
+																		<a href="#" class="me-3 text-success">Internal IRB reviewer</a>
 
 																	{% endif %}
 
@@ -207,7 +214,7 @@
 																</div>
 																<br>
 
-																<a href='{{path('researcher',{'id':review_assignment.irbreviewer.id})}}' class="btn btn-sm btn-soft-primary">About Irbreviewer</a>
+																<a href='{{path('researcher',{'id':review_assignment.irbreviewer.id})}}' class="btn btn-sm btn-soft-primary">About IRB reviewer</a>
 																<a href='{{path('his_assignment',{'id':review_assignment.irbreviewer.id})}}' class="btn btn-sm btn-soft-info">Invitations</a>
 
 

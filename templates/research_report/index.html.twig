@@ -5,7 +5,7 @@
 
 {% block body %}
 	<div class="">
-		<h5>Reports for call:-{{callForProposal|raw}}
+		<h5><a href="{{path('call__details',{"id":callForProposal.id})}}">Reports for call:-{{callForProposal|raw}}</a>
 			<span class="d-inline ">
 				<a class="btn btn-sm btn-secondary" href="{{path('call_research_report_phase',{'id':callForProposal.id})}}">modify report setting</a>
 			</span>
@@ -21,7 +21,14 @@
 					{% for phase in 1..numberOfPhases %}
 
 						<th>Phase
-							{{loop.index}}</th>
+                            {% if loop.last %}
+                            {{loop.index}}(Terminal Report)
+							{% else %}
+                                
+                            {{loop.index}}
+                            {% endif %}
+                            
+                            </th>
 					{% endfor %}
 
 					<th>actions</th>

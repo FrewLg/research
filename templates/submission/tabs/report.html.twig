@@ -1,4 +1,6 @@
 {% set phase = submission.callForProposal.researchReportPhase %}
+{% set research_reports = submission.researchReports %}
+
 <div class="tab-pane active" id="progress-report">
 
 	<div class="row">
@@ -49,6 +51,9 @@
 							<div class="my-3 text-bold">Report for phase
 								{{research_reports|length +1 }}</div>
 						{% endif %}
+
+						{% if research_report_form is defined %}
+						
 						<div>
 							{{ form_start(research_report_form,{"attr":{"onsubmit":"return confirm('are you sure?')"}}) }}
 							{{ form_row(research_report_form.file) }}
@@ -70,17 +75,18 @@
 
 
 						</div>
+						{% endif %}
 					{% else %}
 						<div>
 							{# <span class="h2 text-danger">{{ timeAgo(submission.researchReportSubmissionSettings[research_reports|length].submissionDate,null) }}
-														</span> #}
+																					</span> #}
 							<span id="demo" class="h2 text-danger" data-value="{{submission.researchReportSubmissionSettings[research_reports|length].submissionDate|date()}}"></span>
 							for next report submission</div>
 					{% endif %}
 
 				{% endif %}
 			{% elseif phase  %}
-				<div class="p text-black-50">
+				<div class="p text-bold">
 					Note:-
 					{{phase.note}}
 				</div>
@@ -177,7 +183,7 @@
 										<button class="btn btn-secondary mx-3" type="submit">Approve and Generate Certificate</button>
 										{% else %}
 										{# <button class="btn btn-secondary" type="submit">Approve
-																																																												</button> #}
+																																																																						</button> #}
 
 									{% endif %}
 
