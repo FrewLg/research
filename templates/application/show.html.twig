@@ -88,6 +88,8 @@
 									{{ application.location }}</h6>
 
 
+{% if app.user == application.submittedBy %}
+
 											<form method="post">
 <input hidden name="renewal" value="true">
 											<button type="submit" class="m-1 btn btn-outline-primary float-right" ><span class="fa fa-spinner m-1"></span>{% trans %}Renew Clearance{% endtrans %}</button>
@@ -95,6 +97,7 @@
 
 											<button type="button" class="m-1 btn btn-outline-primary -right" data-bs-toggle="modal" data-bs-target="#exampleModalSecondary">{% trans %}Request amendment{% endtrans %}</button>
 
+{% endif %}
 							
 
 							</div>
@@ -413,7 +416,10 @@
                                             <p class="card-text"><b>{% trans %}Comment{% endtrans %}:</b> {{ review.comment }}</p>
                                             <p class="card-text"><b>{% trans %}Remark{% endtrans %}:</b> {{ review.remark }}</p>
                                             <p class="card-text"><b>{% trans %}Evaluation Attachment{% endtrans %}:</b> <a class="btn btn-outline-primary" href="{{ asset(review.evaluationAttachment) }}"><i class="fa fa-download m-1"></i>{% trans %}Download{% endtrans %}</a></p>
+											{% if app.user == application.submittedBy %}
 											<button type="button" class="m-1 btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#revision-modal"><span class="fa fa-paper-plane m-1"></span>{% trans %}Please Send Revision{% endtrans %}</button>
+											{% endif %}
+
                                         </div><!--end card-body-->
 										<div class="card-footer">
 										
