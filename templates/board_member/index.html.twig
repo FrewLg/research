@@ -8,7 +8,7 @@
 {% block body %}
 	<div class="card">
 		<div class="card-body row">
-			{% if is_granted('mng_brd_mbr') %}
+			{% if not is_granted('mng_brd_mbr') %}
 
 
 				<div class="col-3">
@@ -36,7 +36,7 @@
 								<th>College</th>
 								<th>Assigned At</th>
 								<th>Status</th>
-								{% if  is_granted('mng_brd_mbr') %}
+								{% if  not is_granted('mng_brd_mbr') %}
 
 									<th>actions</th>
 								{% endif %}
@@ -51,7 +51,7 @@
 									<td>{{ board_member.college }}</td>
 									<td>{{ board_member.assignedAt ? board_member.assignedAt|ago : '' }}</td>
 									<td>{{ board_member.statusText }}</td>
-									{% if  is_granted('mng_brd_mbr') %}
+									{% if  not is_granted('mng_brd_mbr') %}
 
 										<td>
 											{{ include('board_member/_delete_form.html.twig') }}

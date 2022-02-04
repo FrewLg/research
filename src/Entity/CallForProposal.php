@@ -155,12 +155,18 @@ class CallForProposal
      */
     private $researchReportPhase;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TemplateAndForm::class, mappedBy="callFor")
+     */
+    private $templateAndForms;
+
  
 
     public function __construct()
     {
         $this->submissions = new ArrayCollection();
         // $this->college = new ArrayCollection();
+        $this->templateAndForms = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -502,6 +508,36 @@ class CallForProposal
     public function getSubmissions(): Collection
     {
         return $this->submissions;
+    }
+
+    /**
+     * @return Collection|TemplateAndForm[]
+     */
+    public function getTemplateAndForms(): Collection
+    {
+        return $this->templateAndForms;
+    }
+
+    public function addTemplateAndForm(TemplateAndForm $templateAndForm): self
+    {
+        if (!$this->templateAndForms->contains($templateAndForm)) {
+            $this->templateAndForms[] = $templateAndForm;
+            $templateAndForm->setCallFor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTemplateAndForm(TemplateAndForm $templateAndForm): self
+    {
+        if ($this->templateAndForms->removeElement($templateAndForm)) {
+            // set the owning side to null (unless already changed)
+            if ($templateAndForm->getCallFor() === $this) {
+                $templateAndForm->setCallFor(null);
+            }
+        }
+
+        return $this;
     }
      
      

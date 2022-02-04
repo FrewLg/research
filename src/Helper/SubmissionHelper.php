@@ -8,6 +8,7 @@ use App\Entity\ResearchReportSubmissionSetting;
 use App\Entity\Submission;
 use App\Entity\SubmissionFinalReport;
 use App\Entity\User;
+use App\Service\FileUploader;
 use App\Utils\Constants;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -27,8 +28,9 @@ class SubmissionHelper
     private $urlGenerator;
     private $flashBagInterface;
     private $mailHelper;
+    private $fileUploader;
     private $user;
-    public function __construct(ContainerInterface $containerInterface, TokenStorageInterface $tokenInterface, EntityManagerInterface $em, FlashBagInterface $flashBagInterface, UrlGeneratorInterface $urlGenerator, MailHelper $mailHelper)
+    public function __construct(ContainerInterface $containerInterface, FileUploader $fileUploader, TokenStorageInterface $tokenInterface, EntityManagerInterface $em, FlashBagInterface $flashBagInterface, UrlGeneratorInterface $urlGenerator, MailHelper $mailHelper)
     {
         $this->containerInterface = $containerInterface;
         $this->tokenInterface = $tokenInterface;
@@ -36,33 +38,31 @@ class SubmissionHelper
 
         $this->urlGenerator = $urlGenerator;
         $this->mailHelper = $mailHelper;
+        $this->fileUploader = $fileUploader;
         $this->em = $em;
 
         $this->user = $this->tokenInterface->getToken()->getUser();
     }
     public function createResearchReport($research_report_form, ResearchReport $researchReport, Submission $submission)
     {
+        foreach ($researchReport->getResearchReportChallenges() as $key => $value) {
+            $value->setReport($researchReport);
+        }
         $uploadedFile = $research_report_form['file']->getData();
-        $destination = $this->containerInterface->getParameter('kernel.project_dir') . '/public/uploads/research-report';
-        $newFilename = $this->user->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
-        $uploadedFile->move($destination, $newFilename);
-
+        $newFilename =   $this->fileUploader->upload($uploadedFile, "research-report");
 
         $researchReport->setFile($newFilename);
 
         $uploadedFile = $research_report_form['financial_clearance']->getData();
-        $destination = $this->containerInterface->getParameter('kernel.project_dir') . '/public/uploads/research-report';
-        $newFilename = $this->user->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
-        $uploadedFile->move($destination, $newFilename);
+        $newFilename =   $this->fileUploader->upload($uploadedFile, "research-report");
+
 
         $researchReport->setFinancialClearance($newFilename);
 
         if (isset($research_report_form['manuscript'])) {
 
             $uploadedFile = $research_report_form['manuscript']->getData();
-            $destination = $this->containerInterface->getParameter('kernel.project_dir') . '/public/uploads/research-report';
-            $newFilename = $this->user->getId() . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
-            $uploadedFile->move($destination, $newFilename);
+            $newFilename =   $this->fileUploader->upload($uploadedFile, "research-report");
 
             $submission->setManuscript($newFilename);
         }
@@ -209,13 +209,13 @@ class SubmissionHelper
             $researchReport->setSubmissionStatus(ResearchReport::STATUS_APPROVED);
             $researchReport->setApprovedBy($this->user);
             $researchReport->setApprovedAt(new \DateTime());
-          
+
             //note here
             // send email for all members
 
             if ($request->request->get('approve_research_generate')) {
 
-              //  $submission->setUidentifier(rand(1000,1000000));
+                //  $submission->setUidentifier(rand(1000,1000000));
                 $submission->setStatus(Constants::SUBMISSION_STATUS_CLOSED);
                 $this->mailHelper->sendEmail(
                     $submission->getAuthor()->getEmail(),

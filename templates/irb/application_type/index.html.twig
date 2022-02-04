@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Application Type {% endblock %}
+
+{% block body %}
+    <h1>Application Type </h1>
+
+    <div class="card p-1"><table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for application_type in application_types %}
+            <tr>
+                <td>{{ application_type.id }}</td>
+                <td>{{ application_type.name }}</td>
+                <td>{{ application_type.description }}</td>
+                <td>
+                    <a href="{{ path('i_r_b_application_type_show', {'id': application_type.id}) }}" class="btn btn-primary">show</a>
+                    <a href="{{ path('i_r_b_application_type_edit', {'id': application_type.id}) }}" class="btn btn-warning">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table></div>
+
+    <a href="{{ path('i_r_b_application_type_new') }}" class="btn btn-primary"><i class="fa fa-add"></i>Create new</a>
+{% endblock %}

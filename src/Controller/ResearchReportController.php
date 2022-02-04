@@ -2,23 +2,32 @@
 
 namespace App\Controller;
 
+use App\Entity\CallForProposal;
 use App\Entity\ResearchReport;
 use App\Form\ResearchReportType;
 use App\Repository\ResearchReportRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/research/report')]
+#[Route('/research-report')]
 class ResearchReportController extends AbstractController
 {
-    #[Route('/', name: 'research_report_index', methods: ['GET'])]
-    public function index(ResearchReportRepository $researchReportRepository): Response
+    #[Route('/', name: 'research_reports_index', methods: ['GET',"POST"])]
+    public function index(PaginatorInterface $paginator, Request $request, ResearchReportRepository $researchReportRepository): Response
     {
+        $queryBulder = $researchReportRepository->getData(["search" => $request->query->get('search')]);
+        $research_reports = $paginator->paginate(
+            $queryBulder,
+            $request->query->getInt('page', 1),
+            10
+        );
+        
         return $this->render('research_report/index.html.twig', [
-            'research_reports' => $researchReportRepository->findAll(),
+            'research_reports' => $research_reports,
         ]);
     }
 
@@ -30,6 +39,7 @@ class ResearchReportController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+           
             $entityManager->persist($researchReport);
             $entityManager->flush();
 

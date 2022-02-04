@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Entity\SiteSetting; 
 use App\Entity\BackupHistory;
 use App\Entity\BackupSetting;
+use App\Repository\GeneralSettingRepository;
+use App\Utils\Constants;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -418,6 +420,44 @@ $siteSetting=$em->getRepository('App:SiteSetting'::class)->findOneBy(array('id'=
            
     }
 
+    /**
+     * @Route("/general-setting", name="general_setting")
+     */
+    public function index(Request $request, GeneralSettingRepository $systemSettingRepository)
+    {
+        $em = $this->getDoctrine()->getManager();
 
+
+        $form = $this->createFormBuilder([])
+           
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() and $form->isValid()) {
+
+
+            // $setting->setValueArray($form->getData()['allowed_month']);
+            $em->flush();
+            $this->addFlash(
+                'success',
+                'Updated Successfully'
+            );
+        }
+
+
+        if ($request->request->get('setting')) {
+            $code = $request->request->get("code");
+            $value = $request->request->get("value");
+            $setting = $em->getRepository(SystemSetting::class)->findOneBy(["code" => $code]);
+            $setting->setValue($value);
+            $em->flush();
+        }
+
+        $setting = $systemSettingRepository->getData(['type' => [Constants::SETTINGS_TYPE_SINGLE, Constants::SETTINGS_TYPE_BOOLEAN]]);
+        return $this->render('setting/system.setting.html.twig', [
+            'settings' => $setting,
+            'form' => $form->createView(),
+        ]);
+    }
 }
 

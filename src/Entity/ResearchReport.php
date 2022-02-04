@@ -63,10 +63,6 @@ class ResearchReport
      */
     private $submittedBy;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $remark;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -78,10 +74,7 @@ class ResearchReport
      */
     private $researchReportReviews;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $challenges;
+    
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -118,6 +111,11 @@ class ResearchReport
      */
     private $researchReports;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ResearchReportChallenge::class, mappedBy="report", orphanRemoval=true,cascade={"persist", "remove" })
+     */
+    private $researchReportChallenges;
+
    
     public function __construct()
     {
@@ -127,6 +125,7 @@ class ResearchReport
         $this->researchReportReviews = new ArrayCollection();
         $this->researchReportComments = new ArrayCollection();
         $this->researchReports = new ArrayCollection();
+        $this->researchReportChallenges = new ArrayCollection();
     }
 
     public function approveResearchReport(){
@@ -136,6 +135,11 @@ class ResearchReport
     public function getId(): ?int
     {
         return $this->id;
+    }
+    public function __toString()
+    {
+   
+        return $this->submission;
     }
 
     public function getSubmission(): ?Submission
@@ -266,17 +270,7 @@ class ResearchReport
         return $this;
     }
 
-    public function getChallenges(): ?string
-    {
-        return $this->challenges;
-    }
-
-    public function setChallenges(?string $challenges): self
-    {
-        $this->challenges = $challenges;
-
-        return $this;
-    }
+    
 
     public function getFinancialClearance(): ?string
     {
@@ -392,6 +386,36 @@ class ResearchReport
             // set the owning side to null (unless already changed)
             if ($researchReport->getParentReport() === $this) {
                 $researchReport->setParentReport(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ResearchReportChallenge[]
+     */
+    public function getResearchReportChallenges(): Collection
+    {
+        return $this->researchReportChallenges;
+    }
+
+    public function addResearchReportChallenge(ResearchReportChallenge $researchReportChallenge): self
+    {
+        if (!$this->researchReportChallenges->contains($researchReportChallenge)) {
+            $this->researchReportChallenges[] = $researchReportChallenge;
+            $researchReportChallenge->setReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResearchReportChallenge(ResearchReportChallenge $researchReportChallenge): self
+    {
+        if ($this->researchReportChallenges->removeElement($researchReportChallenge)) {
+            // set the owning side to null (unless already changed)
+            if ($researchReportChallenge->getReport() === $this) {
+                $researchReportChallenge->setReport(null);
             }
         }
 
