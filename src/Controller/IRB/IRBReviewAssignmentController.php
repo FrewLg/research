@@ -24,7 +24,9 @@ use App\Repository\UserRepository;
 use App\Entity\InstitutionalReviewersBoard;
 use App\Entity\IRB\Application;
 use App\Entity\UserInfo;
+use App\Form\IRB\ExternalIRBReviewAssignmentType;
 use App\Form\IRB\IRBReviewType;
+use App\Helper\MailHelper;
 use App\Helper\ReviewHelper;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
@@ -46,14 +48,8 @@ class IRBReviewAssignmentController extends AbstractController
     /**
      * @Route("/{id}/assign", name="irb_review_assignment_new", methods={"GET","POST"})
      */
-    public function assign(
-        Request $request,
-        Application $submission,
-        ReviewHelper $reviewHelper,
-
-        MailerInterface $mailer,
-        IRBReviewAssignmentRepository $reviewAssignmentRepository
-    ): Response {
+    public function assign(Request $request,MailHelper $mailHelper, Application $submission, ReviewHelper $reviewHelper, MailerInterface $mailer, IRBReviewAssignmentRepository $reviewAssignmentRepository): Response
+    {
 
         // $this->denyAccessUnlessGranted('assn_clg_cntr');
 
@@ -61,23 +57,26 @@ class IRBReviewAssignmentController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         if ($submission->getSubmittedBy() == $this->getUser()) {
-            $this->addFlash('danger','Sorry! You can not assign by yourself a reviewer to the submission you made!' );
+            $this->addFlash('danger', 'Sorry! You can not assign by yourself a reviewer to the submission you made!');
             return $this->redirectToRoute('submission_index');
         }
         ///// check if the submission is completed or not 
         $reviewAssignment = new IRBReviewAssignment();
         $reviewAssignment->setStatus(1);
         $reviewAssignment->setApplication($submission);
-// $reviewAssignmentRepository->findBy(["application"=>$submission]);
-       
+
         // $messages = $entityManager->getRepository('App:InstitutionalReviewersBoard')->findByCollege();
         $messages = $entityManager->getRepository('App:InstitutionalReviewersBoard')->findByCollege($this->getUser()->getUserInfo()->getCollege());
-        // dd($messages );
-        $form = $this->createForm(IRBReviewAssignmentType::class, $reviewAssignment,["application"=>$submission]);
-        $form->handleRequest($request);
 
+
+        $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'REVIEW_INVITATION']);
+        $subject = $messages->getSubject();
+        $body = $messages->getBody();
+        $title = $submission->getTitle();
+       
+        $form = $this->createForm(IRBReviewAssignmentType::class, $reviewAssignment, ["application" => $submission]);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
 
             $file3 = $form->get('file_tobe_reviewed')->getData();
 
@@ -103,19 +102,16 @@ class IRBReviewAssignmentController extends AbstractController
             );
             // dd($submission->getId());
 
-            $reviewAssignment->setApplication($submission);
 
             $entityManager->persist($reviewAssignment);
             $entityManager->flush();
             $suffix = $reviewAssignment->getIRBReviewer();
-            // dd( $form);
-            $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'REVIEW_INVITATION']);
-            $subject = $messages->getSubject();
-            $body = $messages->getBody();
-            $title = $submission->getTitle();
             $theFirstName = $reviewAssignment->getIRBReviewer()->getUserInfo()->getFirstName();
             $invitation_url = "irb-review/" . $reviewAssignment->getId() . "/accept/";
             $theEmail = $reviewAssignment->getIRBReviewer()->getEmail();
+          
+    
+            // dd( $form);
             $email = (new TemplatedEmail())
                 ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
                 ->to(new Address($reviewAssignment->getIRBReviewer()->getEmail(), $reviewAssignment->getIRBReviewer()->getUserInfo()))
@@ -137,12 +133,44 @@ class IRBReviewAssignmentController extends AbstractController
             return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
         }
 
+        $external_reviewAssignment = new IRBReviewAssignment();
+        $external_reviewAssignment->setStatus(1);
+        $external_reviewAssignment->setApplication($submission);
+
+        $external_reviewer_form = $this->createForm(ExternalIRBReviewAssignmentType::class, $external_reviewAssignment)->handleRequest($request);
+
+        if ($external_reviewer_form->isSubmitted() && $external_reviewer_form->isValid()) {
+
+            // dd($external_reviewer_form->getData());
+            $token = bin2hex(random_bytes(20));
+            $external_reviewAssignment->setToken($token);
+            $external_reviewAssignment->setInvitationDueDate(new \DateTime('+5 day'));
+            $entityManager->persist($external_reviewAssignment);
+
+            $entityManager->flush();
+
+            //sent email
+            $mailHelper->sendEmail($external_reviewAssignment->getExternalirbrevieweremail(),"review assignment","emails/reviewerinvitation.html.twig",[
+                'subject' => $subject,
+                'suffix' => $external_reviewAssignment->getExternalirbreviewerName(),
+                'body' => $body,
+                'title' => $title,
+                'college' => " ",
+                'reviewerinvitation_URL' => "external-irb-review/".$token,
+                'name' => $external_reviewAssignment->getExternalirbreviewerName(),
+                'Authoremail' => $external_reviewAssignment->getExternalirbrevieweremail(),
+            ]);
+            $this->addFlash("success", "External assigned successfully!!");
+            return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
+        }
+
 
         $reviewAssignments = $entityManager->getRepository('App\Entity\IRB\IRBReviewAssignment')->findBy(['application' => $submission]);
 
         ////////////////External reviewer
         return $this->render('irb_review_assignment/new.html.twig', [
             'irb_review_assignment' => $reviewAssignments,
+            'external_reviewer_form' => $external_reviewer_form->createView(),
             'form' => $form->createView(),
 
         ]);
@@ -283,7 +311,7 @@ class IRBReviewAssignmentController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-      /**
+    /**
      * @Route("/{id}/delete", name="review_assignment_delete")
      */
     public function delete(IRBReviewAssignment $reviewAssignment): Response
@@ -291,10 +319,8 @@ class IRBReviewAssignmentController extends AbstractController
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
         $entityManager = $this->getDoctrine()->getManager();
-        // $entityManager->remove($reviewAssignment);
-        $reviewAssignment->setInactiveAssignment(1);
 
-        $submission=$reviewAssignment->getApplication();
+        $submission = $reviewAssignment->getApplication();
         $entityManager->remove($reviewAssignment);
         $entityManager->flush();
 

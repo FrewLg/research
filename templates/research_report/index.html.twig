@@ -5,10 +5,10 @@
 
 {% block body %}
 	<div class="">
-		<h5><a href="{{path('call__details',{"id":callForProposal.id})}}">Reports for call:-{{callForProposal|raw}}</a>
 			<span class="d-inline ">
-				<a class="btn btn-sm btn-secondary" href="{{path('call_research_report_phase',{'id':callForProposal.id})}}">modify report setting</a>
+				<a class="btn btn-sm btn-secondary float-end" href="{{path('call_research_report_phase',{'id':callForProposal.id})}}">modify report setting</a>
 			</span>
+		<h5><a href="{{path('call__details',{"id":callForProposal.id})}}">Reports for call:-{{callForProposal|raw}}</a>
 		</h5>
 
 		<table class="table">
@@ -16,7 +16,7 @@
 				<tr>
 					<th>#</th>
 
-					<th>Submission</th>
+					<th class=""> Submission</th>
 					{% set numberOfPhases = callForProposal.researchReportPhase.numberOfPhases %}
 					{% for phase in 1..numberOfPhases %}
 
@@ -38,8 +38,8 @@
 				{% for submission in submissions %}
 					<tr>
 						<td>{{ loop.index }}</td>
-						<td>
-							<a href="{{path('submission_status',{'id':submission.id})}}">{{ submission|split('',50)[0]~'...' }}</a>
+						<td class="m-0 p-0">
+							<a  href="{{path('submission_show',{'id':submission.id})}}">{{ submission|split('',50)[0]~'...' }}</a>
 						</td>
 
 						{% for schedule in submission.researchReportSubmissionSettings %}
@@ -60,12 +60,11 @@
 
 							</td>
 						{% else %}
-							{% for phase in 1..numberOfPhases %}
-
-								<td>
+						
+								<td class=" text-center" colspan="{{numberOfPhases}}">
 									<span class="badge badge-soft-warning">Not Scheduled yet</span>
 								</td>
-							{% endfor %}
+							
 						{% endfor %}
 						{# <td>{{ research_report.file }}</td> #}
 						{# <td>{{ research_report.submittedAt ? research_report.submittedAt|date('Y-m-d H:i:s') : '' }}</td> #}

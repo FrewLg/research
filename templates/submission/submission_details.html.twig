@@ -2,10 +2,11 @@
 
 {% block title %}Submission
 {% endblock %}
- {% block styles %}
- 
-  <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> {% endblock %}
+{% block styles %}
+
+	<link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+{% endblock %}
 
 {% block container_title %}Submission details
 {% endblock %}
@@ -75,12 +76,8 @@
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
 									</li>
 									<li>
-										<a class="nav-link active"  href="#progress-report" data-bs-toggle="tab">Progress reports</a>
+										<a class="nav-link active" href="#progress-report" data-bs-toggle="tab">Progress reports</a>
 									</li>
-										
-
-									
-				
 
 
 									{% if submission.copyedit is  not empty %}
@@ -429,12 +426,12 @@
 
 									</div>
 
-{# start of report tab #}
+									{# start of report tab #}
 
 
-{% include "submission/tabs/report.html.twig" %}
+									{% include "submission/tabs/report.html.twig" %}
 
-{# end of report tab #}
+									{# end of report tab #}
 
 									<div class="tab-pane" id="Revision">
 
@@ -584,14 +581,14 @@
 					<br>
 					<br>
 				</div>
-{# <div class="tab-pane" id="copyedit">
-{{ submission.abstract|raw }}
-</div>
-<div class="tab-pane" id="progress-report">
-{{ submission.title }}
-</div>
-<div class="tab-pane" id="terminal-report"></div> #}
-</div>
+				{# <div class="tab-pane" id="copyedit">
+				{{ submission.abstract|raw }}
+				</div>
+				<div class="tab-pane" id="progress-report">
+				{{ submission.title }}
+				</div>
+				<div class="tab-pane" id="terminal-report"></div> #}
+			</div>
 		</div>
 
 	</div>
@@ -674,25 +671,23 @@
 		</div>
 
 	</div>
-	
+
 	<hr class="hr-dashed my-4">
 
-{% if submission.awardgranted==1 %}
+	{% if submission.awardgranted==1 %}
 
- 	<a href="" class='container btn btn-outline-success mt-2 btn-sm btn-block'>Winner 
+		<a href="" class='container btn btn-outline-success mt-2 btn-sm btn-block'>Winner
 			<i class="fa fa-check text-success"></i>
-	</a>
-		
-{% elseif submission.awardgranted=='0' %}
-	<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn btn-outline-danger mt-2 btn-sm btn-block'>Not granted</a>
+		</a>
+
+	{% elseif submission.awardgranted=='0' %}
+		<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn btn-outline-danger mt-2 btn-sm btn-block'>Not granted</a>
 
 	{% elseif  submission.awardgranted is null  %}
-	<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn mt-2 btn-primary btn-sm btn-block'>Declare grant</a>
+		<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn mt-2 btn-primary btn-sm btn-block'>Declare grant</a>
 
-{% endif %}										
-	 </div> 
-	</div>
-	<div class="card">
+	{% endif %}
+</div></div><div class="card">
 <div class="card-header ">
 	<h4 class="font-18 m-0 fw-bold">Attachments</h4>
 
@@ -758,7 +753,7 @@
 						<h4 class="team-leader m-0">
 
 							<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0
-																									  mb-1 align-right'>{{ review_assignment.reviewer }}
+																																	  mb-1 align-right'>{{ review_assignment.reviewer }}
 
 							</a>
 						</h4>
@@ -910,7 +905,7 @@
 												</span>
 											</a>
 										</span>
-									{% endif %} 
+									{% endif %}
 									<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-sm btn-soft-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
 										Unassign</a>
 

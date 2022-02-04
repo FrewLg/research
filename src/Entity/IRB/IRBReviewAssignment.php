@@ -83,9 +83,13 @@ class IRBReviewAssignment
     private $file_tobe_reviewed;
 
 
+    /**
+     * @ORM\Column(type="date" , nullable=true)
+     */
+    private $invitationDueDate;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer" , nullable=true)
      */
     private $status;
 
@@ -113,6 +117,11 @@ class IRBReviewAssignment
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $inactive_assignment;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $token;
 
     public function __construct()
     {
@@ -265,7 +274,17 @@ class IRBReviewAssignment
     }
     
 
-   
+    public function getInvitationDueDate(): ?\DateTimeInterface
+    {
+        return $this->invitationDueDate;
+    }
+
+    public function setInvitationDueDate(\DateTimeInterface $invitationDueDate): self
+    {
+        $this->invitationDueDate = $invitationDueDate;
+
+        return $this;
+    }
 
     public function getStatus(): ?int
     {
@@ -361,6 +380,18 @@ class IRBReviewAssignment
     public function setInactiveAssignment(?bool $inactive_assignment): self
     {
         $this->inactive_assignment = $inactive_assignment;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }
