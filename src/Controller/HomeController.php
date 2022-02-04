@@ -101,7 +101,7 @@ class HomeController extends AbstractController
 
         $reviews = $entityManager->getRepository(IRBReview::class)->findBy(['application' => $reviewAssignment->getApplication(), 'reviewed_by' => $measareviewer]);
 
-        return $this->render('application/irb-revise.html.twig', [
+        return $this->render('application/exirb-revise.html.twig', [
             'review_assignment' => $reviewAssignment,
             'review_assignments' => $reviews,
             'submission' => $submissions,
