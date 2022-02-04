@@ -216,17 +216,6 @@ class ResearchReport
         return $this;
     }
 
-    public function getRemark(): ?string
-    {
-        return $this->remark;
-    }
-
-    public function setRemark(?string $remark): self
-    {
-        $this->remark = $remark;
-
-        return $this;
-    }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {

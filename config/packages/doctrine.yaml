@@ -17,6 +17,8 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
+
+
             # gedmo_loggable:
             #     type: annotation
             #     prefix: Gedmo\Loggable\Entity
