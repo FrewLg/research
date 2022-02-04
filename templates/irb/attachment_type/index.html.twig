@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}AttachmentType index{% endblock %}
+{% block title %}Attachment Type {% endblock %}
 
 {% block body %}
-    <h1>AttachmentType index</h1>
+    <h1>Attachment Type </h1>
 
     <div class="card"><table class="table">
         <thead>
@@ -11,7 +11,7 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Type</th>
+                <th>Required</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -21,7 +21,7 @@
                 <td>{{ attachment_type.id }}</td>
                 <td>{{ attachment_type.name }}</td>
                 <td>{{ attachment_type.description }}</td>
-                <td>{{ attachment_type.type }}</td>
+                <td>{{ attachment_type.isRequired ? "Yes":"No" }}</td>
                 <td>
                     <a href="{{ path('i_r_b_attachment_type_show', {'id': attachment_type.id}) }}" class="btn btn-primary">show</a>
                     <a href="{{ path('i_r_b_attachment_type_edit', {'id': attachment_type.id}) }}" class="btn btn-warning">edit</a>

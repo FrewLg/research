@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Research Subject {% endblock %}
+
+{% block body %}
+    <h1>Research Subject </h1>
+
+    <div class="card p-1"><table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for research_subject in research_subjects %}
+            <tr>
+                <td>{{ research_subject.id }}</td>
+                <td>{{ research_subject.name }}</td>
+                <td>{{ research_subject.category }}</td>
+                <td>{{ research_subject.type }}</td>
+                <td>
+                    <a href="{{ path('i_r_b_research_subject_show', {'id': research_subject.id}) }}" class="btn btn-primary">show</a>
+                    <a href="{{ path('i_r_b_research_subject_edit', {'id': research_subject.id}) }}" class="btn btn-warning">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table></div>
+
+    <a href="{{ path('i_r_b_research_subject_new') }}" class="btn btn-primary"><i class="fa fa-add"></i>Create new</a>
+{% endblock %}

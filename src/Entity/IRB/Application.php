@@ -154,6 +154,16 @@ class Application
      */
     private $applicationType;
 
+    /**
+     * @ORM\OneToMany(targetEntity=RenewalRequest::class, mappedBy="application")
+     */
+    private $renewalRequests;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Revision::class, mappedBy="application", orphanRemoval=true)
+     */
+    private $revisions;
+
 
     public function __construct()
     {
@@ -165,6 +175,9 @@ class Application
         $this->members = new ArrayCollection();
         $this->amendments = new ArrayCollection();
         $this->IRBreviewAssignments = new ArrayCollection();
+        $this->renewalRequests = new ArrayCollection();
+        $this->revisions = new ArrayCollection();
+        $this->iRBReviewAssignments = new ArrayCollection();
     }
 
     public function setUploadFile(?File $imageFile = null): void
@@ -585,6 +598,66 @@ class Application
     public function setApplicationType(?ApplicationType $applicationType): self
     {
         $this->applicationType = $applicationType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RenewalRequest[]
+     */
+    public function getRenewalRequests(): Collection
+    {
+        return $this->renewalRequests;
+    }
+
+    public function addRenewalRequest(RenewalRequest $renewalRequest): self
+    {
+        if (!$this->renewalRequests->contains($renewalRequest)) {
+            $this->renewalRequests[] = $renewalRequest;
+            $renewalRequest->setApplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRenewalRequest(RenewalRequest $renewalRequest): self
+    {
+        if ($this->renewalRequests->removeElement($renewalRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($renewalRequest->getApplication() === $this) {
+                $renewalRequest->setApplication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Revision[]
+     */
+    public function getRevisions(): Collection
+    {
+        return $this->revisions;
+    }
+
+    public function addRevision(Revision $revision): self
+    {
+        if (!$this->revisions->contains($revision)) {
+            $this->revisions[] = $revision;
+            $revision->setApplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRevision(Revision $revision): self
+    {
+        if ($this->revisions->removeElement($revision)) {
+            // set the owning side to null (unless already changed)
+            if ($revision->getApplication() === $this) {
+                $revision->setApplication(null);
+            }
+        }
 
         return $this;
     }

@@ -409,6 +409,9 @@
 		<script src="{{ asset('plugins/jquery-steps/jquery.steps.min.js')}}"></script>
 		<script>
 			$(document).ready(function () {
+				$(".custom-file-label").each(function(e,v){
+	$(v).remove();
+})
 				jQuery.validator.addMethod("greaterStart", function (value, element, params) {
 			
     return this.optional(element) || new Date(value) >= new Date($(params).val());
