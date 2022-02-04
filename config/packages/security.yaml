@@ -47,6 +47,7 @@ security:
          - { path: ^/logout, role: IS_AUTHENTICATED_ANONYMOUSLY } 
          - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/call-for-proposal/$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/external-irb-review/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/resetting/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/reset-password, role: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/*, role: ROLE_USER }

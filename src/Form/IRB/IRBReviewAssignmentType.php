@@ -33,10 +33,11 @@ class IRBReviewAssignmentType extends AbstractType
         if (!$reviewAssignment  instanceof IRBReviewAssignment) {
             return;
         }
-     
-        $already_assigned = (new ArrayCollection($this->iRBReviewAssignmentRepository->findBy(['application' => $options['application']])))->map(function ($element) {
-            return $element->getIrbreviewer();
+
+        $already_assigned = (new ArrayCollection($this->iRBReviewAssignmentRepository->findBy(['application' => $options['application'],"token"=>null])))->map(function ($element) {
+            return  $element->getIrbreviewer();
         });
+       
 
 
         $builder
@@ -47,13 +48,13 @@ class IRBReviewAssignmentType extends AbstractType
                     'class' => User::class,
 
                     'query_builder' => function (EntityRepository $er) use ($already_assigned) {
-                      
-                        $qb=$er->createQueryBuilder('u')
+
+                        $qb = $er->createQueryBuilder('u')
                             ->andWhere("u.roles like '%ROLE_BOARD_MEMBER%'");
-                           if(sizeof($already_assigned->getValues())>0)
+                        if (sizeof($already_assigned->getValues()) > 0)
                             $qb->andWhere("u not in  (:irbreviewer)")
-                            ->setParameter('irbreviewer', $already_assigned->getValues());
-                            return $qb->orderBy('u.username', 'ASC');
+                                ->setParameter('irbreviewer', $already_assigned->getValues());
+                        return $qb->orderBy('u.username', 'ASC');
                     },
                     "attr" => [
                         "class" => "select2"
@@ -74,7 +75,7 @@ class IRBReviewAssignmentType extends AbstractType
                 'required' => true,
             ])
 
-          
+
             ->add('duedate', DateType::class, array(
                 'placeholder' => [
                     'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
@@ -88,7 +89,8 @@ class IRBReviewAssignmentType extends AbstractType
                     'required' => true,
                     'class' => 'form-control',
                 )
-            ));
+            ))
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -105,21 +107,21 @@ class ExternalIRBReviewAssignmentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+     
         $reviewAssignment = $options['data'];
+       
         if (!$reviewAssignment  instanceof IRBReviewAssignment) {
             return;
         }
         $builder
 
-            ->add('external_reviewer_name')
-            ->add('middle_name')
-            ->add('last_name')
-
-
+            ->add('external_irbreviewer_name', TextType::class, [
+                "label" => "Full name"
+            ])
 
             ->add(
-                'external_reviewer_email',
-                TextType::class,
+                'external_irbreviewer_email',
+                null,
                 [
                     'attr' => ['class' => 'form-control col col-md-12 col-sm-12 col-lg-9 '],
                 ]
@@ -138,20 +140,7 @@ class ExternalIRBReviewAssignmentType extends AbstractType
                 'required' => true,
             ])
 
-            ->add('invitationDueDate', DateType::class, array(
-                'placeholder' => [
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                ],
-                'label' => 'Invitation response duedate',
 
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-                'attr' => array(
-                    'min' => (new DateTime('now'))->format('Y-m-d'),
-                    'required' => true,
-                    'class' => 'form-control',
-                )
-            ))
 
             ->add('duedate', DateType::class, array(
                 'placeholder' => [
@@ -160,13 +149,15 @@ class ExternalIRBReviewAssignmentType extends AbstractType
                 'label' => 'Review duedate',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
+                'data' => new DateTime('+10 day'),
                 'attr' => array(
                     'min' => (new DateTime('now'))->format('Y-m-d'),
-                    'max' => (new DateTime('now'))->format('Y-m-d'),
+                    // 'max' => (new DateTime('now'))->format('Y-m-d'),
                     'required' => true,
                     'class' => 'form-control',
                 )
-            ));
+            ))
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

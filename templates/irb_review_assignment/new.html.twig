@@ -12,7 +12,7 @@
 			<section class="panel" id="formside_permission">
 				{% block side_body %}
 					<h4 class='text-'>New IRB reviewer Assignment
-				
+
 					</h4>
 
 					<div class="panel blank-panel">
@@ -21,7 +21,12 @@
 								<ul class="nav nav-pills nav-justified">
 									<li>
 										<a class="nav-link active " href="#tab-1" data-bs-toggle="tab">
-											IRB Board Members 
+											Internal IRB  Members
+										</a>
+									</li>
+									<li>
+										<a class="nav-link  " href="#tab-2" data-bs-toggle="tab">
+											External IRB  Members
 										</a>
 									</li>
 
@@ -51,6 +56,22 @@
 										</div>
 									</div>
 								</div>
+								<div class="tab-pane " id="tab-2">
+									<br>
+									<div class="card">
+										<div class="card-body">
+											<div class="card-header">
+												<h4 class='text-'>External iRB reviewer from system</h4>
+												{{ form_start(external_reviewer_form) }}
+												{{ form_widget(external_reviewer_form) }}
+												<button type="submit" class=" btn btn-primary float-end">submit</button>
+												{{ form_end(external_reviewer_form) }}
+											</div>
+											<br>
+
+										</div>
+									</div>
+								</div>
 
 							</div>
 						</div>
@@ -67,266 +88,259 @@
 		<div class="col-lg-8">
 			<h4 class="text-d">
 				Assigned iRB reviewers
-			{% if is_granted('mng_brd_mbr') %}
-			
-				<a class="btn btn-link" href="{{path('board_member_index')}}">View Board Members</a>
-			{% endif %}
+				{% if is_granted('mng_brd_mbr') %}
+
+					<a class="btn btn-link" href="{{path('board_member_index')}}">View Board Members</a>
+				{% endif %}
 			</h4>
-			
+
 			{% set selected = 0 %}
 			<table class="table table-bordered">
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Irbreviewer</th>
+						<th>Reviewer</th>
 						<th>Invited at</th>
 						<th>Due date</th>
-						<th>Status</th>
+						<th>Type</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					{% for review_assignment in irb_review_assignment %}
-						<tr>
-							<td>{{ loop.index }}</td>
-							{% if review_assignment.status == 1 %}
-								{% set selected = selected + 1 %}
-							{% endif %}
+					{% for review_assignment in irb_review_assignment   %}
+						{% if  review_assignment.irbreviewer %}
 
-							<td>
+							<tr>
+								<td>{{ loop.index }}</td>
+								{% if review_assignment.status == 1 %}
+									{% set selected = selected + 1 %}
+								{% endif %}
 
-
-								<a href="{{ path('researcher', {'id': review_assignment.irbreviewer.id}) }}" class='font-16 m-0     mb-1 align-right'>
-									{{ review_assignment.irbreviewer }}
-								</a>
-
-								<a href="#" class="avatar-box thumb-xxs align-self-center">
-									<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-										+{{ review_assignment.irbreviewer.reviewAssignments|length   }}
-									</span>
-								</a>
+								<td>
 
 
-								{% if review_assignment.reassigned %}
+									<a href="{{ path('researcher', {'id': review_assignment.irbreviewer.id}) }}" class='font-16 m-0     mb-1 align-right'>
+										{{ review_assignment.irbreviewer }}
+									</a>
 
 									<a href="#" class="avatar-box thumb-xxs align-self-center">
-										<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
-											Re
+										<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+											+{{ review_assignment.irbreviewer.reviewAssignments|length   }}
 										</span>
 									</a>
-								{% endif %}
-
-							</td>
-							<td>{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}</td>
-							<td>{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}</td>
-							<td>
 
 
-								{% if review_assignment.acceptedAt %}
-									<span class="badge bg-success">
-										Accepted
-									</span>
-									at:
-									{{ review_assignment.acceptedAt|date('d-m-y i:sa') }}
+									{% if review_assignment.reassigned %}
 
-								{% elseif review_assignment.rejectedAt %}
+										<a href="#" class="avatar-box thumb-xxs align-self-center">
+											<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+												Re
+											</span>
+										</a>
+									{% endif %}
 
-									<span class="badge bg-danger">Rejected at:
-									</span>
-									{{ review_assignment.rejectedAt|date('d-m-y i:sa') }}
+								</td>
+								<td>{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}</td>
+								<td>{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}</td>
+
+								{# 
+															<td>
+																								{% if review_assignment.acceptedAt %}
+																									<span class="badge bg-success">
+																										Accepted
+																									</span>
+																									at:
+																									{{ review_assignment.acceptedAt|date('d-m-y i:sa') }}
+																
+																								{% elseif review_assignment.rejectedAt %}
+																
+																									<span class="badge bg-danger">Rejected at:
+																									</span>
+																									{{ review_assignment.rejectedAt|date('d-m-y i:sa') }}
+																
+																
+																								{% elseif  review_assignment.Closed == 1 %}
+																									<span class="badge bg-warning">Review sent</span>
+																								{% elseif  review_assignment.InactiveAssignment == 1 %}
+																									<span class="badge bg-danger">Inactive
+																									</span>
+																								{% elseif  review_assignment.Declined == 1 %}
+																									<span class="badge bg-danger">Declined</span>
+																								{% else %}
+																									<span class="badge bg-warning">Pending</span>
+																
+																
+																								{% endif %} 
+																								
+															</td>
+																								#}
+								<td>Internal</td>
+								<td nowrap="nowrap">
+
+									{{ include('review_assignment/_delete_form.html.twig') }}
 
 
-								{% elseif  review_assignment.Closed == 1 %}
-									<span class="badge bg-warning">Review sent</span>
-								{% elseif  review_assignment.InactiveAssignment == 1 %}
-									<span class="badge bg-danger">Inactive
-									</span>
-								{% elseif  review_assignment.Declined == 1 %}
-									<span class="badge bg-danger">Declined</span>
-								{% else %}
-									<span class="badge bg-warning">Pending</span>
+									<div class="modal fade  " id="showDetailsModal{{ review_assignment.id}}" tabindex="-1" role="dialog" aria-labelledby="showDetailsModalTitle{{ review_assignment.id}}" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h6 class="modal-title m-0" id="showDetailsModalTitle{{ review_assignment.id}}">Irbreviewer assignment details</h6>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<!--end modal-header-->
+												<div class="modal-body">
 
 
-								{% endif %}
-
-							</td>
-							<td nowrap="nowrap">
-
-								{{ include('review_assignment/_delete_form.html.twig') }}
+													<div class="row">
 
 
-								<div class="modal fade  " id="showDetailsModal{{ review_assignment.id}}" tabindex="-1" role="dialog" aria-labelledby="showDetailsModalTitle{{ review_assignment.id}}" aria-hidden="true">
-									<div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h6 class="modal-title m-0" id="showDetailsModalTitle{{ review_assignment.id}}">Irbreviewer assignment details</h6>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<!--end modal-header-->
-											<div class="modal-body">
+														<div class="col-lg-6 col-md-12 col-sm-12">
 
-
-												<div class="row">
-
-
-													<div class="col-lg-6 col-md-12 col-sm-12">
-
-														<div class="card">
-															<div class="card-body text-center">
-																{% if review_assignment.irbreviewer.userInfo.image   %}
-																	<img src="{{ asset('files/profile_pictures/'~ review_assignment.irbreviewer.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
-																{% else %}
-																	<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
-																{% endif %}
-
-																<h5 class="fw-bold mt-3 mb-1">
-																	<sapn class="text-muted mb-0">
-																		{{review_assignment.irbreviewer.userInfo.firstName}}
-																		{{review_assignment.irbreviewer.userInfo.lastName}}
-																	</span>
-																</h5>
-																<p class="text-muted mb-0">
-																	Number of Assignment:
-																	<a href="{{path('his_assignment',{'id':review_assignment.irbreviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
-																		<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-																			+
-																			{{review_assignment.irbreviewer.reviewAssignments|length}}
-																		</span>
-																	</a>
-																</p>
-																<div class="mb-3">
-																	{% if review_assignment.irbreviewer.isreviewer %}
-																		<a href="#" class="me-3 text-warning">External IRB reviewer</a>
+															<div class="card">
+																<div class="card-body text-center">
+																	{% if review_assignment.irbreviewer.userInfo.image   %}
+																		<img src="{{ asset('files/profile_pictures/'~ review_assignment.irbreviewer.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
 																	{% else %}
-																		<a href="#" class="me-3 text-success">Internal IRB reviewer</a>
-
+																		<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
 																	{% endif %}
 
-																	{% if review_assignment.reassigned %}
-
-																		<a href="#" class="avatar-box thumb-xxs align-self-center">
-																			<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
-																				Re
+																	<h5 class="fw-bold mt-3 mb-1">
+																		<sapn class="text-muted mb-0">
+																			{{review_assignment.irbreviewer.userInfo.firstName}}
+																			{{review_assignment.irbreviewer.userInfo.lastName}}
+																		</span>
+																	</h5>
+																	<p class="text-muted mb-0">
+																		Number of Assignment:
+																		<a href="{{path('his_assignment',{'id':review_assignment.irbreviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
+																			<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+																				+
+																				{{review_assignment.irbreviewer.reviewAssignments|length}}
 																			</span>
 																		</a>
+																	</p>
+																	<div class="mb-3">
+																		{% if review_assignment.irbreviewer.isreviewer %}
+																			<a href="#" class="me-3 text-warning">External IRB reviewer</a>
+																		{% else %}
+																			<a href="#" class="me-3 text-success">Internal IRB reviewer</a>
+
+																		{% endif %}
+
+																		{% if review_assignment.reassigned %}
+
+																			<a href="#" class="avatar-box thumb-xxs align-self-center">
+																				<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+																					Re
+																				</span>
+																			</a>
+																		{% endif %}
+
+																	</div>
+																	<br>
+
+																	<a href='{{path('researcher',{'id':review_assignment.irbreviewer.id})}}' class="btn btn-sm btn-soft-primary">About IRB reviewer</a>
+																	<a href='{{path('his_assignment',{'id':review_assignment.irbreviewer.id})}}' class="btn btn-sm btn-soft-info">Invitations</a>
+
+
+																	{% if review_assignment.status == 1 %}
+																		{% set selected = selected + 1 %}
 																	{% endif %}
+																</div>
+															</div>
+														</div>
+														<div class="col-lg-6 col-md-12 col-sm-12">
+
+															<div class="card">
+																<div class="card-body text-center">
+
+
+																	Invitation Sent At:
+																	{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}<br>
+																	Invitation response due date:
+																	{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+																	<br>
+																	<br>
+																	<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
+																		File To be Reviewed    PDF
+																		<i class="fa fa-download"></i>
+																	</a>
+
+																	<br>
+																	<br>
+
+																	{# 
+																																																	{% if review_assignment.IsRejected == 1 %}
+																																																		<span class="badge bg-info" title="Invitation not sent">Rejected</span>
+																																																	{% elseif  review_assignment.Closed == 1 %}
+																																																		<span class="badge bg-warning">Closed</span>
+																																																		<br>
+																																																	{% elseif  review_assignment.InactiveAssignment == 1 %}
+																																																		<span class="badge bg-danger">Inactive Assignment</span>
+																																																		<br>
+																																																	{% elseif  review_assignment.Declined == 1 %}
+																																																		<span class="badge bg-primary">Declined</span>
+																																	
+																																	
+																																																	{% endif %} #}
+
+
+																	<br>
+
+
+																	{% for review in review_assignment.irbreviews %}
+																		<h4>Review decision:<br>
+
+
+																			{% if   review.remark==1 %}
+																				<span class="text-danger">
+																					Declined</span>
+
+																			{% elseif   review.remark==2 %}
+																				<span class="text-warning">
+																					Accepted with major revision</span>
+																			{% elseif   review.remark==3 %}
+																				<span class="text-warning">
+																					Accepted with minor revision
+																				</span>
+																			{% elseif   review.remark==4 %}
+
+																				<span class="text-success">
+																					Accepted
+																				</span>
+
+
+																			{% endif   %}
+																		</h4>
+																		{{review.AllowToView}}
+																	{% endfor %}
 
 																</div>
-																<br>
-
-																<a href='{{path('researcher',{'id':review_assignment.irbreviewer.id})}}' class="btn btn-sm btn-soft-primary">About IRB reviewer</a>
-																<a href='{{path('his_assignment',{'id':review_assignment.irbreviewer.id})}}' class="btn btn-sm btn-soft-info">Invitations</a>
-
-
-																{% if review_assignment.status == 1 %}
-																	{% set selected = selected + 1 %}
-																{% endif %}
 															</div>
 														</div>
 													</div>
-													<div class="col-lg-6 col-md-12 col-sm-12">
-
-														<div class="card">
-															<div class="card-body text-center">
 
 
-																Invitation Sent At:
-																{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}<br>
-																Invitation response due date:
-																{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
-																<br>
-																<br>
-																<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
-																	File To be Reviewed    PDF
-																	<i class="fa fa-download"></i>
-																</a>
-
-																<br>
-																<br>
-
-
-																{% if review_assignment.IsRejected == 1 %}
-																	<span class="badge bg-info" title="Invitation not sent">Rejected</span>
-																{% elseif  review_assignment.Closed == 1 %}
-																	<span class="badge bg-warning">Closed</span>
-																	<br>
-																{% elseif  review_assignment.InactiveAssignment == 1 %}
-																	<span class="badge bg-danger">Inactive Assignment</span>
-																	<br>
-																{% elseif  review_assignment.Declined == 1 %}
-																	<span class="badge bg-primary">Declined</span>
-
-
-																{% endif %}
-
-
-																<br>
-
-																Invitaion  response:
-																{% if  review_assignment.Declined %}
-																	<span class="text-danger">
-																		Declined</span>
-																{% elseif  review_assignment.IsAccepted %}
-
-																	<span class="text-success">
-																		Accepted</span>
-																{% elseif  review_assignment.Closed %}
-
-																	<span class="text-primary">
-																		Closed</span>
-
-
-																{% else   %}
-
-																	<span class="text-warning">
-																		Pending</span>
-
-
-																{% endif   %}
-
-																{% for review in review_assignment.irbreviews %}
-																	<h4>Review decision:<br>
-
-
-																		{% if   review.remark==1 %}
-																			<span class="text-danger">
-																				Declined</span>
-
-																		{% elseif   review.remark==2 %}
-																			<span class="text-warning">
-																				Accepted with major revision</span>
-																		{% elseif   review.remark==3 %}
-																			<span class="text-warning">
-																				Accepted with minor revision
-																			</span>
-																		{% elseif   review.remark==4 %}
-
-																			<span class="text-success">
-																				Accepted
-																			</span>
-
-
-																		{% endif   %}
-																	</h4>
-																	{{review.AllowToView}}
-																{% endfor %}
-
-															</div>
-														</div>
-													</div>
 												</div>
-
-
+												<!--end modal-body-->
+												<!--end modal-footer-->
 											</div>
-											<!--end modal-body-->
-											<!--end modal-footer-->
+											<!--end modal-content-->
 										</div>
-										<!--end modal-content-->
 									</div>
-								</div>
-								<!--end modal-dialog-->
-							</td>
-						</tr>
+									<!--end modal-dialog-->
+								</td>
+
+							</tr>
+						{% else %}
+							<tr>
+								<td>{{loop.index}}</td>
+								<td class='font-16 m-0     mb-1 align-right'>{{review_assignment.getExternalirbreviewerName()}}</td>
+								<td>{{review_assignment.InvitationSentAt|date('Y-m-d')}}</td>
+								<td>{{review_assignment.duedate|date('Y-m-d')}}</td>
+								<td>External</td>
+							</tr>
+						{% endif %}
 					{% else %}
 						<tr>
 							<td colspan="3">no records found</td>

@@ -316,7 +316,7 @@ class ReviewAssignmentController extends AbstractController
                     'name' => $external_reviewer_name,
                     'Authoremail' => $theEmail,
                 ]);
-            $mailer->send($email);
+           // $mailer->send($email);
 
             ######################
 
