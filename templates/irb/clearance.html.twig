@@ -1,0 +1,64 @@
+{% extends 'homelayout.html.twig' %}
+{% block breadcrumb %}{% endblock %}
+{# {% block pagehead %}Home
+{% endblock %} #}
+{% block title %}IRB clearance
+{% endblock %}
+
+
+{% block body %}
+
+	{#% include 'page_includes/header_report.html.twig'%#}
+
+	<meta property="og:url" content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
+	<meta property="og:type" content="JU"/>
+	<meta property="og:title" content="RMS Announcemen ts"/>
+	<meta property="og:description" content="Your description"/>
+	<meta property="og:image" content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
+
+<div class="container aos-init aos-animate" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Validate IRB clearance here</h2>
+        </div>
+
+        <div class="row mt-1 d-flex justify-content-end aos-init aos-animate" data-aos="fade-right" data-aos-delay="100">
+
+          <div class="col-lg-5">
+            <div class="info">
+             
+
+             
+
+            </div>
+
+          </div>
+
+          <div class="col-lg-6 mt-5 mt-lg-0 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
+
+            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Code" required="">
+                </div>
+              
+              </div>
+          
+           
+              <div class="text-center"><button type="submit">Check</button></div>
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+	
+
+
+
+
+	{# <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.min.js"></script> #}
+
+{% endblock %}
+

@@ -141,6 +141,58 @@
 							</li>
 
 							{% endif %}
+							<li>
+					<a href="javascript: void(0);">
+						<i class="fas fa-cog align-self-center menu-icon"></i>
+						<span>Setting</span>
+						<span class="menu-arrow">
+							<i class="mdi mdi-chevron-right"></i>
+						</span>
+					</a>
+					<ul class="nav-second-level" aria-expanded="false">
+						
+						
+						
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('i_r_b_project_type_index') }}">
+									<i class="ti-control-record"></i>
+									 
+ 										Project Type
+								 
+								</a>
+							</li>
+						
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('i_r_b_application_type_index') }}">
+									<i class="ti-control-record"></i>
+									{% trans %}Application Type{% endtrans %}
+								</a>
+							</li>
+						
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('i_r_b_attachment_type_index') }}">
+									<i class="ti-control-record"></i>
+ 											{% trans %}Attachment Type{% endtrans %}
+								</a>
+							</li>
+
+						
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('i_r_b_research_subject_category_index') }}">
+									<i class="ti-control-record"></i>
+ 											{% trans %}Research Subject Category{% endtrans %} 
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('i_r_b_research_subject_index') }}">
+									<i class="ti-control-record"></i>
+ 											{% trans %}Research Subject{% endtrans %} 
+								</a>
+							</li>
+							
+						</ul>
+					</li>
+				</li>
 							
 
 						</ul>

@@ -6,8 +6,10 @@
 
 {% block body %}
 	<h4>
-		Application
+		{% trans %}Application{% endtrans %}
 	</h4>
+{# <a href="{{ path('application_index') }}" class="btn btn-primary">back to list</a> #}
+
 
 	<div class="row">
 		<div class="col-md-12">
@@ -16,7 +18,7 @@
 					<div class="row">
 						<div class="col-md-6 align-self-center">
 							<h6 class="mb-0">
-								<b>Title:</b>
+								<b>{% trans %}Title{% endtrans %}:</b>
 								{{ application.title }}</h6>
 							<p class="mt-2 mb-0 text-muted">{{ application.description }}</p>
 						</div>
@@ -24,22 +26,22 @@
 						<div class="col-md-6">
 
 <div class="card-header ">
-	<h5 class="font-18 m-0 fw-bold">Reviewers ({{application.IRBreviewAssignments|length}})
+	<h5 class="font-18 m-0 fw-bold">{% trans %}Reviewers{% endtrans %} ({{application.IRBreviewAssignments|length}})
 		<a href="{{ path('irb_review_assignment_new', {'id': application.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
-			Add  Reviewer</a>
+			{% trans %}Add  Reviewer{% endtrans %}</a>
 	</h5>
 </div>
 
 							<ul class="list-inline mb-0 contact-detail float-end">
 								<li class="list-inline-item">
 									<div class="ps-3">
-										<i class="">Submited by
+										<i class="">{% trans %}Submited by{% endtrans %}
 										</i>
 										<p>
-											Name:<span class="text-muted mb-0">
+											{% trans %}Name{% endtrans %}:<span class="text-muted mb-0">
 												{{ application.submittedBy }}</span>
 										</p>
-										<p>Role:<span class="text-muted mb-0">
+										<p>{% trans %}Role{% endtrans %}:<span class="text-muted mb-0">
 												{{ application.pi ? "PI" : "Advisor"  }}</span>
 										</p>
 
@@ -48,11 +50,11 @@
 								<li class="list-inline-item"></li>
 								<li class="list-inline-item">
 									<div class="ps-3">
-										<p>Sumitted At:
+										<p>{% trans %}Sumitted At{% endtrans %}:
 											<span class="text-muted mb-0">{{application.createdAt | date('Y-m-d h:i')}}</span>
 										</p>
 
-										<p class="">Status :
+										<p class="">{% trans %}Status{% endtrans %}:
 											<span class="badge bg-warning">Pending</span>
 										</p>
 
@@ -70,17 +72,33 @@
 						<div class="col-md-3">
 							<div class="">
 								<h6 class="mb-0">
-									<b>Project Type :</b>
+									<b>{% trans %}Application Type{% endtrans %}:</b>
+									{{ application.applicationType }}</h6>
+								<h6 class="mb-0">
+									<b>{% trans %}Project Type{% endtrans %} :</b>
 									{{ application.projectType }}</h6>
 								<h6 class="mb-0">
-									<b>Poject Start Date :</b>
+									<b>{% trans %}Poject Start Date{% endtrans %} :</b>
 									{{ application.startDate|date('Y-m-d') }}</h6>
 								<h6 class="mb-0">
-									<b>Poject End Date :</b>
+									<b>{% trans %}Poject End Date{% endtrans %} :</b>
 									{{ application.endDate|date('Y-m-d') }}</h6>
 								<h6 class="mb-0">
-									<b>Location :</b>
+									<b>{% trans %}Location{% endtrans %} :</b>
 									{{ application.location }}</h6>
+
+
+{% if app.user == application.submittedBy %}
+
+											<form method="post">
+<input hidden name="renewal" value="true">
+											<button type="submit" class="m-1 btn btn-outline-primary float-right" ><span class="fa fa-spinner m-1"></span>{% trans %}Renew Clearance{% endtrans %}</button>
+</form>
+
+											<button type="button" class="m-1 btn btn-outline-primary -right" data-bs-toggle="modal" data-bs-target="#exampleModalSecondary">{% trans %}Request amendment{% endtrans %}</button>
+
+{% endif %}
+							
 
 							</div>
 						</div>
@@ -89,7 +107,7 @@
 						<div class="col-md-12 col-lg-9 mt-2">
 							<div class="card">
 								<div class="card-header">
-									<h4 class="card-title">Details</h4>
+									<h4 class="card-title">{% trans %}Details{% endtrans %}</h4>
 
 								</div>
 								<!--end card-header-->
@@ -98,29 +116,34 @@
 									<!-- Nav tabs -->
 									<ul class="nav nav-tabs" role="tablist">
 										<li class="nav-item">
-											<a class="nav-link active" data-bs-toggle="tab" href="#members" role="tab" aria-selected="true">Members</a>
+											<a class="nav-link active" data-bs-toggle="tab" href="#members" role="tab" aria-selected="true">{% trans %}Members{% endtrans %}</a>
 										</li>
 										<li class="nav-item">
-											<a class="nav-link" data-bs-toggle="tab" href="#subject" role="tab" aria-selected="false">Research subject</a>
+											<a class="nav-link" data-bs-toggle="tab" href="#subject" role="tab" aria-selected="false">{% trans %}Research subject{% endtrans %}</a>
 										</li>
 										<li class="nav-item">
-											<a class="nav-link" data-bs-toggle="tab" href="#covid" role="tab" aria-selected="false">Covid-19 mitigation</a>
+											<a class="nav-link" data-bs-toggle="tab" href="#covid" role="tab" aria-selected="false">{% trans %}Covid-19 mitigation{% endtrans %}</a>
 										</li>
+										
 										<li class="nav-item">
-											<a class="nav-link" data-bs-toggle="tab" href="#reviews" role="tab" aria-selected="false">Reviews</a>
+											<a class="nav-link" data-bs-toggle="tab" href="#attachments" role="tab" aria-selected="false">{% trans %}Attachments{% endtrans %}</a>
 										</li>
+										{% if application.amendments %}
 										<li class="nav-item">
-											<a class="nav-link" data-bs-toggle="tab" href="#attachments" role="tab" aria-selected="false">Attachments</a>
+											<a class="nav-link" data-bs-toggle="tab" href="#amendment" role="tab" aria-selected="false">{% trans %}Amendment{% endtrans %}</a>
 										</li>
+										{% endif %}
+										{% if application.revisions %}
 										<li class="nav-item">
-											<a class="nav-link" data-bs-toggle="tab" href="#amendment" role="tab" aria-selected="false">Amendment</a>
+											<a class="nav-link" data-bs-toggle="tab" href="#revisions" role="tab" aria-selected="false">{% trans %}Revisions{% endtrans %}</a>
 										</li>
+										{% endif %}
 									</ul>
 
 									<!-- Tab panes -->
 									<div class="tab-content">
 										<div class="tab-pane p-3 active" id="members" role="tabpanel">
-											<h4 class='text-'>Research team({{  application.members|length +1}})</h4>
+											<h4 class='text-'>{% trans %}Research team{% endtrans %}({{  application.members|length +1}})</h4>
  															<div class="row">
 															{% set co_author = application.pi ? application.pi : application.submittedBy  %}
 													<div class="col-lg-4">
@@ -139,11 +162,11 @@
 																				<p class="text-muted mb-0">{{ co_author.userInfo.academicRank }}</p>
 																				<div class="mb-3">
 																					<a href="apps-tasks.html#" class="me-3 text-warning">
-																						PI</a>
+																						{% trans %}PI{% endtrans %}</a>
 																				
 																				</div>
 
-																				<a href='{{path('researcher',{'id':co_author.id})}}' class="btn btn-sm btn-soft-primary">More details</a>
+																				<a href='{{path('researcher',{'id':co_author.id})}}' class="btn btn-sm btn-soft-primary">{% trans %}More details{% endtrans %}</a>
 
 																			</div>
 																		</div>
@@ -169,13 +192,12 @@
 																{# <a href="apps-tasks.html#" class=" text-warning">295 Coauthorship</a> #}
 															</div>
 
-															<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">More details</a>
+															<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">{% trans %}More details{% endtrans %}</a>
 
 														</div>
 													</div>
 												</div>
-											{% else %}
-												No members
+										
 											{% endfor %}
 											 
 																</div>
@@ -203,15 +225,12 @@
 
 										</div>
 										<div class="tab-pane p-3" id="amendment" role="tabpanel">
-										{% if app.user == application.submittedBy %}
-										
-											<button type="button" class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalSecondary">Request amendment</button>
-										{% endif %}
+								
 											
 											<div class="col-md-12">
 												<div class="card">
 													<div class="card-header">
-														<h4 class="card-title">Amendments</h4>
+														<h4 class="card-title">{% trans %}Amendments{% endtrans %}</h4>
 
 													</div>
 													<!--end card-header-->
@@ -221,9 +240,9 @@
 																<thead>
 																	<tr>
 																		<th>#</th>
-																		<th>Purpose</th>
-																		<th>Requested At</th>
- 																		<th class="text-right">Action</th>
+																		<th>{% trans %}Purpose{% endtrans %}</th>
+																		<th>{% trans %}Requested At{% endtrans %}</th>
+ 																		<th class="text-right">{% trans %}Action{% endtrans %}</th>
 																	</tr>
 																</thead>
 																<tbody>
@@ -252,13 +271,54 @@
 
 																	{% else %}
 																		<tr>
-																			<td colspan="4">No record</td>
+																			<td colspan="4">{% trans %}No record{% endtrans %}</td>
 																		</tr>
 																	{% endfor %}
 
 																</tbody>
 															</table>
 															<!--end /table-->
+														</div>
+														<!--end /tableresponsive-->
+													</div>
+													<!--end card-body-->
+												</div>
+												<!--end card-->
+											</div>
+										</div>
+
+										<div class="tab-pane p-3" id="revisions" role="tabpanel">
+								
+											
+											<div class="col-md-12">
+												<div class="card">
+													<div class="card-header">
+														<h4 class="card-title">{% trans %}Revisions{% endtrans %}</h4>
+
+													</div>
+													<!--end card-header-->
+													<div class="card-body">
+														<div class="">
+															
+																	{% for revision in application.revisions %}
+
+												<div class="col-md-12">
+
+													<div class="card">
+													<div class="card-header">
+														{% trans %}Revision{% endtrans %} {{loop.index }}	
+													</div>
+														<div class="card-body">
+																	{% for attachment in revision.revisionAttachments %}
+															<a href='{{ asset('/uploads/application/' ~ attachment.file) }}' class="btn btn-sm btn-soft-primary m-1">{{ attachment.type }} <span class="fa fa-download m-1"></span></a>
+																	{% endfor %}
+
+														</div>
+													</div>
+												</div>
+																	{% endfor %}
+
+																
 														</div>
 														<!--end /tableresponsive-->
 													</div>
@@ -279,7 +339,7 @@
 															{{ subject.subject }}
 															{{ subject.number ? "#" ~ subject.number :"" }}</li>
 													{% else %}
-														<p>No research subject specified</p>
+														<p>{% trans %}No research subject specified{% endtrans %}</p>
 													{% endfor %}
 												</div>
 											{% endfor %}
@@ -336,39 +396,81 @@
 		</div>
 		<!--end card-->
 	</div> 
+	{% if review %}
+	
+	<div class="row no-gutters">
+                                  
+                                    <div class="col-md-9">
+                                        <div class="card-header">
+                                            <div class="row align-items-center">
+                                                <div class="col">                      
+                                                    <h4 class="card-title">{% trans %}Review Decision{% endtrans %}</h4>               
+                                                </div><!--end col-->  
+                                                <div class="col-auto">    
+                                                   
+                                                    <span class="badge badge-outline-light">{{ review.createdAt|date('Y-m-d') }}</span>              
+                                                </div><!--end col-->                                                                            
+                                            </div>  <!--end row-->                                  
+                                        </div><!--end card-header-->
+                                        <div class="card-body">
+                                            <p class="card-text"><b>{% trans %}Comment{% endtrans %}:</b> {{ review.comment }}</p>
+                                            <p class="card-text"><b>{% trans %}Remark{% endtrans %}:</b> {{ review.remark }}</p>
+                                            <p class="card-text"><b>{% trans %}Evaluation Attachment{% endtrans %}:</b> <a class="btn btn-outline-primary" href="{{ asset(review.evaluationAttachment) }}"><i class="fa fa-download m-1"></i>{% trans %}Download{% endtrans %}</a></p>
+											{% if app.user == application.submittedBy %}
+											<button type="button" class="m-1 btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#revision-modal"><span class="fa fa-paper-plane m-1"></span>{% trans %}Please Send Revision{% endtrans %}</button>
+											{% endif %}
+
+                                        </div><!--end card-body-->
+										<div class="card-footer">
+										
+										</div>
+                                    </div><!--end col-->
+
+                                </div>
+								
+	{% endif %}
+	
 
 
-<a href="{{ path('application_index') }}" class="btn btn-primary">back to list</a>
 	<br>
-<div class="modal fade bd-example-modal-xl" id="exampleModalSecondary" tabindex="-1" role="dialog" aria-labelledby="exampleModalSecondary1" aria-hidden="true">
-	<div class="modal-dialog modal-xl" role="document">
+{% include "application/modal.html.twig" %}
+{% endblock %}
 
-		<div class="modal-content">
-			<div class="modal-header bg-primary">
-				<h6 class="modal-title m-0 text-white" id="exampleModalSecondary1">New amendment request</h6>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<!--end modal-header-->
-			{{ form_start(form) }}
-			<div class="modal-body">
-				<div class="row">
-					{{ form_widget(form) }}
 
-				</div>
-				<!--end row-->
-			</div>
-			<!--end modal-body-->
-			<div class="modal-footer">
+	{% block script %}
+	<script>
+			$(document).ready(function () {
 
-				<button class="btn btn-success ">{{ button_label|default('Send request') }}</button>
-				<button type="button" class="btn btn-danger " data-bs-dismiss="modal">Close</button>
-			</div>
-			<!--end modal-footer-->
-			{{ form_end(form) }}
-		</div>
-		<!--end modal-content-->
-	</div>
-	<!--end modal-dialog-->
-</div>
 
+$(".my-checkbox input[type=checkbox]").each(function (e, v) {
+$(v).click(function (e) {
+	group=$(v).parentsUntil(".check-group").parent().attr("data-group")
+		if(group){
+			$(`.group-${group} input[type=checkbox]`).each(function(e2,v2){
+				$(v2).prop('checked', false);
+				$(v2).prop('required', false);
+				$(v2).parentsUntil(".parent").find(".my-hidden").addClass("d-none")
+				$(v2).parentsUntil(".parent").find(".my-hidden").find('input').prop('required', false);
+				$(v2).siblings('.error').remove();
+				$(v2).removeClass('error')
+			})
+			$(v).prop('checked', true);
+			
+			}
+if (e.target.checked) {
+
+$(this).parentsUntil(".parent").find(".my-hidden").removeClass("d-none")
+$(this).parentsUntil(".parent").find(".my-hidden").find('input').prop('required', true);
+} else {
+$(this).parentsUntil(".parent").find(".my-hidden").addClass("d-none")
+$(this).parentsUntil(".parent").find(".my-hidden").find('input').prop('required', false);
+
+}
+});
+});
+$(".custom-file-label").each(function(e,v){
+	$(v).remove();
+})
+});
+	</script>
 {% endblock %}

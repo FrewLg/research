@@ -10,16 +10,22 @@ use App\Entity\IRB\ApplicationMitigationStrategy;
 use App\Entity\IRB\ApplicationResearchSubject;
 use App\Entity\IRB\ApplicationReview;
 use App\Entity\IRB\AttachmentType;
+use App\Entity\IRB\IRBReview;
 use App\Entity\IRB\MitigationStrategy;
 use App\Entity\IRB\MitigationStrategyGroup;
+use App\Entity\IRB\RenewalRequest;
 use App\Entity\IRB\ResearchSubject;
 use App\Entity\IRB\ResearchSubjectCategory;
 use App\Entity\IRB\ReviewStatus;
 use App\Entity\IRB\ReviewStatusGroup;
+use App\Entity\IRB\Revision;
+use App\Entity\IRB\RevisionAttachment;
 use App\Form\IRB\ApplicationFilterType;
 use App\Form\IRB\AmendmentType;
 use App\Form\IRB\ApplicationType;
+use App\Form\IRB\RevisionType;
 use App\Repository\IRB\ApplicationRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -87,7 +93,8 @@ class ApplicationController extends AbstractController
         $attachment=  new ApplicationAttachment();
         $attachment->setType($value);
         $application->addApplicationAttachment($attachment);
-     }}
+     }
+    }
         $form = $this->createForm(ApplicationType::class, $application);
         $form->handleRequest($request);
 
@@ -116,10 +123,36 @@ class ApplicationController extends AbstractController
     public function show(Application $application,Request $request,EntityManagerInterface $entityManager): Response
     {
 
+        if ($request->request->get('renewal')) {
+                if(true){
+                    $renewal=new RenewalRequest();
+                    $renewal->setApplication($application);
+                    $renewal->setRequestedAt(new DateTime());
+                    $entityManager->persist($renewal);
+                    $entityManager->flush();
+                    $this->addFlash("success","Revision sent successfully");
+                }else{
+                    $this->addFlash("danger","You can't renew IRB clearance for this application");
+
+                }
+                return $this->redirectToRoute('application_show', ["id"=>$application->getId()], Response::HTTP_SEE_OTHER);
+            }
         $amendment = new Amendment();
         $amendment->setApplication($application);
         $form = $this->createForm(AmendmentType::class, $amendment);
         $form->handleRequest($request);
+
+        $revision = new Revision();
+        $revision->setApplication($application);
+        foreach ($entityManager->getRepository(AttachmentType::class)->findAll() as $key => $value) {
+          
+            $attachment=  new RevisionAttachment();
+            $attachment->setType($value);
+            $revision->addRevisionAttachments($attachment);
+         }
+        $form2 = $this->createForm(RevisionType::class, $revision);
+        $form2->handleRequest($request);
+        $review=$entityManager->getRepository(IRBReview::class)->findOneBy(['application'=>$application,"from_director"=>true,'allow_to_view'=>true]);
 
         if ($form->isSubmitted() && $form->isValid()) {
         $att=$request->files->get('amendment')["attachment"];
@@ -137,12 +170,30 @@ class ApplicationController extends AbstractController
             return $this->redirectToRoute('application_show', ["id"=>$application->getId()], Response::HTTP_SEE_OTHER);
         }
 
+        if ($form2->isSubmitted() && $form2->isValid()) {
+            foreach ($revision->getRevisionAttachments() as $k => $val) {
+                if(!$val->getChecked()){
+                    $revision->removeRevisionAttachments($val);
+                }
+            }
+                $entityManager->persist($revision);
+                $entityManager->flush();
+                $this->addFlash("success","Revision sent successfully");
+                return $this->redirectToRoute('application_show', ["id"=>$application->getId()], Response::HTTP_SEE_OTHER);
+            }
+
+
+
+
+
        
         return $this->render('application/show.html.twig', [
           
            'application' => $application,
            'amendment' => $amendment,
             'form' => $form->createView(),
+            'form2' => $form2->createView(),
+            'review'=>$review,
             'subject_category'=>$entityManager->getRepository(ResearchSubjectCategory::class)->findAll(),
             'mitigation_strategy_group'=>$entityManager->getRepository(MitigationStrategyGroup::class)->findAll(),
             'review_status_group'=>$entityManager->getRepository(ReviewStatusGroup::class)->findAll()
