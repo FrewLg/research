@@ -158,8 +158,11 @@
 
 
 						<div class="font-16 my-3 ">
-							<b>Challenges:-
+							{% if report.researchReportChallenges|length>0 %}
+							 <b> Challenges:-
 							</b>
+							{% endif %}
+
 							<dl>
 								{% for item in report.researchReportChallenges %}
 									<dt>
