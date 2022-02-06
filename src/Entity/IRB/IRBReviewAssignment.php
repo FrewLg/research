@@ -123,9 +123,40 @@ class IRBReviewAssignment
      */
     private $token;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ReviewerResponse::class, mappedBy="reviewAssignment")
+     */
+    private $reviewerResponses;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $waiver;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $riskLevel;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $recommendation;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $howOftenStudyReviewed;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $reviewedAt;
+
     public function __construct()
     {
         $this->irbreviews = new ArrayCollection();
+        $this->reviewerResponses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -392,6 +423,96 @@ class IRBReviewAssignment
     public function setToken(?string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ReviewerResponse[]
+     */
+    public function getReviewerResponses(): Collection
+    {
+        return $this->reviewerResponses;
+    }
+
+    public function addReviewerResponse(ReviewerResponse $reviewerResponse): self
+    {
+        if (!$this->reviewerResponses->contains($reviewerResponse)) {
+            $this->reviewerResponses[] = $reviewerResponse;
+            $reviewerResponse->setReviewAssignment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReviewerResponse(ReviewerResponse $reviewerResponse): self
+    {
+        if ($this->reviewerResponses->removeElement($reviewerResponse)) {
+            // set the owning side to null (unless already changed)
+            if ($reviewerResponse->getReviewAssignment() === $this) {
+                $reviewerResponse->setReviewAssignment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getWaiver(): ?string
+    {
+        return $this->waiver;
+    }
+
+    public function setWaiver(string $waiver): self
+    {
+        $this->waiver = $waiver;
+
+        return $this;
+    }
+
+    public function getRiskLevel(): ?string
+    {
+        return $this->riskLevel;
+    }
+
+    public function setRiskLevel(string $riskLevel): self
+    {
+        $this->riskLevel = $riskLevel;
+
+        return $this;
+    }
+
+    public function getRecommendation(): ?string
+    {
+        return $this->recommendation;
+    }
+
+    public function setRecommendation(string $recommendation): self
+    {
+        $this->recommendation = $recommendation;
+
+        return $this;
+    }
+
+    public function getHowOftenStudyReviewed(): ?string
+    {
+        return $this->howOftenStudyReviewed;
+    }
+
+    public function setHowOftenStudyReviewed(string $howOftenStudyReviewed): self
+    {
+        $this->howOftenStudyReviewed = $howOftenStudyReviewed;
+
+        return $this;
+    }
+
+    public function getReviewedAt(): ?\DateTimeInterface
+    {
+        return $this->reviewedAt;
+    }
+
+    public function setReviewedAt(?\DateTimeInterface $reviewedAt): self
+    {
+        $this->reviewedAt = $reviewedAt;
 
         return $this;
     }
