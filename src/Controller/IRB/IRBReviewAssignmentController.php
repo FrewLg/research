@@ -263,7 +263,7 @@ class IRBReviewAssignmentController extends AbstractController
             $this->addFlash("success","Review sent!!");
             return $this->redirectToRoute('review_application',["id"=>$reviewAssignment->getId()]);
         }
-        dd($request);
+      
 
         $submissionOfreviewer = $entityManager->getRepository(IRBReviewAssignment::class)->find($reviewAssignment);
         $submissions = $submissionOfreviewer->getApplication();

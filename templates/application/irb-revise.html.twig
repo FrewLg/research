@@ -97,7 +97,7 @@
 					</div>
 
 					<div class="tab-pane  p-3	 " id="profile" role="tabpanel">
-
+					
 						<div class="card">
 							<div class="card-header">
 								<h5>Revise
@@ -122,62 +122,45 @@
 
 			<div class="card">
 				<div class="card-header">
-					<h5>Review info</h5>
+					<h5 class="text-default  mb-0 font-15">Review info</h5>
 				</div>
-				<!--end card-header-->
-
 				<div class="card-body ">
-					<div
-						class="text-">
-						{# {{ review_assignment.submission.callForProposal}} #}
+					<div class="text-">
 
-
-						<br>
-						<br>
-
-
-						<br>
-
-
-						<br>
-
-
-						<br>
-						<p class="text-muted  mb-0 font-13">
+						<p class="text-muted  mb-0 font-15">
 							<span class="text-dark">
 
-								Invitation Sent At:
-								{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+								Invited At:
+								{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('d-m-y H:i') : '' }}
 								<br>
 								Review duedate:
-								{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
-
+								{{ review_assignment.duedate ? review_assignment.duedate|date('d-m-y') : '' }}
 							</span>
-
-
 						</p>
 					</div>
-					<div class="row mt-2 d-flex align-items-center">
-						<div
-							class="col">
-							{# <h5 class="font-16 m-0 fw-bold">1</h5> #}
-							<p class="mb-0 text-muted">
+					<div class="row mt-2 d-flex align-items-center"></div>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-header">
+					<h5>Application attachments</h5>
+				</div>
+				<div class="card-body ">
 
-								<h5>Attachment files</h5>
 
+					<ol class='row mt-2 d-flex align-items-center'>
+						{% for Attachment in review_assignment.application.applicationAttachments %}
+
+							<li>
 								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
-									Proposal  file PDF
+									{{Attachment.type|striptags|slice(0, 33)|raw}}
 									<i class="fa fa-download"></i>
 								</a>
+							</li>
+						{% endfor %}
 
+					</ol>
 
-							</p><hr>
-
-
-							{# <script src="/ui/js/jquery.min.js"></script> #}
-
-						</div>
-					</div>
 				</div>
 			</div>
 
