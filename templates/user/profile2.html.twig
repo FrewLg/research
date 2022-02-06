@@ -304,9 +304,45 @@
 
 													{{ form_start(publicationform) }}
 
-													{{ form_widget(publicationform) }}
-												</div>
-												<!--end modal-body-->
+													{# {{ form_widget(publicationform) }} #}
+													{{ form_widget(publicationform.doi) }}
+ 
+												
+
+											<script type="text/javascript">
+
+													 function yesnoCheck() {
+    yes1 = document.getElementById('yes')
+    yes2 = document.getElementById('acc')
+    
+    no1 = document.getElementById('other3')
+    no2 = document.getElementById('other4')
+    
+    if (document.getElementById('yesCheck').checked) {
+        yes1.type = yes2.type = 'text';
+        no1.type = no2.type = 'hidden';
+    } else {
+        no1.type = no2.type = 'text';
+        yes1.type = yes2.type = 'hidden';
+    }
+}
+											</script>
+
+											Yes <input type="radio" onclick="yesnoCheck();" name="yesno" id="yesCheck"/>
+
+No <input type="radio" onclick="yesnoCheck();" name="yesno" id="noCheck"/>
+
+<br>
+
+<input type='hidden' id='yes' name='yes' placeholder='If yes, explain:'/>
+<input type='hidden' id='acc' name='acc' placeholder='What can we do to accommodate you?'/>
+
+<input type='hidden' id='other3' name='other3' placeholder='other 3'>
+<input type='hidden' id='other4' name='other4' placeholder='other 4'>
+ 
+
+ 	</div>
+												<!-- end modal-body-->
 												<div class="modal-footer">
 													<button type="submit" class="btn btn-soft-primary btn-sm">Add Publication</button>
 													<button type="button" class="btn btn-soft-secondary btn-sm" data-bs-dismiss="modal">Close</button>
@@ -530,15 +566,15 @@
 											</div>
 											<script type="text/javascript">
 
-												function yesnoCheck() {
-if (document.getElementById('yesCheck').checked) {
-document.getElementById('ifYes').style.display = 'block';
-} else 
-document.getElementById('ifYes').style.display = 'none';
+													function yesnoCheck() {
+													if (document.getElementById('yesCheck').checked) {
+													document.getElementById('ifYes').style.display = 'block';
+													} else 
+													document.getElementById('ifYes').style.display = 'none';
 
 
 
-}
+													}
 											</script>
 											Yes
 											<input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck" required='required'>
