@@ -18,7 +18,10 @@
 					</li>
 
 					<li class="nav-item  waves-effect waves-light">
-						<a class="nav-link active" data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
+						<a class="nav-link " data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
+					</li>
+					<li class="nav-item  waves-effect waves-light">
+						<a class="nav-link active" data-bs-toggle="tab" href="#review-checklist" role="tab" aria-selected="false">Checklist</a>
 					</li>
 				</ul>
 
@@ -93,8 +96,8 @@
 						</div>
 					</div>
 
-					<div class="tab-pane  p-3	 active" id="profile" role="tabpanel">
-
+					<div class="tab-pane  p-3	 " id="profile" role="tabpanel">
+					
 						<div class="card">
 							<div class="card-header">
 								<h5>Revise
@@ -109,7 +112,7 @@
 							</div>
 						</div>
 					</div>
-
+					{% include "application/tabs/checklist.html.twig" %}
 				</div>
 			</div>
 			{# </div> #}

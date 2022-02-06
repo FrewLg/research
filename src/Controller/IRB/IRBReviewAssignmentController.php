@@ -23,6 +23,9 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Entity\InstitutionalReviewersBoard;
 use App\Entity\IRB\Application;
+use App\Entity\IRB\ReviewChecklist;
+use App\Entity\IRB\ReviewChecklistGroup;
+use App\Entity\IRB\ReviewerResponse;
 use App\Entity\UserInfo;
 use App\Form\IRB\ExternalIRBReviewAssignmentType;
 use App\Form\IRB\IRBReviewType;
@@ -48,7 +51,7 @@ class IRBReviewAssignmentController extends AbstractController
     /**
      * @Route("/{id}/assign", name="irb_review_assignment_new", methods={"GET","POST"})
      */
-    public function assign(Request $request,MailHelper $mailHelper, Application $submission, ReviewHelper $reviewHelper, MailerInterface $mailer, IRBReviewAssignmentRepository $reviewAssignmentRepository): Response
+    public function assign(Request $request, MailHelper $mailHelper, Application $submission, ReviewHelper $reviewHelper, MailerInterface $mailer, IRBReviewAssignmentRepository $reviewAssignmentRepository): Response
     {
 
         // $this->denyAccessUnlessGranted('assn_clg_cntr');
@@ -73,7 +76,7 @@ class IRBReviewAssignmentController extends AbstractController
         $subject = $messages->getSubject();
         $body = $messages->getBody();
         $title = $submission->getTitle();
-       
+
         $form = $this->createForm(IRBReviewAssignmentType::class, $reviewAssignment, ["application" => $submission]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -109,8 +112,8 @@ class IRBReviewAssignmentController extends AbstractController
             $theFirstName = $reviewAssignment->getIRBReviewer()->getUserInfo()->getFirstName();
             $invitation_url = "irb-review/" . $reviewAssignment->getId() . "/accept/";
             $theEmail = $reviewAssignment->getIRBReviewer()->getEmail();
-          
-    
+
+
             // dd( $form);
             $email = (new TemplatedEmail())
                 ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
@@ -150,13 +153,13 @@ class IRBReviewAssignmentController extends AbstractController
             $entityManager->flush();
 
             //sent email
-            $mailHelper->sendEmail($external_reviewAssignment->getExternalirbrevieweremail(),"review assignment","emails/reviewerinvitation.html.twig",[
+            $mailHelper->sendEmail($external_reviewAssignment->getExternalirbrevieweremail(), "review assignment", "emails/reviewerinvitation.html.twig", [
                 'subject' => $subject,
                 'suffix' => $external_reviewAssignment->getExternalirbreviewerName(),
                 'body' => $body,
                 'title' => $title,
                 'college' => " ",
-                'reviewerinvitation_URL' => "external-irb-review/".$token,
+                'reviewerinvitation_URL' => "external-irb-review/" . $token,
                 'name' => $external_reviewAssignment->getExternalirbreviewerName(),
                 'Authoremail' => $external_reviewAssignment->getExternalirbrevieweremail(),
             ]);
@@ -231,11 +234,37 @@ class IRBReviewAssignmentController extends AbstractController
     /**
      * @Route("/{id}/revise", name="review_application", methods={"GET","POST"})
      */
-    public function revise(Request $request, IRBReviewAssignment $reviewAssignment): Response
+    public function revise(Request $request,  IRBReviewAssignment $reviewAssignment): Response
     {
         ////Ultimate reviewers page
 
         $entityManager = $this->getDoctrine()->getManager();
+
+
+        if ($request->request->get('review-checklist') && !$reviewAssignment->getReviewedAt()) {
+            foreach ($request->request->get('checklist') as $key => $value) {
+
+                if (!$value)
+                    continue;
+                $reviewerResponse = new ReviewerResponse();
+                $reviewerResponse->setReviewAssignment($reviewAssignment);
+
+                $reviewerResponse->setAnswer($value);
+                $reviewerResponse->setChecklist($entityManager->getRepository(ReviewChecklist::class)->find($key));
+
+                $entityManager->persist($reviewerResponse);
+            }
+            $reviewAssignment->setWaiver($request->request->get('waivers'));
+            $reviewAssignment->setRiskLevel($request->request->get('risk_level'));
+            $reviewAssignment->setRecommendation($request->request->get('recommendation'));
+            $reviewAssignment->setReviewedAt(new \DateTime());
+            $entityManager->flush();
+
+            $this->addFlash("success","Review sent!!");
+            return $this->redirectToRoute('review_application',["id"=>$reviewAssignment->getId()]);
+        }
+      
+
         $submissionOfreviewer = $entityManager->getRepository(IRBReviewAssignment::class)->find($reviewAssignment);
         $submissions = $submissionOfreviewer->getApplication();
         #######################
@@ -304,10 +333,21 @@ class IRBReviewAssignmentController extends AbstractController
 
         $reviews = $entityManager->getRepository(IRBReview::class)->findBy(['application' => $reviewAssignment->getApplication(), 'reviewed_by' => $measareviewer]);
 
+
+
+        //irb review  checklist
+
+        $irb_review_checklist_group = $entityManager->getRepository(ReviewChecklistGroup::class)->findAll();
+
+        if ($request->request->get('review-checklist')) {
+            dd($request->request);
+        }
+
         return $this->render('application/irb-revise.html.twig', [
             'review_assignment' => $reviewAssignment,
             'review_assignments' => $reviews,
             'submission' => $submissions,
+            'irb_review_checklist_group' => $irb_review_checklist_group,
             'form' => $form->createView(),
         ]);
     }
