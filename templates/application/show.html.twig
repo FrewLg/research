@@ -128,12 +128,12 @@
 										<li class="nav-item">
 											<a class="nav-link" data-bs-toggle="tab" href="#attachments" role="tab" aria-selected="false">{% trans %}Attachments{% endtrans %}</a>
 										</li>
-										{% if application.amendments %}
+										{% if application.amendments | length > 0 %}
 										<li class="nav-item">
 											<a class="nav-link" data-bs-toggle="tab" href="#amendment" role="tab" aria-selected="false">{% trans %}Amendment{% endtrans %}</a>
 										</li>
 										{% endif %}
-										{% if application.revisions %}
+										{% if application.revisions | length > 0 %}
 										<li class="nav-item">
 											<a class="nav-link" data-bs-toggle="tab" href="#revisions" role="tab" aria-selected="false">{% trans %}Revisions{% endtrans %}</a>
 										</li>
