@@ -81,20 +81,7 @@ class IRBReviewAssignmentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $file3 = $form->get('file_tobe_reviewed')->getData();
-
-            if ($file3 == '') {
-
-                $this->addFlash(
-                    'danger',
-                    'Review file is not uploaded !'
-                );
-            } else {
-                $file3 = $form->get('file_tobe_reviewed')->getData();
-                $fileName3 = md5(uniqid()) . '.' . $file3->guessExtension();
-                $file3->move($this->getParameter('review_files'), $fileName3);
-                $reviewAssignment->setFileTobeReviewed($fileName3);
-            }
+           
 
             $reviewAssignment->setApplication($submission);
             $duedate = $reviewAssignment->getDuedate();

@@ -6,29 +6,43 @@
 {% endblock %}
 
 {% block body %}
-	<div class="card">
-		<div class="card-body row">
-			{% if is_granted('mng_brd_mbr') %}
+	<div
+		class="row">
+		{# <div class="card-body row"> #}
+		{% if is_granted('mng_brd_mbr') %}
 
 
-				<div class="col-3">
-					<h6>Register new Board Member</h6>
-					{{ include('board_member/_form.html.twig') }}
+			<div class="col-3">
+				<div class="card">
+					<div class="card-header ">
+						<h6>Register new Board Member</h6>
+
+					</div>
+					<div class="card-body row">
+						{{ include('board_member/_form.html.twig') }}
+					</div>
 				</div>
-				<div class="col-8 offset-1">
-				{% else %}
-					<div class="col-12">
+			</div>
+			<div class="col-8 ">
+			{% else %}
+				<div class="col-12">
 
-					{% endif %}
-					<form action="" class="float form-horizontal flex-column form-inline ">
-						<h6 class=" d-inline">Board Members List(Total:-{{board_members.totalItemCount}})
+				{% endif %}
+				<div class="card">
+					<div class="card-header ">
+		 <h6 class=" d-inline">Board Members List(Total:-{{board_members.totalItemCount}})
 						</h6>
-						<input type="search" name="search" value="{{app.request.query.get('search')}}" class=" d-inline " placeholder="Search">
+					</div>
+					<div class="card-body ">
+
+
+					<form action="" class="float form-horizontal flex-column form-inline ">
+						
+						<input class='form-control col-6' type="search" name="search" value="{{app.request.query.get('search')}}" class=" d-inline " placeholder="Search">
 
 					</form>
-
-
-					<table class="table">
+<br>
+					<table class="table table-striped table-bordered">
 						<thead>
 							<tr>
 								<th>#</th>
@@ -67,7 +81,7 @@
 					</table>
 
 				</div>
-                	<div class="float-right" id="custompag	inator">{{ knp_pagination_render(board_members) }}</div>
+				<div class="float-right" id="custompag	inator">{{ knp_pagination_render(board_members) }}</div>
 
 			</div>
 		</div>

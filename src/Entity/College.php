@@ -101,6 +101,11 @@ class College
      */
     private $boardMembers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=\App\Entity\IRB\IrbReviewAtachement::class, mappedBy="college")
+     */
+    private $irbReviewAtachements;
+
 
  
    
@@ -116,6 +121,7 @@ class College
         $this->guidelines = new ArrayCollection();
         $this->callForTrainings = new ArrayCollection();
         $this->boardMembers = new ArrayCollection();
+        $this->irbReviewAtachements = new ArrayCollection();
       }
  
 
@@ -473,6 +479,36 @@ class College
             // set the owning side to null (unless already changed)
             if ($boardMember->getCollege() === $this) {
                 $boardMember->setCollege(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|IrbReviewAtachement[]
+     */
+    public function getIrbReviewAtachements(): Collection
+    {
+        return $this->irbReviewAtachements;
+    }
+
+    public function addIrbReviewAtachement(\App\Entity\IRB\IrbReviewAtachement $irbReviewAtachement): self
+    {
+        if (!$this->irbReviewAtachements->contains($irbReviewAtachement)) {
+            $this->irbReviewAtachements[] = $irbReviewAtachement;
+            $irbReviewAtachement->setCollege($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIrbReviewAtachement(\App\Entity\IRB\IrbReviewAtachement  $irbReviewAtachement): self
+    {
+        if ($this->irbReviewAtachements->removeElement($irbReviewAtachement)) {
+            // set the owning side to null (unless already changed)
+            if ($irbReviewAtachement->getCollege() === $this) {
+                $irbReviewAtachement->setCollege(null);
             }
         }
 

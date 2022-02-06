@@ -65,15 +65,15 @@ class IRBReviewAssignmentType extends AbstractType
 
 
 
-            ->add('file_tobe_reviewed', FileType::class, [
-                'label' => 'Upload proposal attachment',
-                'mapped' => false,  'attr' => [
-                    'class' => 'form-control  m-0   ',
-                    'required' => true,
+            // ->add('file_tobe_reviewed', FileType::class, [
+            //     'label' => 'Upload proposal attachment',
+            //     'mapped' => false,  'attr' => [
+            //         'class' => 'form-control  m-0   ',
+            //         'required' => true,
 
-                ],
-                'required' => true,
-            ])
+            //     ],
+            //     'required' => true,
+            // ])
 
 
             ->add('duedate', DateType::class, array(
@@ -129,16 +129,16 @@ class ExternalIRBReviewAssignmentType extends AbstractType
 
 
 
-            ->add('file_tobe_reviewed', FileType::class, [
-                'label' => 'Upload proposal attachment',
-                'mapped' => false,
-                'attr' => [
-                    'class' => 'form-control   col-md-12 col-sm-12 col-lg-9  ',
-                    'required' => true,
+            // ->add('file_tobe_reviewed', FileType::class, [
+            //     'label' => 'Upload proposal attachment',
+            //     'mapped' => false,
+            //     'attr' => [
+            //         'class' => 'form-control   col-md-12 col-sm-12 col-lg-9  ',
+            //         'required' => true,
 
-                ],
-                'required' => true,
-            ])
+            //     ],
+            //     'required' => true,
+            // ])
 
 
 

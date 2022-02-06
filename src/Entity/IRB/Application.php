@@ -3,6 +3,7 @@
 namespace App\Entity\IRB;
 
 use App\Entity\IRB\Amendment;
+use App\Entity\IrbCertificate;
 use App\Entity\User;
 use App\Entity\IRB\CoAuthor as CoAuthor;
 use App\Repository\IRB\ApplicationRepository;
@@ -164,6 +165,12 @@ class Application
      */
     private $revisions;
 
+   
+    /**
+     * @ORM\OneToMany(targetEntity=IrbCertificate::class, mappedBy="irbApplication", orphanRemoval=true)
+     */
+    private $irbCertificates;
+
 
     public function __construct()
     {
@@ -178,7 +185,8 @@ class Application
         $this->renewalRequests = new ArrayCollection();
         $this->revisions = new ArrayCollection();
         $this->iRBReviewAssignments = new ArrayCollection();
-    }
+        $this->irbCertificates = new ArrayCollection();
+     }
 
     public function setUploadFile(?File $imageFile = null): void
     {
@@ -656,6 +664,39 @@ class Application
             // set the owning side to null (unless already changed)
             if ($revision->getApplication() === $this) {
                 $revision->setApplication(null);
+            }
+        }
+
+        return $this;
+    }
+
+     
+ 
+
+    /**
+     * @return Collection|IrbCertificate[]
+     */
+    public function getIrbCertificates(): Collection
+    {
+        return $this->irbCertificates;
+    }
+
+    public function addIrbCertificate(IrbCertificate $irbCertificate): self
+    {
+        if (!$this->irbCertificates->contains($irbCertificate)) {
+            $this->irbCertificates[] = $irbCertificate;
+            $irbCertificate->setIrbApplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIrbCertificate(IrbCertificate $irbCertificate): self
+    {
+        if ($this->irbCertificates->removeElement($irbCertificate)) {
+            // set the owning side to null (unless already changed)
+            if ($irbCertificate->getIrbApplication() === $this) {
+                $irbCertificate->setIrbApplication(null);
             }
         }
 

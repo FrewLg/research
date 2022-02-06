@@ -11,7 +11,7 @@
 
 
 	<div class="row">
-		<div class="col-lg-12 row">
+		<div class="col-lg-12 mb-2">
 			<div class="accordion" id="accordionExample">
 				<div class="accordion-item active">
 					<h5 class="accordion-header m-0" id="headingOne">
@@ -56,22 +56,27 @@
 
 
 					<div class="table-responsive">
-						<table class="table">
+						<table class="table table-striped table-bordered">
 							<thead>
 								<tr>
 									<th>#</th>
 									<th>Title</th>
 									<th>Project Type</th>
-									<th>Submitted Date</th>
+									<th nowrap='nowrap'>Submitted Date</th>
 									<th>Status</th>
-									<th>actions</th>
-								</tr>
+ 								</tr>
 							</thead>
 							<tbody>
 								{% for application in applications %}
 									<tr>
 										<td>{{ loop.index }}</td>
-										<td>{{ application.title }}</td>
+										<td>
+										
+											<a class="text-primary" href="{{ path('application_show', {'id': application.id}) }}">{{ application.title }}</a>
+										
+										
+										
+										</td>
 										<td>{{ application.projectType }}</td>
 										<td>{{ application.createdAt|date('Y-m-d h:i') }}</td>
 
@@ -82,9 +87,7 @@
 											{% endif %}
 
 										</td>
-										<td>
-											<a class="btn btn-primary" href="{{ path('application_show', {'id': application.id}) }}">show</a>
-										</td>
+										 
 									</tr>
 								{% else %}
 									<tr>
