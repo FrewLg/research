@@ -93,7 +93,7 @@
 	<div class="col-md-12 parent">
 		<div class="row">
 			<div class="col-1 my-checkbox">
-				{{form_widget(attachment.checked)}}
+				{{form_widget(attachment.checked,{"attr":{"checked":attachment.type.vars.data.isRequired,"disabled":attachment.type.vars.data.isRequired}})}}
 			</div>
 			<div class="col-6">
 				{{attachment.type.vars.data}}
@@ -332,57 +332,14 @@
 				{% endfor %}
 			{% endfor %}
 		</fieldset> #}
-	<h3> {% trans %} Other {% endtrans %}</h3>
-	<fieldset>
-		<div class="">
-	<h4>NOTE FOR STUDENT PROJECTS: any cover letters, consent forms, and/or questionnaires that students give to research participants must include the following statement:</h4>
-	<div class="bg-warning p-2">
-		This survey (or project, etc.) is being conducted in partial fulfillment of the course requirements for (course title), taught by (instructor name), at the Jimma University. This course is in compliance with the course certification requirements of JU’s Institutional Review Board for the Protection of Human Subjects.
-	</div>
 
-</div>
-<div class="additional" id="additional">
-<h6>Research Protocols <span class="text-danger">*</span></h6>
-<small>(since you have NOT checked boxes in BOTH  sections of previouse Part, provide the outlined items below as an additional document attachment)</small>
-{{ form_widget(form.uploadFile) }}
-	Methodology
-<ol>
-		<li> Describe who the project research subjects will be and how they will be solicited, recruited, or contacted. </li>
-		<li> State how much time will be required of each subject.</li>
-		<li> Describe procedures, methods, and strategies to which subjects will be subjected. Indicate what data, measures, and/or observations will be collected and used in the project, including any plans to audio or video record human subjects. </li>
-		<li> Identify if and how participants will be debriefed on the project or study results.</li>
-		</ol>
-	Voluntary Participation
-	<ol>
-		<li> Specify the steps that will be taken to insure that each individual's participation is voluntary. </li>
-		<li>State what, if any, inducements or incentives will be offered for subject participation.</li>
-	</ol>
-	Confidentiality of Data and Privacy Protection
-	<ol>
-	<li> State what identifying information, if any, will be collected (e.g. cohort databases that include SSN# data on individuals, surveys or interviews by name or student number, etc.).</li>
-	<li> Describe the methods to be used to safeguard the privacy of your subjects and ensure the confidentiality of data obtained, including the storage and destruction of data, including that of computer, print, audio and/or video materials.</li>
-	<li> Identify plans to share this data with any intended audiences (such as in a performance report for funding source, conference presentations, published articles or reports, etc.).</li>
-	</ol>
-	Risks to Participants
-	<ol>
-		<li> Describe any potential risks to participating individuals – physical, emotional, spiritual, psychological, social, legal, professional, or other.</li>
-		<li> Include all known and anticipated risks to the participants such as side effects, risks of placebo treatments, etc. </li>
-		<li>If research proposes substantial risk to human participants, list emergency backup procedures in place and made available to subjects, such as medical or counseling interventions.</li>
-	</ol>
-	Benefits for Participants
-	<ol>
-		<li> Describe the benefits and/or any compensation that the participating individuals can expect.</li>
-		<li> Describe the gains in knowledge that may result from the project or study.</li>
-	</ol>
-</div>
-	</fieldset>
 			<h3> {% trans %} Confirmation {% endtrans %}</h3>
 			<fieldset>
 			
 				In making this application, I certify that I:
 				<ol>
 					<li>Have reviewed all information on the Jimma University Institutional Review Board for Human Subjects’ Protection on the Portal at
-						<a hre="http://ju.edu.et/irb">www.ju.edu.et/irb</a>
+						<a href="http://ju.edu.et/irb">www.ju.edu.et/irb</a>
 					</li>
 					<li>Intend to comply with the Jimma University IRB policies.</li>
 					<li>Agree to comply with federal, state, and local laws regarding the protection of human participants in research.</li>
@@ -391,6 +348,13 @@
 					<li>Understand that records of the participants will be kept for at least three (3) years after the completion of the research for the purpose of IRB inquirie.</li>
 					<li>May begin research when the IRB gives notice of its approval.</li>
 				</ol>
+				<div class="mb-3">
+					<div class="form-check">
+						<input id="agree" type="checkbox" class="form-check-input">
+						<label class="form-check-label" > I HAVE READ AND UNDERSTAND THE ABOVE POLICIES. AND AGREE TO ABIDE BY THEM.</label>
+						<div  class="text-danger d-none" id="agree-error">Please indicate that you have read and agree to the policies</div>
+					</div>
+                </div>
 
 
 			</fieldset>
@@ -415,8 +379,7 @@
 				jQuery.validator.addMethod("greaterStart", function (value, element, params) {
 			
     return this.optional(element) || new Date(value) >= new Date($(params).val());
-},'Must be greater than start date.');
-
+},'Must be later than the than start date.');
 
 var form = $("#form-horizontal");
 
@@ -455,10 +418,19 @@ if(currentIndex== 6){
 
 },
 onFinishing: function (event, currentIndex) {
-this.submit()
+
+
 
 
 form.validate().settings.ignore = ":disabled";
+if($("#agree").is(':checked')){
+	this.submit();
+}
+else{
+	$("#agree").addClass("error");
+	$("#agree-error").removeClass("d-none");
+	
+}
 return form.valid();
 },
 onFinished: function (event, currentIndex) {

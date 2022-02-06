@@ -34,6 +34,11 @@ class ReviewerResponse
      */
     private $answer;
 
+    public function __toString()
+    {
+       return $this->checklist;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

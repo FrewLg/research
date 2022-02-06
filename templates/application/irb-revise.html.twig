@@ -112,7 +112,14 @@
 							</div>
 						</div>
 					</div>
+					{% if review_assignment.reviewedAt %}
+					{% include "application/tabs/checklist_response.html.twig" %}
+
+					{% else %}
 					{% include "application/tabs/checklist.html.twig" %}
+						
+					{% endif %}
+					
 				</div>
 			</div>
 			{# </div> #}
