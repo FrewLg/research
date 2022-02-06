@@ -37,6 +37,11 @@ class IrbReviewAtachement
      */
     private $college;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $attachmentName;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,7 +64,7 @@ class IrbReviewAtachement
         return $this->cteatedAt;
     }
 
-    public function setCteatedAt(?\DateTimeInterface $cteatedAt): self
+    public function setCreatedAt(?\DateTimeInterface $cteatedAt): self
     {
         $this->cteatedAt = $cteatedAt;
 
@@ -78,14 +83,26 @@ class IrbReviewAtachement
         return $this;
     }
 
-    public function getCollege(): ?College
+    public function getCollege(): ?\App\Entity\College
     {
         return $this->college;
     }
 
-    public function setCollege(?College $college): self
+    public function setCollege(?\App\Entity\College $college): self
     {
         $this->college = $college;
+
+        return $this;
+    }
+
+    public function getAttachmentName(): ?string
+    {
+        return $this->attachmentName;
+    }
+
+    public function setAttachmentName(?string $attachmentName): self
+    {
+        $this->attachmentName = $attachmentName;
 
         return $this;
     }

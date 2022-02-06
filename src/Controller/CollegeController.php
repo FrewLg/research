@@ -25,7 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Guidelines;
+use App\Entity\IRB\IrbReviewAtachement;
 use App\Form\GuidelinesType;
+use App\Form\IrbReviewAtachementType;
 use App\Repository\GuidelinesRepository;
 use App\Utils\Constants;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
@@ -120,7 +122,7 @@ class CollegeController extends AbstractController
             $evaluationfromf->move($this->getParameter('college_guidelines'), $file_name);  
             $guidelineForReviewer->setEvaluationfrom($file_name); 
             }
-#########
+        #########
             $commentfrom = $formGuidelineForReviewer->get('commentfrom')->getData();  
             if (!$commentfrom){ 
             echo 'File not uploaded';
@@ -131,11 +133,7 @@ class CollegeController extends AbstractController
       $commentfrom->move($this->getParameter('college_guidelines'), $file_name2);  
       $guidelineForReviewer->setCommentfrom($file_name2); 
       }
-
-###########
-            
-
-
+ 
             $guidelineForReviewer->setCollege($college);
             $guidelineForReviewer->setCreatedAt(new \DateTime());
             $entityManager->persist($guidelineForReviewer);
@@ -153,9 +151,7 @@ class CollegeController extends AbstractController
             'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
                          'required' => false,
         
-        ],]) 
- 
-
+        ],])  
            ->add('attachment', FileType::class, [
                 'label' => 'Guideline for PI  attachment  file',
                 'attr'=>[
@@ -178,7 +174,7 @@ class CollegeController extends AbstractController
             // $file3 = $guideline->getAttachment();               
    if ($file3){ 
    echo ' file not uploaded';
-}   else{
+            }   else{
      $file3 = $guidelineform->get('attachment')->getData();  
           $fileName3 = md5(uniqid()).'.'.$file3->guessExtension();  
       $file3->move($this->getParameter('college_guidelines'), $fileName3);  
@@ -187,25 +183,17 @@ class CollegeController extends AbstractController
            $guideline->setAttachment($fileName3); 
          }
          
-        // if ($guidelineform->isSubmitted() && $guidelineform->isValid()) {
-        //     $entityManager = $this->getDoctrine()->getManager();
-        //     $entityManager->persist($guideline);
-        //     $entityManager->flush();
-
-        //     return $this->redirectToRoute('work_unit_show', array('prefix' => $college->getPrefix()));
-        // }
+         
         }
         ///////////////institutiona review board members
-    $AllIRBMembers = $entityManager->getRepository(InstitutionalReviewersBoard::class)->findBy(['college' => $college ] );
-#dd($institutionalReviewersBoard); 
-$institutionalReviewersBoard= new InstitutionalReviewersBoard() ;
-        #$form = $this->createForm(WorkUnitType::class, $workUnit);
-    $i_r_b_form = $this->createForm(InstitutionalReviewersBoardType::class, $institutionalReviewersBoard);
+        $AllIRBMembers = $entityManager->getRepository(InstitutionalReviewersBoard::class)->findBy(['college' => $college ] );
+        $institutionalReviewersBoard= new InstitutionalReviewersBoard() ;
+         $i_r_b_form = $this->createForm(InstitutionalReviewersBoardType::class, $institutionalReviewersBoard);
         $i_r_b_form->handleRequest($request);
 
         if ($i_r_b_form->isSubmitted() && $i_r_b_form->isValid()) {
            # $this->getDoctrine()->getManager()->flush();
-    $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($institutionalReviewersBoard);
             $entityManager->flush();
 
@@ -229,8 +217,54 @@ $institutionalReviewersBoard= new InstitutionalReviewersBoard() ;
          'institutional_reviewers_boards'=> $AllIRBMembers,
          'guidelineform'=>$guidelineform->createView(),
          'thematicAreaform'=> $thematicAreaform->createView(),
-             'thematic_areas' => $thematicAreas,
+         'thematic_areas' => $thematicAreas,
         ]);
+        
+    }
+        /**
+     * @Route("/irb", name="irbcollege_details", methods={"GET","POST"})
+     */
+
+    public function irbshowdetail( Request $request  ): Response
+    {
+
+    $this->denyAccessUnlessGranted('assn_clg_cntr');
+
+    $college=$this->getUser()->getUserInfo()->getCollege();
+
+    $entityManager = $this->getDoctrine()->getManager();
+    
+    $attachment= new IrbReviewAtachement();
+        $attachmentform = $this->createForm(IrbReviewAtachementType::class, $attachment);
+        $attachmentform->handleRequest($request);
+
+        if ($attachmentform->isSubmitted() && $attachmentform->isValid()) { 
+             $entityManager = $this->getDoctrine()->getManager();
+     $file3 = $attachmentform->get('attachement')->getData();  
+           
+            // $file3 = $guideline->getAttachment();               
+   if (!$file3){ 
+   echo ' file not uploaded';
+            }   
+            else{
+     $file3 = $attachmentform->get('attachement')->getData();  
+          $fileName3 = md5(uniqid()).'.'.$file3->guessExtension();  
+      $file3->move($this->getParameter('college_guidelines'), $fileName3);  
+     
+           $attachment->setAttachement($fileName3); 
+         }
+         $attachment->setCollege($college);
+      $attachment->setCreatedAt(new \DateTime());
+         $entityManager->persist($attachment);
+            $entityManager->flush(); 
+         return $this->redirectToRoute('irbcollege_details', array('id' => $college->getId()));
+         
+         
+        }             
+        return $this->render('college/ir_attachment.html.twig', [
+            'college' => $college,
+          'form' => $attachmentform->createView(),
+         ]);
         
     }
 

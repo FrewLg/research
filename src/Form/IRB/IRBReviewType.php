@@ -37,18 +37,18 @@ class IRBReviewType extends AbstractType
             ],]) 
             
 
-        ->add('attachment', FileType::class, [
-            'label' => '  Report        file',
-            'mapped' => false,
-            'required' => true,
-            'attr' => [
+        // ->add('attachment', FileType::class, [
+        //     'label' => '  Report        file',
+        //     'mapped' => false,
+        //     'required' => true,
+        //     'attr' => [
  
-                'class' => 'form-control',
+        //         'class' => 'form-control',
 
-                'required' => true,
+        //         'required' => true,
 
-            ],
-        ])
+        //     ],
+        // ])
 
         // ->add('evaluation_attachment', FileType::class, [
         //     'label' => 'Grading    file',

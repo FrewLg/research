@@ -304,45 +304,59 @@
 
 													{{ form_start(publicationform) }}
 
-													{# {{ form_widget(publicationform) }} #}
-													{{ form_widget(publicationform.doi) }}
+<script>
+
+		
+		window.onload = function() {
+        document.getElementById('publication_article_document').style.display = 'none';
+ 
+    }
+ 
+ function attachOrDoi() {
+	 
+	if (document.getElementById('noCheck').checked) {
+ 	document.getElementById('publication_doi').style.display = 'block';
+ 	document.getElementById('publication_article_document').style.display = 'none';
+
+ 	} else {
+
+  	document.getElementById('publication_doi').style.display = 'none';
+ 	document.getElementById('publication_article_document').style.display = 'block';
+
+ 	}
+	}
+		</script>
+
+		
+													{{ form_label(publicationform.title) }}
+													{{ form_widget(publicationform.title) }}
+													{{ form_label(publicationform.journal_name) }}
+													{{ form_widget(publicationform.journal_name) }}
+													{{ form_label(publicationform.impact_factor) }}
+													{{ form_widget(publicationform.impact_factor) }}
+													{{ form_label(publicationform.citation_score) }}
+													{{ form_widget(publicationform.citation_score) }}
+													{{ form_label(publicationform.published_at) }}
+													{{ form_widget(publicationform.published_at) }}
+													{{ form_label(publicationform.member_role) }}
+													{{ form_widget(publicationform.member_role) }}
  
 												
+						<br>	<br>																
+	 Attachment	<input type="radio" onclick="attachOrDoi();" name="yesno" id="doi"/>
 
-											<script type="text/javascript">
+	DOI 	<input type="radio" onclick="attachOrDoi();" name="yesno" id="noCheck" checked='checked'/>
+													<br>
+													<br>
+ 													{{ form_widget(publicationform.doi) }}
 
-													 function yesnoCheck() {
-    yes1 = document.getElementById('yes')
-    yes2 = document.getElementById('acc')
-    
-    no1 = document.getElementById('other3')
-    no2 = document.getElementById('other4')
-    
-    if (document.getElementById('yesCheck').checked) {
-        yes1.type = yes2.type = 'text';
-        no1.type = no2.type = 'hidden';
-    } else {
-        no1.type = no2.type = 'text';
-        yes1.type = yes2.type = 'hidden';
-    }
-}
-											</script>
-
-											Yes <input type="radio" onclick="yesnoCheck();" name="yesno" id="yesCheck"/>
-
-No <input type="radio" onclick="yesnoCheck();" name="yesno" id="noCheck"/>
-
-<br>
-
-<input type='hidden' id='yes' name='yes' placeholder='If yes, explain:'/>
-<input type='hidden' id='acc' name='acc' placeholder='What can we do to accommodate you?'/>
-
-<input type='hidden' id='other3' name='other3' placeholder='other 3'>
-<input type='hidden' id='other4' name='other4' placeholder='other 4'>
  
+													{{ form_widget(publicationform.article_document) }}
 
- 	</div>
-												<!-- end modal-body-->
+
+
+
+											 		<!-- end modal-body-->
 												<div class="modal-footer">
 													<button type="submit" class="btn btn-soft-primary btn-sm">Add Publication</button>
 													<button type="button" class="btn btn-soft-secondary btn-sm" data-bs-dismiss="modal">Close</button>
@@ -362,6 +376,7 @@ No <input type="radio" onclick="yesnoCheck();" name="yesno" id="noCheck"/>
 							<!--end card-->
 						</div>
 						<!--end col-->
+					</div>
 					</div>
 				</div>
 				<!--end tab-pane-->

@@ -81,7 +81,7 @@ class IRBReviewAssignmentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-           
+          
 
             $reviewAssignment->setApplication($submission);
             $duedate = $reviewAssignment->getDuedate();
@@ -249,9 +249,7 @@ class IRBReviewAssignmentController extends AbstractController
 
             $this->addFlash("success","Review sent!!");
             return $this->redirectToRoute('review_application',["id"=>$reviewAssignment->getId()]);
-        }
-      
-
+        } 
         $submissionOfreviewer = $entityManager->getRepository(IRBReviewAssignment::class)->find($reviewAssignment);
         $submissions = $submissionOfreviewer->getApplication();
         #######################
@@ -279,36 +277,10 @@ class IRBReviewAssignmentController extends AbstractController
         $form = $this->createForm(IRBReviewType::class, $review);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $reviewfile = $form->get('attachment')->getData();
-            if ($reviewfile == "") {
-                $this->addFlash(
-                    'danger',
-                    'Review file  not uploaded!'
-                );
-            } else {
-                $reviewfile = $form->get('attachment')->getData();
-                $Areviewfile = md5(uniqid()) . '.' . $reviewfile->guessExtension();
-                $reviewfile->move($this->getParameter('irb_uploads'), $Areviewfile);
-                $review->setAttachment($Areviewfile);
-            }
-            ##########
-            // $reviewfile2 = $form->get('evaluation_attachment')->getData();
-            // // if ($reviewfile2 == "") {
-            //     $this->addFlash(
-            //         'danger',
-            //         'Evaluation  file  not uploaded!'
-            //     );
-            // } else {
-            //     $reviewfile2 = $form->get('evaluation_attachment')->getData();
-            //     $Areviewfile2 = md5(uniqid()) . '.' . $reviewfile2->guessExtension();
-            //     $reviewfile2->move($this->getParameter('irb_uploads'), $Areviewfile2);
-            //     $review->setEvaluationAttachment($Areviewfile2);
-            // }
-            ###############
+            $entityManager = $this->getDoctrine()->getManager(); 
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
-            $reviewAssignment->setClosed(1);
+            // $reviewAssignment->setClosed(1);
             $entityManager->persist($review);
             $entityManager->flush();
             $this->addFlash(
@@ -319,11 +291,6 @@ class IRBReviewAssignmentController extends AbstractController
         }
 
         $reviews = $entityManager->getRepository(IRBReview::class)->findBy(['application' => $reviewAssignment->getApplication(), 'reviewed_by' => $measareviewer]);
-
-
-
-        //irb review  checklist
-
         $irb_review_checklist_group = $entityManager->getRepository(ReviewChecklistGroup::class)->findAll();
 
         if ($request->request->get('review-checklist')) {
@@ -343,15 +310,11 @@ class IRBReviewAssignmentController extends AbstractController
      */
     public function delete(IRBReviewAssignment $reviewAssignment): Response
     {
-        $this->denyAccessUnlessGranted('assn_clg_cntr');
-
-        $entityManager = $this->getDoctrine()->getManager();
-
+        $this->denyAccessUnlessGranted('assn_clg_cntr'); 
+        $entityManager = $this->getDoctrine()->getManager(); 
         $submission = $reviewAssignment->getApplication();
         $entityManager->remove($reviewAssignment);
-        $entityManager->flush();
-
-
+        $entityManager->flush(); 
         $this->addFlash("info", "Reviewer deleted successfully ! Thank you!");
 
         return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
