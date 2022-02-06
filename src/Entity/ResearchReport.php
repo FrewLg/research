@@ -215,7 +215,6 @@ class ResearchReport
 
         return $this;
     }
- 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
