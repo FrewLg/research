@@ -34,10 +34,10 @@ class IRBReviewAssignmentType extends AbstractType
             return;
         }
 
-        $already_assigned = (new ArrayCollection($this->iRBReviewAssignmentRepository->findBy(['application' => $options['application'],"token"=>null])))->map(function ($element) {
+        $already_assigned = (new ArrayCollection($this->iRBReviewAssignmentRepository->findBy(['application' => $options['application'], "token" => null])))->map(function ($element) {
             return  $element->getIrbreviewer();
         });
-       
+
 
 
         $builder
@@ -45,7 +45,7 @@ class IRBReviewAssignmentType extends AbstractType
                 'irbreviewer',
                 EntityType::class,
                 [
-                    "required"=>false,
+                    "required" => false,
                     'class' => User::class,
 
                     'query_builder' => function (EntityRepository $er) use ($already_assigned) {
@@ -61,8 +61,7 @@ class IRBReviewAssignmentType extends AbstractType
                         "class" => "select2 col-3"
                     ],
                     'choice_label' => function (User $user) {
-                        return $user."-(".count($user->getIRBReviewAssignments()).")";
-                
+                        return $user . "-(" . count($user->getIRBReviewAssignments()) . ")";
                     },
 
                 ]
@@ -70,7 +69,7 @@ class IRBReviewAssignmentType extends AbstractType
 
 
 
-          
+
 
             ->add('duedate', DateType::class, array(
                 'placeholder' => [
@@ -85,8 +84,7 @@ class IRBReviewAssignmentType extends AbstractType
                     'required' => true,
                     'class' => 'form-control',
                 )
-            ))
-            ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -103,9 +101,9 @@ class ExternalIRBReviewAssignmentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-     
+
         $reviewAssignment = $options['data'];
-       
+
         if (!$reviewAssignment  instanceof IRBReviewAssignment) {
             return;
         }
@@ -142,8 +140,7 @@ class ExternalIRBReviewAssignmentType extends AbstractType
                     'required' => true,
                     'class' => 'form-control',
                 )
-            ))
-            ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

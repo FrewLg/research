@@ -22,12 +22,13 @@
 								<ul class="nav nav-pills nav-justified">
 									<li>
 										<a class="nav-link active " href="#tab-1" data-bs-toggle="tab">
-											Internal IRB  Members
+											Internal reviewer  
 										</a>
 									</li>
 									<li>
 										<a class="nav-link  " href="#tab-2" data-bs-toggle="tab">
 											External Reviewer
+										
 										</a>
 									</li>
 
@@ -374,7 +375,7 @@
 
 					<th>Email</th>
 					<th>Assign date</th>
-					<th>Response status
+					<th>Review status
 					</th>
 
 
@@ -389,6 +390,7 @@
 						<td class='font-16 m-0     mb-1 align-right'>{{review_assignment.getExternalirbreviewerName()}}</td>
 						<td >{{review_assignment.getExternalirbreviewerEmail()}}</td>
 						<td>{{review_assignment.InvitationSentAt|date('Y-m-d')}}</td>
+						<td><span class="badge bg-warning">Pending</span></td>
 						<td>{{review_assignment.duedate|date('Y-m-d')}}</td>
 
 					</tr>

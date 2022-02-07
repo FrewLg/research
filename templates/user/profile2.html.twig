@@ -304,9 +304,59 @@
 
 													{{ form_start(publicationform) }}
 
-													{{ form_widget(publicationform) }}
-												</div>
-												<!--end modal-body-->
+<script>
+
+		
+		window.onload = function() {
+        document.getElementById('publication_article_document').style.display = 'none';
+ 
+    }
+ 
+ function attachOrDoi() {
+	 
+	if (document.getElementById('noCheck').checked) {
+ 	document.getElementById('publication_doi').style.display = 'block';
+ 	document.getElementById('publication_article_document').style.display = 'none';
+
+ 	} else {
+
+  	document.getElementById('publication_doi').style.display = 'none';
+ 	document.getElementById('publication_article_document').style.display = 'block';
+
+ 	}
+	}
+		</script>
+
+		
+													{{ form_label(publicationform.title) }}
+													{{ form_widget(publicationform.title) }}
+													{{ form_label(publicationform.journal_name) }}
+													{{ form_widget(publicationform.journal_name) }}
+													{{ form_label(publicationform.impact_factor) }}
+													{{ form_widget(publicationform.impact_factor) }}
+													{{ form_label(publicationform.citation_score) }}
+													{{ form_widget(publicationform.citation_score) }}
+													{{ form_label(publicationform.published_at) }}
+													{{ form_widget(publicationform.published_at) }}
+													{{ form_label(publicationform.member_role) }}
+													{{ form_widget(publicationform.member_role) }}
+ 
+												
+						<br>	<br>																
+	 Attachment	<input type="radio" onclick="attachOrDoi();" name="yesno" id="doi"/>
+
+	DOI 	<input type="radio" onclick="attachOrDoi();" name="yesno" id="noCheck" checked='checked'/>
+													<br>
+													<br>
+ 													{{ form_widget(publicationform.doi) }}
+
+ 
+													{{ form_widget(publicationform.article_document) }}
+
+
+
+
+											 		<!-- end modal-body-->
 												<div class="modal-footer">
 													<button type="submit" class="btn btn-soft-primary btn-sm">Add Publication</button>
 													<button type="button" class="btn btn-soft-secondary btn-sm" data-bs-dismiss="modal">Close</button>
@@ -326,6 +376,7 @@
 							<!--end card-->
 						</div>
 						<!--end col-->
+					</div>
 					</div>
 				</div>
 				<!--end tab-pane-->
@@ -530,15 +581,15 @@
 											</div>
 											<script type="text/javascript">
 
-												function yesnoCheck() {
-if (document.getElementById('yesCheck').checked) {
-document.getElementById('ifYes').style.display = 'block';
-} else 
-document.getElementById('ifYes').style.display = 'none';
+													function yesnoCheck() {
+													if (document.getElementById('yesCheck').checked) {
+													document.getElementById('ifYes').style.display = 'block';
+													} else 
+													document.getElementById('ifYes').style.display = 'none';
 
 
 
-}
+													}
 											</script>
 											Yes
 											<input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck" required='required'>

@@ -20,6 +20,7 @@ use App\Entity\IRB\ReviewStatus;
 use App\Entity\IRB\ReviewStatusGroup;
 use App\Entity\IRB\Revision;
 use App\Entity\IRB\RevisionAttachment;
+use App\Entity\IrbCertificate;
 use App\Form\IRB\ApplicationFilterType;
 use App\Form\IRB\AmendmentType;
 use App\Form\IRB\ApplicationType;
@@ -27,6 +28,8 @@ use App\Form\IRB\RevisionType;
 use App\Repository\IRB\ApplicationRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -245,4 +248,52 @@ class ApplicationController extends AbstractController
 
         return $this->redirectToRoute('application_index', [], Response::HTTP_SEE_OTHER);
     }
+
+     /**
+     * @Route("/{id}/certify", name="irb_cert", methods={"GET"})
+     */
+    public function exportcertnow(IrbCertificate $uid) {
+
+        // 
+
+        $em = $this->getDoctrine()->getManager();
+
+ 
+        $submission = $em->getRepository('App:IrbCertificate')->findOneBy(['irbApplication' => $uid]);
+
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('isRemoteEnabled', true);
+        $pdfOptions->set('tempDir', '/tmp');
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        $dompdf->set_option("isPhpEnabled", true);
+
+        $html = $this->renderView('application/cert.html.twig', [
+            'name' => $this->getUser(),
+             'desc' => $submission->getValidUntil(),
+             'type' => $submission->getCertificateCode(),
+             'date'=> $submission->getIrbApplication(),
+             'about' => $submission->getIrbApplication(),
+             'training' => $submission->getIrbApplication()->getType() ,
+              
+        ]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        // $font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
+        // $font = null;
+        // $dompdf->getCanvas()->page_text(72, 18,  $font, 10, array(0, 0, 0));
+
+        ob_end_clean();
+        $filename = $submission->getParticipant();
+
+        $dompdf->stream($filename . "- certificate.pdf", [
+            "Attachment" => true,
+        ]);
+    }
+
+    
 }

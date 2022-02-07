@@ -17,8 +17,10 @@ class PublicationType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('doi' , TextType::class,[ 'label'=>"DOI:",
-            'attr'=>['label'=>"DOI"]])
+            ->add('doi' , TextType::class,[ 'label'=>"DOI",
+            'attr'=>['label'=>"DOI",
+            'class'=>'form-control mb-0'
+            ]])
             ->add('journal_name')
             ->add('impact_factor')
             ->add('citation_score')
@@ -45,7 +47,7 @@ class PublicationType extends AbstractType
                 'required' => false,
                 "attr"=>[
                     "accept"=>"image/*",
-                    "class"=>"form-control",
+                    "class"=>"form-control m-0",
 
                 ]
             ])

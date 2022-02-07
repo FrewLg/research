@@ -97,7 +97,7 @@
 					</div>
 
 					<div class="tab-pane  p-3	 " id="profile" role="tabpanel">
-					
+
 						<div class="card">
 							<div class="card-header">
 								<h5>Revise
@@ -112,14 +112,50 @@
 							</div>
 						</div>
 					</div>
+					{% if review_assignment.reviewedAt %}
+					{% include "application/tabs/checklist_response.html.twig" %}
+
+					{% else %}
 					{% include "application/tabs/checklist.html.twig" %}
+						
+					{% endif %}
+					
 				</div>
 			</div>
 			{# </div> #}
 		</div>
 		<div class="col-lg-3">
 
+<div class="card">
+				<div class="card-header">
+					<h5 class="text-default  mb-0 font-15">Guidelines and attachement</h5>
+				</div>
+				<div class="card-body ">
+					<div class="text-">
 
+						<p class="text-muted  mb-0 font-15">
+							 
+							
+					<ol class='row mt-2 d-flex align-items-center'>
+
+							{% for guideline_for_reviewer in review_assignment.application.SubmittedBy.userInfo.college.irbReviewAtachements %}
+
+<li>
+								<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ guideline_for_reviewer.attachement ) }}">
+									{{guideline_for_reviewer.attachmentName}}
+									<i class="fa fa-download"></i>
+								</a>
+</li>
+
+								{% else %}
+							{% endfor %}
+					</ol>
+
+						</p>
+					</div>
+					<div class="row mt-2 d-flex align-items-center"></div>
+				</div>
+			</div>
 			<div class="card">
 				<div class="card-header">
 					<h5 class="text-default  mb-0 font-15">Review info</h5>
@@ -136,11 +172,13 @@
 								Review duedate:
 								{{ review_assignment.duedate ? review_assignment.duedate|date('d-m-y') : '' }}
 							</span>
+						 
 						</p>
 					</div>
 					<div class="row mt-2 d-flex align-items-center"></div>
 				</div>
 			</div>
+			
 			<div class="card">
 				<div class="card-header">
 					<h5>Application attachments</h5>
@@ -163,6 +201,7 @@
 
 				</div>
 			</div>
+			
 
 
 		</div>
