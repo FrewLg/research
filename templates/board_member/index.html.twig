@@ -12,77 +12,104 @@
 		{% if is_granted('mng_brd_mbr') %}
 
 
-			<div class="col-3">
-				<div class="card">
-					<div class="card-header ">
-						<h6>Register new Board Member</h6>
-
-					</div>
-					<div class="card-body row">
-						{{ include('board_member/_form.html.twig') }}
-					</div>
-				</div>
-			</div>
-			<div class="col-8 ">
-			{% else %}
 				<div class="col-12">
 
-				{% endif %}
-				<div class="card">
-					<div class="card-header ">
-		 <h6 class=" d-inline">Board Members List(Total:-{{board_members.totalItemCount}})
-						</h6>
+					<div class="accordion" id="accordionExample">
+						<div class="accordion-item">
+							<h5 class="accordion-header m-0" id="headingOne">
+								<button class="accordion-button collapsed fw-semibold btn-soft-primary btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-controls="collapseOne">
+									Register new Board Member
+								</button>
+							</h5>
+							<div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+								<div class="accordion-body row">
+									{{ include('board_member/_form.html.twig') }}
+								</div>
+							</div>
+						</div>
+
+
 					</div>
-					<div class="card-body ">
+				</div>
 
 
-					<form action="" class="float form-horizontal flex-column form-inline ">
-						
-						<input class='form-control col-6' type="search" name="search" value="{{app.request.query.get('search')}}" class=" d-inline " placeholder="Search">
+			{% endif %}
+			</br>
+			</br>
+			</br>
+			<div class="col-12">
+				<form action="" class="float form-horizontal flex-column form-inline ">
+					<h6 class=" d-inline">Board Members List(Total:-{{board_members.totalItemCount}})
+					</h6>
+					<input type="search" name="search" value="{{app.request.query.get('search')}}" class=" d-inline " placeholder="Search">
 
-					</form>
-<br>
-					<table class="table table-striped table-bordered">
-						<thead>
+				</form>
+
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							<th>College</th>
+							<th>Department</th>
+							<th>Academic Rank</th>
+							<th>Roles</th>
+
+
+							{% if  is_granted('mng_brd_mbr') %}
+
+								<th>actions</th>
+							{% endif %}
+						</tr>
+					</thead>
+					<tbody>
+						{% for board_member in board_members %}
 							<tr>
-								<th>#</th>
-								<th>Name</th>
-								<th>College</th>
-								<th>Assigned At</th>
-								<th>Status</th>
+								<td>{{ loop.index }}</td>
+
+								<td>{{ board_member.user }}</td>
+								<td>{{ board_member.college }}</td>
+								<td>{{ board_member.user.userInfo.department }}</td>
+								<td>{{ board_member.user.userInfo.academicrank }}</td>
+								<td>
+
+									<form action="" method="POST" class="float form-horizontal flex-column form-inline ">
+										<input hidden name="change-role" value="true"/>
+										<input hidden name="board_member" value="{{board_member.id}}"/>
+										<select name="roles" class="form-control" onchange="if(confirm('Save changes?')){this.form.submit()}">
+											<optgroup label="Role">
+
+												<option value="Member" {{board_member.role=='Member'?"selected":""}}>Member</option>
+												<option value="Secretary" {{board_member.role=='Secretary'?"selected":""}}>
+													Secretary</option>
+												<option value="Chair" {{board_member.role=='Chair'?"selected":""}}>Chair</option>
+											</optgroup>
+
+										</select>
+									</form>
+
+
+								</td>
+
 								{% if  is_granted('mng_brd_mbr') %}
 
-									<th>actions</th>
+									<td>
+										{{ include('board_member/_delete_form.html.twig') }}
+									</td>
 								{% endif %}
 							</tr>
-						</thead>
-						<tbody>
-							{% for board_member in board_members %}
-								<tr>
-									<td>{{ loop.index }}</td>
-
-									<td>{{ board_member.user }}</td>
-									<td>{{ board_member.college }}</td>
-									<td>{{ board_member.assignedAt ? board_member.assignedAt|ago : '' }}</td>
-									<td>{{ board_member.statusText }}</td>
-									{% if  is_granted('mng_brd_mbr') %}
-
-										<td>
-											{{ include('board_member/_delete_form.html.twig') }}
-										</td>
-									{% endif %}
-								</tr>
-							{% else %}
-								<tr>
-									<td colspan="4">no records found</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-
-				</div>
-				<div class="float-right" id="custompag	inator">{{ knp_pagination_render(board_members) }}</div>
+						{% else %}
+							<tr>
+								<td colspan="4">no records found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 
 			</div>
+			<div class="float-right" id="custompag	inator">{{ knp_pagination_render(board_members) }}</div>
+
 		</div>
-	{% endblock %}
+	</div>
+{% endblock %}

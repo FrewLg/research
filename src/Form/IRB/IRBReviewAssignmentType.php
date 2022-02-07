@@ -34,10 +34,10 @@ class IRBReviewAssignmentType extends AbstractType
             return;
         }
 
-        $already_assigned = (new ArrayCollection($this->iRBReviewAssignmentRepository->findBy(['application' => $options['application'],"token"=>null])))->map(function ($element) {
+        $already_assigned = (new ArrayCollection($this->iRBReviewAssignmentRepository->findBy(['application' => $options['application'], "token" => null])))->map(function ($element) {
             return  $element->getIrbreviewer();
         });
-       
+
 
 
         $builder
@@ -45,6 +45,7 @@ class IRBReviewAssignmentType extends AbstractType
                 'irbreviewer',
                 EntityType::class,
                 [
+                    "required" => false,
                     'class' => User::class,
 
                     'query_builder' => function (EntityRepository $er) use ($already_assigned) {
@@ -57,23 +58,17 @@ class IRBReviewAssignmentType extends AbstractType
                         return $qb->orderBy('u.username', 'ASC');
                     },
                     "attr" => [
-                        "class" => "select2"
-                    ]
+                        "class" => "select2 col-3"
+                    ],
+                    'choice_label' => function (User $user) {
+                        return $user . "-(" . count($user->getIRBReviewAssignments()) . ")";
+                    },
 
                 ]
             )
 
 
 
-            // ->add('file_tobe_reviewed', FileType::class, [
-            //     'label' => 'Upload proposal attachment',
-            //     'mapped' => false,  'attr' => [
-            //         'class' => 'form-control  m-0   ',
-            //         'required' => true,
-
-            //     ],
-            //     'required' => true,
-            // ])
 
 
             ->add('duedate', DateType::class, array(
@@ -89,8 +84,7 @@ class IRBReviewAssignmentType extends AbstractType
                     'required' => true,
                     'class' => 'form-control',
                 )
-            ))
-            ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -107,9 +101,9 @@ class ExternalIRBReviewAssignmentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-     
+
         $reviewAssignment = $options['data'];
-       
+
         if (!$reviewAssignment  instanceof IRBReviewAssignment) {
             return;
         }
@@ -129,16 +123,6 @@ class ExternalIRBReviewAssignmentType extends AbstractType
 
 
 
-            // ->add('file_tobe_reviewed', FileType::class, [
-            //     'label' => 'Upload proposal attachment',
-            //     'mapped' => false,
-            //     'attr' => [
-            //         'class' => 'form-control   col-md-12 col-sm-12 col-lg-9  ',
-            //         'required' => true,
-
-            //     ],
-            //     'required' => true,
-            // ])
 
 
 
@@ -156,8 +140,7 @@ class ExternalIRBReviewAssignmentType extends AbstractType
                     'required' => true,
                     'class' => 'form-control',
                 )
-            ))
-            ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

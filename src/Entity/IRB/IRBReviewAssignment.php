@@ -77,10 +77,7 @@ class IRBReviewAssignment
 
 
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $file_tobe_reviewed;
+    
 
 
     /**
@@ -93,15 +90,9 @@ class IRBReviewAssignment
      */
     private $status;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $acceptedAt;
+    
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $rejectedAt;
+   
 
     /**
      * @ORM\OneToMany(targetEntity=IRBReview::class, mappedBy="iRBReviewAssignment", orphanRemoval=true)
@@ -153,6 +144,8 @@ class IRBReviewAssignment
      */
     private $reviewedAt;
 
+    public $assigned_count;
+
     public function __construct()
     {
         $this->irbreviews = new ArrayCollection();
@@ -162,6 +155,11 @@ class IRBReviewAssignment
     public function getId(): ?int
     {
         return $this->id;
+    }
+    public function getAssignedCount(){
+
+        $this->assigned_count= rand();
+        return $this->assigned_count;
     }
 
     public function getApplication(): ?Application
@@ -211,17 +209,7 @@ class IRBReviewAssignment
 
         return $this;
     }
-    
-    public function getDeclined(): ?string
-    {
-        return $this->Declined;
-    }
-    public function setDeclined(?string $Declined): self
-    {
-        $this->Declined = $Declined;
 
-        return $this;
-    }
 
 
     public function getReassigned(): ?string
@@ -237,17 +225,7 @@ class IRBReviewAssignment
 
 
     
-    public function getFileTobeReviewedeclined(): ?string
-    {
-        return $this->file_tobe_reviewed;
-    }
-    public function setFileTobeReviewed(?string $file_tobe_reviewed): self
-    {
-        $this->file_tobe_reviewed = $file_tobe_reviewed;
-
-        return $this;
-    }
-
+  
     
 
     public function getExternalirbrevieweremail(): ?string
@@ -329,38 +307,9 @@ class IRBReviewAssignment
         return $this;
     }
 
-    public function getAcceptedAt(): ?\DateTimeInterface
-    {
-        return $this->acceptedAt;
-    }
+    
 
-    public function setAcceptedAt(?\DateTimeInterface $acceptedAt): self
-    {
-        $this->acceptedAt = $acceptedAt;
-
-        return $this;
-    }
-
-    public function getRejectedAt(): ?\DateTimeInterface
-    {
-        return $this->rejectedAt;
-    }
-
-    public function setRejectedAt(?\DateTimeInterface $rejectedAt): self
-    {
-        $this->rejectedAt = $rejectedAt;
-
-        return $this;
-    }
-    public function getIsAccepted()
-    {
-        return $this->acceptedAt != null;
-    }
-    public function getIsRejected()
-    {
-        return $this->rejectedAt != null;
-    }
-
+   
     /**
      * @return Collection|Review[]
      */

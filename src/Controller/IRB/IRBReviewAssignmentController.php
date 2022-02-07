@@ -82,6 +82,10 @@ class IRBReviewAssignmentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+          if(!$reviewAssignment->getIrbreviewer())
+          
+          return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
+       
           
 
             $reviewAssignment->setApplication($submission);
@@ -248,9 +252,11 @@ class IRBReviewAssignmentController extends AbstractController
             $reviewAssignment->setReviewedAt(new \DateTime());
             $entityManager->flush();
 
-            $this->addFlash("success","Review sent!!");
-            return $this->redirectToRoute('review_application',["id"=>$reviewAssignment->getId()]);
-        } 
+            $this->addFlash("success", "Review sent!!");
+            return $this->redirectToRoute('review_application', ["id" => $reviewAssignment->getId()]);
+        }
+
+
         $submissionOfreviewer = $entityManager->getRepository(IRBReviewAssignment::class)->find($reviewAssignment);
         $submissions = $submissionOfreviewer->getApplication();
         #######################
