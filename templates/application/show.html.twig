@@ -8,7 +8,7 @@
 	<h4>
 		{% trans %}Application{% endtrans %}
 	</h4>
-{# <a href="{{ path('application_index') }}" class="btn btn-primary">back to list</a> #}
+	{# <a href="{{ path('application_index') }}" class="btn btn-primary">back to list</a> #}
 
 
 	<div class="row">
@@ -25,12 +25,15 @@
 						<!--end col-->
 						<div class="col-md-6">
 
-<div class="card-header ">
-	<h5 class="font-18 m-0 fw-bold">{% trans %}Reviewers{% endtrans %} ({{application.IRBreviewAssignments|length}})
-		<a href="{{ path('irb_review_assignment_new', {'id': application.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
-			{% trans %}Add  Reviewer{% endtrans %}</a>
-	</h5>
-</div>
+							<div class="card-header ">
+								<h5 class="font-18 m-0 fw-bold">{% trans %}Reviewers{% endtrans %}
+									({{application.IRBreviewAssignments|length}})
+									<a href="{{ path('irb_review_assignment_new', {'id': application.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
+										{% trans %}Add  Reviewer{% endtrans %}</a>
+									{# <button type="button" class="m-1 btn btn-outline-primary -right" data-bs-toggle="modal" data-bs-target="#assign-reviewer">{% trans %}Add Reviewer{% endtrans %}</button> #}
+
+								</h5>
+							</div>
 
 							<ul class="list-inline mb-0 contact-detail float-end">
 								<li class="list-inline-item">
@@ -75,30 +78,39 @@
 									<b>{% trans %}Application Type{% endtrans %}:</b>
 									{{ application.applicationType }}</h6>
 								<h6 class="mb-0">
-									<b>{% trans %}Project Type{% endtrans %} :</b>
+									<b>{% trans %}Project Type{% endtrans %}
+										:</b>
 									{{ application.projectType }}</h6>
 								<h6 class="mb-0">
-									<b>{% trans %}Poject Start Date{% endtrans %} :</b>
+									<b>{% trans %}Poject Start Date{% endtrans %}
+										:</b>
 									{{ application.startDate|date('Y-m-d') }}</h6>
 								<h6 class="mb-0">
-									<b>{% trans %}Poject End Date{% endtrans %} :</b>
+									<b>{% trans %}Poject End Date{% endtrans %}
+										:</b>
 									{{ application.endDate|date('Y-m-d') }}</h6>
 								<h6 class="mb-0">
-									<b>{% trans %}Location{% endtrans %} :</b>
+									<b>{% trans %}Location{% endtrans %}
+										:</b>
 									{{ application.location }}</h6>
 
 
-{% if app.user == application.submittedBy %}
+								{% if review and app.user == application.submittedBy and review.remark==3 %}
+{% if application.hasToRenew %}
 
-											<form method="post">
-<input hidden name="renewal" value="true">
-											<button type="submit" class="m-1 btn btn-outline-primary float-right" ><span class="fa fa-spinner m-1"></span>{% trans %}Renew Clearance{% endtrans %}</button>
-</form>
+									<form method="post">
+										<input hidden name="renewal" value="true">
 
-											<button type="button" class="m-1 btn btn-outline-primary -right" data-bs-toggle="modal" data-bs-target="#exampleModalSecondary">{% trans %}Request amendment{% endtrans %}</button>
+										<button type="submit" class="m-1 btn btn-outline-primary float-right">
+											<span class="fa fa-spinner m-1"></span>
+											{% trans %}Renew Clearance{% endtrans %}</button>
+									</form>
+ {% endif %}
 
-{% endif %}
-							
+									<button type="button" class="m-1 btn btn-outline-primary -right" data-bs-toggle="modal" data-bs-target="#exampleModalSecondary">{% trans %}Request amendment{% endtrans %}</button>
+
+								{% endif %}
+
 
 							</div>
 						</div>
@@ -124,19 +136,19 @@
 										<li class="nav-item">
 											<a class="nav-link" data-bs-toggle="tab" href="#covid" role="tab" aria-selected="false">{% trans %}Covid-19 mitigation{% endtrans %}</a>
 										</li>
-										
+
 										<li class="nav-item">
 											<a class="nav-link" data-bs-toggle="tab" href="#attachments" role="tab" aria-selected="false">{% trans %}Attachments{% endtrans %}</a>
 										</li>
 										{% if application.amendments | length > 0 %}
-										<li class="nav-item">
-											<a class="nav-link" data-bs-toggle="tab" href="#amendment" role="tab" aria-selected="false">{% trans %}Amendment{% endtrans %}</a>
-										</li>
+											<li class="nav-item">
+												<a class="nav-link" data-bs-toggle="tab" href="#amendment" role="tab" aria-selected="false">{% trans %}Amendment{% endtrans %}</a>
+											</li>
 										{% endif %}
 										{% if application.revisions | length > 0 %}
-										<li class="nav-item">
-											<a class="nav-link" data-bs-toggle="tab" href="#revisions" role="tab" aria-selected="false">{% trans %}Revisions{% endtrans %}</a>
-										</li>
+											<li class="nav-item">
+												<a class="nav-link" data-bs-toggle="tab" href="#revisions" role="tab" aria-selected="false">{% trans %}Revisions{% endtrans %}</a>
+											</li>
 										{% endif %}
 									</ul>
 
@@ -144,34 +156,8 @@
 									<div class="tab-content">
 										<div class="tab-pane p-3 active" id="members" role="tabpanel">
 											<h4 class='text-'>{% trans %}Research team{% endtrans %}({{  application.members|length +1}})</h4>
- 															<div class="row">
-															{% set co_author = application.pi ? application.pi : application.submittedBy  %}
-													<div class="col-lg-4">
-
-																		<div class="card">
-
-																			<div class="card-body text-center">
-
-
-
-																				<h5 class="fw-bold mt-3 mb-1">{{ co_author.userInfo}}
-																					<span class="text-muted mb-0">({{ co_author.userInfo.educationLevel }})</span>
-																				</h5>
-																				<p class="text-muted mb-0">{{ co_author.userInfo.college }}</p>
-																				<p class="text-muted mb-0">{{ co_author.userInfo.department }}</p>
-																				<p class="text-muted mb-0">{{ co_author.userInfo.academicRank }}</p>
-																				<div class="mb-3">
-																					<a href="apps-tasks.html#" class="me-3 text-warning">
-																						{% trans %}PI{% endtrans %}</a>
-																				
-																				</div>
-
-																				<a href='{{path('researcher',{'id':co_author.id})}}' class="btn btn-sm btn-soft-primary">{% trans %}More details{% endtrans %}</a>
-
-																			</div>
-																		</div>
-																	</div>
-											{% for co_author in  application.members %}
+											<div class="row">
+												{% set co_author = application.pi ? application.pi : application.submittedBy  %}
 												<div class="col-lg-4">
 
 													<div class="card">
@@ -179,28 +165,53 @@
 														<div class="card-body text-center">
 
 
-															<h5 class="fw-bold mt-3 mb-1">{{ co_author.researcher.userInfo}}
-																<span class="text-muted mb-0">({{ co_author.researcher.userInfo.educationLevel }})</span>
+															<h5 class="fw-bold mt-3 mb-1">{{ co_author.userInfo}}
+																<span class="text-muted mb-0">({{ co_author.userInfo.educationLevel }})</span>
 															</h5>
-															<p class="text-muted mb-0">{{ co_author.researcher.userInfo.college }}</p>
-															<p class="text-muted mb-0">{{ co_author.researcher.userInfo.department }}</p>
-															<p class="text-muted mb-0">{{ co_author.researcher.userInfo.academicRank }}</p>
+															<p class="text-muted mb-0">{{ co_author.userInfo.college }}</p>
+															<p class="text-muted mb-0">{{ co_author.userInfo.department }}</p>
+															<p class="text-muted mb-0">{{ co_author.userInfo.academicRank }}</p>
 															<div class="mb-3">
 																<a href="apps-tasks.html#" class="me-3 text-warning">
-																	{{ co_author.role }}</a>
-																{# {{ co_author.researcher|length}} #}
-																{# <a href="apps-tasks.html#" class=" text-warning">295 Coauthorship</a> #}
+																	{% trans %}PI{% endtrans %}</a>
+
 															</div>
 
-															<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">{% trans %}More details{% endtrans %}</a>
+															<a href='{{path('researcher',{'id':co_author.id})}}' class="btn btn-sm btn-soft-primary">{% trans %}More details{% endtrans %}</a>
 
 														</div>
 													</div>
 												</div>
-										
-											{% endfor %}
-											 
+												{% for co_author in  application.members %}
+													<div class="col-lg-4">
+
+														<div class="card">
+
+															<div class="card-body text-center">
+
+
+																<h5 class="fw-bold mt-3 mb-1">{{ co_author.researcher.userInfo}}
+																	<span class="text-muted mb-0">({{ co_author.researcher.userInfo.educationLevel }})</span>
+																</h5>
+																<p class="text-muted mb-0">{{ co_author.researcher.userInfo.college }}</p>
+																<p class="text-muted mb-0">{{ co_author.researcher.userInfo.department }}</p>
+																<p class="text-muted mb-0">{{ co_author.researcher.userInfo.academicRank }}</p>
+																<div class="mb-3">
+																	<a href="apps-tasks.html#" class="me-3 text-warning">
+																		{{ co_author.role }}</a>
+																	{# {{ co_author.researcher|length}} #}
+																	{# <a href="apps-tasks.html#" class=" text-warning">295 Coauthorship</a> #}
 																</div>
+
+																<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">{% trans %}More details{% endtrans %}</a>
+
+															</div>
+														</div>
+													</div>
+
+												{% endfor %}
+
+											</div>
 
 										</div>
 										<div class="tab-pane p-3" id="covid" role="tabpanel">
@@ -225,8 +236,8 @@
 
 										</div>
 										<div class="tab-pane p-3" id="amendment" role="tabpanel">
-								
-											
+
+
 											<div class="col-md-12">
 												<div class="card">
 													<div class="card-header">
@@ -242,7 +253,7 @@
 																		<th>#</th>
 																		<th>{% trans %}Purpose{% endtrans %}</th>
 																		<th>{% trans %}Requested At{% endtrans %}</th>
- 																		<th class="text-right">{% trans %}Action{% endtrans %}</th>
+																		<th class="text-right">{% trans %}Action{% endtrans %}</th>
 																	</tr>
 																</thead>
 																<tbody>
@@ -288,8 +299,8 @@
 										</div>
 
 										<div class="tab-pane p-3" id="revisions" role="tabpanel">
-								
-											
+
+
 											<div class="col-md-12">
 												<div class="card">
 													<div class="card-header">
@@ -299,26 +310,29 @@
 													<!--end card-header-->
 													<div class="card-body">
 														<div class="">
-															
-																	{% for revision in application.revisions %}
 
-												<div class="col-md-12">
+															{% for revision in application.revisions %}
 
-													<div class="card">
-													<div class="card-header">
-														{% trans %}Revision{% endtrans %} {{loop.index }}	
-													</div>
-														<div class="card-body">
-																	{% for attachment in revision.revisionAttachments %}
-															<a href='{{ asset('/uploads/application/' ~ attachment.file) }}' class="btn btn-sm btn-soft-primary m-1">{{ attachment.type }} <span class="fa fa-download m-1"></span></a>
-																	{% endfor %}
+																<div class="col-md-12">
 
-														</div>
-													</div>
-												</div>
-																	{% endfor %}
+																	<div class="card">
+																		<div class="card-header">
+																			{% trans %}Revision{% endtrans %}
+																			{{loop.index }}
+																		</div>
+																		<div class="card-body">
+																			{% for attachment in revision.revisionAttachments %}
+																				<a href='{{ asset('/uploads/application/' ~ attachment.file) }}' class="btn btn-sm btn-soft-primary m-1">{{ attachment.type }}
+																					<span class="fa fa-download m-1"></span>
+																				</a>
+																			{% endfor %}
 
-																
+																		</div>
+																	</div>
+																</div>
+															{% endfor %}
+
+
 														</div>
 														<!--end /tableresponsive-->
 													</div>
@@ -395,68 +409,83 @@
 			<!--end card-body-->
 		</div>
 		<!--end card-->
-	</div> 
+	</div>
 	{% if review %}
-	
-	<div class="row no-gutters">
-                                  
-                                    <div class="col-md-9">
-                                        <div class="card-header">
-                                            <div class="row align-items-center">
-                                                <div class="col">                      
-                                                    <h4 class="card-title">{% trans %}Review Decision{% endtrans %}</h4>               
-                                                </div><!--end col-->  
-                                                <div class="col-auto">    
-                                                   
-                                                    <span class="badge badge-outline-light">{{ review.createdAt|date('Y-m-d') }}</span>              
-                                                </div><!--end col-->                                                                            
-                                            </div>  <!--end row-->                                  
-                                        </div><!--end card-header-->
-                                        <div class="card-body">
-                                            <p class="card-text"><b>{% trans %}Comment{% endtrans %}:</b> {{ review.comment }}</p>
-                                            <p class="card-text"><b>{% trans %}Remark{% endtrans %}:</b> {{ review.remark }}</p>
-                                            <p class="card-text"><b>{% trans %}Evaluation Attachment{% endtrans %}:</b> <a class="btn btn-outline-primary" href="{{ asset(review.evaluationAttachment) }}"><i class="fa fa-download m-1"></i>{% trans %}Download{% endtrans %}</a></p>
-											{% if app.user == application.submittedBy %}
-											<button type="button" class="m-1 btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#revision-modal"><span class="fa fa-paper-plane m-1"></span>{% trans %}Please Send Revision{% endtrans %}</button>
-											{% endif %}
 
-                                        </div><!--end card-body-->
-										<div class="card-footer">
-										
-										</div>
-                                    </div><!--end col-->
+		<div class="row no-gutters">
 
-                                </div>
-								
+			<div class="col-md-9">
+				<div class="card-header">
+					<div class="row align-items-center">
+						<div class="col">
+							<h4 class="card-title">{% trans %}Review Decision{% endtrans %}</h4>
+						</div>
+						<!--end col-->
+						<div class="col-auto">
+
+							<span class="badge badge-outline-light">{{ review.createdAt|date('Y-m-d') }}</span>
+						</div>
+						<!--end col-->
+					</div>
+					<!--end row-->
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+					<p class="card-text">
+						<b>{% trans %}Comment{% endtrans %}:</b>
+						{{ review.comment }}</p>
+					<p class="card-text">
+						<b>{% trans %}Remark{% endtrans %}:</b>
+
+						<span class="badge bg-{{ review.remarkColor }}">{{ review.remarkText }}</span></p>
+					<p class="card-text">
+						<b>{% trans %}Evaluation Attachment{% endtrans %}:</b>
+						<a class="btn btn-outline-primary" href="{{ asset(review.evaluationAttachment) }}">
+							<i class="fa fa-download m-1"></i>
+							{% trans %}Download{% endtrans %}</a>
+					</p>
+					{% if review and app.user == application.submittedBy and review.remark == 2 %}
+						<button type="button" class="m-1 btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#revision-modal">
+							<span class="fa fa-paper-plane m-1"></span>
+							{% trans %}Please Send Revision{% endtrans %}</button>
+					{% endif %}
+
+				</div>
+				<!--end card-body-->
+				<div class="card-footer"></div>
+			</div>
+			<!--end col-->
+
+		</div>
+
 	{% endif %}
-	
 
 
 	<br>
-{% include "application/modal.html.twig" %}
+	{% include "application/modal.html.twig" %}
 {% endblock %}
 
 
-	{% block script %}
+{% block script %}
 	<script>
-			$(document).ready(function () {
+		$(document).ready(function () {
 
 
 $(".my-checkbox input[type=checkbox]").each(function (e, v) {
 $(v).click(function (e) {
-	group=$(v).parentsUntil(".check-group").parent().attr("data-group")
-		if(group){
-			$(`.group-${group} input[type=checkbox]`).each(function(e2,v2){
-				$(v2).prop('checked', false);
-				$(v2).prop('required', false);
-				$(v2).parentsUntil(".parent").find(".my-hidden").addClass("d-none")
-				$(v2).parentsUntil(".parent").find(".my-hidden").find('input').prop('required', false);
-				$(v2).siblings('.error').remove();
-				$(v2).removeClass('error')
-			})
-			$(v).prop('checked', true);
-			
-			}
+group = $(v).parentsUntil(".check-group").parent().attr("data-group")
+if (group) {
+$ (`.group-${group} input[type=checkbox]`).each(function (e2, v2) {
+$(v2).prop('checked', false);
+$(v2).prop('required', false);
+$(v2).parentsUntil(".parent").find(".my-hidden").addClass("d-none")
+$(v2).parentsUntil(".parent").find(".my-hidden").find('input').prop('required', false);
+$(v2).siblings('.error').remove();
+$(v2).removeClass('error')
+})
+$(v).prop('checked', true);
+
+}
 if (e.target.checked) {
 
 $(this).parentsUntil(".parent").find(".my-hidden").removeClass("d-none")
@@ -468,8 +497,8 @@ $(this).parentsUntil(".parent").find(".my-hidden").find('input').prop('required'
 }
 });
 });
-$(".custom-file-label").each(function(e,v){
-	$(v).remove();
+$(".custom-file-label").each(function (e, v) {
+$(v).remove();
 })
 });
 	</script>

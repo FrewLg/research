@@ -199,6 +199,12 @@ class Application
         // }
     }
 
+    public function getHasToRenew()
+    {
+   
+        return (new \DateTime('now')) > $this->createdAt->modify('+1 year') ;
+    }
+
 
     /**
      * @return Collection|iRBReviewAssignments[]

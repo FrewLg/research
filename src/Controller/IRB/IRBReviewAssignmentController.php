@@ -27,6 +27,7 @@ use App\Entity\IRB\IRBStatus;
 use App\Entity\IRB\ReviewChecklist;
 use App\Entity\IRB\ReviewChecklistGroup;
 use App\Entity\IRB\ReviewerResponse;
+use App\Entity\IrbCertificate;
 use App\Entity\UserInfo;
 use App\Form\IRB\ExternalIRBReviewAssignmentType;
 use App\Form\IRB\IRBReviewType;
@@ -82,6 +83,10 @@ class IRBReviewAssignmentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+          if(!$reviewAssignment->getIrbreviewer())
+          
+          return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
+       
           
 
             $reviewAssignment->setApplication($submission);
@@ -258,8 +263,10 @@ class IRBReviewAssignmentController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash("success","Review sent.");
-            return $this->redirectToRoute('review_application',["id"=>$reviewAssignment->getId()]);
-        } 
+            return $this->redirectToRoute('review_application', ["id" => $reviewAssignment->getId()]);
+        }
+
+
         $submissionOfreviewer = $entityManager->getRepository(IRBReviewAssignment::class)->find($reviewAssignment);
         $submissions = $submissionOfreviewer->getApplication();
         #######################
@@ -293,7 +300,19 @@ class IRBReviewAssignmentController extends AbstractController
             if ($review->getRemark() == 1 || $review->getRemark() == 3) {
                 
             }
+            $review->setFromDirector(1);
+           #######################Certificategeneration#################
+            $cert= new IrbCertificate();
+            $cert->setIrbApplication($reviewAssignment->getApplication());
+            $cert->setCertificateCode('sass');
+            $cert->setApprovedAt(new \DateTime());
+            $cert->setValidUntil(new \DateTime());
+            $cert->setIrbRequest($reviewAssignment->getApplication());
+           #######################Certificategeneration#################
+
             // $reviewAssignment->setClosed(1);
+
+            $entityManager->persist($cert);
             $entityManager->persist($review);
             $entityManager->flush();
             $this->addFlash(

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IRBReview
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -68,7 +69,7 @@ class IRBReview
      * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="irbreviews")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $application; 
+    private $application;
 
 
     /**
@@ -86,9 +87,30 @@ class IRBReview
     {
         return $this->id;
     }
- 
 
-    public function getReviewedBy() 
+    public function getRemarkText()
+    {
+
+        $statuses = [
+            1 => "Declined",
+            2 => "Accepted with condition",
+            3 => "Accepted",
+        ];
+        return $statuses[$this->remark];
+    }
+    public function getRemarkColor()
+    {
+
+        $colors = [
+            1 => "danger",
+            2 => "warning",
+            3 => "success",
+        ];
+        return $colors[$this->remark];
+    }
+   
+
+    public function getReviewedBy()
     {
         return $this->reviewed_by;
     }
@@ -124,7 +146,7 @@ class IRBReview
     }
 
 
-    
+
 
     public function getComment(): ?string
     {
@@ -174,7 +196,7 @@ class IRBReview
         return $this;
     }
 
-    
+
 
     public function getRemark(): ?string
     {
@@ -211,7 +233,7 @@ class IRBReview
 
         return $this;
     }
- 
+
     public function getFromDirector(): ?bool
     {
         return $this->from_director;
@@ -223,6 +245,4 @@ class IRBReview
 
         return $this;
     }
-    
-
 }

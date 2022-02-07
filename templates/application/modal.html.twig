@@ -94,4 +94,43 @@
 </div>
 
 
+{# modal assign reviewer #}
+<div class="modal fade bd-example-modal-xl" id="assign-reviewer" tabindex="-1" role="dialog" aria-labelledby="modal2" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<h6 class="modal-title m-0 text-white" id="modal2">{% trans %}Send Revision{% endtrans %}</h6>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<!--end modal-header-->
+			
+			<div class="modal-body">
+				<div class="row">
+                    <label class="form-label mt-3 mb-1">{% trans %} DOCUMENT ATTACHMENTS{% endtrans %}<span class='text-danger'>*</span>
+				</label>
+	
+
+				<div class="row ">
+			
+				</div>
+
+				</div>
+				<!--end row-->
+			</div>
+			<!--end modal-body-->
+			<div class="modal-footer">
+
+				<button class="btn btn-success " type="submit">{{ button_label|default('Send Revision') }}</button>
+				<button type="button" class="btn btn-danger " data-bs-dismiss="modal">Close</button>
+			</div>
+			<!--end modal-footer-->
+			
+		</div>
+		<!--end modal-content-->
+	</div>
+	<!--end modal-dialog-->
+</div>
+
+
 

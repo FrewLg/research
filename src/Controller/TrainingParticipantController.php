@@ -83,13 +83,11 @@ class TrainingParticipantController extends AbstractController
         }
  
         
-            $trainingParticipant->setParticipant($user);
+        $trainingParticipant->setParticipant($user);
         $trainingParticipant->setTraining($callForTraining); 
         $trainingParticipant->setAppliedAt(new \Datetime()); 
         $entityManager->persist($trainingParticipant);
-        $entityManager->flush(); 
-            
-        
+        $entityManager->flush();  
             $this->addFlash("success", "You have been successfully registered for training. Thank You!");
  
             $applicantmessages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUCCESSFUL_TRAINING_PARTICIPATION']);
@@ -113,25 +111,17 @@ class TrainingParticipantController extends AbstractController
                         'name' => $applicantname,
                         'Authoremail' => $applicant])
                 ;
-
-                $mailer->send($emailtwo);  
-
+             $mailer->send($emailtwo); 
             return $this->redirectToRoute('call_for_training_show', array('id'=>$callForTraining->getId()));
-   
-
-         
+          
     }
 
     /**
      * @Route("/{id}/cert", name="cert", methods={"GET"})
      */
     public function exportcertnow(Request $request, TrainingParticipant $uid) {
-
-        // 
-
-        $em = $this->getDoctrine()->getManager();
-
  
+        $em = $this->getDoctrine()->getManager(); 
         $submission = $em->getRepository('App:TrainingParticipant')->findOneBy(['id' => $uid]);
 
         // Configure Dompdf according to your needs
