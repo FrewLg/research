@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
-  * @UniqueEntity( fields={"user"},
+ * @UniqueEntity( fields={"user"},
 
  *     message="This user is already board member."
  * )
@@ -18,10 +18,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class BoardMember
 {
- public   $statuses=[
-        1=>"Active",
-        2=>"Deactivated"
- ];
+    public   $statuses = [
+        1 => "Active",
+        2 => "Deactivated"
+    ];
+    const ROLE_CHAIR = 'Chair';
+    const ROLE_SECRETARY = 'Secretary';
+    const ROLE_MEMBER = 'Member';
+   
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -56,15 +61,21 @@ class BoardMember
      */
     private $college;
 
-  
-    public function __construct() {
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $role;
+
+
+    public function __construct()
+    {
         $this->assignedAt = new \DateTime('now');
         $this->status = 1;
     }
 
     public function getStatusText()
     {
-     return $this->statuses[$this->status];
+        return $this->statuses[$this->status];
     }
 
     public function getId(): ?int
@@ -132,5 +143,15 @@ class BoardMember
         return $this;
     }
 
-   
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(?string $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
 }

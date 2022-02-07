@@ -29,6 +29,8 @@
 	<h5 class="font-18 m-0 fw-bold">{% trans %}Reviewers{% endtrans %} ({{application.IRBreviewAssignments|length}})
 		<a href="{{ path('irb_review_assignment_new', {'id': application.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
 			{% trans %}Add  Reviewer{% endtrans %}</a>
+								{# <button type="button" class="m-1 btn btn-outline-primary -right" data-bs-toggle="modal" data-bs-target="#assign-reviewer">{% trans %}Add Reviewer{% endtrans %}</button> #}
+
 	</h5>
 </div>
 

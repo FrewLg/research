@@ -81,20 +81,10 @@ class IRBReviewAssignmentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $file3 = $form->get('file_tobe_reviewed')->getData();
-
-            if ($file3 == '') {
-
-                $this->addFlash(
-                    'danger',
-                    'Review file is not uploaded !'
-                );
-            } else {
-                $file3 = $form->get('file_tobe_reviewed')->getData();
-                $fileName3 = md5(uniqid()) . '.' . $file3->guessExtension();
-                $file3->move($this->getParameter('review_files'), $fileName3);
-                $reviewAssignment->setFileTobeReviewed($fileName3);
-            }
+          if(!$reviewAssignment->getIrbreviewer())
+          
+          return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
+       
 
             $reviewAssignment->setApplication($submission);
             $duedate = $reviewAssignment->getDuedate();
@@ -260,10 +250,10 @@ class IRBReviewAssignmentController extends AbstractController
             $reviewAssignment->setReviewedAt(new \DateTime());
             $entityManager->flush();
 
-            $this->addFlash("success","Review sent!!");
-            return $this->redirectToRoute('review_application',["id"=>$reviewAssignment->getId()]);
+            $this->addFlash("success", "Review sent!!");
+            return $this->redirectToRoute('review_application', ["id" => $reviewAssignment->getId()]);
         }
-      
+
 
         $submissionOfreviewer = $entityManager->getRepository(IRBReviewAssignment::class)->find($reviewAssignment);
         $submissions = $submissionOfreviewer->getApplication();
