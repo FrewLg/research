@@ -21,12 +21,12 @@
 								<ul class="nav nav-pills nav-justified">
 									<li>
 										<a class="nav-link active " href="#tab-1" data-bs-toggle="tab">
-											Internal IRB  Members
+											Internal reviewer  
 										</a>
 									</li>
 									<li>
 										<a class="nav-link  " href="#tab-2" data-bs-toggle="tab">
-											External IRB  Members
+											External reviewer
 										</a>
 									</li>
 
@@ -62,17 +62,20 @@
 								<div class="tab-pane " id="tab-2">
 									<br>
 									<div class="card">
-										<div class="card-body">
-											<div class="card-header">
+									<div class="card-header">
 												<h4 class='text-'>External iRB reviewer from system</h4>
+</div>
+										<div class="card-body">
+											
+
 												{{ form_start(external_reviewer_form) }}
 												{{ form_widget(external_reviewer_form) }}
-												<button type="submit" class=" btn btn-primary float-end">submit</button>
+												<button type="submit" class=" btn btn-primary float-end">Assign</button>
 												{{ form_end(external_reviewer_form) }}
 											</div>
 											<br>
 
-										</div>
+										
 									</div>
 								</div>
 
@@ -90,10 +93,10 @@
 
 		<div class="col-lg-8">
 			<h4 class="text-d">
-				Assigned iRB reviewers
+				Assigned   reviewers
 				{% if is_granted('mng_brd_mbr') %}
 
-					<a class="btn btn-link" href="{{path('board_member_index')}}">View Board Members</a>
+					<a class="btn btn-link" href="{{path('board_member_index')}}" >View Board Members</a>
 				{% endif %}
 			</h4>
 

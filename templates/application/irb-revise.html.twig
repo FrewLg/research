@@ -136,17 +136,20 @@
 						<p class="text-muted  mb-0 font-15">
 							 
 							
+					<ol class='row mt-2 d-flex align-items-center'>
 
 							{% for guideline_for_reviewer in review_assignment.application.SubmittedBy.userInfo.college.irbReviewAtachements %}
 
-
+<li>
 								<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ guideline_for_reviewer.attachement ) }}">
 									{{guideline_for_reviewer.attachmentName}}
 									<i class="fa fa-download"></i>
 								</a>
+</li>
 
 								{% else %}
 							{% endfor %}
+					</ol>
 
 						</p>
 					</div>
