@@ -81,9 +81,11 @@
 										<td>{{ application.createdAt|date('Y-m-d h:i') }}</td>
 
 										<td>
-											{% if not application.status %}
-
-												<span class="badge badge-soft-warning">Pending</span>
+											{% if application.status %}
+								<span class='badge badge-soft-{{ application.status.type }}'>
+																{{  application.status }}
+															</span>
+											
 											{% endif %}
 
 										</td>

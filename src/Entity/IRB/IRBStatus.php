@@ -24,13 +24,17 @@ class IRBStatus
     private $name;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $type;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+    public function __toString()
+    {
+     return $this->name;   
     }
 
     public function getName(): ?string
@@ -45,12 +49,12 @@ class IRBStatus
         return $this;
     }
 
-    public function getType(): ?int
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setType(?int $type): self
+    public function setType(?string $type): self
     {
         $this->type = $type;
 

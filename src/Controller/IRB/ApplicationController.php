@@ -11,6 +11,7 @@ use App\Entity\IRB\ApplicationResearchSubject;
 use App\Entity\IRB\ApplicationReview;
 use App\Entity\IRB\AttachmentType;
 use App\Entity\IRB\IRBReview;
+use App\Entity\IRB\IRBStatus;
 use App\Entity\IRB\MitigationStrategy;
 use App\Entity\IRB\MitigationStrategyGroup;
 use App\Entity\IRB\RenewalRequest;
@@ -42,13 +43,11 @@ class ApplicationController extends AbstractController
     #[Route('/', name: 'application_index', methods: ['GET',"POST"])]
     public function index(ApplicationRepository $applicationRepository, Request $request, PaginatorInterface $paginatorInterface): Response
     {
-        $queryBuilder = $applicationRepository->getData();
+        $queryBuilder = $applicationRepository->getData([],$this->isGranted('ROLE_SECRETARY')?null:$this->getUser(),true);
         $application_filter_form=$this->createForm(ApplicationFilterType::class)->handleRequest($request);
        
-        if ($application_filter_form->isSubmitted() && $application_filter_form->isValid()) {
-
-            
-            $queryBuilder = $applicationRepository->getData($application_filter_form->getData());
+        if ($application_filter_form->isSubmitted() && $application_filter_form->isValid()) {   
+            $queryBuilder = $applicationRepository->getData($application_filter_form->getData(),$this->isGranted('ROLE_SECRETARY'));
 
             
 
@@ -102,6 +101,7 @@ class ApplicationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $application->setStatus($entityManager->getRepository(IRBStatus::class)->find(1));
 
             $application->setType(1);
             $application=$this->removeUnchecked($application);

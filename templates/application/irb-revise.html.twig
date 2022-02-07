@@ -16,10 +16,12 @@
 					<li class="nav-item  waves-effect waves-light">
 						<a class="nav-link " data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
 					</li>
+					{% if is_granted('ROLE_SECRETARY') %}
 
 					<li class="nav-item  waves-effect waves-light">
-						<a class="nav-link " data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
+						<a class="nav-link " data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Decision</a>
 					</li>
+					{% endif %}
 					<li class="nav-item  waves-effect waves-light">
 						<a class="nav-link active" data-bs-toggle="tab" href="#review-checklist" role="tab" aria-selected="false">Checklist</a>
 					</li>
@@ -96,6 +98,7 @@
 						</div>
 					</div>
 
+				{% if is_granted('ROLE_SECRETARY') %}
 					<div class="tab-pane  p-3	 " id="profile" role="tabpanel">
 
 						<div class="card">
@@ -104,7 +107,6 @@
 								</h5>
 							</div>
 							<div class="card-body">
-
 								{{ form_start(form) }}
 								{{ form_widget(form) }}
 								<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
@@ -112,6 +114,8 @@
 							</div>
 						</div>
 					</div>
+				{% endif %}
+				
 					{% if review_assignment.reviewedAt %}
 					{% include "application/tabs/checklist_response.html.twig" %}
 
