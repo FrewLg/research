@@ -23,7 +23,7 @@ class ApplicationRepository extends ServiceEntityRepository
     //  * @return Application[] Returns an array of Application objects
     //  */
   
-    public function getData($filter=[])
+    public function getData($filter=[],$user=null,$active=false)
     {
         $qb= $this->createQueryBuilder('a');
 
@@ -60,6 +60,12 @@ class ApplicationRepository extends ServiceEntityRepository
             $qb->andWhere("a.submittedAt <= '" . $date[1] . "'");
             $qb->andWhere("a.submittedAt >= '" . $date[0] . "'");
         }
+        if($user){
+            
+            $qb->andWhere("a.submittedBy = :user")->setParameter('user',$user);
+        }elseif ($active) {
+            $qb->andWhere("a.status in (:status)")->setParameter('status',[1,2,3,4]);
+        }
 
       
         if (isset($filter['title']) && $filter['title']) {
@@ -90,15 +96,7 @@ class ApplicationRepository extends ServiceEntityRepository
 
    
 
-    /*
-    public function findOneBySomeField($value): ?Application
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+    
+   
+    
 }

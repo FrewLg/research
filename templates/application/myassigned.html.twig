@@ -19,6 +19,85 @@
 					<div class="tab-pane fade active show" id="Profile_Project" role="tabpanel" aria-labelledby="my_assigned">
 
 						<div class="row">
+{% if is_granted('ROLE_SECRETARY') %}
+	<div class="card">
+								<div class="card-header">
+									<h4 class="card-title">All Active Review Assignment
+										{% if myreviews|length>0%}
+
+											<a href="#" class="avatar-box thumb-xxs align-self-center">
+												<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+													{{myreviews|length}}
+
+												</span>
+											</a>
+											{% else %}
+
+										{% endif %}
+
+									</h4>
+									<p class="text-muted mb-0">
+										All active and under review process
+									</p>
+								</div>
+								<!--end card-header-->
+								<div class="card-body">
+									<div class="table-responsive-sm">
+										<table class="table table-bordered table-sm mb-0">
+											<thead class="thead-light">
+
+
+												{% if myreviews|length>0%}
+													<tr>
+
+														<th>#</th>
+														<th>Title</th>
+														<th>Reviewer</th>
+														<th>Review due date</th>
+														<th>Status</th>
+													</tr>
+												{% endif %}
+
+											</thead>
+											<tbody>
+												{% for myreview in myreviews %}
+													<tr>
+														<td>{{ loop.index }}</td>
+														<td>
+															<a href="{{ path('review_application', {'id': myreview.id}) }} " class='text-primary'>
+																{{ myreview.application.title }}
+															</a>
+														</td>
+														<td>
+																{{ myreview.irbreviewer }}
+														</td>
+													
+														<td>
+															{% if myreview.dueDate %}
+																{{ myreview.dueDate|date('d, M Y h:i a') }}
+															{% endif %}
+														</td>
+														<td>
+ 
+
+
+															<span class='badge badge-soft-{{ myreview.application.status.type }}'>
+																{{  myreview.application.status }}
+															</span>
+														</td>
+													</tr>
+												{% else %}
+													No records found  under this section
+												{% endfor %}
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<!--end card-body-->
+							</div>
+	
+{% else %}
 
 							<div class="card">
 								<div class="card-header">
@@ -52,7 +131,6 @@
 
 														<th>#</th>
 														<th>Title</th>
-														<th>Invitation sent date</th>
 														<th>Review due date</th>
 														<th>Status</th>
 													</tr>
@@ -69,20 +147,15 @@
 															</a>
 														</td>
 
-														<td>
-															{% if myreview.InvitationSentAt %}
-																{{  myreview.InvitationSentAt|date('d, M Y h:i a') }}
-															{% endif %}
-														</td>
+													
 														<td>
 															{% if myreview.dueDate %}
 																{{ myreview.dueDate|date('d, M Y h:i a') }}
 															{% endif %}
 														</td>
 														<td>
-
-															<span class='badge badge-soft-warning'>
-																Under review
+											<span class='badge badge-soft-{{ myreview.application.status.type }}'>
+																{{  myreview.application.status }}
 															</span>
 														</td>
 													</tr>
@@ -164,6 +237,9 @@
 								</div>
 								<!--end /tableresponsive-->
 							</div>
+
+								
+{% endif %}
 							<!--end card-body-->
 						</div>
 					</div>

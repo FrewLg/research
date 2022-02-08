@@ -47,4 +47,13 @@ class IRBReviewAssignmentRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getActiveApplication()
+    {
+        return $this->createQueryBuilder('i')
+            ->join("App:IRB\Application", "r", "with", "r.id=i.application")
+            ->where('r.status in (:status)')->setParameter('status',[1,2,3,4])
+            ->getQuery()
+        ;
+    }
 }
