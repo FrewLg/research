@@ -82,11 +82,11 @@ class IRBReviewAssignmentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-          if(!$reviewAssignment->getIrbreviewer())
-          
-          return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
-       
-          
+            if (!$reviewAssignment->getIrbreviewer())
+
+                return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
+
+
 
             $reviewAssignment->setApplication($submission);
             $duedate = $reviewAssignment->getDuedate();
@@ -181,7 +181,7 @@ class IRBReviewAssignmentController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
-        $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL], ["id" => "DESC"]);
+        $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL], ["id" => "ASC"]);
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results
@@ -284,18 +284,18 @@ class IRBReviewAssignmentController extends AbstractController
         $form = $this->createForm(IRBReviewType::class, $review);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager(); 
+            $entityManager = $this->getDoctrine()->getManager();
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
             $review->setFromDirector(1);
-           #######################Certificategeneration#################
-            $cert= new IrbCertificate();
+            #######################Certificategeneration#################
+            $cert = new IrbCertificate();
             $cert->setIrbApplication($reviewAssignment->getApplication());
             $cert->setCertificateCode('sass');
             $cert->setApprovedAt(new \DateTime());
             $cert->setValidUntil(new \DateTime());
             $cert->setIrbRequest($reviewAssignment->getApplication());
-           #######################Certificategeneration#################
+            #######################Certificategeneration#################
 
             // $reviewAssignment->setClosed(1);
 
@@ -329,11 +329,11 @@ class IRBReviewAssignmentController extends AbstractController
      */
     public function delete(IRBReviewAssignment $reviewAssignment): Response
     {
-        $this->denyAccessUnlessGranted('assn_clg_cntr'); 
-        $entityManager = $this->getDoctrine()->getManager(); 
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $entityManager = $this->getDoctrine()->getManager();
         $submission = $reviewAssignment->getApplication();
         $entityManager->remove($reviewAssignment);
-        $entityManager->flush(); 
+        $entityManager->flush();
         $this->addFlash("info", "Reviewer deleted successfully ! Thank you!");
 
         return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));

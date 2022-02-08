@@ -171,6 +171,11 @@ class Application
      */
     private $irbCertificates;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Meeting::class, inversedBy="applications")
+     */
+    private $meeting;
+
 
     public function __construct()
     {
@@ -199,6 +204,12 @@ class Application
         // }
     }
 
+    public function __toString()
+    {
+   
+    return $this->title;
+     
+    }
     public function getHasToRenew()
     {
    
@@ -705,6 +716,18 @@ class Application
                 $irbCertificate->setIrbApplication(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMeeting(): ?Meeting
+    {
+        return $this->meeting;
+    }
+
+    public function setMeeting(?Meeting $meeting): self
+    {
+        $this->meeting = $meeting;
 
         return $this;
     }

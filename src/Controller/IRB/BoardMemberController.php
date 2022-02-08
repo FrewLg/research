@@ -22,29 +22,36 @@ class BoardMemberController extends AbstractController
     {
         $boardMember = new BoardMember();
         $form = $this->createForm(BoardMemberType::class, $boardMember);
-      
+
         $form->handleRequest($request);
 
-        if($request->request->get('change-role')){
-           
-            $boardMember=$boardMemberRepository->find($request->request->get('board_member'));
+        if ($request->request->get('change-role')) {
+
+
+
+            $boardMember = $boardMemberRepository->find($request->request->get('board_member'));
             $boardMember->setRole($request->request->get('roles'));
             $entityManager->flush();
-            $this->addFlash("success", "Role changed!!!");
+            $this->addFlash("success", "Role changed");
 
             return $this->redirectToRoute('board_member_index', [], Response::HTTP_SEE_OTHER);
-        
         }
 
-       
+
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $boardMember->setAssignedBy($this->getUser());
-            $boardMember->getUser()->addRole(Constants::ROLE_BOARD_MEMBER);
-            $entityManager->persist($boardMember);
-
-            $entityManager->flush();
-            $this->addFlash("success", "Registered successfully!!!");
+            if ($this->getUser()->getUserInfo()?->getCollege()) {
+                $boardMember->setAssignedBy($this->getUser());
+                $boardMember->getUser()->addRole(Constants::ROLE_BOARD_MEMBER);
+                $boardMember->setCollege($this->getUser()->getUserInfo()->getCollege());
+          
+                $entityManager->persist($boardMember);
+                
+                $entityManager->flush();
+                $this->addFlash("success", "Registered successfully");
+            } else {
+                $this->addFlash("danger", "Your college is not set");
+            }
 
             return $this->redirectToRoute('board_member_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -59,7 +66,7 @@ class BoardMemberController extends AbstractController
             'board_members' => $board_members,
             'board_member' => $boardMember,
             'form' => $form->createView(),
-          ]);
+        ]);
     }
 
 

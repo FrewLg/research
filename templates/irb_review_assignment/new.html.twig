@@ -22,13 +22,13 @@
 								<ul class="nav nav-pills nav-justified">
 									<li>
 										<a class="nav-link active " href="#tab-1" data-bs-toggle="tab">
-											Internal reviewer  
+											Internal reviewer
 										</a>
 									</li>
 									<li>
 										<a class="nav-link  " href="#tab-2" data-bs-toggle="tab">
 											External Reviewer
-										
+
 										</a>
 									</li>
 
@@ -82,7 +82,7 @@
 														{% endif %}
 													{% endfor %}
 												</div>
-												<button class="btn  float-end btn-primary   schedule-submit-button" type="submit">Submit</button>
+												<button class="btn  float-end btn-primary   schedule-submit-button" type="submit">Invite for review</button>
 
 												{{ form_end(external_reviewer_form) }}
 
@@ -109,7 +109,7 @@
 
 	<div class="col-lg-12">
 		<h4 class="text-d">
-			Assigned iRB reviewers
+			Assigned IRB reviewers
 			{% if is_granted('mng_brd_mbr') %}
 
 				<a class="btn btn-link" href="{{path('board_member_index')}}">View Board Members</a>
@@ -168,36 +168,36 @@
 						<td>{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}</td>
 
 						{# 
-																																																																																																						<td>
-																																																																																																															{% if review_assignment.acceptedAt %}
-																																																																																																																<span class="badge bg-success">
-																																																																																																																	Accepted
-																																																																																																																</span>
-																																																																																																																at:
-																																																																																																																{{ review_assignment.acceptedAt|date('d-m-y i:sa') }}
-																																																																																																							
-																																																																																																															{% elseif review_assignment.rejectedAt %}
-																																																																																																							
-																																																																																																																<span class="badge bg-danger">Rejected at:
-																																																																																																																</span>
-																																																																																																																{{ review_assignment.rejectedAt|date('d-m-y i:sa') }}
-																																																																																																							
-																																																																																																							
-																																																																																																															{% elseif  review_assignment.Closed == 1 %}
-																																																																																																																<span class="badge bg-warning">Review sent</span>
-																																																																																																															{% elseif  review_assignment.InactiveAssignment == 1 %}
-																																																																																																																<span class="badge bg-danger">Inactive
-																																																																																																																</span>
-																																																																																																															{% elseif  review_assignment.Declined == 1 %}
-																																																																																																																<span class="badge bg-danger">Declined</span>
-																																																																																																															{% else %}
-																																																																																																																<span class="badge bg-warning">Pending</span>
-																																																																																																							
-																																																																																																							
-																																																																																																															{% endif %} 
-																																																																																																															
-																																																																																																						</td>
-																																																																																																															#}
+																																																																																																												<td>
+																																																																																																																					{% if review_assignment.acceptedAt %}
+																																																																																																																						<span class="badge bg-success">
+																																																																																																																							Accepted
+																																																																																																																						</span>
+																																																																																																																						at:
+																																																																																																																						{{ review_assignment.acceptedAt|date('d-m-y i:sa') }}
+																																																																																																													
+																																																																																																																					{% elseif review_assignment.rejectedAt %}
+																																																																																																													
+																																																																																																																						<span class="badge bg-danger">Rejected at:
+																																																																																																																						</span>
+																																																																																																																						{{ review_assignment.rejectedAt|date('d-m-y i:sa') }}
+																																																																																																													
+																																																																																																													
+																																																																																																																					{% elseif  review_assignment.Closed == 1 %}
+																																																																																																																						<span class="badge bg-warning">Review sent</span>
+																																																																																																																					{% elseif  review_assignment.InactiveAssignment == 1 %}
+																																																																																																																						<span class="badge bg-danger">Inactive
+																																																																																																																						</span>
+																																																																																																																					{% elseif  review_assignment.Declined == 1 %}
+																																																																																																																						<span class="badge bg-danger">Declined</span>
+																																																																																																																					{% else %}
+																																																																																																																						<span class="badge bg-warning">Pending</span>
+																																																																																																													
+																																																																																																													
+																																																																																																																					{% endif %} 
+																																																																																																																					
+																																																																																																												</td>
+																																																																																																																					#}
 
 						<td nowrap="nowrap">
 
@@ -287,27 +287,27 @@
 															<br>
 															<br>
 															{# <a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
-																																																																																																																																																																																																												File To be Reviewed    PDF
-																																																																																																																																																																																																												<i class="fa fa-download"></i>
-																																																																																																																																																																																																											</a> #}
+																																																																																																																																																																																																																											File To be Reviewed    PDF
+																																																																																																																																																																																																																											<i class="fa fa-download"></i>
+																																																																																																																																																																																																																										</a> #}
 
 															<br>
 															<br>
 
 															{# 
-																																																																																																																																																																																																																																											{% if review_assignment.IsRejected == 1 %}
-																																																																																																																																																																																																																																												<span class="badge bg-info" title="Invitation not sent">Rejected</span>
-																																																																																																																																																																																																																																											{% elseif  review_assignment.Closed == 1 %}
-																																																																																																																																																																																																																																												<span class="badge bg-warning">Closed</span>
-																																																																																																																																																																																																																																												<br>
-																																																																																																																																																																																																																																											{% elseif  review_assignment.InactiveAssignment == 1 %}
-																																																																																																																																																																																																																																												<span class="badge bg-danger">Inactive Assignment</span>
-																																																																																																																																																																																																																																												<br>
-																																																																																																																																																																																																																																											{% elseif  review_assignment.Declined == 1 %}
-																																																																																																																																																																																																																																												<span class="badge bg-primary">Declined</span>
-																																																																																																																																																																																																																											
-																																																																																																																																																																																																																											
-																																																																																																																																																																																																																																											{% endif %} #}
+																																																																																																																																																																																																																																																										{% if review_assignment.IsRejected == 1 %}
+																																																																																																																																																																																																																																																											<span class="badge bg-info" title="Invitation not sent">Rejected</span>
+																																																																																																																																																																																																																																																										{% elseif  review_assignment.Closed == 1 %}
+																																																																																																																																																																																																																																																											<span class="badge bg-warning">Closed</span>
+																																																																																																																																																																																																																																																											<br>
+																																																																																																																																																																																																																																																										{% elseif  review_assignment.InactiveAssignment == 1 %}
+																																																																																																																																																																																																																																																											<span class="badge bg-danger">Inactive Assignment</span>
+																																																																																																																																																																																																																																																											<br>
+																																																																																																																																																																																																																																																										{% elseif  review_assignment.Declined == 1 %}
+																																																																																																																																																																																																																																																											<span class="badge bg-primary">Declined</span>
+																																																																																																																																																																																																																																										
+																																																																																																																																																																																																																																										
+																																																																																																																																																																																																																																																										{% endif %} #}
 
 
 															<br>
@@ -366,35 +366,42 @@
 				{% endfor %}
 			</tbody>
 		</table>
-		<div class="h4 text-bold">External reviewers</div>
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Fullname</th>
-
-					<th>Email</th>
-					<th>Assign date</th>
-					<th>Review status
-					</th>
+		{% if irb_review_assignment|filter(r=> not r.irbreviewer)|length >0 %}
 
 
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for review_assignment in irb_review_assignment|filter(r=> not r.irbreviewer)   %}
-
+			<div class="h4 text-bold">External reviewers</div>
+			<table class="table table-bordered">
+				<thead>
 					<tr>
-						<td>{{loop.index}}</td>
-						<td class='font-16 m-0     mb-1 align-right'>{{review_assignment.getExternalirbreviewerName()}}</td>
-						<td >{{review_assignment.getExternalirbreviewerEmail()}}</td>
-						<td>{{review_assignment.InvitationSentAt|date('Y-m-d')}}</td>
-						<td><span class="badge bg-warning">Pending</span></td>
-						<td>{{review_assignment.duedate|date('Y-m-d')}}</td>
+						<th>#</th>
+						<th>Fullname</th>
 
+						<th>Email</th>
+						<th>Assign date</th>
+						<th>Review status
+						</th>
+
+
+						<th>Actions</th>
 					</tr>
-				{%   endfor   %}
-			</tbody>
-		</table>
-	{% endblock %}
+				</thead>
+				<tbody>
+					{% for review_assignment in irb_review_assignment|filter(r=> not r.irbreviewer)   %}
+
+						<tr>
+							<td>{{loop.index}}</td>
+							<td class='font-16 m-0     mb-1 align-right'>{{review_assignment.getExternalirbreviewerName()}}</td>
+							<td>{{review_assignment.getExternalirbreviewerEmail()}}</td>
+							<td>{{review_assignment.InvitationSentAt|date('Y-m-d')}}</td>
+							<td>
+								<span class="badge bg-warning">Pending</span>
+							</td>
+							<td>{{review_assignment.duedate|date('Y-m-d')}}</td>
+
+						</tr>
+					{%   endfor   %}
+				</tbody>
+			</table>
+		</div>
+	{% endif %}
+{% endblock %}
