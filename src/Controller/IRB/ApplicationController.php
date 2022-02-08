@@ -103,7 +103,7 @@ class ApplicationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $application->setType(1);
+            // $application->setType(1);
             $application=$this->removeUnchecked($application);
 
             $entityManager->persist($application);
@@ -155,7 +155,7 @@ class ApplicationController extends AbstractController
          }
         $form2 = $this->createForm(RevisionType::class, $revision);
         $form2->handleRequest($request);
-        $review=$entityManager->getRepository(IRBReview::class)->findOneBy(['application'=>$application,"from_director"=>true,'allow_to_view'=>true]);
+        $review=$entityManager->getRepository(IRBReview::class)->findOneBy(['application'=>$application ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
         $att=$request->files->get('amendment')["attachment"];

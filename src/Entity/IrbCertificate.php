@@ -20,11 +20,7 @@ class IrbCertificate
 
  
 
-    /**
-     * @ORM\OneToOne(targetEntity=Application::class, inversedBy="irbCertificate", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $irbRequest;
+   
 
     /**
      * @ORM\Column(type="datetime")
@@ -34,7 +30,7 @@ class IrbCertificate
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $certificateCode;
+            private $certificateCode;
 
     /**
      * @ORM\Column(type="date")
@@ -63,18 +59,7 @@ class IrbCertificate
     }
 
    
-
-    public function getIrbRequest(): ?Application
-    {
-        return $this->irbRequest;
-    }
-
-    public function setIrbRequest(Application $irbRequest): self
-    {
-        $this->irbRequest = $irbRequest;
-
-        return $this;
-    }
+ 
 
     public function getApprovedAt(): ?\DateTimeInterface
     {

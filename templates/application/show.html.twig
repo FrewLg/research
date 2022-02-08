@@ -32,6 +32,9 @@
 										{% trans %}Add  Reviewer{% endtrans %}</a>
 									{# <button type="button" class="m-1 btn btn-outline-primary -right" data-bs-toggle="modal" data-bs-target="#assign-reviewer">{% trans %}Add Reviewer{% endtrans %}</button> #}
 
+<a href="{{ path('decisions_application', {'id': application.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
+										{% trans %}Revision detrails{% endtrans %}</a>
+
 								</h5>
 							</div>
 
@@ -435,14 +438,11 @@
 						<b>{% trans %}Comment{% endtrans %}:</b>
 						{{ review.comment }}</p>
 					<p class="card-text">
-						<b>{% trans %}Remark{% endtrans %}:</b>
+						<b>{% trans %}IRB Decision{% endtrans %}:</b>
 
 						<span class="badge bg-{{ review.remarkColor }}">{{ review.remarkText }}</span></p>
 					<p class="card-text">
-						<b>{% trans %}Evaluation Attachment{% endtrans %}:</b>
-						<a class="btn btn-outline-primary" href="{{ asset(review.evaluationAttachment) }}">
-							<i class="fa fa-download m-1"></i>
-							{% trans %}Download{% endtrans %}</a>
+						
 					</p>
 					{% if review and app.user == application.submittedBy and review.remark == 2 %}
 						<button type="button" class="m-1 btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#revision-modal">
