@@ -5,6 +5,8 @@ namespace App\Entity\IRB;
 use App\Entity\College;
 use App\Entity\User;
 use App\Repository\IRB\BoardMemberRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -22,10 +24,11 @@ class BoardMember
         1 => "Active",
         2 => "Deactivated"
     ];
-    const ROLE_CHAIR = 'Chair';
-    const ROLE_SECRETARY = 'Secretary';
-    const ROLE_MEMBER = 'Member';
-   
+    const ROLE_CHAIR = 'ROLE_Chair';
+    const ROLE_VICE_CHAIR = 'ROLE_VICE_CHAIR';
+    const ROLE_SECRETARY = 'ROLE_SECRETARY';
+    const ROLE_MEMBER = 'ROLE_MEMBER';
+
 
     /**
      * @ORM\Id
@@ -66,11 +69,24 @@ class BoardMember
      */
     private $role;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Meeting::class, mappedBy="attendee")
+     */
+    private $meetings;
+
+
 
     public function __construct()
     {
         $this->assignedAt = new \DateTime('now');
         $this->status = 1;
+        $this->meetings = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+
+        return $this->user;
     }
 
     public function getStatusText()
@@ -151,6 +167,33 @@ class BoardMember
     public function setRole(?string $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Meeting[]
+     */
+    public function getMeetings(): Collection
+    {
+        return $this->meetings;
+    }
+
+    public function addMeeting(Meeting $meeting): self
+    {
+        if (!$this->meetings->contains($meeting)) {
+            $this->meetings[] = $meeting;
+            $meeting->addAttendee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeeting(Meeting $meeting): self
+    {
+        if ($this->meetings->removeElement($meeting)) {
+            $meeting->removeAttendee($this);
+        }
 
         return $this;
     }

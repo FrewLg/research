@@ -150,7 +150,7 @@
 													
 														<td>
 															{% if myreview.dueDate %}
-																{{ myreview.dueDate|date('d, M Y h:i a') }}
+																{{ myreview.dueDate|ago }}
 															{% endif %}
 														</td>
 														<td>

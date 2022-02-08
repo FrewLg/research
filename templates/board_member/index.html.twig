@@ -18,7 +18,7 @@
 						<div class="accordion-item">
 							<h5 class="accordion-header m-0" id="headingOne">
 								<button class="accordion-button collapsed fw-semibold btn-soft-primary btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-controls="collapseOne">
-									Register new Board Member
+									Add new Board Member
 								</button>
 							</h5>
 							<div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
@@ -80,10 +80,10 @@
 										<select name="roles" class="form-control" onchange="if(confirm('Save changes?')){this.form.submit()}">
 											<optgroup label="Role">
 
-												<option value="Member" {{board_member.role=='Member'?"selected":""}}>Member</option>
-												<option value="Secretary" {{board_member.role=='Secretary'?"selected":""}}>
-													Secretary</option>
 												<option value="Chair" {{board_member.role=='Chair'?"selected":""}}>Chair</option>
+												<option value="Vice Chair" {{board_member.role=='Vice Chair'?"selected":""}}>Vice Chair</option>
+												<option value="Secretary" {{board_member.role=='Secretary'?"selected":""}}>Secretary</option>
+												<option value="Member" {{board_member.role=='Member'?"selected":""}}>Member</option>
 											</optgroup>
 
 										</select>

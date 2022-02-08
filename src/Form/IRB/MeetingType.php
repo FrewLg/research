@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Form\IRB;
+
+use App\Entity\IRB\Meeting;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
+
+class MeetingType extends AbstractType
+{
+    private $user;
+    public function __construct(Security $security)
+    {
+        $this->user = $security->getUser();
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('number', null, [
+                "data" => "JU-" . rand(1000, 100000),
+                "attr" => [
+
+                    "readonly" => true
+                ]
+            ])
+            ->add('heldAt', DateTimeType::class, [
+                "html5" => true,
+                "widget" => "single_text",
+                "min" => new \DateTime(),
+            ])
+            ->add('attendee', null, [
+                "attr" => [
+
+                    "class" => "select2"
+                ],
+
+                'query_builder' => function (EntityRepository $er) {
+
+                    $qb = $er->createQueryBuilder('b')
+                        ->join('b.user', 'u')
+                        ->join('u.userInfo', 'ui')
+                        ->andWhere("ui.college :college")
+                        ->setParameter('college', $this->user->getUserInfo()->getCollege());
+                    return $qb->orderBy('u.username', 'ASC');
+                },
+                "attr" => [
+                    "class" => "select2 col-3"
+                ],
+                'choice_label' => function (User $user) {
+                    return $user . "-(" . count($user->getIRBReviewAssignments()) . ")";
+                },
+            ])
+            ->add('applications', null, [
+                "attr" => [
+
+                    "class" => "select2"
+                ]
+            ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Meeting::class,
+        ]);
+    }
+}
