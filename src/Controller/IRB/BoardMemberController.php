@@ -31,6 +31,8 @@ class BoardMemberController extends AbstractController
 
             $boardMember = $boardMemberRepository->find($request->request->get('board_member'));
             $boardMember->setRole($request->request->get('roles'));
+            $boardMember->getUser()->addRole(Constants::ROLE_BOARD_MEMBER);
+              
             $entityManager->flush();
             $this->addFlash("success", "Role changed");
 
@@ -43,6 +45,7 @@ class BoardMemberController extends AbstractController
             if ($this->getUser()->getUserInfo()?->getCollege()) {
                 $boardMember->setAssignedBy($this->getUser());
                 $boardMember->getUser()->addRole(Constants::ROLE_BOARD_MEMBER);
+                $boardMember->getUser()->addRole($form['role']->getData());
                 $boardMember->setCollege($this->getUser()->getUserInfo()->getCollege());
           
                 $entityManager->persist($boardMember);
