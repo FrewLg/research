@@ -41,14 +41,14 @@ class CoAuthorType extends AbstractType
             // ]])
                     
                                    
-         ->add('email',EmailType::class)
+         ->add('email',EmailType::class,["required"=>true])
       
-             ->add('name')
+             ->add('name',null,["required"=>true])
         
 #    ->add('last_name') 
  #   ->add('orcid')
     # ->add('position') 
-  #    ->add('gender')         
+      ->add('role',null,["required"=>true])         
         ;
     }
 
