@@ -126,7 +126,7 @@
 	<div class="col-md-3">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">{% trans %}Name of CO-PI{% endtrans %} </label>
-			{{form_widget(coAuthor.researcher)}}
+			{{form_widget(coAuthor.name)}}
 
 		</div>
 	</div>
@@ -138,6 +138,21 @@
 
 		</div>
 	</div>
+		<div class="col-md-2">
+		<div class="form-group select-wizard">
+			<label class="bmd-label-floating">{% trans %}Role{% endtrans %} </label>
+			{{form_widget(coAuthor.role)}}
+
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="form-group select-wizard">
+			<label class="bmd-label-floating">{% trans %}Email{% endtrans %} </label>
+			{{form_widget(coAuthor.email)}}
+
+		</div>
+	</div>	
+
 
 
 	{# <div class="col-md-2">

@@ -61,7 +61,7 @@
 										</p>
 
 										<p class="">{% trans %}Status{% endtrans %}:
-											<span class="badge bg-warning">Pending</span>
+											<span class="badge bg-{{  application.status.type }}">{{  application.status }}</span>
 										</p>
 
 									</div>
@@ -193,12 +193,10 @@
 															<div class="card-body text-center">
 
 
-																<h5 class="fw-bold mt-3 mb-1">{{ co_author.researcher.userInfo}}
-																	<span class="text-muted mb-0">({{ co_author.researcher.userInfo.educationLevel }})</span>
+																<h5 class="fw-bold mt-3 mb-1">{{ co_author.title }} {{ co_author.name}}
 																</h5>
-																<p class="text-muted mb-0">{{ co_author.researcher.userInfo.college }}</p>
-																<p class="text-muted mb-0">{{ co_author.researcher.userInfo.department }}</p>
-																<p class="text-muted mb-0">{{ co_author.researcher.userInfo.academicRank }}</p>
+															<p class="text-muted mb-0">{{ co_author.department }}</p>
+																<p class="text-muted mb-0">{{ co_author.email }}</p>
 																<div class="mb-3">
 																	<a href="apps-tasks.html#" class="me-3 text-warning">
 																		{{ co_author.role }}</a>
@@ -206,7 +204,7 @@
 																	{# <a href="apps-tasks.html#" class=" text-warning">295 Coauthorship</a> #}
 																</div>
 
-																<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">{% trans %}More details{% endtrans %}</a>
+																{# <a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">{% trans %}More details{% endtrans %}</a> #}
 
 															</div>
 														</div>

@@ -20,20 +20,16 @@ class BoardMemberType extends AbstractType
                     "class" => "select2"
                 ]
             ])
-            ->add('college', null, [
-                "placeholder" => "Select User",
-                "attr" => [
-                    "class" => "select2"
-                ]
-            ])
+        
             ->add('role', ChoiceType::class, [
                 "placeholder" => "Select Role",
               
                 "required" => true,
                 "choices" => [
-                    "Member" => BoardMember::ROLE_MEMBER,
                     "Chair" => BoardMember::ROLE_CHAIR,
+                    "Vice Chair" => BoardMember::ROLE_VICE_CHAIR,
                     "Secretary" => BoardMember::ROLE_SECRETARY,
+                    "Member" => BoardMember::ROLE_MEMBER,
                 ],
                 "attr" => [
                     "class" => "select2"

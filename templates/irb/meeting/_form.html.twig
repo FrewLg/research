@@ -1,0 +1,14 @@
+{% import "common/macro/input.html.twig" as input %}
+
+{{ form_start(form) }}
+<div class="row">
+{% for child in form.children %}
+	{% if child.vars.name != "_token" %}
+
+		{{input.input(child)}}
+	{% endif %}
+{% endfor %}
+</div>
+
+<button class="btn mx-1  col-3 float-end btn-success my-3 ">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

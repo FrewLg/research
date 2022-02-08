@@ -18,16 +18,7 @@ class CoAuthorType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('researcher' , EntityType::class, array(
-                'required'=>false,
-                                      'placeholder' => '-- Select researcher --',
-                         'class' => 'App\Entity\User',
-                         'attr' => array(
-                             'empty' => 'Select User ',
-                             'required' => true,
-                             'class' => 'form-control select2 chosen-select ',
-                         )
-                     ))
+          
            ->add('department'
         //    ,null,['attr'=>['class'=>'form-control select2']])
             
@@ -50,15 +41,14 @@ class CoAuthorType extends AbstractType
             // ]])
                     
                                    
-        //    ->add('email',EmailType::class)
-            // ->add('role')
-            # ->add('bio')
-            #->add('country')
-            #->add('url')
+         ->add('email',EmailType::class,["required"=>true])
+      
+             ->add('name',null,["required"=>true])
+        
 #    ->add('last_name') 
  #   ->add('orcid')
     # ->add('position') 
-  #    ->add('gender')         
+      ->add('role',null,["required"=>true])         
         ;
     }
 
