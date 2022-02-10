@@ -1,78 +1,93 @@
 {% extends 'homelayout.html.twig' %}
-{% block breadcrumb %}
-{% endblock %}
+{% block breadcrumb %}{% endblock %}
 {# {% block pagehead %}Home
 {% endblock %} #}
 {% block title %}
-  IRB clearance
+	IRB clearance
 {% endblock %}
 
 {% block body %}
-  {# % include 'page_includes/header_report.html.twig'% #}
+	{# % include 'page_includes/header_report.html.twig'% #}
 
-  <meta property="og:url"
-    content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details" />
-  <meta property="og:type" content="JU" />
-  <meta property="og:title" content="RMS Announcemen ts" />
-  <meta property="og:description" content="Your description" />
-  <meta property="og:image"
-    content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details" />
+	<meta property="og:url" content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
+	<meta property="og:type" content="JU"/>
+	<meta property="og:title" content="RMS Announcemen ts"/>
+	<meta property="og:description" content="Your description"/>
+	<meta property="og:image" content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
 
-   {% if irb is defined %}
-  <div class="container aos-init aos-animate" data-aos="fade-up">
+	{% if  not irb is defined %}
+		<div class="container aos-init aos-animate" data-aos="fade-up">
 
-   
-    <div class="section-title">
-      <h2>
-        Validate IRB clearance here
-      </h2>
-    </div>
-    <div class="section-title">
-      <form method="post" role="form" class="php-email-form">
-        <div class="row justify-content-center">
-          <div class=" form-group col-md-6">
-            <input type="text" name="name" class="form-control" id="name" placeholder="Code" required="" />
-          </div>
+
+			<div class="section-title">
+				<h2>
+					Validate IRB clearance here
+				</h2>
+			</div>
+			<div class="section-title">
+				<form method="post">
+					<div class="row justify-content-center">
+						<div class=" form-group col-md-6">
+							<input type="text" name="validate" class="form-control" id="name" placeholder="Code" required=""/>
+						</div>
+					</div>
+					<button class="mt-2 btn-lg btn btn-success" type="submit">Check</button>
+				</form>
+			</div>
+		</div>
+
+	{% else %}
+		<div class="container aos-init aos-animate" data-aos="fade-up">
+
+			<div class="section-title">
+				<p class="float-end">code :{{ irb.certificateCode }} </p>
+				<h2>IRB Clearance</h2>
+     
+        <p>
+        The IRB of Institute of Health has reviewed research project titled 	"<u><b>{{ irb.irbApplication.title }}</b></u>".
+
+        
+        Thus, this is to notify that this research protocol has presented to the IRB meets the ethical and Scientific standards outlined in national and international guidelines. 
+        Hence, we are approve this  research protocol is ethically cleared.
+        </p>
+			</div>
+
+			<div class="row content">
+				<div class="col-lg-6">
+				
+          
+					<p>
+						<b>Project Type:</b>
+						{{ irb.irbApplication.projectType }}
+					</p>
+          	<p>
+						<b>Project PI:</b>
+						{{ irb.irbApplication.pi ? irb.irbApplication.pi  : irb.irbApplication.submittedBy  }}
+
+					</p>
+					<p>
+						<b>Project Start:</b>
+						{{ irb.irbApplication.startDate | date('Y-m-d') }}
+
+					</p>
+					<p>
+						<b>Project End:</b>
+						{{ irb.irbApplication.endDate | date('Y-m-d') }}
+					</p>
+
+				</div>
+				<div class="col-lg-6 pt-4 pt-lg-0">
+        		<p>
+						<b>Clearance Valid until</b>:
+						{{ irb.validUntil | date('Y-m-d') }}
+					</p>
+        
         </div>
-        <button class="mt-2 btn-lg btn btn-success" type="submit">Check</button>
-      </form>
-    </div>
-    </div>
 
-    {% else %}
-      <div class="container aos-init aos-animate" data-aos="fade-up">
+			</div>
 
-        <div class="section-title">
-          <h2>IRB Clearance</h2>
-          <p></p>
-        </div>
+		{% endif %}
 
-        <div class="row content">
-          <div class="col-lg-6">
-            <p>
-            {{ irb.irbApplication.title }}
-            </p>
-            <ul>
-              <li><i class="ri-check-double-line"></i> </li>
-              <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in voluptate velit</li>
-              <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat</li>
-            </ul>
-          </div>
-          <div class="col-lg-6 pt-4 pt-lg-0">
-            <p>
-              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-           
-          </div>
-        </div>
 
-      </div>
-
-   {% endif %}
-   
-  
-
-  {# <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.min.js"></script> #}
-{% endblock %}
+		{# <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.min.js"></script> #}
+	{% endblock %}
