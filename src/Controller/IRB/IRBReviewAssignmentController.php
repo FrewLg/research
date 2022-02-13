@@ -299,7 +299,7 @@ class IRBReviewAssignmentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
-            if ($review->getRemark() == 1 || $review->getRemark() == 3) {
+            if ($review->getRemark() == 1 || $review->getRemark() == 3) { 
                 
             }
             $review->setFromDirector(1);

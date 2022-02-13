@@ -21,7 +21,7 @@ class IrbCertificate
  
 
     /**
-     * @ORM\OneToOne(targetEntity=Application::class, inversedBy="irbCertificate", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Application::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $irbRequest;
@@ -42,7 +42,7 @@ class IrbCertificate
     private $validUntil;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="irbCertificates")
+     * @ORM\ManyToOne(targetEntity=Application::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $irbApplication;

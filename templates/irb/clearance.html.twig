@@ -2,13 +2,12 @@
 {% block breadcrumb %}{% endblock %}
 {# {% block pagehead %}Home
 {% endblock %} #}
-{% block title %}IRB clearance
+{% block title %}
+	IRB clearance
 {% endblock %}
 
-
 {% block body %}
-
-	{#% include 'page_includes/header_report.html.twig'%#}
+	{# % include 'page_includes/header_report.html.twig'% #}
 
 	<meta property="og:url" content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
 	<meta property="og:type" content="JU"/>
@@ -16,49 +15,79 @@
 	<meta property="og:description" content="Your description"/>
 	<meta property="og:image" content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
 
-<div class="container aos-init aos-animate" data-aos="fade-up">
+	{% if  not irb is defined %}
+		<div class="container aos-init aos-animate" data-aos="fade-up">
 
-        <div class="section-title">
-          <h2>Validate IRB clearance here</h2>
-        </div>
 
-        <div class="row mt-1 d-flex justify-content-end aos-init aos-animate" data-aos="fade-right" data-aos-delay="100">
+			<div class="section-title">
+				<h2>
+					Validate IRB clearance here
+				</h2>
+			</div>
+			<div class="section-title">
+				<form method="post">
+					<div class="row justify-content-center">
+						<div class=" form-group col-md-6">
+							<input type="text" name="validate" class="form-control" id="name" placeholder="Code" required=""/>
+						</div>
+					</div>
+					<button class="mt-2 btn-lg btn btn-success" type="submit">Check</button>
+				</form>
+			</div>
+		</div>
 
-          <div class="col-lg-5">
-            <div class="info">
-             
+	{% else %}
+		<div class="container aos-init aos-animate" data-aos="fade-up">
 
-             
+			<div class="section-title">
+				<p class="float-end">code :{{ irb.certificateCode }} </p>
+				<h2>IRB Clearance</h2>
+     
+        <p>
+        The IRB of Institute of Health has reviewed research project titled 	"<u><b>{{ irb.irbApplication.title }}</b></u>".
 
-            </div>
+        
+        Thus, this is to notify that this research protocol has presented to the IRB meets the ethical and Scientific standards outlined in national and international guidelines. 
+        Hence, we are approve this  research protocol is ethically cleared.
+        </p>
+			</div>
 
-          </div>
-
-          <div class="col-lg-6 mt-5 mt-lg-0 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
-
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Code" required="">
-                </div>
-              
-              </div>
+			<div class="row content">
+				<div class="col-lg-6">
+				
           
-           
-              <div class="text-center"><button type="submit">Check</button></div>
-            </form>
+					<p>
+						<b>Project Type:</b>
+						{{ irb.irbApplication.projectType }}
+					</p>
+          	<p>
+						<b>Project PI:</b>
+						{{ irb.irbApplication.pi ? irb.irbApplication.pi  : irb.irbApplication.submittedBy  }}
 
-          </div>
+					</p>
+					<p>
+						<b>Project Start:</b>
+						{{ irb.irbApplication.startDate | date('Y-m-d') }}
 
+					</p>
+					<p>
+						<b>Project End:</b>
+						{{ irb.irbApplication.endDate | date('Y-m-d') }}
+					</p>
+
+				</div>
+				<div class="col-lg-6 pt-4 pt-lg-0">
+        		<p>
+						<b>Clearance Valid until</b>:
+						{{ irb.validUntil | date('Y-m-d') }}
+					</p>
+        
         </div>
 
-      </div>
-	
+			</div>
+
+		{% endif %}
 
 
-
-
-	{# <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.min.js"></script> #}
-
-{% endblock %}
-
+		{# <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.min.js"></script> #}
+	{% endblock %}
