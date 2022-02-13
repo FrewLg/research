@@ -36,7 +36,7 @@ class CallForProposalController extends AbstractController
     public function adminlist(Request $request, CallForProposalRepository $callForProposalRepository, PaginatorInterface $paginator): Response
     {
 
-        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+        $this->denyAccessUnlessGranted('vw_cll_fr_prop');
         $em = $this->getDoctrine()->getManager();
         $call_for_proposalRepository = $callForProposalRepository->getCalls(['college' => $this->getUser()->getUserInfo()->getCollege()]);
         $info = 'All';

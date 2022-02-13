@@ -16,6 +16,7 @@ class PublishedResearchController extends AbstractController
     #[Route('/', name: 'published_research_index', methods: ['GET'])]
     public function index(PublishedResearchRepository $publishedResearchRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_gntd_rsrch');
         return $this->render('published_research/index.html.twig', [
             'published_researches' => $publishedResearchRepository->findAll(),
         ]);

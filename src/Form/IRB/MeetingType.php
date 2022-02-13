@@ -2,6 +2,8 @@
 
 namespace App\Form\IRB;
 
+use App\Entity\IRB\Application;
+use App\Entity\IRB\BoardMember;
 use App\Entity\IRB\Meeting;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
@@ -27,40 +29,28 @@ class MeetingType extends AbstractType
                 "attr" => [
 
                     "readonly" => true
-                ]
+                ],
+            
             ])
             ->add('heldAt', DateTimeType::class, [
                 "html5" => true,
                 "widget" => "single_text",
-                "min" => new \DateTime(),
+                // "min" => new \DateTime(),
             ])
             ->add('attendee', null, [
-                "attr" => [
-
-                    "class" => "select2"
-                ],
-
-                'query_builder' => function (EntityRepository $er) {
-
-                    $qb = $er->createQueryBuilder('b')
-                        ->join('b.user', 'u')
-                        ->join('u.userInfo', 'ui')
-                        ->andWhere("ui.college :college")
-                        ->setParameter('college', $this->user->getUserInfo()->getCollege());
-                    return $qb->orderBy('u.username', 'ASC');
-                },
-                "attr" => [
-                    "class" => "select2 col-3"
-                ],
-                'choice_label' => function (User $user) {
-                    return $user . "-(" . count($user->getIRBReviewAssignments()) . ")";
-                },
+                "expanded"=>true,
+               
+               
+              
             ])
             ->add('applications', null, [
-                "attr" => [
-
-                    "class" => "select2"
-                ]
+                "expanded"=>true,
+               "label"=>"",
+                'choice_label' => function (Application $application) {
+                    return "".$application . "==>" . $application->getSubmittedBy() . "";
+                },
+  
+               
             ]);
     }
 

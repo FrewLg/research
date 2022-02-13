@@ -22,7 +22,7 @@ class PermissionController extends AbstractController
     public function index(PermissionRepository $permissionRepository, Request $request,  PaginatorInterface $paginator): Response
     {
         
-        $this->denyAccessUnlessGranted('perm_act');
+        $this->denyAccessUnlessGranted('vw_perm');
         
         $queryBuilder=$permissionRepository->getData($request->query->get('search'));
         $data=$paginator->paginate(

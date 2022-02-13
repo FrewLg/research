@@ -85,7 +85,7 @@ class UserController extends AbstractController
     public function index(UserRepository $userRepository, PaginatorInterface $paginator, Request $request): Response
     {
 
-        $this->denyAccessUnlessGranted("ROLE_USER"); 
+        $this->denyAccessUnlessGranted("vw_usr"); 
         $queryBuilder = $userRepository->getData(['name' => $request->query->get('search')]);
           $data = $paginator->paginate(
             $queryBuilder,

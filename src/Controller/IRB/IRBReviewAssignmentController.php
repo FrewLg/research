@@ -183,7 +183,7 @@ class IRBReviewAssignmentController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
-        if($this->isGranted('ROLE_SECRETARY')){
+        if($this->isGranted('ROLE_SECRETARY') || $this->isGranted('vw_all_irb_assgn')){
         // $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL], ["id" => "ASC"]);
         // // if($this->isGranted('ROLE_SECRETARY')){
             $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->getActiveApplication();

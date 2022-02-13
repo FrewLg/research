@@ -66,7 +66,7 @@ class SubmissionController extends AbstractController
      */
     public function index(Request $request,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
     {
-        $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $this->denyAccessUnlessGranted('vw_all_sub');
         $em = $this->getDoctrine()->getManager();
         //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
         $formFilter = $this->createForm(SubmissionFilterType::class);
@@ -1032,7 +1032,7 @@ class SubmissionController extends AbstractController
      */
     public function mymembership(Request $request,  PaginatorInterface $paginator): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('vw_own_mmbr');
         $entityManager = $this->getDoctrine()->getManager();
 
         $myemail = $this->getUser();
@@ -1139,7 +1139,7 @@ class SubmissionController extends AbstractController
      */
     public function myresearches(Request $request, PaginatorInterface $paginator): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('vw_own_sub');
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();

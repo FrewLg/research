@@ -16,6 +16,7 @@ class AcademicYearController extends AbstractController
     #[Route('/', name: 'academic_year_index', methods: ['GET'])]
     public function index(AcademicYearRepository $academicYearRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_ac_yr');
         return $this->render('academic_year/index.html.twig', [
             'academic_years' => $academicYearRepository->findAll(),
         ]);

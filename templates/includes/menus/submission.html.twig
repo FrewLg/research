@@ -1,0 +1,50 @@
+{% if is_granted('vw_all_sub') or  is_granted('vw_own_sub') or is_granted('vw_own_mmbr') or is_granted('vw_own_assign') %}
+
+	<li>
+
+		<a href="javascript: void(0);">
+			<i class=" fas fa-paper-plane align-self-center menu-icon"></i>
+			<span>Submissions</span>
+			<span class="menu-arrow">
+				<i class="mdi mdi-chevron-right"></i>
+			</span>
+		</a>
+		<ul class="nav-second-level" aria-expanded="false">
+			{% if is_granted("vw_all_sub") %}
+
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('submission_index') }}">
+						<i class="ti-control-record"></i>All Submissions</a>
+				</li>
+
+			{% endif %}
+
+			{% if is_granted('vw_own_sub') %}
+
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('myreviews') }}">
+						<i class="ti-control-record"></i>
+						My submission</a>
+				</li>
+			{% endif %}
+			{% if is_granted('vw_own_mmbr') %}
+
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('membership') }}">
+						<i class="ti-control-record"></i>
+						My co-authorship</a>
+				</li>
+			{% endif %}
+			{% if is_granted('vw_own_assign') %}
+
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('myassigned') }}">
+						<i class="ti-control-record"></i>
+						My assigned</a>
+				</li>
+			{% endif %}
+
+
+		</ul>
+	</li>
+</li>{% endif %}

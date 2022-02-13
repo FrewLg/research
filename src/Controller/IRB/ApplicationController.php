@@ -43,6 +43,8 @@ class ApplicationController extends AbstractController
     #[Route('/', name: 'application_index', methods: ['GET',"POST"])]
     public function index(ApplicationRepository $applicationRepository, Request $request, PaginatorInterface $paginatorInterface): Response
     {
+        $this->denyAccessUnlessGranted('vw_irb_rqst');
+        
         $queryBuilder = $applicationRepository->getData([],$this->isGranted('ROLE_SECRETARY')?null:$this->getUser(),true);
         $application_filter_form=$this->createForm(ApplicationFilterType::class)->handleRequest($request);
        

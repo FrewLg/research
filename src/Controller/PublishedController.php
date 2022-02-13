@@ -30,7 +30,7 @@ class PublishedController extends AbstractController
      */
     public function publications(Request $request,   PaginatorInterface $paginator ): Response
     { 
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_all_pub');
         $entityManager = $this->getDoctrine()->getManager();
         $publications = $entityManager->getRepository(Publication::class)
         ->findAll();
