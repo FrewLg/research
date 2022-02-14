@@ -32,7 +32,7 @@ class MeetingType extends AbstractType
             ->add('heldAt', DateTimeType::class, [
                 "html5" => true,
                 "widget" => "single_text",
-                "min" => new \DateTime(),
+              
             ])
             ->add('attendee', null, [
                 "attr" => [
@@ -40,21 +40,11 @@ class MeetingType extends AbstractType
                     "class" => "select2"
                 ],
 
-                'query_builder' => function (EntityRepository $er) {
-
-                    $qb = $er->createQueryBuilder('b')
-                        ->join('b.user', 'u')
-                        ->join('u.userInfo', 'ui')
-                        ->andWhere("ui.college :college")
-                        ->setParameter('college', $this->user->getUserInfo()->getCollege());
-                    return $qb->orderBy('u.username', 'ASC');
-                },
+              
                 "attr" => [
                     "class" => "select2 col-3"
                 ],
-                'choice_label' => function (User $user) {
-                    return $user . "-(" . count($user->getIRBReviewAssignments()) . ")";
-                },
+               
             ])
             ->add('applications', null, [
                 "attr" => [

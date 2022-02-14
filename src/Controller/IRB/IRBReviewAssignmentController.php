@@ -272,9 +272,9 @@ class IRBReviewAssignmentController extends AbstractController
         $submissionOfreviewer = $entityManager->getRepository(IRBReviewAssignment::class)->find($reviewAssignment);
         $submissions = $submissionOfreviewer->getApplication();
         #######################
-        if ($reviewAssignment->getClosed() == 1) {
-            return $this->redirectToRoute('irb_myassigned');
-        }
+        // if ($reviewAssignment->getClosed() == 1) {
+        //     return $this->redirectToRoute('irb_myassigned');
+        // }
         #######################
 
         $measareviewer = $this->getUser();

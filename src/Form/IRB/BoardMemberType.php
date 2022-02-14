@@ -30,6 +30,7 @@ class BoardMemberType extends AbstractType
                     "Vice Chair" => BoardMember::ROLE_VICE_CHAIR,
                     "Secretary" => BoardMember::ROLE_SECRETARY,
                     "Member" => BoardMember::ROLE_MEMBER,
+                    "Coordinator" => 'ROLE_COORDINATOR',
                 ],
                 "attr" => [
                     "class" => "select2"
