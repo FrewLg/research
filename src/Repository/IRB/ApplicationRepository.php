@@ -78,7 +78,7 @@ class ApplicationRepository extends ServiceEntityRepository
         }
             // ->andWhere('i.exampleField = :val')
             // ->setParameter('val', $value)
-            return $qb->orderBy('a.id', 'DESC')
+            return $qb->orderBy('a.id', 'ASC')
           
             ->getQuery();
     }

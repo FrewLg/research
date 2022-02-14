@@ -21,18 +21,17 @@ is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc')
 
 			{% endif %}
 
-			{% if is_granted("vw_irb_rqst") %}
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('application_index') }}">
 						<i class="ti-control-record"></i>
 						{% if   is_granted("ROLE_ADMIN") %}
-							Requests
+							All Applications
 						{% else %}
-							My Request
+							My Applications
 						{% endif %}
 					</a>
 				</li>
-			{% endif %}
+			
 
 			{% if is_granted("ROLE_SECRETARY") or is_granted("vw_all_irb_assgn")   %}
 				<li class="nav-item">

@@ -251,7 +251,6 @@ class SubmissionController extends AbstractController
     {
         
 
-
         #######################
         $em  = $this->getDoctrine()->getManager();
 

@@ -1,6 +1,6 @@
 
 
-INSERT INTO `permission` (`id`, `name`, `description`, `code`) VALUES
+INSERT INTO `permission` (`id`, `name`, `code`, `description`) VALUES
 (NULL, 'Permission add', 'perm_act', 'perm_act'),
 (NULL, 'usrgrp_act', 'usrgrp_act', 'usrgrp_act'),
 (NULL, 'ad_prmsn_to_grp', NULL, 'ad_prmsn_to_grp'),
@@ -56,5 +56,4 @@ INSERT INTO `permission` (`id`, `name`, `description`, `code`) VALUES
 (NULL, 'view Subscription', 'vw_sbsc', ''),
 (NULL, 'view Email messages', 'vw_em_msg', ''),
 (NULL, 'Reports nav tree', 'rprts_nv_tr', ''),
-(NULL, 'View Application submission Report', 'vw_app_sb_rp', ''),
-;
+(NULL, 'View Application submission Report', 'vw_app_sb_rp', '') ;
