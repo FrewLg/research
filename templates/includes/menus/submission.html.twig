@@ -19,30 +19,26 @@
 
 			{% endif %}
 
-			{% if is_granted('vw_own_sub') %}
-
+			
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('myreviews') }}">
 						<i class="ti-control-record"></i>
 						My submission</a>
 				</li>
-			{% endif %}
-			{% if is_granted('vw_own_mmbr') %}
+			
 
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('membership') }}">
 						<i class="ti-control-record"></i>
 						My co-authorship</a>
 				</li>
-			{% endif %}
-			{% if is_granted('vw_own_assign') %}
-
+	
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('myassigned') }}">
 						<i class="ti-control-record"></i>
 						My assigned</a>
 				</li>
-			{% endif %}
+		
 
 
 		</ul>

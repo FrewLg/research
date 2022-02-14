@@ -26,11 +26,11 @@
                         <img alt="image" class="" style='width:60px;height:75px;' 
 src="{{ asset('corporate/img/logo.png') }}"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#"></center>
-                            <span class="block m-t-xs font-bold"> {% if is_granted('ROLE_USER') %} 
+                            <span class="block m-t-xs font-bold"> {% if app.user %} 
                                           {{ app.user.username }} {% endif %}</p>
 
                             </span>
-                            <span class="text-muted text-xs block"> {% if is_granted('ROLE_USER') %} {{ app.user.username }} {% endif %}   <b class="caret"></b></span>
+                            <span class="text-muted text-xs block"> {% if app.user %} {{ app.user.username }} {% endif %}   <b class="caret"></b></span>
                 </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a class="dropdown-item" href="profile.html">Profile</a></li> 
