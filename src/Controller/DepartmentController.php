@@ -16,7 +16,7 @@ class DepartmentController extends AbstractController
     #[Route('/', name: 'department_index', methods: ['GET'])]
     public function index(DepartmentRepository $departmentRepository): Response
     {
-    $this->denyAccessUnlessGranted('assn_clg_cntr');
+    $this->denyAccessUnlessGranted('vw_dept');
 
         return $this->render('department/index.html.twig', [
             'departments' => $departmentRepository->findBy(['college'=>$this->getUser()->getUserInfo()->getCollege()]),

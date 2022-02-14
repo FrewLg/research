@@ -22,19 +22,17 @@ class MeetingRepository extends ServiceEntityRepository
     // /**
     //  * @return Meeting[] Returns an array of Meeting objects
     //  */
-    /*
-    public function findByExampleField($value)
+ 
+    public function getData($filters=[])
     {
         return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+            // ->andWhere('m.exampleField = :val')
+            // ->setParameter('val', $value)
+            ->orderBy('m.id', 'DESC')
             ->getQuery()
-            ->getResult()
-        ;
+           ;
     }
-    */
+  
 
     /*
     public function findOneBySomeField($value): ?Meeting

@@ -61,6 +61,8 @@ class IRBReviewController extends AbstractController
      */
     public function myassigned(Request $request, PaginatorInterface $paginator): Response {
         
+        $this->denyAccessUnlessGranted('vw_own_assign');
+        
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();

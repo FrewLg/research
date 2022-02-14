@@ -17,6 +17,7 @@ class TrainingTypeController extends AbstractController
     #[Route('/', name: 'training_type_index', methods: ['GET'])]
     public function index(TrainingTypeRepository $trainingTypeRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_tr_typ');
         return $this->render('training_type/index.html.twig', [
             'training_types' => $trainingTypeRepository->findAll(),
         ]);

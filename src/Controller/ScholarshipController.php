@@ -18,6 +18,8 @@ class ScholarshipController extends AbstractController
     #[Route('/adm', name: 'scholarship_index_adm', methods: ['GET'])]
     public function admindex(ScholarshipRepository $scholarshipRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_schps');
+        
         return $this->render('scholarship/index.html.twig', [
             'scholarships' => $scholarshipRepository->findAll(),
         ]);

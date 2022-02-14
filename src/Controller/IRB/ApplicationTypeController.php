@@ -17,6 +17,8 @@ class ApplicationTypeController extends AbstractController
     #[Route('/', name: 'i_r_b_application_type_index', methods: ['GET'])]
     public function index(ApplicationTypeRepository $applicationTypeRepository): Response
     {
+        $this->denyAccessUnlessGranted('mng_irb_app_typ');
+        
         return $this->render('irb/application_type/index.html.twig', [
             'application_types' => $applicationTypeRepository->findAll(),
         ]);

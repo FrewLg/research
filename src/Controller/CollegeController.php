@@ -58,7 +58,7 @@ public function new (Request $request): Response {
 
 public function showdetail(Request $request): Response {
 
-    $this->denyAccessUnlessGranted('assn_clg_cntr');
+    $this->denyAccessUnlessGranted('vw_clg');
 
     $college = $this->getUser()->getUserInfo()->getCollege();
 
@@ -209,7 +209,7 @@ public function showdetail(Request $request): Response {
 
 public function irbshowdetail(Request $request): Response {
 
-    $this->denyAccessUnlessGranted('assn_clg_cntr');
+    $this->denyAccessUnlessGranted('mng_irb_guid_atc');
 
     $college = $this->getUser()->getUserInfo()->getCollege();
 

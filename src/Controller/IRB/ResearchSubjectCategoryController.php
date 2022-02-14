@@ -17,6 +17,7 @@ class ResearchSubjectCategoryController extends AbstractController
     #[Route('/', name: 'i_r_b_research_subject_category_index', methods: ['GET'])]
     public function index(ResearchSubjectCategoryRepository $researchSubjectCategoryRepository): Response
     {
+        $this->denyAccessUnlessGranted('mng_irb_rsub_cat');
         return $this->render('irb/research_subject_category/index.html.twig', [
             'research_subject_categories' => $researchSubjectCategoryRepository->findAll(),
         ]);

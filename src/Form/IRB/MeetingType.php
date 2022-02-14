@@ -2,6 +2,8 @@
 
 namespace App\Form\IRB;
 
+use App\Entity\IRB\Application;
+use App\Entity\IRB\BoardMember;
 use App\Entity\IRB\Meeting;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
@@ -27,30 +29,28 @@ class MeetingType extends AbstractType
                 "attr" => [
 
                     "readonly" => true
-                ]
+                ],
+            
             ])
             ->add('heldAt', DateTimeType::class, [
                 "html5" => true,
                 "widget" => "single_text",
-              
+                // "min" => new \DateTime(),
             ])
             ->add('attendee', null, [
-                "attr" => [
-
-                    "class" => "select2"
-                ],
-
-              
-                "attr" => [
-                    "class" => "select2 col-3"
-                ],
+                "expanded"=>true,
                
+               
+              
             ])
             ->add('applications', null, [
-                "attr" => [
-
-                    "class" => "select2"
-                ]
+                "expanded"=>true,
+               "label"=>"",
+                'choice_label' => function (Application $application) {
+                    return "".$application . "==>" . $application->getSubmittedBy() . "";
+                },
+  
+               
             ]);
     }
 

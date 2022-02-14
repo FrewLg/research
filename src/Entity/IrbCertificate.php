@@ -20,7 +20,7 @@ class IrbCertificate
 
  
 
-   
+     
 
     /**
      * @ORM\Column(type="datetime")
@@ -38,7 +38,7 @@ class IrbCertificate
     private $validUntil;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="irbCertificates")
+     * @ORM\ManyToOne(targetEntity=Application::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $irbApplication;

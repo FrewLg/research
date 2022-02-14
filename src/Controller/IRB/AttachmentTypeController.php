@@ -17,6 +17,8 @@ class AttachmentTypeController extends AbstractController
     #[Route('/', name: 'i_r_b_attachment_type_index', methods: ['GET'])]
     public function index(AttachmentTypeRepository $attachmentTypeRepository): Response
     {
+        $this->denyAccessUnlessGranted('mng_irb_atch_typ');
+        
         return $this->render('irb/attachment_type/index.html.twig', [
             'attachment_types' => $attachmentTypeRepository->findAll(),
         ]);

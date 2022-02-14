@@ -20,6 +20,8 @@ class BoardMemberController extends AbstractController
     #[Route('/', name: 'board_member_index', methods: ['GET', "POST"])]
     public function index(BoardMemberRepository $boardMemberRepository, Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
+        $this->denyAccessUnlessGranted('vw_brd_mmbr');
+        
         $boardMember = new BoardMember();
         $form = $this->createForm(BoardMemberType::class, $boardMember);
 

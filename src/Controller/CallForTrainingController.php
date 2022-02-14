@@ -40,7 +40,7 @@ class CallForTrainingController extends AbstractController
     public function foradmin(Request $request,  CallForTrainingRepository $callForTrainingRepository, PaginatorInterface $paginator): Response
     {
 
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_cll_fr_trn');
 
         $em = $this->getDoctrine()->getManager();
 

@@ -21,6 +21,8 @@ class SubscriptionController extends AbstractController
      */
     public function index(SubscriptionRepository $subscriptionRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_sbsc');
+        
         return $this->render('subscription/index.html.twig', [
             'subscriptions' => $subscriptionRepository->findAll(),
         ]);
