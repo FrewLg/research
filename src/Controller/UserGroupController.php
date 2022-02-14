@@ -25,7 +25,7 @@ class UserGroupController extends AbstractController
     {
 
          
-        $this->denyAccessUnlessGranted('vw_usr_grp');
+#        $this->denyAccessUnlessGranted('vw_usr_grp');
 
 
         
