@@ -66,7 +66,7 @@ class SubmissionController extends AbstractController
      */
     public function index(Request $request,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
     {
-        $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $this->denyAccessUnlessGranted('vw_all_sub');
         $em = $this->getDoctrine()->getManager();
         //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
         $formFilter = $this->createForm(SubmissionFilterType::class);
@@ -249,8 +249,7 @@ class SubmissionController extends AbstractController
      */
     public function metadata(Request $request, CallForProposal $callForProposal, UserController $test, MailerInterface $mailer): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
+        
 
         #######################
         $em  = $this->getDoctrine()->getManager();
@@ -450,7 +449,7 @@ class SubmissionController extends AbstractController
     public function exportnow(Request $request, $uid)
     {
 
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
 
         $em = $this->getDoctrine()->getManager();
 
@@ -496,7 +495,7 @@ class SubmissionController extends AbstractController
      */
     public function metadataedit(Request $request, Submission $submission, CallForProposalRepository $callForProposalRepository, SmsHelper $smsHelper): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
         $callForProposal = $submission->getCallForProposal();
         //////// =======check whather it is confirmed or not============
@@ -593,7 +592,7 @@ class SubmissionController extends AbstractController
     public function statusubmission(Request $request, Submission $submission, SubmissionHelper $submissionHelper): Response
     {
         ////Ultimate reviewers page
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
 
         ################### Are you the one? #################################
@@ -1032,7 +1031,6 @@ class SubmissionController extends AbstractController
      */
     public function mymembership(Request $request,  PaginatorInterface $paginator): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
 
         $myemail = $this->getUser();
@@ -1101,7 +1099,7 @@ class SubmissionController extends AbstractController
     public function mymembershipdetails(Submission $submission): Response
     {
 
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
         $myresearche = $entityManager->getRepository(Submission::class)->find($submission);
 
@@ -1139,7 +1137,6 @@ class SubmissionController extends AbstractController
      */
     public function myresearches(Request $request, PaginatorInterface $paginator): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();

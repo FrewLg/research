@@ -128,21 +128,21 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
 
     $user = $token->getUser();
-    // dd($user);
 
 
-    /**
-     * update last login 
+    /** 
+     * @var \App\Entity\User|null $user
      */
+
+
     $user->setLastLogin(new \DateTime('now'));
     $this->entityManager->flush();
 
 
 
     $permissions = [];
-    foreach ($user->getRoles() as $role) {
-      $permissions[] = $role;
-    }
+
+    $permissions = array_merge($permissions, $user->getRoles());
 
     $groups = $user->getUserGroup();
     foreach ($groups as $key => $value) {
@@ -152,15 +152,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $permissions[] = $value1->getCode();
       }
     }
+
     $request->getSession()->set(
       "PERMISSIONS",
-      $permissions
+      array_unique($permissions)
     );
 
-
-    // if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-    //     return new RedirectResponse($targetPath);
-    // }
 
 
 
@@ -170,14 +167,16 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
 
     $roles = $token->getUser()->getRoles();
-    if ($user->getIsSuperAdmin() || in_array("ROLE_ADMIN", $roles)) {
-
-
+    if ($user->getIsSuperAdmin() || in_array("vw_all_sub", $roles)) { 
 
       return new RedirectResponse($this->urlGenerator->generate('submission_index'));
     }
+    
+    if (   in_array("ROLE_BOARD_MEMBER", $roles)) { 
+      return new RedirectResponse($this->urlGenerator->generate('application_index'));
+    }
 
-
+ 
 
 
     if ($user->getUserInfo() && !$user->getUserInfo()->getHasCompleteProfile()) {

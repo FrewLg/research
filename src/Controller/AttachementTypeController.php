@@ -20,6 +20,7 @@ class AttachementTypeController extends AbstractController
      */
     public function index(AttachementTypeRepository $attachementTypeRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_atch_typ');
         return $this->render('attachement_type/index.html.twig', [
             'attachement_types' => $attachementTypeRepository->findAll(),
         ]);

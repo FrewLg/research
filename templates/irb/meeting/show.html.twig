@@ -1,27 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Meeting{% endblock %}
+{% block title %}Meeting
+{% endblock %}
 
 {% block body %}
-    <h1>Meeting</h1>
+	<h1>Meeting</h1>
 
-    <table class="table">
-        <tbody>
-           
-            <tr>
-                <th>Number</th>
-                <td>{{ meeting.number }}</td>
-            </tr>
-            <tr>
-                <th>meeting date</th>
-                <td>{{ meeting.heldAt ? meeting.heldAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<table class="table">
+		<tbody>
 
-    <a href="{{ path('i_r_b_meeting_index') }}">back to list</a>
+			<tr>
+				<th>Number</th>
+				<td>{{ meeting.number }}</td>
+			</tr>
+			<tr>
+				<th>meeting date</th>
+				<td>{{ meeting.heldAt ? meeting.heldAt|date('Y-m-d H:i:s') : '' }}</td>
+			</tr>
+		</tbody>
+	</table>
 
-    <a href="{{ path('i_r_b_meeting_edit', {'id': meeting.id}) }}">edit</a>
+	<div class="h3 text-blue">Attendee</div>
+	<table class="table table-bordered w-50">
+		<thead>
+			<th>Member</th>
+			<th>Role</th>
+		</thead>
+		<tbody>
+			{% for attendee in meeting.attendee %}
 
-    {{ include('irb/meeting/_delete_form.html.twig') }}
+				<tr>
+					<th>{{attendee}}</th>
+					<th>{{attendee.role}}</th>
+
+				</tr>
+			{% endfor %}
+
+		</tbody>
+	</table>
+    	<div class="h3 text-blue">Applications</div>
+
+	<table class="table table-bordered ">
+		<thead>
+			<th>Title</th>
+			<th>PI</th>
+		</thead>
+		<tbody>
+       
+      
+			{% for app in meeting.applications %}
+
+				<tr>
+					<th>{{app.title}}</th>
+					<th>{{app.submittedBy}}</th>
+
+				</tr>
+			{% endfor %}
+
+		</tbody>
+	</table>
+
+	<a class="btn btn-primary" href="{{ path('i_r_b_meeting_index') }}">back to list</a>
+
+	{# <a class="btn btn-warning" href="{{ path('i_r_b_meeting_edit', {'id': meeting.id}) }}">edit</a> #}
+
+	{{ include('irb/meeting/_delete_form.html.twig') }}
 {% endblock %}

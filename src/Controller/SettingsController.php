@@ -37,8 +37,7 @@ class SettingsController extends AbstractController
      */
     public function settings(Request $request  ): Response
     {   	
-	//var_dump(yaml_emit($invoice));
-	// $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN'); 
+	$this->denyAccessUnlessGranted('vw_st_stng'); 
      $em= $this->getDoctrine()->getManager();   
 $siteSetting=$em->getRepository('App:SiteSetting'::class)->findOneBy(array('id'=>1));
 	$form = $this->createFormBuilder($siteSetting)   
@@ -201,9 +200,8 @@ $siteSetting=$em->getRepository('App:SiteSetting'::class)->findOneBy(array('id'=
      */
     public function backupsettings(Request $request  ,  PaginatorInterface $paginator ): Response
     {   	
-	//var_dump(yaml_emit($invoice));
-	 
-	/////////////////// BackupSetting /////////////
+        
+        $this->denyAccessUnlessGranted('vw_bc_stng');
 	$entityManager = $this->getDoctrine()->getManager();
    
     $backupSetting = $entityManager->getRepository(BackupSetting::class)->find(1);
@@ -425,6 +423,8 @@ $siteSetting=$em->getRepository('App:SiteSetting'::class)->findOneBy(array('id'=
      */
     public function index(Request $request, GeneralSettingRepository $systemSettingRepository)
     {
+        $this->denyAccessUnlessGranted('vw_gn_stng');
+
         $em = $this->getDoctrine()->getManager();
 
 

@@ -13,6 +13,7 @@ class IRBReviewType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('remark', ChoiceType::class, [
+                'label' => 'IRB Decision',
                 'placeholder' => '--Select Editorial decision--',
                 'choices' => [
                     'Accepted' => 3,

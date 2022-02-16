@@ -20,6 +20,7 @@ class EvaluationFormController extends AbstractController
      */
     public function index(EvaluationFormRepository $evaluationFormRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_ev_frm');
         return $this->render('evaluation_form/index.html.twig', [
             'evaluation_forms' => $evaluationFormRepository->findAll(),
         ]);

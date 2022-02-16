@@ -16,6 +16,7 @@ class TitleController extends AbstractController
     #[Route('/', name: 'title_index', methods: ['GET'])]
     public function index(TitleRepository $titleRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_prf_ttl');
         return $this->render('title/index.html.twig', [
             'titles' => $titleRepository->findAll(),
         ]);

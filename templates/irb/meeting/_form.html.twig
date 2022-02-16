@@ -3,9 +3,28 @@
 {{ form_start(form) }}
 <div class="row">
 {% for child in form.children %}
-	{% if child.vars.name != "_token" %}
+
+	
+{% if child.vars.name == "applications" %}
+{# <pre>
+    {{ dump(child) }}
+</pre> #}
+    <table class="table">
+    <tbody>
+{% for choices in child.children %}
+
+    <tr>
+    <td>{{form_widget(choices)}}</td>
+   
+    {# {{choices.vars.label|raw}} #}
+    </tr>
+{% endfor %}
+    </tbody>
+    </table>
+	{% elseif child.vars.name != "_token" %}
 
 		{{input.input(child)}}
+	
 	{% endif %}
 {% endfor %}
 </div>

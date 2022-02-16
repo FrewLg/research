@@ -57,6 +57,7 @@ class IRBReviewAssignmentType extends AbstractType
                                 ->setParameter('irbreviewer', $already_assigned->getValues());
                         return $qb->orderBy('u.username', 'ASC');
                     },
+                    'label'=>'Reveiwer',
                     "attr" => [
                         "class" => "select2 col-3"
                     ],
@@ -75,7 +76,7 @@ class IRBReviewAssignmentType extends AbstractType
                 'placeholder' => [
                     'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
                 ],
-                'label' => 'Review due date(default date 10 days now)',
+                'label' => 'Review due date(default date 10 days from now)',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'data' => (new DateTime('+10 day')),

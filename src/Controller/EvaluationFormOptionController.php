@@ -20,6 +20,7 @@ class EvaluationFormOptionController extends AbstractController
      */
     public function index(EvaluationFormOptionRepository $evaluationFormOptionRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_ev_frm_o');
         return $this->render('evaluation_form_option/index.html.twig', [
             'evaluation_form_options' => $evaluationFormOptionRepository->findAll(),
         ]);

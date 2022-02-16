@@ -20,6 +20,8 @@ class DirectorateOfficeController extends AbstractController
      */
     public function index(DirectorateOfficeRepository $directorateOfficeRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_dir_off');
+        
         return $this->render('directorate_office/index.html.twig', [
             'directorate_offices' => $directorateOfficeRepository->findAll(),
         ]);

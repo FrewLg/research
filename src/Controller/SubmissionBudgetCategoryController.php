@@ -16,6 +16,8 @@ class SubmissionBudgetCategoryController extends AbstractController
     #[Route('/', name: 'submission_budget_category_index', methods: ['GET'])]
     public function index(SubmissionBudgetCategoryRepository $submissionBudgetCategoryRepository): Response
     {
+        $this->denyAccessUnlessGranted('vw_sb_bdgt_cat');
+        
         return $this->render('submission_budget_category/index.html.twig', [
             'submission_budget_categories' => $submissionBudgetCategoryRepository->findAll(),
         ]);

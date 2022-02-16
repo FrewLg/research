@@ -18,7 +18,7 @@ class UserFeedbackController extends AbstractController
     #[Route('/all', name: 'user_feedback_index', methods: ['GET'])]
     public function index(PaginatorInterface $paginator, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $this->denyAccessUnlessGranted('vw_usr_fdbc');
         $entityManager = $this->getDoctrine()->getManager(); 
         $userFeedbacks = $entityManager->getRepository('App:UserFeedback')->findAll(); 
         $data = $paginator->paginate(

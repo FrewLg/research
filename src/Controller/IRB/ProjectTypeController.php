@@ -17,6 +17,7 @@ class ProjectTypeController extends AbstractController
     #[Route('/', name: 'i_r_b_project_type_index', methods: ['GET'])]
     public function index(ProjectTypeRepository $projectTypeRepository): Response
     {
+        $this->denyAccessUnlessGranted('mng_irb_pr_typ');
         return $this->render('irb/project_type/index.html.twig', [
             'project_types' => $projectTypeRepository->findAll(),
         ]);

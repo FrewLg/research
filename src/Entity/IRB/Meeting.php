@@ -49,7 +49,7 @@ class Meeting
     private $attendee;
 
     /**
-     * @ORM\OneToMany(targetEntity=Application::class, mappedBy="meeting")
+     * @ORM\OneToMany(targetEntity=Application::class, mappedBy="meeting", cascade={"persist"})
      */
     private $applications;
 
@@ -149,6 +149,7 @@ class Meeting
     public function addApplication(Application $application): self
     {
         if (!$this->applications->contains($application)) {
+         
             $this->applications[] = $application;
             $application->setMeeting($this);
         }

@@ -61,6 +61,7 @@ class IRBReviewController extends AbstractController
      */
     public function myassigned(Request $request, PaginatorInterface $paginator): Response {
         
+       
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
@@ -505,9 +506,7 @@ $entityManager = $this->getDoctrine()->getManager();
      * @Route("/{id}/granted", name="grant_winner", methods={"GET","POST"})
      */
     public function grantwinner(Submission $submission,  MailerInterface $mailer ): Response {
-        ////Ultimate reviewers page
-        $this->denyAccessUnlessGranted('ROLE_USER');
-         
+     
         $submission->setAwardgranted(1);
         $this->getDoctrine()->getManager()->flush();
         
