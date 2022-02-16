@@ -44,6 +44,8 @@ class GeneralVoter extends Voter {
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
+       
+       
         $user = $token->getUser();
 
         if ($user &&   $user->getIsSuperAdmin())

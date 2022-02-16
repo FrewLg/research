@@ -128,21 +128,21 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
 
     $user = $token->getUser();
-    // dd($user);
 
 
-    /**
-     * update last login 
+    /** 
+     * @var \App\Entity\User|null $user
      */
+
+
     $user->setLastLogin(new \DateTime('now'));
     $this->entityManager->flush();
 
 
 
     $permissions = [];
-    foreach ($user->getRoles() as $role) {
-      $permissions[] = $role;
-    }
+
+    $permissions = array_merge($permissions, $user->getRoles());
 
     $groups = $user->getUserGroup();
     foreach ($groups as $key => $value) {
@@ -152,15 +152,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $permissions[] = $value1->getCode();
       }
     }
+
     $request->getSession()->set(
       "PERMISSIONS",
-      $permissions
+      array_unique($permissions)
     );
 
 
-    // if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-    //     return new RedirectResponse($targetPath);
-    // } 
+
 
     if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
       return new RedirectResponse($targetPath);
@@ -173,8 +172,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
       return new RedirectResponse($this->urlGenerator->generate('submission_index'));
     }
     
-    if (   in_array("vw_irb_rqst", $roles)) { 
-
+    if (   in_array("ROLE_BOARD_MEMBER", $roles)) { 
       return new RedirectResponse($this->urlGenerator->generate('application_index'));
     }
 
