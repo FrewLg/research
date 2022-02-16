@@ -12,8 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IRBPublicController extends AbstractController
 {
-    #[Route('/irb-clearance/{certificateCode}', name: 'irb_validate')]
-    public function index(Request $request,IrbCertificate $irbCertificate,DomPrint $domPrint): Response
+    #[Route('/irb-clearance/{certificateCode}', name: 'irb_validate2')]
+    #[Route('/irb-clearance/', name: 'irb_validate')]
+    public function index(Request $request,IrbCertificate $irbCertificate=null,DomPrint $domPrint): Response
     {
         $em=$this->getDoctrine()->getManager();
         if($request->request->get('validate')){

@@ -8,16 +8,16 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for permission in permissions %}
             <tr>
-                <td>{{ permission.id }}</td>
+                <td>{{ loop.index }}</td>
                 <td>{{ permission.name }}</td>
                 <td>{{ permission.description }}</td>
                 <td>
@@ -32,6 +32,8 @@
         {% endfor %}
         </tbody>
     </table>
+					<div class="navigation">{{ knp_pagination_render(permissions) }}</div>
 
-    <a href="{{ path('permission_new') }}">Create new</a>
+
+    <a href="{{ path('permission_new') }}"  class='btn btn-primary btn-xs ' >Create new</a>
 {% endblock %}

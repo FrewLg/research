@@ -219,11 +219,14 @@ Login</a>
 						</article>
 					</div>
 					<div class="col-lg-4">
-						<div class="entry"> {% block asidetwo %}{% endblock %}
+						<div class="entry"> {% block asidetwo %}
+						 <a href='{{ path('irb_validate') }}' class="btn  btn-lg btn-block  w-100  btn-outline-primary " >Verify IRB clearance  </a>
+						
+						{% endblock %}
 							</div>
+							
 							<div class="entry"> {% block aside %}{% endblock %}
 							
-						 <a href='{{ path('i_r_b','certificateCode':'ww') }}' class="btn  btn-lg btn-block  w-100  btn-outline-primary " >Verify IRB clearance certificate</a>
 
 								{% if is_granted("ROLE_USER")%}
 									<aside class="entsry  ">
