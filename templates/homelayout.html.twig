@@ -142,12 +142,9 @@
 
 								</ul>
 							</li>
-
-
 						{% else %}
-
-							<a href="{{path('app_login')}}" class="btn   btn-outline btn-primary" style="color:white">
-								Login</a>
+						<a href="{{path('app_login')}}" class="btn btn-outline btn-primary" style="color:white">
+Login</a>
 						{% endif %}
 
 					</ul>
@@ -159,27 +156,23 @@
 		<main id="main">
 			<section id="breadcrumbs" class="breadcrumbs">
 				<div class="container">
-
 					<ol>
-						<li>
+					<li>
 							<a href="{{path('homepage')}}">Home</a>
-						</li>
+					</li>
 					</ol>
 					<h2>
-						{%block pagehead%}
-						{%endblock%}
+						{% block pagehead %}
+						{% endblock %}
 					</h2>
 				</div>
 			</section><!-- End Breadcrumbs --><!-- ======= Blog Section ======= --><section id="blog" class="blog">
 				<div class="container" data-aos="fade-up">
-
 					<div class="row">
-
 						<div class="col-lg-8 entries">
 							{% for message in app.flashes('success') %}
 								<div class="alert alert-success alert-dismissible fade show border-0 mb-0" role="alert">
-									<strong>Success!
-									</strong>
+									<strong>Success!</strong>
 									{{ message }}
 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 								</div>
@@ -187,9 +180,9 @@
 
 							{% for message in app.flashes('danger') %}
 								<div class="alert alert-danger alert-dismissible fade show border-0 mb-0" role="alert">
-									<strong></strong>
-									{{ message }}
-									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									<strong> </strong>
+											{{ message }}
+	 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 								</div>
 							{% endfor %}
 							{% for message in app.flashes('warning') %}
@@ -229,6 +222,9 @@
 						<div class="entry"> {% block asidetwo %}{% endblock %}
 							</div>
 							<div class="entry"> {% block aside %}{% endblock %}
+							
+						 <a href='{{ path('i_r_b','certificateCode':'ww') }}' class="btn  btn-lg btn-block  w-100  btn-outline-primary " >Verify IRB clearance certificate</a>
+
 								{% if is_granted("ROLE_USER")%}
 									<aside class="entsry  ">
 										<h4 class="widget-title">Guidelines</h4>
