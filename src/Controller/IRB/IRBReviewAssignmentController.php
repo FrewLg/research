@@ -183,14 +183,15 @@ class IRBReviewAssignmentController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
-        if($this->isGranted('ROLE_SECRETARY') || $this->isGranted('vw_all_irb_assgn')){
-        // $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL], ["id" => "ASC"]);
-        // // if($this->isGranted('ROLE_SECRETARY')){
-            $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->getActiveApplication();
-        }
-        else{
+        // if($this->isGranted('ROLE_SECRETARY') || $this->isGranted('vw_all_irb_assgn')){
+        // // $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL], ["id" => "ASC"]);
+        // // // if($this->isGranted('ROLE_SECRETARY')){
+        //     $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->getActiveApplication();
+        // }
+        // else{
+
             $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL], ["id" => "DESC"]);
-        }
+        // }
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results
@@ -212,7 +213,7 @@ class IRBReviewAssignmentController extends AbstractController
         #######################
         $query3 = $entityManager->createQuery(
             'SELECT    b.id , ass.invitation_sent_at as InvitationSentAt,     ass.Declined as Declined,  b.title , s.createdAt  , ass.duedate  as dueDate
-        FROM App\Entity\IRB\IRBReview s 
+         FROM App\Entity\IRB\IRBReview s 
         JOIN s.application b     
         JOIN s.iRBReviewAssignment ass      
         WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed 
@@ -221,7 +222,7 @@ class IRBReviewAssignmentController extends AbstractController
             ->setParameter('closed', 1)
             ->setParameter('reviewer', $this_is_me);
 
-        $closeds = $query3->getResult();
+        $closeds = $query3->getResult(); 
 
 
         #################################################
