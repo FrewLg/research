@@ -44,7 +44,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/irb-reviewer-assignment")
+ * @Route("/irb/reviewer-assignment")
  */
 class IRBReviewAssignmentController extends AbstractController
 {

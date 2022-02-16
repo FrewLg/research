@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/irb-setting/attachment-type')]
+#[Route('/irb/setting/attachment-type')]
 class AttachmentTypeController extends AbstractController
 {
     #[Route('/', name: 'i_r_b_attachment_type_index', methods: ['GET'])]
