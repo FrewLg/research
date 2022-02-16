@@ -19,8 +19,16 @@ class IRBPublicController extends AbstractController
         $em=$this->getDoctrine()->getManager();
         if($request->request->get('validate')){
            $irbCertificate= $em->getRepository(IrbCertificate::class)->findOneBy(['certificateCode'=>$request->request->get('validate')]);
-            if(!$irbCertificate){ $this->addFlash('error','No IRB clearance was issued with "'.$request->request->get('validate').'" code');}
+            if(!$irbCertificate){
+                 $this->addFlash('danger','No IRB clearance was issued with "'
+                 .$request->request->get('validate').'" code');
+                
+                }
+
             else{
+
+                $this->addFlash('success',' IRB ethical clearance certificate  found "');
+               
                 return $this->render('irb/clearance.html.twig', [
                     'irb'=>$irbCertificate
                 ]);

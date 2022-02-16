@@ -172,9 +172,9 @@ Login</a>
 			</section><!-- End Breadcrumbs --><!-- ======= Blog Section ======= --><section id="blog" class="blog">
 				<div class="container" data-aos="fade-up">
 					<div class="row">
-						<div class="col-lg-8 entries">
+						<div class="col-lg-8    ">
 							{% for message in app.flashes('success') %}
-								<div class="alert alert-success alert-dismissible fade show border-0 mb-0" role="alert">
+								<div class="alert alert-success alert-dismissible fade show border-0 mb-2" role="alert">
 									<strong>Success!</strong>
 									{{ message }}
 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -182,38 +182,24 @@ Login</a>
 							{% endfor %}
 
 							{% for message in app.flashes('danger') %}
-								<div class="alert alert-danger alert-dismissible fade show border-0 mb-0" role="alert">
+								<div class="alert alert-danger alert-dismissible fade show border-0 mb-2" role="alert">
 									<strong> </strong>
 											{{ message }}
 	 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 								</div>
 							{% endfor %}
 							{% for message in app.flashes('warning') %}
-								<div class="alert alert-warning alert-dismissible fade show border-0 mb-0" role="alert">
+								<div class="alert alert-warning alert-dismissible fade show border-0 mb-2" role="alert">
 									<strong>Warning!
 									</strong>
 									{{ message }}
 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 								</div>
+								<br>
 							{% endfor %}
 
 
-							{% for message in app.flashes('danger') %}
-
-								<div class="alert custom-alert custom-alert-danger icon-custom-alert shadow-sm fade show d-flex justify-content-between" role="alert">
-									<div class="media">
-										<i class="la la-exclamation-triangle alert-icon text-primary align-self-center font-30 me-3"></i>
-										<div class="media-body align-self-center">
-											<h5 class="mb-1 fw-bold mt-0"></h5>
-											<span>{{ message }}
-											</span>
-										</div>
-									</div>
-									<button type="button" class="btn-close align-self-center" data-bs-dismiss="alert" aria-label="Close"></button>
-								</div>
-
-
-							{% endfor %}
+							 
 
 							<article class="entry">
 								{% block body%}
