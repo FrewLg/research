@@ -204,6 +204,14 @@
 
 				</div>
 			</div>
+			<div class="form-material  "  >
+				<div class="form-group">
+					<label class="form-label mt-3 mb-1">{% trans %}Application  to Institute/College {% endtrans %}<span class='text-danger'>*</span>
+					</label>
+					{{ form_widget(form.college,{'attr':{'class':'form-control'}}) }}
+
+				</div>
+			</div>
 			<div class="form-material">
 				<div class="form-group">
 					<label class="form-label mt-3 mb-1">{% trans %} Project /Research Title{% endtrans %}<span class='text-danger'>*</span>
@@ -397,7 +405,7 @@
 				jQuery.validator.addMethod("greaterStart", function (value, element, params) {
 			
     return this.optional(element) || new Date(value) >= new Date($(params).val());
-},'Must be later than the than start date.');
+},'The project end date must be  later than the project start date.');
 
 var form = $("#form-horizontal");
 
