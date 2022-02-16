@@ -175,7 +175,7 @@ class IRBReviewAssignmentController extends AbstractController
 
 
     /**
-     * @Route("/", name="irb_myassigned", methods={"GET"})
+     * @Route("/my-assigned", name="irb_myassigned", methods={"GET"})
      */
     public function myassigned(Request $request, PaginatorInterface $paginator): Response
     {
