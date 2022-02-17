@@ -72,22 +72,35 @@ class ApplicationController extends AbstractController
         
         $allappsbyme=  array_reverse($em->getRepository(Application::class)->findBy(  array('submittedBy'=>$me)));      
 
-        $data= $paginatorInterface->paginate(
-
+        $data= $paginatorInterface->paginate( 
             $allappsbyme,
             $request->query->getInt('page', 1),
             10
         );
         return $this->render('application/index.html.twig', [
             'applications' => $data,
-         ]);
-         
+         ]); 
     }
 
 
     #[Route('/new', name: 'application_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+
+        $userdetails = $this->getUser()->getUserInfo();
+        
+        if (
+            $userdetails->getFirstName() == '' || $userdetails->getMidleName() == '' ||
+            $userdetails->getLastName() == '' ||
+            $userdetails->getCollege() == '' ||
+            $userdetails->getEducationLevel() == '' || $userdetails->getAcademicRank() == ''
+        ) {
+
+            $this->addFlash("danger", "Please complete your profile first before you apply  !");
+
+            return $this->redirectToRoute('myprofile');
+        }
+
         
         $em=$this->getDoctrine()->getManager();
         $application = new Application();

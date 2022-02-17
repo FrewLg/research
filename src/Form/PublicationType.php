@@ -16,14 +16,47 @@ class PublicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('doi' , TextType::class,[ 'label'=>"DOI",
-            'attr'=>['label'=>"DOI",
+            ->add('title' , TextType::class,[ 'label'=>"Title ",
+            
+            'attr'=>[ 
+            'placeholder'=>'Title',
+            
             'class'=>'form-control mb-0'
+
             ]])
-            ->add('journal_name')
-            ->add('impact_factor')
-            ->add('citation_score')
+            ->add('doi' , TextType::class,[ 'label'=>"DOI ",
+            
+            'attr'=>[ 
+            'placeholder'=>'DOI',
+            
+            'class'=>'form-control mb-0'
+
+            ]])
+            ->add('journal_name' , TextType::class,[ 'label'=>"Journal name  ",
+            
+            'attr'=>[ 
+            'placeholder'=>'Journal name ',
+            
+            'class'=>'form-control mb-0'
+
+            ]])
+            ->add('impact_factor' , TextType::class,[ 'label'=>"Impact factor  ",
+            
+            'attr'=>[ 
+            'placeholder'=>'Impact factor ',
+            
+            'class'=>'form-control mb-0'
+
+            ]])
+            ->add('citation_score', TextType::class,[ 'label'=>"Citation score  ",
+            
+            'attr'=>[ 
+            
+            'placeholder'=>'Citation score ',
+            
+            'class'=>'form-control mb-0'
+
+            ]])
             ->add('member_role')
 
             ->add('published_at'
@@ -35,14 +68,14 @@ class PublicationType extends AbstractType
         'widget' => 'single_text',
               'format' => 'yyyy-MM-dd',
                  'attr' => array(
-          
-           'required' => true, 
+                    'max'=>(new DateTime('now'))->format('Y-m-d'),
+                    'required' => true, 
         'class'=>'form-control',
         )              
           ))
           
             ->add('article_document' , FileType::class, [
-                'label' => 'Upload article document ',
+                'label' => ' Upload article document ',
                 'mapped' => false,
                 'required' => false,
                 "attr"=>[

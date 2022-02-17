@@ -299,7 +299,7 @@
 										<div class="modal-dialog modal-lg" role="document">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h6 class="modal-title m-0" id="PublicationsModalLabel">Update your publication ststus</h6>
+													<h6 class="modal-title m-0" id="PublicationsModalLabel">Update your publication status</h6>
 													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 												</div>
 												<!--end modal-header-->
@@ -346,10 +346,14 @@
 													{{ form_widget(publicationform.member_role) }}
  
 												
-						<br>	<br>																
-	 Attachment	<input type="radio" onclick="attachOrDoi();" name="yesno" id="doi"/>
+						<br>
+						Provive an evidence to your publication
+							<br>
+							<br>
+					 															
+	 Attach article document file <input type="radio" onclick="attachOrDoi();" name="yesno" id="doi"/>
 
-	DOI 	<input type="radio" onclick="attachOrDoi();" name="yesno" id="noCheck" checked='checked'/>
+	Enter DOI 	<input type="radio" onclick="attachOrDoi();" name="yesno" id="noCheck" checked='checked'/>
 													<br>
 													<br>
  													{{ form_widget(publicationform.doi) }}
@@ -560,20 +564,26 @@
 											</div>
 
 											<div class="row">
-											<div class="col-1">
-												<br><a href="{{ asset('/files/collaborators_cv/'~ user.userInfo.CV ) }}" class="btn btn-info btn-xs float-right">
+											
+												 	{% if user.userInfo.CV != NULL  %}
+													 <div class="col-1">
+												<br>
+												<a href="{{ asset('/files/collaborators_cv/'~ user.userInfo.CV ) }}" class="btn btn-info btn-xs float-right">
 													Your   CV
 													<i class="fa fa-download material-icons warning"></i>
 												</a>
 											
-											</div>
-											<div class="col-11">
-												 
+											   </div>
+											     <div class="col-11">
+												{% else %} 
+											     <div class="col-12">
+												{% endif %} 
+
 												<div class="label">
-													Upload your CV</div>
+													Upload to update your CV</div>
 												{{ form_widget(submissionform.cv  ) }}
 
-												<br>
+												 
 											</div>
 											</div>
 

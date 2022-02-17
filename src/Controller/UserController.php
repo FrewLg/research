@@ -501,6 +501,35 @@ class UserController extends AbstractController
             $em->flush();
         }
          $publishedResearch = $user->getUserInfo();
+
+          ######Publication
+        $publication = new Publication();
+        $publicationform = $this->createForm(PublicationType::class, $publication);
+        $publicationform->handleRequest($request);
+
+        if ($publicationform->isSubmitted() && $publicationform->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $file3 = $publicationform->get('article_document')->getData();
+
+            if ($file3 == NULL) {
+                
+             }
+            if ($file3) {
+                $fundeddocDocsfileName3 = 'ARTICLE-'.  md5(uniqid()) . '.' . $file3;
+                $file3->move($this->getParameter('profile_pictures'), $fundeddocDocsfileName3);
+                $publication->setArticleDocument($fundeddocDocsfileName3);
+               
+            }
+            $publication->setCreatedAt(new \DateTime());  
+            $publication->setAuthor($this->getUser());
+            $entityManager->persist($publication);
+            $entityManager->flush();
+            $this->addFlash('success', "Your publication status has been updated  successfully!   ");
+            return $this->redirectToRoute('researchworks');
+
+         }
+        ###### End Publication #################### 
+
         $user_info = $user->getUserInfo(); 
         $form = $this->createForm(UserProfileType::class, $publishedResearch); 
          $form->handleRequest($request);
@@ -555,32 +584,7 @@ $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'
  
         $earlierprojects = $entityManager->getRepository(PublishedResearch::class)->find($this->getUser());
           
-        ######Publication
-        $publication = new Publication();
-        $publicationform = $this->createForm(PublicationType::class, $publication);
-        $publicationform->handleRequest($request);
-
-        if ($publicationform->isSubmitted() && $publicationform->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $file3 = $publicationform->get('article_document')->getData();
-
-            if ($file3 == NULL) {
-                
-             }
-            if ($file3) {
-                $fundeddocDocsfileName3 = 'ARTICLE-'.  md5(uniqid()) . '.' . $file3;
-                $file3->move($this->getParameter('profile_pictures'), $fundeddocDocsfileName3);
-                $publication->setArticleDocument($fundeddocDocsfileName3);
-               
-            }
-            $publication->setCreatedAt(new \DateTime());  
-            $publication->setAuthor($this->getUser());
-            $entityManager->persist($publication);
-            $entityManager->flush();
-            $this->addFlash('success', "Your publication status has been updated  successfully!   ");
-
-         }
-        ###### End Publication #################### 
+       
         return $this->render('user/profile2.html.twig', [
             'published_research' => $publishedResearch,
             'user' => $user,
