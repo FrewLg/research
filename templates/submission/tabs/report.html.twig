@@ -3,139 +3,160 @@
 
 <div class="tab-pane active" id="progress-report">
 
-	<div class="row">
-		<div class="col-8">
-			{% set schedule_count  = submission.researchReportSubmissionSettings|length %}
-			{% if schedule_count > 0 %}
+	<div class="card mt-1">
+
+		<div class="card-header ">
+			<h4>
+				Reporting
+			</h4>
+		</div>
 
 
-				{% if  research_reports|length  < phase.numberOfPhases   %}
-					{% if  allowedToSubmitReport(submission.researchReportSubmissionSettings,research_reports)  %}
-						{% if ((research_reports|length)+1)  == phase.numberOfPhases %}
+		<div class="card-body">
+
+			<div class="row">
+				<div class="col-8">
 
 
-							<div>
-								<div class="h4 text-bold">Submit full terminal report
+					{% set schedule_count  = submission.researchReportSubmissionSettings|length %}
+					{% if schedule_count > 0 %}
+
+
+						{% if  research_reports|length  < phase.numberOfPhases   %}
+							{% if  allowedToSubmitReport(submission.researchReportSubmissionSettings,research_reports)  %}
+								{% if ((research_reports|length)+1)  == phase.numberOfPhases %}
+
+
+									<div>
+										<div class="h4 text-bold">Submit full terminal report
+										</div>
+										<div class="p text-bold">Full Length Report should include
+										</div>
+										<ul>
+											<li>
+												Introduction
+											</li>
+											<li>
+												Methodology</li>
+											<li>
+												Result
+											</li>
+											<li>
+												Reference
+											</li>
+										</ul>
+										<div class="p text-bold">Manuscript Prepared
+										</div>
+										<ul>
+											<li>
+												All manuscript prepared should not be longer than 20 pages including references
+											</li>
+											<li>
+												Manuscript preparation should target any relevant Scopus indexed journal
+											</li>
+											<li>
+												Attach in Pdf format
+											</li>
+										</ul>
+									</div>
+
+								{% else %}
+									<div class="my-3 text-bold">Report for phase
+										{{research_reports|length +1 }}</div>
+								{% endif %}
+
+								{% if research_report_form is defined %}
+
+									<div>
+										{{ form_start(research_report_form,{"attr":{"onsubmit":"return confirm('are you sure?')"}}) }}
+										{{ form_row(research_report_form.file) }}
+										{{ form_row(research_report_form.financial_clearance) }}
+
+										<ul id="email-fields-list" class="challeges" data-prototype="{{ form_widget(research_report_form.researchReportChallenges.vars.prototype)|e }}" data-widget-tags="{{ '<li></li>'|e }}" data-widget-counter="{{ research_report_form.researchReportChallenges|length }}">
+											{% for challenge in research_report_form.researchReportChallenges %}
+												<li>
+
+													{{ form_row(challenge) }}
+												</li>
+											{% endfor %}
+										</ul>
+
+										<button type="button" class="add-another-collection-widget btn btn-info" data-list-selector="#email-fields-list">Add Challenges if any</button>
+										{{ form_widget(research_report_form) }}
+										<button class="btn btn-success" type="submit">Submit</button>
+										{{ form_end(research_report_form) }}
+
+
+									</div>
+								{% endif %}
+							{% else %}
+								<div class="card mt-1">
+									<div class="card-header  ">
+										<h4>
+											Time left for the  next report submission
+										</h4>
+									</div>
+									<div class="card-body">
+
+										<span id="demo" class="h4 text-danger" data-value="{{submission.researchReportSubmissionSettings[research_reports|length].submissionDate|date()}}"></span>
+
+									</div>
 								</div>
-								<div class="p text-bold">Full Length Report should include
-								</div>
-								<ul>
-									<li>
-										Introduction
-									</li>
-									<li>
-										Methodology</li>
-									<li>
-										Result
-									</li>
-									<li>
-										Reference
-									</li>
-								</ul>
-								<div class="p text-bold">Manuscript Prepared
-								</div>
-								<ul>
-									<li>
-										All manuscript prepared should not be longer than 20 pages including references
-									</li>
-									<li>
-										Manuscript preparation should target any relevant Scopus indexed journal
-									</li>
-									<li>
-										Attach in Pdf format
-									</li>
-								</ul>
-							</div>
+							{% endif %}
 
-						{% else %}
-							<div class="my-3 text-bold">Report for phase
-								{{research_reports|length +1 }}</div>
 						{% endif %}
-
-						{% if research_report_form is defined %}
-						
-						<div>
-							{{ form_start(research_report_form,{"attr":{"onsubmit":"return confirm('are you sure?')"}}) }}
-							{{ form_row(research_report_form.file) }}
-							{{ form_row(research_report_form.financial_clearance) }}
-
-							<ul id="email-fields-list" class="challeges" data-prototype="{{ form_widget(research_report_form.researchReportChallenges.vars.prototype)|e }}" data-widget-tags="{{ '<li></li>'|e }}" data-widget-counter="{{ research_report_form.researchReportChallenges|length }}">
-								{% for challenge in research_report_form.researchReportChallenges %}
-									<li>
-
-										{{ form_row(challenge) }}
-									</li>
-								{% endfor %}
+					{% elseif phase  %}
+						<div class="p text-bold">
+							Note:-
+							{{phase.note}}
+						</div>
+						<div class="p text-black">
+							<ul>
+								<li>Start Date:-
+									{{phase.startDate|date('F d,Y')}}</li>
+								<li>End Date:-
+									{{phase.endDate|date('F d,Y')}}</li>
+								<li>Number of Phases:-
+									{{phase.numberOfPhases}}</li>
+								<li>Tolerable Days:-
+									{{phase.tolerableDay}}
+									Days</li>
+								<li>Minimum Days after last report:-
+									{{phase.maximumDuration}}
+									Days</li>
 							</ul>
 
-							<button type="button" class="add-another-collection-widget btn btn-info" data-list-selector="#email-fields-list">Add Challenges if any</button>
-							{{ form_widget(research_report_form) }}
-							<button class="btn btn-success" type="submit">Submit</button>
-							{{ form_end(research_report_form) }}
-
-
 						</div>
+
+						{% if submission_report_schedule_form is defined %}
+
+
+							{{ form_start(submission_report_schedule_form,{"attr":{"onsubmit":"return confirm('are you sure?')"}}) }}
+
+							<div class="row">
+								{% for child in submission_report_schedule_form.children %}
+									<div class="col-4">
+										{% if  child.vars.name!="_token" %}
+											<div class="h5 text-black-50">Phase
+												{{loop.index}}</div>
+											{{ form_label(child,"Submission Date") }}
+											{{ form_widget(child,{"attr":{"data-phase":loop.index,"data-last":loop.length-1 == loop.index ?"last":"not-last"}}) }}
+
+											{{ form_errors(child) }}
+										{% endif %}
+
+									</div>
+								{% endfor %}
+							</div>
+							<button class="btn btn-success my-3 float-right schedule-submit-button" type="submit">Submit</button>
+
+							{{ form_end(submission_report_schedule_form) }}
 						{% endif %}
-					{% else %}
-						<div>
-							{# <span class="h2 text-danger">{{ timeAgo(submission.researchReportSubmissionSettings[research_reports|length].submissionDate,null) }}
-																					</span> #}
-							<span id="demo" class="h4 text-danger" data-value="{{submission.researchReportSubmissionSettings[research_reports|length].submissionDate|date()}}"></span>
-							Time left for the  next report submission</div>
 					{% endif %}
+					<div class="h4 text-danger">Reports</div>
 
-				{% endif %}
-			{% elseif phase  %}
-				<div class="p text-bold">
-					Note:-
-					{{phase.note}}
-				</div>
-				<div class="p text-black">
-					<ul>
-						<li>Start Date:-
-							{{phase.startDate|date('F d,Y')}}</li>
-						<li>End Date:-
-							{{phase.endDate|date('F d,Y')}}</li>
-						<li>Number of Phases:-
-							{{phase.numberOfPhases}}</li>
-						<li>Tolerable Days:-
-							{{phase.tolerableDay}}
-							Days</li>
-						<li>Minimum Days after last report:-
-							{{phase.maximumDuration}}
-							Days</li>
-
-					</div>
-
-					{% if submission_report_schedule_form is defined %}
-
-
-						{{ form_start(submission_report_schedule_form,{"attr":{"onsubmit":"return confirm('are you sure?')"}}) }}
-
-						<div class="row">
-							{% for child in submission_report_schedule_form.children %}
-								<div class="col-4">
-									{% if  child.vars.name!="_token" %}
-										<div class="h5 text-black-50">Phase
-											{{loop.index}}</div>
-										{{ form_label(child,"Submission Date") }}
-										{{ form_widget(child,{"attr":{"data-phase":loop.index,"data-last":loop.length-1 == loop.index ?"last":"not-last"}}) }}
-
-										{{ form_errors(child) }}
-									{% endif %}
-
-								</div>
-							{% endfor %}
-						</div>
-						<button class="btn btn-success my-3 float-right schedule-submit-button" type="submit">Submit</button>
-
-						{{ form_end(submission_report_schedule_form) }}
-					{% endif %}
-				{% endif %}
-				<div class="h2 text-red">Reports</div>
-				<div>
 					{% for report in research_reports %}
-						<div class="font-24 my-2 fw-bold">
+						<div class="font-22 my-2 fw-bold">
 							Report for phase
 							{{loop.index}}{{loop.last and schedule_count==loop.index ?"(Terminal report)":""}}</div>
 
@@ -159,8 +180,9 @@
 
 						<div class="font-16 my-3 ">
 							{% if report.researchReportChallenges|length>0 %}
-							 <b> Challenges:-
-							</b>
+								<b>
+									Challenges:-
+								</b>
 							{% endif %}
 
 							<dl>
@@ -186,7 +208,7 @@
 										<button class="btn btn-secondary mx-3" type="submit">Approve and Generate Certificate</button>
 										{% else %}
 										{# <button class="btn btn-secondary" type="submit">Approve
-																																																																						</button> #}
+																																																																																																																																																																																								</button> #}
 
 									{% endif %}
 
@@ -203,7 +225,7 @@
 
 						</div>
 						<div class=" text-bold text-info my-3">Co-PI confirmation</div>
-						<table class="table table-striped table-hover">
+						<table class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
 									<th>CO PI</th>
@@ -302,25 +324,26 @@
 							No Reports submitted yet</div>
 					{% endfor %}
 				</div>
-
-			</div>
-			<div class="col-3">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Phase</th>
-							<th>Submission Date</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for submissionSetting in submission.researchReportSubmissionSettings %}
+				<div class="col-4">
+					<table class="table table-bordered">
+						<thead>
 							<tr>
-								<td>{{submissionSetting.phase}}{{loop.last?"(Terminal report)":""}}</td>
-								<td>{{submissionSetting.submissionDate|date('F d, Y')}}</td>
+								<th>Phase</th>
+								<th>Submission Date</th>
 							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{% for submissionSetting in submission.researchReportSubmissionSettings %}
+								<tr>
+									<td>{{submissionSetting.phase}}{{loop.last?"(Terminal report)":""}}</td>
+									<td>{{submissionSetting.submissionDate|date('F d, Y')}}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
+</div>
+

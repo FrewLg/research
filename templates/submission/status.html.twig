@@ -2,12 +2,12 @@
 
 {% block title %}Submission
 {% endblock %}
- {% block styles %}
- 
-{# <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}"> #}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% block styles %}
 
-{% endblock %} 
+	{# <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}"> #}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+{% endblock %}
 
 {% block container_title %}Submission details
 {% endblock %}
@@ -33,18 +33,17 @@
 									<li>
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
 									</li>
-									
+
 									{% if submission.copyedit is  not empty %}
 										<li>
 											<a class="nav-link" href="#copyedit" data-bs-toggle="tab">Progress report</a>
 										</li>
 
 									{% endif %}
-								
-										<li>
-											<a class="nav-link active" href="#progress-report" data-bs-toggle="tab">Progress report</a>
-										</li>
-								
+
+									<li>
+										<a class="nav-link active" href="#progress-report" data-bs-toggle="tab">Progress report</a>
+									</li>
 
 
 									{% if submission.copyedit is  not empty %}
@@ -77,9 +76,16 @@
 										<div class="ibox">
 
 											<div class="ibox-content">
-  											<div class="row">
- 													<h4 class='text-primary m-3'>
-														Research details</h4> 
+												<div class="row">
+												
+												
+													<div class="card mt-1">
+
+															<div class="card-header ">
+																<h4>
+													Research details			</h4>
+															</div>
+														<div class="card-body">
 													<div class="accordion" id="accordionExample">
 														<div class="accordion-item active">
 															<h5 class="accordion-header m-0" id="headingOne">
@@ -389,6 +395,8 @@
 														</div>
 													</div>
 												</div>
+												</div>
+												</div>
 
 
 											</div>
@@ -399,549 +407,507 @@
 								</div>
 							</div>
 							<div class="tab-pane" id="Revision">
-								<h3>
-									<a href="#" class="text-navy">
-										Comments from editors
-									</a>
-								</h3>
-								{% for review in comments %}
 
-									<table class="table shoping-cart-table">
+								<div class="card mt-1">
+									<div class="card-header  ">
+										<h4>
+											Comments from editors
+										</h4>
+									</div>
 
-										<tbody>
-											<tr>
-												<td class="desc">
+									<div class="card-body">
 
-													<p class="small">
 
-														{{ review.comment |raw}}
-													</p>
-													<dl class="small m-b-none">
-														<dt>Revised at:
-															{{ review.AllowedAt ?
-                                                        review.AllowedAt|date('M d  ,   h:s a') : '' }}
-														</dt>
-													</dl>
+										{% for review in comments %}
 
-													<div class="m-t-sm">
+											<table class="table shoping-cart-table">
 
-														{% if review.attachment %}
-															<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="btn btn-info btn-xs float-right">
-																Download evaluation  report
-																<i class="fa fa-download material-icons warning"></i>
-															</a>
-															{% else %}
+												<tbody>
+													<tr>
+														<td class="desc">
 
-														{% endif %}
+															<p class="small">
+
+																{{ review.comment |raw}}
+															</p>
+															<dl class="small m-b-none">
+																<dt>Revised at:
+																	{{ review.AllowedAt ?  review.AllowedAt|date('M d  ,   h:s a') : '' }}
+																</dt>
+															</dl>
+
+															<div class="m-t-sm">
+
+																{% if review.attachment %}
+																	<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="btn btn-info btn-xs float-right">
+																		Download evaluation  report
+																		<i class="fa fa-download material-icons warning"></i>
+																	</a>
+																	{% else %}
+
+																{% endif %}
+															</div>
+														</td>
+														<td width="65" nowrap="nowrap">
+															<h4 class='text-'>
+
+
+																{% if review.ReviewedBy.isReviewer %}
+																	<span class="badge badge-boxed  badge-outline-primary">
+																		External reviewer</span>
+																{% else %}
+																	<span class="badge badge-boxed  badge-outline-success">
+																		Internal reviewer
+																	</span>
+																	{% if review.fromDirector %}
+																		<span class="badge badge-boxed  badge-outline-success">
+																			Research co-ordinator
+																		</span>
+																	{% endif %}
+																{% endif %}
+
+															</h4>
+
+
+															<h4 class='text-'>
+																{% if   review.remark==1 %}
+																	<span class="text-danger">
+																		Declined</span>
+
+																{% elseif   review.remark==2 %}
+																	<span class="text-warning">
+																		Accepted with major revision</span>
+																{% elseif   review.remark==3 %}
+																	<span class="text-warning">
+																		Accepted with minor revision
+																	</span>
+																{% elseif   review.remark==4 %}
+
+																	<span class="text-success">
+																		Accepted
+																	</span>
+																{% endif   %}
+
+															</h4>
+
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										{% else %}
+											Revision not sent
+
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+
+
+							{% include "submission/tabs/report.html.twig" %}
+
+							<div class="tab-pane" id="terminal-report">
+								<strong class='text-success'>Final report datails</strong>
+
+								{% if submission.published==''%}
+									{% for publicationstatus in publicationstatus %}
+										<strong class='text-info'>Messagemfrom director</strong>
+										<p>
+											{{ publicationstatus.id}}</p>
+										{{publicationstatus.submission.id}}
+										<a href="{{ path('publication_datasets', {'id':publicationstatus.id}) }}">
+											Dataset</a>
+
+										<div id="TheModal" class="modal" tabindex="-1" role="dialog">
+											<div class="modal-dialog modal-lg" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title">{% trans %}Dataset attachment{% endtrans %}</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
 													</div>
-												</td>
-												<td width="65" nowrap="nowrap">
-													<h4 class='text-'>
-
-
-														{% if review.ReviewedBy.isReviewer %}
-															<span class="badge badge-boxed  badge-outline-primary">
-																External reviewer</span>
-														{% else %}
-															<span class="badge badge-boxed  badge-outline-success">
-																Internal reviewer
-															</span>
-															{% if review.fromDirector %}
-																<span class="badge badge-boxed  badge-outline-success">
-																	Research co-ordinator
-																</span>
-															{% endif %}
-														{% endif %}
-
-													</h4>
-
-
-													<h4 class='text-'>
-														{% if   review.remark==1 %}
-															<span class="text-danger">
-																Declined</span>
-
-														{% elseif   review.remark==2 %}
-															<span class="text-warning">
-																Accepted with major revision</span>
-														{% elseif   review.remark==3 %}
-															<span class="text-warning">
-																Accepted with minor revision
-															</span>
-														{% elseif   review.remark==4 %}
-
-															<span class="text-success">
-																Accepted
-															</span>
-														{% endif   %}
-
-													</h4>
-
-													<hr></td>
-											</tr>
-										</tbody>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-
-					{% else %}
-						Revision not sent
-
-					{% endfor %}
-					{% if submission.copyedit is  not empty %}
-						<hr>
-
-						<h5 class="font-18 m-0 fw-bold">Your revision
-						</h5>
-
-						{{ form_start(form) }}
-						{{ form_widget(form) }}
-						<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
-						{{ form_end(form) }}
-					{% endif %}<hr>
-					{% if submission.copyedit is  not empty %}
-						<h3 class='text-success'>Comment</h3>
-						{{ form_start(form) }}
-						{{ form_widget(form) }}
-						<button class="btn">{{ button_label|default('Save') }}</button>
-						{{ form_end(form) }}
-					{% endif %}
-				</div>
-				<div class="tab-pane" id="copyedit">{{ submission.abstract|raw }}</div>
-				{% include "submission/tabs/report.html.twig" %}
-				<div class="tab-pane" id="terminal-report">
-					<strong class='text-success'>Final report datails</strong>
-					<p>
-						{% if submission.published==''%}
-							{% for publicationstatus in publicationstatus %}
-								<strong class='text-info'>Messagemfrom director</strong>
-								<p>
-									{{ publicationstatus.id}}</p>
-								{{publicationstatus.submission.id}}
-								<a href="{{ path('publication_datasets', {'id':publicationstatus.id}) }}">
-									Dataset</a>
-
-								<div id="TheModal" class="modal" tabindex="-1" role="dialog">
-									<div class="modal-dialog modal-lg" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title">{% trans %}Dataset attachment{% endtrans %}</h5>
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body" id="showEditRequestContent">
-												sd
-											</div>
-											<div class="modal-footer text-success text-left">
-												{%block modal_footer%}
-												{% endblock%}
+													<div class="modal-body" id="showEditRequestContent">
+														sd
+													</div>
+													<div class="modal-footer text-success text-left">
+														{%block modal_footer%}
+														{% endblock%}
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
-								</div>
 
-								<div class="modal inmodal fade" id="modal{{publicationstatus.id}}" tabindex="-1" role="dialog" aria-hidden="true">
-									<div class="modal-dialog modal-lg">
-										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="close" data-dismiss="modal">
-													<span aria-hidden="true">&times;</span>
-													<span class="sr-only">Close</span>
-												</button>
-												<h4 class="modal-title">Modal title</h4>
-												<small class="font-bold">S.</small>
-											</div>
-											<div class="modal-body">
-												<strong>Lorem
-												</strong>
+										<div class="modal inmodal fade" id="modal{{publicationstatus.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+											<div class="modal-dialog modal-lg">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal">
+															<span aria-hidden="true">&times;</span>
+															<span class="sr-only">Close</span>
+														</button>
+														<h4 class="modal-title">Modal title</h4>
+														<small class="font-bold">S.</small>
+													</div>
+													<div class="modal-body">
+														<strong>Lorem
+														</strong>
 
-											</div>
+													</div>
 
-											<div class="modal-footer">
-												<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-												<button type="button" class="btn btn-primary">Save changes</button>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+														<button type="button" class="btn btn-primary">Save changes</button>
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
+										<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-target="#modal{{publicationstatus.id}}">
+											Show Dataset
+										</button>
+
+										<a title="Show" class="btn btn-success  btn-xs" data-bs-toggle="modal" data-target="#TheModal" id="showRequestDetail4{{publicationstatus.id}}">
+											<i class="glyphicon glyphicon-stat text-success">Datasets</i>
+										</a>
+
+
+									{% endfor %}
+									<p>
+										{% include 'submission_includes/finalreport_form.html.twig' %}{% endif%}
+									</p>
 								</div>
-								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-target="#modal{{publicationstatus.id}}">
-									Show Dataset
-								</button>
+								<div class="tab-pane" id="publication">
 
-								<a title="Show" class="btn btn-success  btn-xs" data-bs-toggle="modal" data-target="#TheModal" id="showRequestDetail4{{publicationstatus.id}}">
-									<i class="glyphicon glyphicon-stat text-success">Datasets</i>
-								</a>
-								<
-								<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
-								<script>
-									$(document).ready(function () {
+									{{ submission.subtitle }}</div>
 
-$("#showRequestDetail4                                {{ publicationstatus.id }}").click(function () {
-$.ajax({
-url: "{{ path('publication_datasets', {'id':publicationstatus.id}) }}",
-success: function (result) {
-$("#showEditRequestContent").html(result);
-
-},
-error: function (xhr, status, error) {
-$("#showEditRequestContent").html("Problem");
-
-}
-});
-});
-});
-								</script>
-
-							{% endfor %}
-							<p>
-								{% include 'submission_includes/finalreport_form.html.twig' %}{% endif%}
-							</p>
+							</div>
 						</div>
-						<div class="tab-pane" id="publication">
-
-							{{ submission.subtitle }}</div>
-					</p>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
 
 
-<div class="col-lg-3">
-	<div class="card team-card">
-		<div class="card-body">
-			<div class="float-end">
-				<div
-					class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="teams{{submission.id}}#" role="button" aria-haspopup="false" aria-expanded="false">
-																																																										<i class="las la-ellipsis-v font-24 text-muted"></i>
-																																																									</a>
-																																																									<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
-																																																										<a class="dropdown-item" href="teams{{submission.id}}#">Open Project</a>
-																																																										<a class="dropdown-item" href="teams{{submission.id}}#">Edit Card</a>
-																																																										<a class="dropdown-item" href="teams{{submission.id}}#">Delete</a>
-																																																									</div> #}
+			<div class="col-lg-3">
+				<div class="card team-card">
+					<div class="card-body">
+						<div class="float-end">
+							<div
+								class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="teams{{submission.id}}#" role="button" aria-haspopup="false" aria-expanded="false">
+																																																																																																			<i class="las la-ellipsis-v font-24 text-muted"></i>
+																																																																																																		</a>
+																																																																																																		<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
+																																																																																																			<a class="dropdown-item" href="teams{{submission.id}}#">Open Project</a>
+																																																																																																			<a class="dropdown-item" href="teams{{submission.id}}#">Edit Card</a>
+																																																																																																			<a class="dropdown-item" href="teams{{submission.id}}#">Delete</a>
+																																																																																																		</div> #}
+							</div>
+						</div>
+						<div class="media align-items-center">
+
+							{% if submission.author.userInfo and submission.author.userInfo.image %}
+
+
+								<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="" class="rounded-circle user-img">
+							{% else %}
+
+								<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle user-img">
+
+
+							{% endif %}
+
+
+							<div class="online-circle">
+								<i class="fa fa-circle text-success"></i>
+							</div>
+							<div class="media-body ms-3 align-self-center">
+								<h4 class="team-leader m-0">{{submission.author.userInfo}}</h4>
+								<p class="text-muted font-12 mb-0">Research PI</p>
+							</div>
+						</div>
+						<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{submission.CallForProposal.ResearchType}}
+							Team</h4>
+						<p class="text-muted mb-0">
+							{{submission.title}}</p>
+
+						<div class="mt-4 d-flex justify-content-between">
+							<div class="img-group">
+
+
+								<a class="user-avatar user-avatar-group" href="#">
+									<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+								</a>
+
+								{% for member in submission.coAuthors %}
+
+
+									{% if member.researcher.userInfo and member.researcher.userInfo.image %}
+
+										<a class="user-avatar user-avatar-group" href="#">
+											<img src="{{ asset('files/profile_pictures/'~member.researcher.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+										</a>
+
+
+										{# <img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;"> #}
+									{% else %}
+										<a class="user-avatar user-avatar-group" href="#">
+											<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
+										</a>
+									{% endif %}
+
+									{% else %}No Co-PI has been involved
+								{% endfor %}
+
+
+								<a href="#{{submission.id}}" class="avatar-box thumb-xxs align-self-center">
+									<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+										+{{ submission.coAuthors|length   }}
+									</span>
+								</a>
+							</div>
+
+						</div>
+						<hr class="hr-dashed my-4">
+
+					</div>
+					<!--end card-body-->
 				</div>
-			</div>
-			<div class="media align-items-center">
 
-				{% if submission.author.userInfo and submission.author.userInfo.image %}
-
-
-					<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="" class="rounded-circle user-img">
-				{% else %}
-
-					<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle user-img">
-
-
-				{% endif %}
-
-
-				<div class="online-circle">
-					<i class="fa fa-circle text-success"></i>
-				</div>
-				<div class="media-body ms-3 align-self-center">
-					<h4 class="team-leader m-0">{{submission.author.userInfo}}</h4>
-					<p class="text-muted font-12 mb-0">Research PI</p>
-				</div>
-			</div>
-			<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{submission.CallForProposal.ResearchType}}
-				Team</h4>
-			<p class="text-muted mb-0">
-				{{submission.title}}</p>
-
-			<div class="mt-4 d-flex justify-content-between">
-				<div class="img-group">
-
-
-					<a class="user-avatar user-avatar-group" href="#">
-						<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
-					</a>
-
-					{% for member in submission.coAuthors %}
-
-
-						{% if member.researcher.userInfo and member.researcher.userInfo.image %}
-
-							<a class="user-avatar user-avatar-group" href="#">
-								<img src="{{ asset('files/profile_pictures/'~member.researcher.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+				<div class="card">
+					<div class="card-body ">
+						<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
+						{% for submissionattachment in submission.submissionAttachements %}
+							<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">{{submissionattachment.name}}
+								<i class="fa fa-download material-icons warning"></i>
 							</a>
-
-
-							{# <img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;"> #}
 						{% else %}
-							<a class="user-avatar user-avatar-group" href="#">
-								<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
+							<span class="label label-danger">{% trans %}No attachement found{% endtrans %}</span>
+						{% endfor %}<hr>
+						<a class="badge bg-primary" 
+						href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">PDF<i class="fa fa-download"></i>
 							</a>
-						{% endif %}
-
-						{% else %}No Co-PI has been involved
-					{% endfor %}
-
-
-					<a href="#{{submission.id}}" class="avatar-box thumb-xxs align-self-center">
-						<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-							+{{ submission.coAuthors|length   }}
-						</span>
-					</a>
+					</div>
 				</div>
-
-			</div>
-			<hr class="hr-dashed my-4">
-
-		</div>
-		<!--end card-body-->
-	</div>
-
-	<div class="card">
-		<div class="card-body ">
-			<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
-			{% for submissionattachment in submission.submissionAttachements %}
-				<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">{{submissionattachment.name}}
-					<i class="fa fa-download material-icons warning"></i>
-				</a>
-			{% else %}
-				<span class="label label-danger">{% trans %}No attachement found{% endtrans %}</span>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="card">
-		<div class="card-body ">
-			<h5 class="font-18 m-0 fw-bold">Submission Status</h5>
-			<div class="row mt-4 d-flex align-items-center">
-				{% if review_assignments|length >0 %}
-					<p class="btn btn-info btn-xs float-right">Sent to review</p>
-					{% else %}
-				{% endif %}
-				<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">PDF<i class="fa fa-download"></i>
-				</a>
+				<div class="card">
+					<div class="card-body ">
+						<h5 class="font-18 m-0 fw-bold">Submission Status</h5>
+						<div class="row mt-4 d-flex align-items-center">
+							{% if review_assignments|length >0 %}
+								<p class="btn btn-info btn-xs float-right">Sent to review</p>
+								{% else %}
+							{% endif %}
+							
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-body ">
+						<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
+						{% for member in submission.coAuthors %}
+							{{loop.index}}{{member.researcher.userInfo}}
+							{% if member.confirmed=='1' %}
+								<i class="fa fa-check text-success"></i>
+							{% elseif member.confirmed==''    %}
+								<i class="fa fa-times-circle text-danger"></i>
+								{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
+							{% else  %}
+								<i class="fa fa-close text-danger"></i>
+							{% endif %}<br>{% else %}No Co-PI has been involved
+						{% endfor %}
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="card">
-		<div class="card-body ">
-			<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
-			{% for member in submission.coAuthors %}
-				{{loop.index}}{{member.researcher.userInfo}}
-				{% if member.confirmed=='1' %}
-					<i class="fa fa-check text-success"></i>
-				{% elseif member.confirmed==''    %}
-					<i class="fa fa-times-circle text-danger"></i>
-					{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
-				{% else  %}
-					<i class="fa fa-close text-danger"></i>
-				{% endif %}<br>{% else %}No Co-PI has been involved
-			{% endfor %}
-		</div>
-	</div>
-</div></div>{% endblock %}
+	{% endblock %}
+	{% block script %}
+		<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script type="text/javascript">
 
-{% block script %}
-	<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
-  <script type="text/javascript">
+			var isvalid = false;
 
-var isvalid=false;
- 
 
-         $(function () {
+$(function () {
 {% if submission.callForProposal.researchReportPhase %}
 
- {% set phase = submission.callForProposal.researchReportPhase %}
+{% set phase = submission.callForProposal.researchReportPhase %}
 
-var startDate="{{phase.startDate|date('Y-m-d H:i:s')}}";
-var endDate="{{phase.endDate|date('Y-m-d H:i:s')}}";
-var minimumDays={{phase.maximumDuration}};
+var startDate ="{{ phase.startDate|date('Y-m-d H:i:s') }}";
+var endDate ="{{ phase.endDate|date('Y-m-d H:i:s') }}";
+var minimumDays = {{ phase.maximumDuration }};
 
-         $('.js-datepicker').datetimepicker({timepicker:false,
-		   onChangeDateTime:function(dp,input){
+$('.js-datepicker').datetimepicker({
+timepicker: false,
+onChangeDateTime: function (dp, input) {
 
-if(dp!=null){
-			   const current_input_field_id = input.attr("id");
+if (dp != null) {
+const current_input_field_id = input.attr("id");
 const parts = current_input_field_id.split('_');
-const value =parts.pop();
-const base_part =parts.join("_")
-console.log(base_part,"base part");
-if(value==1){
+const value = parts.pop();
+const base_part = parts.join("_")
+console.log(base_part, "base part");
+if (value == 1) {
 
-var previous_input_value= $("#"+current_input_field_id).val();
+var previous_input_value = $("#" + current_input_field_id).val();
 
 
-if(new Date($("#"+current_input_field_id).val()) <= new Date(startDate))
-{
+if (new Date($("#" + current_input_field_id).val()) <= new Date(startDate)) {
 
 invalid(input)
 console.log("some error");
-}
-else{
+} else {
 valid(input)
 }
 var previous_input_value = new Date(previous_input_value);
-}
-
-else if(value>1){
-var previous_input_value= $("#"+base_part+"_"+(value-1)).val();
+} else if (value > 1) {
+var previous_input_value = $("#" + base_part + "_" + (
+value - 1
+)).val();
 
 var previous_input_value = new Date(previous_input_value);
 
 var previous_input_value = previous_input_value.setDate(previous_input_value.getDate() + minimumDays);
 
 
-console.log(dp,new Date(previous_input_value),"dfgh");
-if(input.attr('data-last')=="last"){
-	console.log('last')
-if((new Date(dp) >= new Date(previous_input_value)) && (new Date(dp) <= new Date(endDate)))
-{
+console.log(dp, new Date(previous_input_value), "dfgh");
+if (input.attr('data-last') == "last") {
+console.log('last')
+if ((new Date(dp) >= new Date(previous_input_value)) && (new Date(dp) <= new Date(endDate))) {
 valid(input)
-}else{
+} else {
 invalid(input)
 
 }
 
-}
-else if(new Date(dp) <= new Date(previous_input_value))
-{
+} else if (new Date(dp) <= new Date(previous_input_value)) {
 invalid(input)
 console.log("error");
-}else{
+} else {
 valid(input)
 
 }
 
 }
-   console.log(dp);
-   console.log();
-  }
-  toggleSubmit();
-  },}
+console.log(dp);
+console.log();
+}
+toggleSubmit();
+}
+}
+{% endif %}
+)
+});
 
-  {% endif %}
-  )
-		                });
-
-function valid(input){
-isvalid=true;
+function valid(input) {
+isvalid = true;
 input.removeClass("is-invalid").addClass('is-valid');
 }
-function invalid(input){
-isvalid=false;
+function invalid(input) {
+isvalid = false;
 input.removeClass("is-valid").addClass('is-invalid');
 }
 
-function toggleSubmit(){
-if(isvalid==true){
+function toggleSubmit() {
+if (isvalid == true) {
 $('.schedule-submit-button').prop('disabled', false);
-}
-else{
+} else {
 
 $('.schedule-submit-button').prop('disabled', true);
 }
 }
 
 
-//co pi agreement text box toggle
+// co pi agreement text box toggle
 $(document).ready(function () {
-    $(".disagree_textbox_div").hide();
-    $("#disagree_radio").click(function () {
-        $(".disagree_textbox_div").fadeIn();
-        $(".disagree_textbox").prop('required', true);
-    });
-    $("#agree_radio").click(function () {
-        $(".disagree_textbox_div").fadeOut();
-        $(".disagree_textbox").prop('required', false);
-    });
+$(".disagree_textbox_div").hide();
+$("#disagree_radio").click(function () {
+$(".disagree_textbox_div").fadeIn();
+$(".disagree_textbox").prop('required', true);
 });
+$("#agree_radio").click(function () {
+$(".disagree_textbox_div").fadeOut();
+$(".disagree_textbox").prop('required', false);
+});
+});
+		</script>
+		<script>
+			document.querySelectorAll('.challeges li').forEach((tag) => {
 
-  </script>
-  <script>
-  document
-    .querySelectorAll('.challeges li')
-    .forEach((tag) => {
-	 
-        addTagFormDeleteLink(tag)
-    })
+addTagFormDeleteLink(tag)
+})
 
 // ... the rest of the block from above
 
 const addFormToCollection = (e) => {
-    // ...
+// ...
 
-    // add a delete link to the new form
-    addTagFormDeleteLink(item);
+// add a delete link to the new form
+addTagFormDeleteLink(item);
 }
 const addTagFormDeleteLink = (item) => {
-    const removeFormButton = document.createElement('button');
-    removeFormButton.innerText = 'Delete this challenge';
-    removeFormButton.classList.add('btn');
-    removeFormButton.classList.add('btn-danger');
-    removeFormButton.classList.add('btn-sm');
-    removeFormButton.classList.add('float-right');
+const removeFormButton = document.createElement('button');
+removeFormButton.innerText = 'Delete this challenge';
+removeFormButton.classList.add('btn');
+removeFormButton.classList.add('btn-danger');
+removeFormButton.classList.add('btn-sm');
+removeFormButton.classList.add('float-right');
 
-    item.append(removeFormButton);
+item.append(removeFormButton);
 
-    removeFormButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        // remove the li for the tag form
-        item.remove();
-    });
-}
-  // add-collection-widget.js
-jQuery(document).ready(function () {
-    jQuery('.add-another-collection-widget').click(function (e) {
-        var list = jQuery(jQuery(this).attr('data-list-selector'));
-        // Try to find the counter of the list or use the length of the list
-        var counter = list.data('widget-counter') || list.children().length;
-
-        // grab the prototype template
-        var newWidget = list.attr('data-prototype');
-        // replace the "__name__" used in the id and name of the prototype
-        // with a number that's unique to your emails
-        // end name attribute looks like name="contact[emails][2]"
-        newWidget = newWidget.replace(/__name__/g, counter);
-        // Increase the counter
-        counter++;
-        // And store it, the length cannot be used if deleting widgets is allowed
-        list.data('widget-counter', counter);
-
-        // create a new list element and add it to the list
-        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
-		addTagFormDeleteLink(newElem);
-        newElem.appendTo(list);
-    });
+removeFormButton.addEventListener('click', (e) => {
+e.preventDefault();
+// remove the li for the tag form
+item.remove();
 });
-  </script>
+}
+// add-collection-widget.js
+jQuery(document).ready(function () {
+jQuery('.add-another-collection-widget').click(function (e) {
+var list = jQuery(jQuery(this).attr('data-list-selector'));
+// Try to find the counter of the list or use the length of the list
+var counter = list.data('widget-counter') || list.children().length;
 
+// grab the prototype template
+var newWidget = list.attr('data-prototype');
+// replace the "__name__" used in the id and name of the prototype
+// with a number that's unique to your emails
+// end name attribute looks like name="contact[emails][2]"
+newWidget = newWidget.replace(/__name__/g, counter);
+// Increase the counter
+counter++;
+// And store it, the length cannot be used if deleting widgets is allowed
+list.data('widget-counter', counter);
 
-<script>
-// Set the date we're counting down to
+// create a new list element and add it to the list
+var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+addTagFormDeleteLink(newElem);
+newElem.appendTo(list);
+});
+});
+		</script>
+		<script>
+			// Set the date we're counting down to
 var countDownDate = new Date($('#demo').attr('data-value')).getTime();
 
 // Update the count down every 1 second
-var x = setInterval(function() {
+var x = setInterval(function () { // Get today's date and time
+var now = new Date().getTime();
 
-  // Get today's date and time
-  var now = new Date().getTime();
+// Find the distance between now and the count down date
+var distance = countDownDate - now;
 
-  // Find the distance between now and the count down date
-  var distance = countDownDate - now;
+// Time calculations for days, hours, minutes and seconds
+var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+// Display the result in the element with id="demo"
+document.getElementById("demo").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
-  // Display the result in the element with id="demo"
-  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s ";
-
-  // If the count down is finished, write some text
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("demo").innerHTML = "EXPIRED";
-  }
+// If the count down is finished, write some text
+if (distance < 0) {
+clearInterval(x);
+document.getElementById("demo").innerHTML = "EXPIRED";
+}
 }, 1000);
-</script>
-{% endblock %}
+		</script>
+	{% endblock %}

@@ -57,29 +57,23 @@
 														{% endif %}
 														</a>
 													<br>
-													<br>
+												  <strong>
+
+															Thematic area:
+															{{ collaboration.submission.thematicArea |raw}}
+															 
+														</strong>
 													<p class="text-muted">Principal Investigator :
 														{{ collaboration.submission.author }}
-													</p>
-													<p class="text-muted">Sent at :
+														<br> Sent at :
 														{% if collaboration.submission.sentAt %}
 															{{
                                                 collaboration.submission.sentAt|date() }}
 														{% endif %}
 													</p>
 
-													<small class="float-right">
-														<strong>
-
-															Thematic area:
-															{{ collaboration.submission.thematicArea |raw}}
-															 
-														</strong>
-
-														<span class='text-success'> </span>
-
-
-													</small>
+													
+ 
 												</p>
 
 												{% if collaboration.confirmed ==0 or collaboration.confirmed =='' %}
