@@ -459,16 +459,7 @@ class UserController extends AbstractController
     
 
 
-    /**
-     * @Route("/profile", name="myprofile", methods={"GET","POST"})
-     */
-
-    public function profile(Request $request, UserRepository $UserRepository, SubmissionRepository $submissionRepository)
-    {
-        
-    return $this->redirectToRoute('researchworks' );
-        
-    }
+    
     
  /**
      * @Route("/department_fetch", name="department_fetch")
@@ -485,7 +476,7 @@ class UserController extends AbstractController
         return new JsonResponse($departments);
     }
 
-    #[Route('/update-profile', name: 'researchworks', methods: ['GET','POST'])]
+    #[Route('/profile', name: 'researchworks', methods: ['GET','POST'])]
     public function researchworks(Request $request): Response
     {
         $this->denyAccessUnlessGranted("ROLE_USER");

@@ -89,6 +89,14 @@ class ApplicationController extends AbstractController
 
         $userdetails = $this->getUser()->getUserInfo();
         
+        
+        if (!$userdetails) {
+
+            $this->addFlash("danger", "Please complete your profile first before you apply  !");
+
+            return $this->redirectToRoute('researchworks');
+        }
+
         if (
             $userdetails->getFirstName() == '' || $userdetails->getMidleName() == '' ||
             $userdetails->getLastName() == '' ||
@@ -98,7 +106,7 @@ class ApplicationController extends AbstractController
 
             $this->addFlash("danger", "Please complete your profile first before you apply  !");
 
-            return $this->redirectToRoute('myprofile');
+            return $this->redirectToRoute('researchworks');
         }
 
         

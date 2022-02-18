@@ -267,7 +267,7 @@ class SubmissionController extends AbstractController
         $userdetails = $this->getUser()->getUserInfo();
         if ($userdetails == '') {
             $test->checkuser();
-            return $this->redirectToRoute('myprofile');
+            return $this->redirectToRoute('researchworks');
         }
         // dd($userdetails);
         if (
@@ -279,7 +279,7 @@ class SubmissionController extends AbstractController
 
             $this->addFlash("danger", "Please complete your profile first before you submit the proposal  !");
 
-            return $this->redirectToRoute('myprofile');
+            return $this->redirectToRoute('researchworks');
         }
 
         ##########################

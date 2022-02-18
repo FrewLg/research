@@ -37,7 +37,8 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, MailHelper $mailHelper,  ContainerInterface $containerInterface, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
+    public function register(Request $request, MailHelper $mailHelper,  ContainerInterface $containerInterface, 
+    UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -148,7 +149,7 @@ class RegistrationController extends AbstractController
                             'main' // firewall name in security.yaml
                         );
                         $this->addFlash("success","Registered Successfully!!");
-                        return $this->redirectToRoute("myprofile");
+                        return $this->redirectToRoute("researchworks");
                     }else{
                         $uas_form->addError(new FormError("This User is not staff "));
                         
