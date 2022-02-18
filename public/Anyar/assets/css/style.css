@@ -121,7 +121,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 14px;
   transition: all 0.5s;
   overflow: hidden;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.8); 
   z-index: 996;
 }
 #topbar.topbar-scrolled {
