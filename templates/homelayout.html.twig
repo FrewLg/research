@@ -82,10 +82,10 @@
 						</li>
 								{% if is_granted("ROLE_USER")%}
 
- 						<li>
+ 						{# <li>
  							<a href="{{path('application_new')}}" class="nav-link scrollto">IRB Request</a>
 
-						</li>
+						</li> #}
 										{% endif %}
 						
 
@@ -212,7 +212,7 @@ Login</a>
 						 <a href='{{ path('irb_validate') }}' class="btn  btn-md btn-block  w-100  btn-outline-primary " >Verify IRB clearance  </a>
 								{% if is_granted("ROLE_USER")%}
 						 
-						 <a href='{{ path('application_new') }}' class="btn  btn-md btn-block  w-100  btn-outline-success mt-2" >New  IRB Application   </a>
+						 {# <a href='{{ path('application_new') }}' class="btn  btn-md btn-block  w-100  btn-outline-success mt-2" >New  IRB Application   </a> #}
 								{% endif %}
 						
 						{% endblock %}
