@@ -43,13 +43,13 @@
 	</div>
 
 	{#  
-							<div class="col-md-2">
-								<div class="form-group select-wizard">
-								Upload approval of your clearance<br>
-									{{form_widget(researches.imageFile )}}
-						
-								</div>
-							</div> #}
+								<div class="col-md-2">
+									<div class="form-group select-wizard">
+									Upload approval of your clearance<br>
+										{{form_widget(researches.imageFile )}}
+							
+									</div>
+								</div> #}
 
 
 	<div class="col-md-1">
@@ -245,9 +245,9 @@
 					<div class="row">
 						<div class="col-12">
 							<div class="card">
-							<div class="card-header">
+								<div class="card-header">
 
-								<div class="row align-items-center">
+									<div class="row align-items-center">
 										<div class="col">
 											<h4 class="card-title">Proposal submissions
 
@@ -266,30 +266,29 @@
 										</div>
 										<!--end col-->
 									</div>
-									</div>
+								</div>
 
 								<div class="card-body ">
-								{% for submission in user.submissions %}
-												<h5 class="">{{ submission.title }} 
-												
-												{% if submission.awardgranted %} 
+									{% for submission in user.submissions %}
+										<h5 class="">{{ submission.title }}
+
+											{% if submission.awardgranted %}
 
 												<a href="#" class="avatar-box thumb-xxs align-self-center">
-														<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-															W
-
-														</span>
-													</a>
+													<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+														W
+													</span>
+												</a>
 												{% else %}
 
-												{% endif %}
-												
-												</h5> 
-															{{ submission.callForProposal.college }}
-<br>
-												<small class="mb-0   text-muted">{{ submission.sentAt|date('d M Y ') }}</small>
-										
-											{% endfor %}
+											{% endif %}
+
+										</h5>
+										{{ submission.callForProposal.college }}
+										<br>
+										<small class="mb-0   text-muted">{{ submission.sentAt|date('d M Y ') }}</small>
+
+									{% endfor %}
 								</div>
 								<!--end card-body-->
 							</div>
@@ -330,28 +329,25 @@
 
 								<div class="card-body ">
 
- {% for publication in user.Publications %}
-								<h4 class="mb-0 fw-semibold ">
-									{{ publication.title}}
-								</h4>
-								<p class="mb-0 fw-semibold text-muted">Journal name:
-									{{ publication.journalName}}</p>
-								<p class="mb-0 fw-semibold text-muted">Publication year:
-									{{ publication.publishedAt|date('d M Y ') }}</p>
-								DOI:
-								<a href="{{publication.Doi}}" class="mb-0 fw-semibold  ">{{ publication.Doi }}</a>
+									{% for publication in user.Publications %}
+										<h4 class="mb-0 fw-semibold ">
+											{{ publication.title}}
+										</h4>
+										<p class="mb-0 fw-semibold text-muted">Journal name:
+											{{ publication.journalName}}</p>
+										<p class="mb-0 fw-semibold text-muted">Publication year:
+											{{ publication.publishedAt|date('d M Y ') }}</p>
+										DOI:
+										<a href="{{publication.Doi}}" class="mb-0 fw-semibold  ">{{ publication.Doi }}</a>
 
 
-								 
+										<a href="{{ asset('/files/proposals/review_files/'~ publication.ArticleDocument ) }}" class="btn btn-info btn-xs float-right">
+											Download
+											<i class="fa fa-download material-icons warning"></i>
+										</a>
 
-									<a href="{{ asset('/files/proposals/review_files/'~ publication.ArticleDocument ) }}" class="btn btn-info btn-xs float-right">
-										Download
-										<i class="fa fa-download material-icons warning"></i>
-									</a>
 
-							 
-
-							{% endfor %}
+									{% endfor %}
 
 
 								</div>
@@ -408,7 +404,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="card">
-								 <div class="card-header">
+								<div class="card-header">
 
 									<div class="row align-items-center">
 										<div class="col">
@@ -437,19 +433,19 @@
 
 											{% if submission.submission.awardgranted %}
 
-													<a href="#" class="avatar-box thumb-xxs align-self-center">
-														<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-															W
+												<a href="#" class="avatar-box thumb-xxs align-self-center">
+													<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+														W
 
-														</span>
-													</a>
+													</span>
+												</a>
 												{% else %}
 
 											{% endif %}
 
 										</h5>
 										{# {{ submission.callForProposal.college }} #}
-										 
+
 										<small class="mb-0   text-muted">{{ submission.submission.sentAt|date('d M Y ') }}</small>
 
 									{% endfor %}
@@ -479,7 +475,7 @@
 
 									<div class="row">
 										<div class="col-sm-12">
-											 
+
 
 											{% for submission in user.reviewAssignments %}
 												{{loop.index}}
@@ -489,9 +485,9 @@
 
 											{% for submission in user.userGroup %}{% endfor %}
 											{# {% for submission in user.trainingParticipants %}
-																																																									{{loop.index}}
-																																																									{{submission.callForTraining.name}}
-																																																								{% endfor %} #}
+																																																																				{{loop.index}}
+																																																																				{{submission.callForTraining.name}}
+																																																																			{% endfor %} #}
 
 
 											<table class="table table-bordered">
@@ -523,24 +519,24 @@
 													<tr>
 														<th>Education Level</th>
 														<td>{{ user.userInfo.educationLevel }}</td>
-												 
+
 													</tr>
 
 
-<tr>
+													<tr>
 														<th>CV</th>
-														<td> 
+														<td>
 															{% if user.userInfo.CV != NULL  %}
 
-												 <a href="{{ asset('/files/collaborators_cv/'~ user.userInfo.CV ) }}" class="btn btn-info btn-xs float-right">
-													 Download    CV
-													<i class="fa fa-download material-icons warning"></i>
-												</a>
-												{% else %} 
-											    
-												{% endif %} 
+																<a href="{{ asset('/files/collaborators_cv/'~ user.userInfo.CV ) }}" class="btn btn-info btn-xs float-right">
+																	Download    CV
+																	<i class="fa fa-download material-icons warning"></i>
+																</a>
+																{% else %}
 
-												</td>
+															{% endif %}
+
+														</td>
 													</tr>
 
 												</tbody>
