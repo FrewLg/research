@@ -49,14 +49,14 @@ is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc')
 				</li>
 
 				{% if is_granted("ROLE_SECRETARY") or is_granted("vw_all_irb_assgn")   %}
-				<li class="nav-item">
+				{# <li class="nav-item">
 					<a class="nav-link" href="{{ path('irb_myassigned') }}">
 						<i class="ti-control-record"></i>
 
 						All Review Assignments
 
 					</a>
-				</li>
+				</li> #}
 		 
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('irb_myassigned') }}">
