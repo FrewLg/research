@@ -530,10 +530,16 @@
 <tr>
 														<th>CV</th>
 														<td> 
+															{% if user.userInfo.CV != NULL  %}
+
 												 <a href="{{ asset('/files/collaborators_cv/'~ user.userInfo.CV ) }}" class="btn btn-info btn-xs float-right">
 													 Download    CV
 													<i class="fa fa-download material-icons warning"></i>
 												</a>
+												{% else %} 
+											    
+												{% endif %} 
+
 												</td>
 													</tr>
 
