@@ -26,20 +26,15 @@
 							{% if collaborations|length>0%}
 								{% for collaboration in collaborations %}
 
-
 									<div class="card">
-									
-										<div class="card-body">
-{% if collaboration.submission.awardgranted %} 
-									<div class="ribbon2 rib2-success">
-										<span class="ribbon4-band ribbon4-band-primary text-white text-center">
-										<i class='fa  fa-sun'></i>
-										  </span>
-									</div>
-									{% endif %}
-											{% if collaboration.confirmed ==0 or collaboration.confirmed =='' %}
-											 
 
+										<div class="card-body">
+											{% if collaboration.submission.awardgranted %}
+												<div class="ribbon2 rib2-success">
+													<span class="ribbon4-band ribbon4-band-primary text-white text-center">
+														<i class='fa  fa-sun'></i>
+													</span>
+												</div>
 											{% endif %}
 											<!--end ribbon-->
 											<div class="row">
@@ -51,29 +46,30 @@
 
 													<a href="{{ path('membershipdetails', {'id': collaboration.submission.id}) }}" class="font-18 fw-semibold mb-2">
 														{{ collaboration.submission.title }}
-													 
-														{% if collaboration.submission.subTitle %}
-														: {{ collaboration.submission.subTitle }}
-														{% endif %}
-														</a>
-													<br>
-												  <strong>
 
-															Thematic area:
-															{{ collaboration.submission.thematicArea |raw}}
-															 
-														</strong>
+														{% if collaboration.submission.subTitle %}
+															:
+															{{ collaboration.submission.subTitle }}
+														{% endif %}
+													</a>
+													<br>
+													<strong>
+
+														Thematic area:
+														{{ collaboration.submission.thematicArea |raw}}
+
+													</strong>
 													<p class="text-muted">Principal Investigator :
 														{{ collaboration.submission.author }}
-														<br> Sent at :
+														<br>
+														Sent at :
 														{% if collaboration.submission.sentAt %}
 															{{
                                                 collaboration.submission.sentAt|date() }}
 														{% endif %}
 													</p>
 
-													
- 
+
 												</p>
 
 												{% if collaboration.confirmed ==0 or collaboration.confirmed =='' %}
@@ -88,8 +84,8 @@
 												{# <a href="#" class="btn btn-soft-primary btn-sm">Appproval</a> #}
 
 												{# <a class="btn btn-sm  btn-primary" data-bs-toggle="collapse" href="#expand{{ collaboration.submission.id }}" role="button" aria-expanded="false" aria-controls="expand{{ collaboration.submission.id }}">
-																																																																																														<i class="fa fa-chevron-right"></i>
-																																																																																													</a> #}
+																																																																																																																																		<i class="fa fa-chevron-right"></i>
+																																																																																																																																	</a> #}
 											</p>
 											<div class="collapse" id="expand{{ collaboration.submission.id }}">
 												<div class="card card-body">
@@ -119,25 +115,19 @@
 									</div>
 									<!--end row-->
 								</div>
-								<!--end card-body-->
-
-
-							{% else %}
-
-								<span class='text-danger'>Not involved as CO-PI yet
-																																																																																																																																																																																															                                                yet!</span>
-								<br>
 
 							{% endfor %}
+						{% else %}
+
+							<span class='text-danger'>Not involved as CO-PI yet
+																																																																																																																																																																																																																								                                                yet!</span>
+							<br>
 						{% endif %}
 
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<!--end row-->
-
 
 	</div>
 </div>{% endblock %}
