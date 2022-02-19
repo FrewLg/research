@@ -1,7 +1,7 @@
 <div class="progress">
  <div class="progress-bar progress-bar-striped  progress-bar-animated
 
-{% if submission.complete==""%}  progress-bar-primary" progress-bar-info" style="width:5%"   
+{% if submission.complete==0%}  progress-bar-primary" progress-bar-info" style="width:5%"   
 
  role="progressbar" aria-valuenow="50"    title="Incomplete submission"
  aria-valuemin="0" aria-valuemax="100">
@@ -55,6 +55,11 @@
  aria-valuemin="0" aria-valuemax="100">
  
   
+  {% else  %}  progress-bar-primary" progress-bar-info" style="width:1%"   
+
+ role="progressbar" aria-valuenow="50"    title="Incomplete submission"
+ aria-valuemin="0" aria-valuemax="100">
+
  
   {% endif %} 
  
