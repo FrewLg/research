@@ -33,22 +33,21 @@
  role="progressbar" aria-valuenow="50"  title="Award granted"
  aria-valuemin="0" aria-valuemax="100">
  
+ {% elseif submission.reviews|length>2 %}  progress-bar-danger " progress-bar-info" style="width:30%" 
+ role="progressbar" aria-valuenow="50"   title="Review Decisions made"
+ aria-valuemin="0" aria-valuemax="100">
+  
   {% elseif submission.reviewAssignments|length>1 %}  progress-bar-danger" progress-bar-info" style="width:20%" 
  role="progressbar" aria-valuenow="50"    title="Reviewer Assigned"
  aria-valuemin="0" aria-valuemax="100">
 
-{% elseif submission.reviews|length>2 %}  progress-bar-danger " progress-bar-info" style="width:30%" 
- role="progressbar" aria-valuenow="50"   title="Review Decisions made"
- aria-valuemin="0" aria-valuemax="100">
-  
+
 
 
 {% elseif submission.complete==1  %}  progress-bar-danger" progress-bar-info" style="width:10%" 
  role="progressbar" aria-valuenow="50"    title="Complete submission"
  aria-valuemin="0" aria-valuemax="100">
 
- 
- 
   
   {% else  %}  progress-bar-primary" progress-bar-info" style="width:1%"   
 
