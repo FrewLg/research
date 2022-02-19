@@ -6,10 +6,11 @@
     <h4>Permissions</h4>
     <a href="{{ path('permission_new') }}"  class='btn btn-primary btn-xs ' >Create new</a>
 
-    <table class="table">
+    <table class="table table-bordered table-striped">
         <thead>
             <tr>
                 <th>#</th>
+                <th>Code</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Actions</th>
@@ -20,6 +21,7 @@
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ permission.name }}</td>
+                <td>{{ permission.code }}</td>
                 <td>{{ permission.description }}</td>
                 <td>
                     <a href="{{ path('permission_show', {'id': permission.id}) }}">show</a>

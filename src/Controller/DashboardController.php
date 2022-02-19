@@ -87,14 +87,13 @@ class DashboardController extends AbstractController
    */
   public function theme(): Response
   {
-    // $this->denyAccessUnlessGranted('assn_clg_cntr');
+    $this->denyAccessUnlessGranted('view_dashboard');
 
     $entityManager = $this->getDoctrine()->getManager();
     
     $thiscollege = $this->getUser()->getUserInfo()->getCollege();
     $submissionbytheme = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $thiscollege]);
-    $submsissionbytheme = $entityManager->getRepository(College::class)->findBy(['id' => $thiscollege]);
-
+ 
     return $this->render('dashboard/bytheme.html.twig', [
       'thematic_areas' => $submissionbytheme,
       'colleges' => $submissionbytheme,
@@ -108,7 +107,7 @@ class DashboardController extends AbstractController
    */
   public function index(Request $request, SubmissionRepository $submissionRepository, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response
   {
-    $this->denyAccessUnlessGranted('assn_clg_cntr');
+    $this->denyAccessUnlessGranted('view_dashboard');
     $em = $this->getDoctrine()->getManager();
     $formFilter = $this->createForm(SubmissionFilterType::class);
     $formFilter->handleRequest($request);
