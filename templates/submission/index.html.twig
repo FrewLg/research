@@ -122,16 +122,24 @@
 										</td>
 										<td nowrap="nowrap">
 
-											{% if   submission.reviewAssignments|length>0  %}
+											{% if submission.awardgranted ==1  %}
 
-												<a href="#" class="avatar-box thumb-xxs align-self-center">
-													<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-														{{submission.reviewAssignments|length}}R
-													</span>
-
+												<a   class='badge bg-soft-success mt-2 bg-xs btn-block'>Winner
+													{# <i class="fa fa-check text-success"></i> #}
 												</a>
+												{% elseif   submission.reviewAssignments|length>0  %}
 
+													<a href="#" class="avatar-box thumb-xxs align-self-center">
+														<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+															{{submission.reviewAssignments|length}}R
+														</span>
+
+													</a>
+												{% else   %}
+
+												 d
 											{% endif %}
+
 
 											{% set count = 0 %}
 											{% for  confirmation in submission.reviewAssignments('closed') %}
@@ -178,16 +186,16 @@
 											<a href="{{ path('submission_firststep_edit', {'id': submission.id}) }}" class='btn btn-primary btn-xs '>Finish
 											</a>
 										{% endif %}
-                                        {# <small class="float-end ms-2 pt-1 font-10">92%</small>
-                                                        <div class="progress mt-2" style="height:3px;">
-                                                            <div class="progress-bar bg-success" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div> #}
+										{# <small class="float-end ms-2 pt-1 font-10">92%</small>
+										                                                        <div class="progress mt-2" style="height:3px;">
+										                                                            <div class="progress-bar bg-success" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+										                                                        </div> #}
 									{% else %}
 
 										<td colspan="8">no records found</td>
 
 									{% endfor %}
-									
+
 								</td>
 							</tbody>
 						</table>

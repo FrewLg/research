@@ -20,24 +20,15 @@
                             <div>
                          {% if call_for_proposal.approved=='1'%}
   <a href="{{ path('call_approve_undo', {'id': call_for_proposal.id }) }}
-  " class='btn btn-success btn-xs'> Unpublish </a> 
-  <a href="{{ path('call_research_report_phase', {'id': call_for_proposal.id }) }}" class='btn btn-success btn-xs'> Report Setting </a> 
-  <a href="{{ path('template_and_form_index', {'id': call_for_proposal.id }) }}" class='btn btn-secondary btn-xs'> Templates and forms </a> 
+  " class='btn btn-danger btn-xs'> Unpublish </a> 
+  <a href="{{ path('call_research_report_phase', {'id': call_for_proposal.id }) }}" class='btn btn-info btn-xs'> Report Setting </a> 
+  <a href="{{ path('template_and_form_index', {'id': call_for_proposal.id }) }}" class='btn btn-primary btn-xs'> Templates and forms </a> 
 
                            {% else %}                         
                           <a href="{{ path('call__approve', {'id': call_for_proposal.id }) }}" class='btn btn-warning btn-xs'> Approve and publish</a>                          
                          {% endif %}
 
-                         {% if call_for_proposal.approved=='1'%}
-										<a href="{{ path('call_approve_undo', {'id': call_for_proposal.id }) }} " class='btn btn-success btn-xs'>
-											Unpublish
-										</a>
-
-
-									{% else %}
-										<a href="{{ path('call__approve', {'id': call_for_proposal.id }) }}" class='btn btn-warning btn-xs'>
-											Approve and publish</a>
-									{% endif %}
+                    
 
 										<a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" class='btn btn-info btn-xs'>
 
@@ -61,16 +52,16 @@
                             	     
                                <span class="label label text-default"> <b>{{ call_for_proposal.researchType}} </b> &nbsp;</span>
                                 <small> 
-	<span class="label label text-success">{{ call_for_proposal.views}} Views</span>
+	<span class="label label text-info">{{ call_for_proposal.views}} Views</span>
 	 {% for applicants in number_of_applicants %}
-	<span class="label label text-success">{{ applicants.Proposals}} Applicant{% if applicants.Proposals >1 %}s{% endif %} </span>
+	<span class="label label text-info">{{ applicants.Proposals}} Applicant{% if applicants.Proposals >1 %}s{% endif %} </span>
 		{% else %} 
-			<span class="label label text-success">
+			<span class="label label text-info">
 			Be the first applicant for this call!</span>
 			
 	{% endfor %}</small>
 	<h6  style="text-align: justify;"><br>{{ call_for_proposal.subject|raw }}</h6>
-                             <h5 class='text-success'>Thematic areas <h5>
+                             <h5 class='text-info'>Thematic areas <h5>
                                <ol>
 							{% if call_for_proposal.college %}
 								{% for themes in call_for_proposal.college.thematicAreas %}
@@ -83,7 +74,7 @@
 							{% endif %}
 						</ol>
  
- <h5 class='text-success ' >Please submit your proposal following this guideline:- <h5>
+ <h5 class='text-info ' >Please submit your proposal following this guideline:- <h5>
 <h6 style="text-align: justify;" > {{ call_for_proposal.guidelines|raw }} </6>
                             </p>
                            <ul>
@@ -115,7 +106,7 @@ and ends at
                            <small>
                             {% if call_for_proposal.college %}
                                         {{ call_for_proposal.college.name|raw }}
-                           <h5 class='text-center text-success'> <b>
+                           <h5 class='text-center text-info'> <b>
                            {{ call_for_proposal.college.name }}</b>
 
                            <h6>

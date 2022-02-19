@@ -2,9 +2,7 @@
 
 {% block title %}Submission
 {% endblock %}
-{% block styles %}
-
-	{# <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}"> #}
+{% block styles %}{# <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}"> #}
 	{# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer"/> #}
 {% endblock %}
 
@@ -28,7 +26,7 @@
 									{{ submission.sentAt|date() }}
 								{% endif %}
 							</dt>
- 						</div>
+						</div>
 						<div class="col-sm-9 text-sm-left">
 
 							<div class="nowrap">
@@ -558,376 +556,379 @@
 														</td>
 													</tr>
 												</tbody>
-											</td>
-										</tr>
-									</tbody>
-								</table>
 
-								{% else %}
+											</table>
 
-							{% endfor %}
+											{% else %}
 
+										{% endfor %}
 
-							<hr>
-							{{ form_start(adminvevisionform) }}
-							{{ form_widget(adminvevisionform) }}
-							<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
-							{{ form_end(adminvevisionform) }}
 
+										<hr>
+										{{ form_start(adminvevisionform) }}
+										{{ form_widget(adminvevisionform) }}
+										<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
+										{{ form_end(adminvevisionform) }}
 
-						</div>
-					</div>
-					<br>
-					<br>
-					<br>
-				</div>
-				{# <div class="tab-pane" id="copyedit">
-				{{ submission.abstract|raw }}
-				</div>
-				<div class="tab-pane" id="progress-report">
-				{{ submission.title }}
-				</div>
-				<div class="tab-pane" id="terminal-report"></div> #}
-			</div>
-		</div>
 
-	</div>
-</div></div></div><div class="col-lg-3"><div class="card team-card">
-<div class="card-body">
-	<div class="float-end">
-		<div class="dropdown d-inline-block"></div>
-	</div>
-	<div class="media align-items-center">
-
-		{% if submission.author.userInfo and submission.author.userInfo.image %}
-
-
-			<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="" class="rounded-circle user-img">
-		{% else %}
-
-			<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle user-img">
-
-
-		{% endif %}
-
-
-		<div class="online-circle">
-			<i class="fa fa-circle text-success"></i>
-		</div>
-		<div class="media-body ms-3 align-self-center">
-			<h4 class="team-leader m-0">{{submission.author.userInfo}}</h4>
-			<p class="text-muted font-12 mb-0">Research PI</p>
-		</div>
-	</div>
-	<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{submission.CallForProposal.ResearchType}}
-		Team</h4>
-	<p class="text-muted mb-0">
-		{{submission.title}}</p>
-
-	<div class="mt-4 d-flex justify-content-between">
-		<div class="img-group">
-
-
-			{% if submission.author.userInfo and  submission.author.userInfo.image %}
-
-				<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
-					<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
-				</a>
-
-			{% else %}
-				<a class="user-avatar user-avatar-group" href="apps-project-teams.html#{{submission.id}}">
-					<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
-				</a>
-			{% endif %}
-
-
-			{% for member in submission.coAuthors %}
-
-
-				{% if member.researcher.userInfo and member.researcher.userInfo.image %}
-
-					<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
-						<img src="{{ asset('files/profile_pictures/'~member.researcher.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
-					</a>
-
-
-					{# <img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;"> #}
-				{% else %}
-					<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
-						<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
-					</a>
-				{% endif %}
-
-				{% else %}No Co-PI has been involved
-			{% endfor %}
-
-
-			<a href="#" class="avatar-box thumb-xxs align-self-center">
-				<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-					+{{ submission.coAuthors|length   }}
-				</span>
-			</a>
-
-		</div>
-
-	</div>
-
-	<hr class="hr-dashed my-4">
-
-	{% if submission.awardgranted==1 %}
-
-		<a href="" class='container btn btn-outline-success mt-2 btn-sm btn-block'>Winner
-			<i class="fa fa-check text-success"></i>
-		</a>
-
-	{% elseif submission.awardgranted=='0' %}
-		<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn btn-outline-danger mt-2 btn-sm btn-block'>Not granted</a>
-
-	{% elseif  submission.awardgranted is null  %}
-		<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn mt-2 btn-primary btn-sm btn-block'>Declare grant</a>
-
-	{% endif %}
-</div></div><div class="card">
-<div class="card-header ">
-	<h4 class="font-18 m-0 fw-bold">Attachments</h4>
-
-</div>
-<div class="card-body ">
-	{% for submissionattachment in submission.submissionAttachements %}
-		<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-			{{submissionattachment.name}}
-			<i class="fa fa-download material-icons warning"></i>
-		</a>
-	{% else %}
-		<span class="label label-danger">
-			{% trans %}No attachement found{% endtrans %}</span>
-	{% endfor %}
-</div></div><div class="card">
-<div class="card-header ">
-	<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4>
-
-</div>
-
-<div class="card-body ">
-
-
-	{% for member in submission.coAuthors %}
-		{{loop.index}}{# {{member.researcher}} #}<a href='{{path('researcher',{'id':member.researcher.id})}}'>
-			{{ member.researcher.userInfo }}</a>
-		{% if member.confirmed=='1' %}
-			<i class="fa fa-check text-success"></i>
-		{% elseif member.confirmed==''    %}
-			<i class="fa fa-times-circle text-danger"></i>
-
-
-			{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
-		{% else  %}
-			<i class="fa fa-close text-danger"></i>
-		{% endif %}<br>{% else %}No Co-PI has been involved
-	{% endfor %}
-</div></div><div class="card">
-<div class="card-header ">
-	<h5 class="font-18 m-0 fw-bold">Reviewers ({{review_assignments|length}})
-		<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
-			Add  Reviewer</a>
-	</h5>
-</div>
-
-<div class="card-body ">
-
-
-	{% for review_assignment in review_assignments %}
-
-		<div class="card">
-			<div class="card-body ">
-				<div class="media align-items-center">
-
-					{% if review_assignment.reviewer.userInfo and review_assignment.reviewer.userInfo.image %}
-
-						<img src="{{ asset('files/profile_pictures/'~review_assignment.reviewer.userInfo.image ) }}" alt="" class="rounded-circle thumb-xs">
-					{% else %}
-
-						<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle thumb-xs">
-					{% endif %}
-					<div class="media-body ms-3 align-self-center">
-						<h4 class="team-leader m-0">
-
-							<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0
-																																	  mb-1 align-right'>{{ review_assignment.reviewer }}
-
-							</a>
-						</h4>
-						<p class="text-muted font-12 mb-0">
-							{% if review_assignment.reviewer.isReviewer  %}
-								<span class="text-soft-primary">External
-								</span>
-
-							{% else %}
-								<span class="text-soft-success">Internal
-
-
-								</span>
-							{% endif %}
-						</p>
-					</div>
-				</div>
-
-
-				<a href="#" class="avatar-box thumb-xxs align-self-center">
-					<span class="avatar-title bg-soft-dark rounded-circle font-10 font-weight-normal">
-						{{loop.index}}
-					</span>
-				</a>
-
-				{% if review_assignment.reassigned %}
-
-					<a href="#" class="avatar-box thumb-xxs align-self-center">
-						<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
-							Re
-						</span>
-					</a>
-				{% endif %}
-
-
-				<p class="text-muted  mb-0 font-13">
-					<span class="text-dark text-muted">
-						Invitation Sent :
-						{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
-					</span>
-					<br>
-					<span class="text-dark text-muted">
-						Invitaion duedate:
-						{{ review_assignment.InvitationDueDate ? review_assignment.InvitationDueDate|date('Y-m-d') : '' }}
-					</span>
-					<br>
-					<span class="text-dark text-muted">
-						Review duedate:
-						{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
-					</span>
-					<br>
-					<span class="text-dark text-muted">
-						Invitaion  response:
-						{% if  review_assignment.Declined %}
-							<span class="text-danger ">
-								Declined</span>
-						{% elseif  review_assignment.Closed %}
-
-							<span class="text-primary">
-								Closed</span>
-						{% elseif  review_assignment.IsAccepted %}
-
-							<span class="text-info">
-								Reviewing</span>
-						{% elseif  review_assignment.InactiveAssignment == 1 %}
-							<span class="badge bg-danger">Inactive
-							</span>
-							<br>
-
-						{% else   %}
-
-							<span class="text-warning">
-								Pending</span>
-
-
-						{% endif   %}
-
-						{% for review in review_assignment.reviews %}
-							<hr>
-							<h5>
-								Decision:
-
-								{% if   review.remark==1 %}
-									<span class="text-danger">
-										Declined</span>
-
-								{% elseif   review.remark==2 %}
-									<span class="text-warning">
-										Accepted with major revision</span>
-								{% elseif   review.remark==3 %}
-									<span class="text-warning">
-										Accepted with minor revision
-									</span>
-								{% elseif   review.remark==4 %}
-
-									<span class="text-success">
-										Accepted
-									</span>
-
-
-								{% endif   %}
-
-							</h5>
-							{% if  review.AllowToView  %}
-
-								<small class="text-info">
-									Comment sent</small>
-
-							{% endif   %}
-
-						{% endfor %}
-						<hr>
-
-
-					</span>
-
-				</p>
-				<div class="row mt-4 d-flex align-items-center">
-					<div class="col">
-
-						<div class="row mt-2 d-flex align-items-center">
-							<div
-								class="col">
-
-
-								{# {{ include('review_assignment/_delete_form.html.twig') }} #}
-								<form method="post" action="{{ path('unassign', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
-									<input type="hidden" name="_method" value="DELETE">
-									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
-
-									{% if review_assignment.reviewer.isReviewer  %}
-										<span class=" btn btn-xs btn-soft-primary">External
-
-
-											<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
-												<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
-													+
-													{{review_assignment.reviewer.reviewAssignments|length}}
-												</span>
-											</a>
-										</span>
-									{% else %}
-										<span class="btn btn-xs btn-soft-success">Internal
-
-											<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
-												<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-													+
-													{{review_assignment.reviewer.reviewAssignments|length}}
-												</span>
-											</a>
-										</span>
-									{% endif %}
-									<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-sm btn-soft-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
-										Unassign</a>
-
-									{% if review_assignment.closed %}
-
-
-										<a href="{{ path('reassign', {'id': review_assignment.id}) }}" class='btn btn-sm btn-soft-primary btn-sm '>
-											Re-assign</a>
-									{% endif %}
-
-
-								</form>
-
-								{# <script src="{{ asset('ui/js/jquery.min.js') }}"></script> #}
-
+									</div>
+								</div>
+								<br>
+								<br>
+								<br>
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
-		{% else %}No reviewers has been assigned yet
+	</div>
+	<div class="col-lg-3">
+		<div class="card team-card">
+			<div class="card-body">
+				<div class="float-end">
+					<div class="dropdown d-inline-block"></div>
+				</div>
+				<div class="media align-items-center">
 
-	{% endfor %}
-</div></div></div><br><br>{% endblock %}
+					{% if submission.author.userInfo and submission.author.userInfo.image %}
+
+
+						<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="" class="rounded-circle user-img">
+					{% else %}
+
+						<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle user-img">
+
+
+					{% endif %}
+
+
+					<div class="online-circle">
+						<i class="fa fa-circle text-success"></i>
+					</div>
+					<div class="media-body ms-3 align-self-center">
+						<h4 class="team-leader m-0">{{submission.author.userInfo}}</h4>
+						<p class="text-muted font-12 mb-0">Research PI</p>
+					</div>
+				</div>
+				<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{submission.CallForProposal.ResearchType}}
+					Team</h4>
+				<p class="text-muted mb-0">
+					{{submission.title}}</p>
+
+				<div class="mt-4 d-flex justify-content-between">
+					<div class="img-group">
+
+
+						{% if submission.author.userInfo and  submission.author.userInfo.image %}
+
+							<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
+								<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+							</a>
+
+						{% else %}
+							<a class="user-avatar user-avatar-group" href="apps-project-teams.html#{{submission.id}}">
+								<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
+							</a>
+						{% endif %}
+
+
+						{% for member in submission.coAuthors %}
+
+
+							{% if member.researcher.userInfo and member.researcher.userInfo.image %}
+
+								<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
+									<img src="{{ asset('files/profile_pictures/'~member.researcher.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+								</a>
+
+
+								{# <img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;"> #}
+							{% else %}
+								<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
+									<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
+								</a>
+							{% endif %}
+
+							{% else %}No Co-PI has been involved
+						{% endfor %}
+
+
+						<a href="#" class="avatar-box thumb-xxs align-self-center">
+							<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+								+{{ submission.coAuthors|length   }}
+							</span>
+						</a>
+
+					</div>
+
+				</div>
+
+				<hr class="hr-dashed my-4">
+
+				{% if submission.awardgranted==1 %}
+
+					<a href="" class='container btn btn-outline-success mt-2 btn-sm btn-block'>Winner
+						<i class="fa fa-check text-success"></i>
+					</a>
+
+				{% elseif submission.awardgranted=='0' %}
+					<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn btn-outline-danger mt-2 btn-sm btn-block'>Not granted</a>
+
+				{% elseif  submission.awardgranted is null  %}
+					<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn mt-2 btn-primary btn-sm btn-block'>Declare grant</a>
+
+				{% endif %}
+			</div>
+			</div>
+			<div class="card">
+				<div class="card-header ">
+					<h4 class="font-18 m-0 fw-bold">Attachments</h4>
+
+				</div>
+				<div class="card-body ">
+					{% for submissionattachment in submission.submissionAttachements %}
+						<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
+							{{submissionattachment.name}}
+							<i class="fa fa-download material-icons warning"></i>
+						</a>
+					{% else %}
+						<span class="label label-danger">
+							{% trans %}No attachement found{% endtrans %}</span>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-header ">
+					<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4>
+
+				</div>
+
+				<div class="card-body ">
+
+
+					{% for member in submission.coAuthors %}
+						{{loop.index}}{# {{member.researcher}} #}<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+							{{ member.researcher.userInfo }}</a>
+						{% if member.confirmed=='1' %}
+							<i class="fa fa-check text-success"></i>
+						{% elseif member.confirmed==''    %}
+							<i class="fa fa-times-circle text-danger"></i>
+
+
+							{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
+						{% else  %}
+							<i class="fa fa-close text-danger"></i>
+						{% endif %}<br>{% else %}No Co-PI has been involved
+					{% endfor %}
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-header ">
+					<h5 class="font-18 m-0 fw-bold">Reviewers ({{review_assignments|length}})
+						<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
+							Add  Reviewer</a>
+					</h5>
+				</div>
+
+				<div class="card-body ">
+
+
+					{% for review_assignment in review_assignments %}
+
+						<div class="card">
+							<div class="card-body ">
+								<div class="media align-items-center">
+
+									{% if review_assignment.reviewer.userInfo and review_assignment.reviewer.userInfo.image %}
+
+										<img src="{{ asset('files/profile_pictures/'~review_assignment.reviewer.userInfo.image ) }}" alt="" class="rounded-circle thumb-xs">
+									{% else %}
+
+										<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle thumb-xs">
+									{% endif %}
+									<div class="media-body ms-3 align-self-center">
+										<h4 class="team-leader m-0">
+
+											<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0
+																																																																																								  mb-1 align-right'>{{ review_assignment.reviewer }}
+
+											</a>
+										</h4>
+										<p class="text-muted font-12 mb-0">
+											{% if review_assignment.reviewer.isReviewer  %}
+												<span class="text-soft-primary">External
+												</span>
+
+											{% else %}
+												<span class="text-soft-success">Internal
+
+
+												</span>
+											{% endif %}
+										</p>
+									</div>
+								</div>
+
+
+								<a href="#" class="avatar-box thumb-xxs align-self-center">
+									<span class="avatar-title bg-soft-dark rounded-circle font-10 font-weight-normal">
+										{{loop.index}}
+									</span>
+								</a>
+
+								{% if review_assignment.reassigned %}
+
+									<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+											Re
+										</span>
+									</a>
+								{% endif %}
+
+
+								<p class="text-muted  mb-0 font-13">
+									<span class="text-dark text-muted">
+										Invitation Sent :
+										{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+									</span>
+									<br>
+									<span class="text-dark text-muted">
+										Invitaion duedate:
+										{{ review_assignment.InvitationDueDate ? review_assignment.InvitationDueDate|date('Y-m-d') : '' }}
+									</span>
+									<br>
+									<span class="text-dark text-muted">
+										Review duedate:
+										{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+									</span>
+									<br>
+									<span class="text-dark text-muted">
+										Invitaion  response:
+										{% if  review_assignment.Declined %}
+											<span class="text-danger ">
+												Declined</span>
+										{% elseif  review_assignment.Closed %}
+
+											<span class="text-primary">
+												Closed</span>
+										{% elseif  review_assignment.IsAccepted %}
+
+											<span class="text-info">
+												Reviewing</span>
+										{% elseif  review_assignment.InactiveAssignment == 1 %}
+											<span class="badge bg-danger">Inactive
+											</span>
+											<br>
+
+										{% else   %}
+
+											<span class="text-warning">
+												Pending</span>
+
+
+										{% endif   %}
+
+										{% for review in review_assignment.reviews %}
+											<hr>
+											<h5>
+												Decision:
+
+												{% if   review.remark==1 %}
+													<span class="text-danger">
+														Declined</span>
+
+												{% elseif   review.remark==2 %}
+													<span class="text-warning">
+														Accepted with major revision</span>
+												{% elseif   review.remark==3 %}
+													<span class="text-warning">
+														Accepted with minor revision
+													</span>
+												{% elseif   review.remark==4 %}
+
+													<span class="text-success">
+														Accepted
+													</span>
+
+
+												{% endif   %}
+
+											</h5>
+											{% if  review.AllowToView  %}
+
+												<small class="text-info">
+													Comment sent</small>
+
+											{% endif   %}
+
+										{% endfor %}
+										<hr>
+
+
+									</span>
+
+								</p>
+								<div class="row mt-4 d-flex align-items-center">
+									<div class="col">
+
+										<div class="row mt-2 d-flex align-items-center">
+											<div
+												class="col">
+
+
+												{# {{ include('review_assignment/_delete_form.html.twig') }} #}
+												<form method="post" action="{{ path('unassign', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
+													<input type="hidden" name="_method" value="DELETE">
+													<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
+
+													{% if review_assignment.reviewer.isReviewer  %}
+														<span class=" btn btn-xs btn-soft-primary">External
+
+
+															<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
+																<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+																	+
+																	{{review_assignment.reviewer.reviewAssignments|length}}
+																</span>
+															</a>
+														</span>
+													{% else %}
+														<span class="btn btn-xs btn-soft-success">Internal
+
+															<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
+																<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+																	+
+																	{{review_assignment.reviewer.reviewAssignments|length}}
+																</span>
+															</a>
+														</span>
+													{% endif %}
+													<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-sm btn-soft-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
+														Unassign</a>
+
+													{% if review_assignment.closed %}
+
+
+														<a href="{{ path('reassign', {'id': review_assignment.id}) }}" class='btn btn-sm btn-soft-primary btn-sm '>
+															Re-assign</a>
+													{% endif %}
+
+
+												</form>
+
+												{# <script src="{{ asset('ui/js/jquery.min.js') }}"></script> #}
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% else %}No reviewers has been assigned yet
+
+					{% endfor %}
+				</div>
+			</div>
+		{% endblock %}
