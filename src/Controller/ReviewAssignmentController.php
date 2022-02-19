@@ -183,7 +183,7 @@ class ReviewAssignmentController extends AbstractController
             $body = $messages->getBody();
             $title = $submission->getTitle();
             $theFirstName = $reviewAssignment->getReviewer()->getUserInfo()->getFirstName();
-            $invitation_url = "irb-review/" . $reviewAssignment->getId() . "/accept/";
+            $invitation_url = "subm-review/" . $reviewAssignment->getId() . "/accept/";
             $theEmail = $reviewAssignment->getReviewer()->getEmail();
             $email = (new TemplatedEmail())
                 ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
@@ -296,7 +296,7 @@ class ReviewAssignmentController extends AbstractController
             $subject = $messages->getSubject();
             $body = $messages->getBody();
             $title = $submission->getTitle();
-            $invitation_url = "irb-review/" . $reviewAssignment->getId() . "/accept/";
+            $invitation_url = "subm-review/" . $reviewAssignment->getId() . "/accept/";
             $theEmail = $reviewAssignment->getReviewer()->getEmail();
             $email = (new TemplatedEmail())
                 ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
