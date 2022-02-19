@@ -4,16 +4,16 @@ namespace App\Services;
 
 use App\Entity\Submission;
 use App\Form\SubmissionType;
-use App\Entity\CallForProposal; 
+use App\Entity\CallForProposal;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CheckerValidator extends AbstractController
 {
- public function checkauthor(Submission $submission)
+ public function checkauthor(EntityManagerInterface $em, Submission $submission)
     {
     ////Ultimate reviewers page
      
-    $entityManager = $this->getDoctrine()->getManager();
-    $me= $this->getUser()->getId(); 
+     $me= $this->getUser()->getId(); 
     
     /////
      $em = $this->getDoctrine()->getManager();
