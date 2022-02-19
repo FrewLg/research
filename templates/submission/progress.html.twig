@@ -1,18 +1,80 @@
 <div class="progress">
- <div class="progress-bar progress-bar-striped 
+ <div class="progress-bar progress-bar-striped  progress-bar-animated
 
-{% if submission.progress=='5'%}  progress-bar-primary    
-{% elseif submission.progress=='10' %}  progress-bar-danger
-{% elseif submission.progress=='25'%}  progress-bar-warning
-{% elseif submission.progress=='60'%}  progress-bar-info
-{% elseif submission.progress=='70'%}  progress-bar-info
-{% elseif submission.progress=='90'%}  progress-bar-notify
-{% elseif submission.progress=='100'%}  progress-bar-success
+{% if submission.complete==1%}  progress-bar-primary" progress-bar-info" style="width:10%"   
 
-		       {% endif %}"
- progress-bar-info" style="width:{{ submission.progress }}%"
- role="progressbar" aria-valuenow="50" 
+ role="progressbar" aria-valuenow="50"    title="Complete submission"
  aria-valuemin="0" aria-valuemax="100">
- 	</div>
+ 
+  	</div>
  </div>
-    
+
+{% elseif submission.reviewAssignments|length>1 %}  progress-bar-danger" progress-bar-info" style="width:20%" 
+ role="progressbar" aria-valuenow="50"    title="Review Assigned"
+ aria-valuemin="0" aria-valuemax="100">
+ 
+  	</div>
+ </div>
+{% elseif submission.editorialDecisions|length>1 %}  progress-bar-danger " progress-bar-info" style="width:30%" 
+ role="progressbar" aria-valuenow="50"   title="Review Decisions made"
+ aria-valuemin="0" aria-valuemax="100">
+ 
+  	</div>
+ </div>
+{% elseif submission.awardgranted  %}  progress-bar-warning " progress-bar-info" style="width:40%" 
+ role="progressbar" aria-valuenow="50"  title="Award granted"
+ aria-valuemin="0" aria-valuemax="100">
+ 
+  	</div>
+ </div>
+{% elseif submission.researchReportSubmissionSettings|length>1 %}  progress-bar-info " progress-bar-info" style="width:50%" 
+ role="progressbar" aria-valuenow="50"  title="Research Report Submission Settings made"
+ aria-valuemin="0" aria-valuemax="100">
+ 
+  	</div>
+ </div>
+{% elseif submission.researchTimeTables|length>1 %}  progress-bar-info " progress-bar-info" style="width:60%" 
+ role="progressbar" aria-valuenow="50"  title="Research Time Tables done"
+ aria-valuemin="0" aria-valuemax="100">
+ 
+  	</div>
+ </div>
+{% elseif submission.researchReports|length>0 %}  progress-bar-info " progress-bar-info" style="width:70%" 
+ role="progressbar" aria-valuenow="50"  title="Research Reports sent"
+ aria-valuemin="0" aria-valuemax="100">
+ 
+  	</div>
+ </div>
+{% elseif submission.researchReports|length>1 %}  progress-bar-info " progress-bar-info" style="width:80%" 
+ role="progressbar" aria-valuenow="50"  title="Research Reports sent"
+ aria-valuemin="0" aria-valuemax="100">
+ 
+  	</div>
+ </div>
+ 
+{% elseif submission.researchReports|length>2 %}  progress-bar-info " progress-bar-info" style="width:90%" 
+ role="progressbar" aria-valuenow="50"  title="Research Reports sent"
+ aria-valuemin="0" aria-valuemax="100">
+ 
+  	</div>
+ </div>
+{% elseif submission.published==1%}  progress-bar-notify " progress-bar-info" style="width:100%"
+ role="progressbar" aria-valuenow="50"  title="Published"
+ aria-valuemin="0" aria-valuemax="100">
+ 
+  	</div>
+ </div> 
+ 
+  {% endif %} 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+      
+   

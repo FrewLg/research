@@ -7,7 +7,6 @@
 
     {{ include('permission/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('permission_index') }}">back to list</a>
-
-    {{ include('permission/_delete_form.html.twig') }}
+    <a href="{{ path('permission_index') }}" class="btn btn-soft-success btn-sm">back to list</a>
+ 
 {% endblock %}

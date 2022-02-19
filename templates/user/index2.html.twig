@@ -5,9 +5,9 @@
 {% endblock %}
 {% block stylesheets %}
 	<style>
-		td a {
+		td a { 
 			color: blue;
-		}
+		} 
 	</style>
 {% endblock %}
 {% block maintitle %}User List
@@ -30,7 +30,7 @@
 		<div class="card collapsed-card m-0">
 			<div class="card-header">
 
-
+<h4>Users</h4>
 				<form class="form-inline card-title" method="get">
 					<div class="input-group ">
 						<input class="form-control" autocomplete="off" value="{{app.request.query.get('search')}}" name="search" type="search" placeholder="Search" aria-label="Search">
@@ -42,11 +42,7 @@
 					</div>
 				</form>
 
-				<a href="{{path('user_new')}}" class="btn  btn-info float-right   ">
-					<i class="fas ">
-						<b>{% trans %}Register New{% endtrans %}</b>
-					</i>
-				</a>
+				 
 
 
 				<!-- /.card-tools -->
@@ -61,7 +57,7 @@
 
 				<div class="table-responsive">
 
-					<table class="table table-hover  table-striped table-head-fixed">
+					<table class="table table-hover table-bordered  table-striped table-head-fixed">
 						<thead>
 							<tr>
 								<th>
@@ -88,7 +84,7 @@
 								<th>{{ knp_pagination_sortable(users, 'Status', 'u.isActive') }}</th>
 								<th>{{ knp_pagination_sortable(users, 'Created At', 'u.createdAt') }}</th>
 								<th>{{ knp_pagination_sortable(users, 'Last Login', 'u.lastLogin') }}</th>
-								{# <th>actions</th> #}
+								<th>Profile</th>
 							</tr>
 						</thead>
 						<tbody>
