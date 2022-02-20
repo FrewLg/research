@@ -223,6 +223,7 @@
 						<li class="nav-item">
 				<a class="nav-link active" id="settings_detail_tab" data-bs-toggle="pill" href="#About">About</a>
 			</li>
+								{% if is_granted("vw_all_sub")%}
 			
 			<li class="nav-item">
 				<a class="nav-link " id="Profile_Project_tab" data-bs-toggle="pill" href="#Profile_Project">Proposal submissions</a>
@@ -231,7 +232,6 @@
 				<li class="nav-item">
 				<a class="nav-link" id="portfolio_detail_tab" data-bs-toggle="pill" href="#Profile_Portfolio">Project Membership</a>
 			</li>
-								{% if is_granted("vw_all_sub")%}
 
 			<li class="nav-item">
 				<a class="nav-link  " id="userrevisions" data-bs-toggle="pill" href="#revisions">Review assignments</a>
