@@ -441,50 +441,51 @@
 
 										{% for review in reviews %}
 
-											<table class="table table-bordered table-striped">
 
-												<tbody>
-													<tr>
-														<td class="desc">
+											<div class="card team-card">
+												<div class="card-body">
+													{% if submission.awardgranted %}
+														<div class="ribbon2 rib2-success">
+															<span class="ribbon4-band ribbon4-band-primary text-white text-center">
+																<i class='fa  fa-sun'></i>
+															</span>
+														</div>
+													{% endif %}
 
-															<p class="small">
+													<div class="float-end">
+														<div class="dropdown d-inline-block"></div>
+													</div>
+													<div class="media align-items-center">
 
-																{{ review.comment |raw}}
-															</p>
-															<dl class="small m-b-none">
-																<dt>Revised at
-																	{{ review.CreatedAt ?
-                                                        review.CreatedAt|date('Y-m-d H') : '' }}
-																</dt>
-															</dl>
+														{% if review.ReviewedBy.userInfo and review.ReviewedBy.userInfo.image %}
 
-															<div class="m-t-sm">
 
-																{% if review.attachment %}
-																	<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="font-14 m-0   btn btn-xs btn-soft-primary">
-																		Evaluation Report
-																		<i class="fa fa-download material-icons  "></i>
-																	</a>
+															<img src="{{ asset('files/profile_pictures/'~review.ReviewedBy.userInfo.image ) }}" alt="" class="rounded-circle user-img">
+														{% else %}
 
-																{% endif %}
-																{% if review.EvaluationAttachment %}
-																	<a href="{{ asset('/files/proposals/review_files/'~ review.EvaluationAttachment ) }}" class="font-14 m-0   btn btn-xs btn-soft-primary">
-																		Grading report
-																		<i class="fa fa-download material-icons  "></i>
-																	</a>
+															<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle user-img">
 
-																{% endif %}
 
-																{% if review.fromDirector %}
-																	<span class="badge badge-boxed  badge-outline-success">
-																		{{ review.ReviewedBy.userInfo }}
-																	</span>
-																{% endif %}
+														{% endif %}
 
-															</div>
-														</td>
-														<td width="65" nowrap="nowrap">
-															<h5 class='text-default'>
+
+														<div class="online-circle">
+															<i class="fa fa-circle text-success"></i>
+														</div>
+														<div class="media-body ms-3 align-self-center">
+															<h4 class="team-leader m-0">{{review.ReviewedBy.userInfo}} 
+															{% if review.fromDirector %}
+														 
+
+														<button type="button" class="btn btn-soft-primary btn-icon-circle btn-icon-circle-sm mr-2">
+															<i class="mdi mdi-bell font-16"></i>
+															<span class="badge badge-dot online"></span>
+														</button>
+														{% endif %}
+
+															
+															</h4>
+															<p class="text-muted font-12 mb-0">
 																{% if review.ReviewedBy.isReviewer %}
 
 																	<span class="badge badge-boxed  badge-outline-primary">
@@ -496,68 +497,114 @@
 																		Internal reviewer</span>
 
 
-																{% endif %}
-																<br>
-																{% if review.fromDirector %}
-																	<span class="badge badge-boxed  badge-outline-info mt-2">
-																		Research Co-ordinator
+																{% endif %}<br>
+																{{ review.CreatedAt ?  review.CreatedAt|date('Y-m-d H') : '' }}</p>
+														</div>
+													</div>
+													<h4 class="m-0 mt-4 font-14 font-weight-semibold">
 
-																	</span>
-																	{{ include('review/_delete_form.html.twig') }}
+														<h5>
+															{% if   review.remark==1 %}
+																<span class="text-danger">
+																	Declined</span>
+
+															{% elseif   review.remark==2 %}
+																<span class="text-warning">
+																	Accepted with major revision</span>
+															{% elseif   review.remark==3 %}
+																<span class="text-warning">
+																	Accepted with minor revision
+																</span>
+															{% elseif   review.remark==4 %}
+
+																<span class="text-success">
+																	Accepted
+																</span>
+															{% endif   %}
+														</h5>
+
+													</h4>
+													<p class="text-muted mb-0">
+														{{ review.comment |raw}}</p>
 
 
-																{% endif %}
+													{% if review.attachment %}
+														<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="font-14 m-0   btn btn-xs btn-soft-primary">
+															Evaluation Report
+															<i class="fa fa-download material-icons  "></i>
+														</a>
 
-															</h5>
-															{# <h4 class='text-primary'> #}
+													{% endif %}
+													{% if review.EvaluationAttachment %}
+														<a href="{{ asset('/files/proposals/review_files/'~ review.EvaluationAttachment ) }}" class="font-14 m-0   btn btn-xs btn-soft-primary">
+															Grading report
+															<i class="fa fa-download material-icons  "></i>
+														</a>
 
-															{# {{ review.remark |raw}} #}
-															<b>
-																<h5>
-																	{% if   review.remark==1 %}
-																		<span class="text-danger">
-																			Declined</span>
+													{% endif %}
 
-																	{% elseif   review.remark==2 %}
-																		<span class="text-warning">
-																			Accepted with major revision</span>
-																	{% elseif   review.remark==3 %}
-																		<span class="text-warning">
-																			Accepted with minor revision
-																		</span>
-																	{% elseif   review.remark==4 %}
+													<hr class="hr-dashed my-4">
 
-																		<span class="text-success">
-																			Accepted
-																		</span>
-																	{% endif   %}
-																</h5>
+													<ul class="list-group list-group-horizontal-md">
+                                                <li class="list-group-item">
+												{% if review.fromDirector %} 		 
+														{{ include('review/_delete_form.html.twig') }}
+														{% else %}
+<i class="fa fa-bell text-info material-icons  "></i>
+ 														{% endif %}
+														 
+														 </li>
+                                                
+												<li class="list-group-item"> 
+												
+												{% if review.AllowToView=='' %}
 
-															</b>
-															{# </h4> #}
+														<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-soft-primary btn-xs  mt-1" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
+															Send   comment to PI</a>
+													{% elseif review.AllowToView=='1'  %}
+														 
+														<a href="{{ path('undo_allocomment', {'id': review.id}) }}" class="btn btn-soft-danger btn-xs  mt-1">
+															Unsend comment from PI</a>
 
-															<hr>
-															{% if review.AllowToView=='' %}
+														{% else %}
+														</li>
+                                               
+											  
+											  
 
-																<a href="{{ path('allocomment', {'id': review.id}) }}" class="btn btn-soft-primary btn-xs  mt-1" onsubmit="return confirm('Are you sure you want to sendcommentto PI ?');">
-																	Send   comment to PI</a>
-															{% elseif review.AllowToView=='1'  %}
-																<span class="badge badge-boxed  badge-outline-success">
-																	Comment sent</span><br>
-																<a href="{{ path('undo_allocomment', {'id': review.id}) }}" class="btn btn-soft-danger btn-xs  mt-1">
-																	Unsend comment from PI</a>
+											    <li class="list-group-item"><i class="la la-angle-double-right text-info me-2"></i>
+												{% if submission.awardgranted==1 %}
 
-																{% else %}
+															<a href="" class='container btn btn-outline-success mt-2 btn-sm  '>Winner
+																<i class="fa fa-check text-success"></i>
+															</a>
 
-															{% endif %}
+														{% elseif submission.awardgranted=='0' %}
+															<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn btn-outline-danger mt-2 btn-sm  '>Not granted</a>
 
-															<hr>
-															{# {{editorialDecisions.decision}} #}
-														</td>
-													</tr>
-												</tbody>
+														{% elseif  submission.awardgranted is null  %}
+															<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn mt-2 btn-primary btn-sm  '>Declare grant</a>
 
-											</table>
+														{% else %}
+																{# <i class="fa fa-check text-success"></i> #}
+
+														{% endif %}
+														
+												</li>
+                                            </ul>
+
+
+
+													{% endif %}
+
+													
+
+													
+
+												</div>
+											</div>
+
+											 
 
 											{% else %}
 
@@ -587,13 +634,13 @@
 	<div class="col-lg-3">
 		<div class="card team-card">
 			<div class="card-body">
-			{% if submission.awardgranted %} 
-									<div class="ribbon2 rib2-success">
-										<span class="ribbon4-band ribbon4-band-primary text-white text-center">
-										<i class='fa  fa-sun'></i>
-										  </span>
-									</div>
-									{% endif %}
+				{% if submission.awardgranted %}
+					<div class="ribbon2 rib2-success">
+						<span class="ribbon4-band ribbon4-band-primary text-white text-center">
+							<i class='fa  fa-sun'></i>
+						</span>
+					</div>
+				{% endif %}
 
 				<div class="float-end">
 					<div class="dropdown d-inline-block"></div>
@@ -674,271 +721,259 @@
 				</div>
 
 				<hr class="hr-dashed my-4">
-			{{ include('submission/progress.html.twig') }}
+				{{ include('submission/progress.html.twig') }}
 
-				{% if submission.awardgranted==1 %}
+				 
 
-					<a href="" class='container btn btn-outline-success mt-2 btn-sm btn-block'>Winner
-						<i class="fa fa-check text-success"></i>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header ">
+				<h4 class="font-18 m-0 fw-bold">Attachments</h4>
+
+			</div>
+			<div class="card-body ">
+				{% for submissionattachment in submission.submissionAttachements %}
+					<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
+						{{submissionattachment.name}}
+						<i class="fa fa-download material-icons warning"></i>
 					</a>
-
-				{% elseif submission.awardgranted=='0' %}
-					<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn btn-outline-danger mt-2 btn-sm btn-block'>Not granted</a>
-
-				{% elseif  submission.awardgranted is null  %}
-					<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn mt-2 btn-primary btn-sm btn-block'>Declare grant</a>
-
-				{% endif %}
-				
+				{% else %}
+					<span class="label label-danger">
+						{% trans %}No attachement found{% endtrans %}</span>
+				{% endfor %}
 			</div>
+		</div>
+		<div class="card">
+			<div class="card-header ">
+				<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4>
+
 			</div>
-			<div class="card">
-				<div class="card-header ">
-					<h4 class="font-18 m-0 fw-bold">Attachments</h4>
 
-				</div>
-				<div class="card-body ">
-					{% for submissionattachment in submission.submissionAttachements %}
-						<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
-							{{submissionattachment.name}}
-							<i class="fa fa-download material-icons warning"></i>
-						</a>
-					{% else %}
-						<span class="label label-danger">
-							{% trans %}No attachement found{% endtrans %}</span>
-					{% endfor %}
-				</div>
+			<div class="card-body ">
+
+
+				{% for member in submission.coAuthors %}
+					{{loop.index}}{# {{member.researcher}} #}<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+						{{ member.researcher.userInfo }}</a>
+					{% if member.confirmed=='1' %}
+						<i class="fa fa-check text-success"></i>
+					{% elseif member.confirmed==''    %}
+						<i class="fa fa-times-circle text-danger"></i>
+
+
+						{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
+					{% else  %}
+						<i class="fa fa-close text-danger"></i>
+					{% endif %}<br>{% else %}No Co-PI has been involved
+				{% endfor %}
 			</div>
-			<div class="card">
-				<div class="card-header ">
-					<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4>
-
-				</div>
-
-				<div class="card-body ">
-
-
-					{% for member in submission.coAuthors %}
-						{{loop.index}}{# {{member.researcher}} #}<a href='{{path('researcher',{'id':member.researcher.id})}}'>
-							{{ member.researcher.userInfo }}</a>
-						{% if member.confirmed=='1' %}
-							<i class="fa fa-check text-success"></i>
-						{% elseif member.confirmed==''    %}
-							<i class="fa fa-times-circle text-danger"></i>
-
-
-							{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
-						{% else  %}
-							<i class="fa fa-close text-danger"></i>
-						{% endif %}<br>{% else %}No Co-PI has been involved
-					{% endfor %}
-				</div>
+		</div>
+		<div class="card">
+			<div class="card-header ">
+				<h5 class="font-18 m-0 fw-bold">Reviewers ({{review_assignments|length}})
+					<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
+						Add  Reviewer</a>
+				</h5>
 			</div>
-			<div class="card">
-				<div class="card-header ">
-					<h5 class="font-18 m-0 fw-bold">Reviewers ({{review_assignments|length}})
-						<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
-							Add  Reviewer</a>
-					</h5>
-				</div>
 
-				<div class="card-body ">
+			<div class="card-body ">
 
 
-					{% for review_assignment in review_assignments %}
+				{% for review_assignment in review_assignments %}
 
-						<div class="card">
-							<div class="card-body ">
-								<div class="media align-items-center">
+					<div class="card">
+						<div class="card-body ">
+							<div class="media align-items-center">
 
-									{% if review_assignment.reviewer.userInfo!="" and review_assignment.reviewer.userInfo.image is defined%}
+								{% if review_assignment.reviewer.userInfo!="" and review_assignment.reviewer.userInfo.image is defined%}
 
-										<img src="{{ asset('files/profile_pictures/'~review_assignment.reviewer.userInfo.image ) }}" alt="" class="rounded-circle thumb-xs">
-									{% else %}
+									<img src="{{ asset('files/profile_pictures/'~review_assignment.reviewer.userInfo.image ) }}" alt="" class="rounded-circle thumb-xs">
+								{% else %}
 
-										<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle thumb-xs">
-									{% endif %}
-									<div class="media-body ms-3 align-self-center">
-										<h4 class="team-leader m-0">
+									<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle thumb-xs">
+								{% endif %}
+								<div class="media-body ms-3 align-self-center">
+									<h4 class="team-leader m-0">
 
-											<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0
-																																																																																								  mb-1 align-right'>{{ review_assignment.reviewer }}
+										<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0
+																																																																																																			  mb-1 align-right'>{{ review_assignment.reviewer }}
 
-											</a>
-										</h4>
-										<p class="text-muted font-12 mb-0">
-											{% if review_assignment.reviewer.isReviewer  %}
-												<span class="text-soft-primary">External
-												</span>
+										</a>
+									</h4>
+									<p class="text-muted font-12 mb-0">
+										{% if review_assignment.reviewer.isReviewer  %}
+											<span class="text-soft-primary">External
+											</span>
 
-											{% else %}
-												<span class="text-soft-success">Internal
+										{% else %}
+											<span class="text-soft-success">Internal
 
 
-												</span>
-											{% endif %}
-										</p>
-									</div>
+											</span>
+										{% endif %}
+									</p>
 								</div>
+							</div>
 
+
+							<a href="#" class="avatar-box thumb-xxs align-self-center">
+								<span class="avatar-title bg-soft-dark rounded-circle font-10 font-weight-normal">
+									{{loop.index}}
+								</span>
+							</a>
+
+							{% if review_assignment.reassigned %}
 
 								<a href="#" class="avatar-box thumb-xxs align-self-center">
-									<span class="avatar-title bg-soft-dark rounded-circle font-10 font-weight-normal">
-										{{loop.index}}
+									<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
+										Re
 									</span>
 								</a>
+							{% endif %}
 
-								{% if review_assignment.reassigned %}
 
-									<a href="#" class="avatar-box thumb-xxs align-self-center">
-										<span class="avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal">
-											Re
+							<p class="text-muted  mb-0 font-13">
+								<span class="text-dark text-muted">
+									Invitation Sent :
+									{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
+								</span>
+								<br>
+								<span class="text-dark text-muted">
+									Invitaion duedate:
+									{{ review_assignment.InvitationDueDate ? review_assignment.InvitationDueDate|date('Y-m-d') : '' }}
+								</span>
+								<br>
+								<span class="text-dark text-muted">
+									Review duedate:
+									{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
+								</span>
+								<br>
+								<span class="text-dark text-muted">
+									Invitaion  response:
+									{% if  review_assignment.Declined %}
+										<span class="text-danger ">
+											Declined</span>
+									{% elseif  review_assignment.Closed %}
+
+										<span class="text-primary">
+											Closed</span>
+									{% elseif  review_assignment.IsAccepted %}
+
+										<span class="text-info">
+											Reviewing</span>
+									{% elseif  review_assignment.InactiveAssignment == 1 %}
+										<span class="badge bg-danger">Inactive
 										</span>
-									</a>
-								{% endif %}
+										<br>
+
+									{% else   %}
+
+										<span class="text-warning">
+											Pending</span>
 
 
-								<p class="text-muted  mb-0 font-13">
-									<span class="text-dark text-muted">
-										Invitation Sent :
-										{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('Y-m-d H:i') : '' }}
-									</span>
-									<br>
-									<span class="text-dark text-muted">
-										Invitaion duedate:
-										{{ review_assignment.InvitationDueDate ? review_assignment.InvitationDueDate|date('Y-m-d') : '' }}
-									</span>
-									<br>
-									<span class="text-dark text-muted">
-										Review duedate:
-										{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
-									</span>
-									<br>
-									<span class="text-dark text-muted">
-										Invitaion  response:
-										{% if  review_assignment.Declined %}
-											<span class="text-danger ">
-												Declined</span>
-										{% elseif  review_assignment.Closed %}
+									{% endif   %}
 
-											<span class="text-primary">
-												Closed</span>
-										{% elseif  review_assignment.IsAccepted %}
+									{% for review in review_assignment.reviews %}
+										<hr>
+										<h5>
+											Decision:
 
-											<span class="text-info">
-												Reviewing</span>
-										{% elseif  review_assignment.InactiveAssignment == 1 %}
-											<span class="badge bg-danger">Inactive
-											</span>
-											<br>
+											{% if   review.remark==1 %}
+												<span class="text-danger">
+													Declined</span>
 
-										{% else   %}
+											{% elseif   review.remark==2 %}
+												<span class="text-warning">
+													Accepted with major revision</span>
+											{% elseif   review.remark==3 %}
+												<span class="text-warning">
+													Accepted with minor revision
+												</span>
+											{% elseif   review.remark==4 %}
 
-											<span class="text-warning">
-												Pending</span>
+												<span class="text-success">
+													Accepted
+												</span>
 
-
-										{% endif   %}
-
-										{% for review in review_assignment.reviews %}
-											<hr>
-											<h5>
-												Decision:
-
-												{% if   review.remark==1 %}
-													<span class="text-danger">
-														Declined</span>
-
-												{% elseif   review.remark==2 %}
-													<span class="text-warning">
-														Accepted with major revision</span>
-												{% elseif   review.remark==3 %}
-													<span class="text-warning">
-														Accepted with minor revision
-													</span>
-												{% elseif   review.remark==4 %}
-
-													<span class="text-success">
-														Accepted
-													</span>
-
-
-												{% endif   %}
-
-											</h5>
-											{% if  review.AllowToView  %}
-
-												<small class="text-info">
-													Comment sent</small>
 
 											{% endif   %}
 
-										{% endfor %}
-										<hr>
+										</h5>
+										{% if  review.AllowToView  %}
+
+											<small class="text-info">
+												Comment sent</small>
+
+										{% endif   %}
+
+									{% endfor %}
+									<hr>
 
 
-									</span>
+								</span>
 
-								</p>
-								<div class="row mt-4 d-flex align-items-center">
-									<div class="col">
+							</p>
+							<div class="row mt-4 d-flex align-items-center">
+								<div class="col">
 
-										<div class="row mt-2 d-flex align-items-center">
-											<div
-												class="col">
-
-
-												{# {{ include('review_assignment/_delete_form.html.twig') }} #}
-												<form method="post" action="{{ path('unassign', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
-													<input type="hidden" name="_method" value="DELETE">
-													<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
-
-													{% if review_assignment.reviewer.isReviewer  %}
-														<span class=" btn btn-xs btn-soft-primary">External
+									<div class="row mt-2 d-flex align-items-center">
+										<div
+											class="col">
 
 
-															<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
-																<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
-																	+
-																	{{review_assignment.reviewer.reviewAssignments|length}}
-																</span>
-															</a>
-														</span>
-													{% else %}
-														<span class="btn btn-xs btn-soft-success">Internal
+											{# {{ include('review_assignment/_delete_form.html.twig') }} #}
+											<form method="post" action="{{ path('unassign', {'id': review_assignment.id}) }}" onsubmit="return confirm('Are you sure you want to unassign{{review_assignment.reviewer }} from reviewers list?');">
+												<input type="hidden" name="_method" value="DELETE">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
 
-															<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
-																<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-																	+
-																	{{review_assignment.reviewer.reviewAssignments|length}}
-																</span>
-															</a>
-														</span>
-													{% endif %}
-													<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-sm btn-soft-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
-														Unassign</a>
-
-													{% if review_assignment.closed %}
+												{% if review_assignment.reviewer.isReviewer  %}
+													<span class=" btn btn-xs btn-soft-primary">External
 
 
-														<a href="{{ path('reassign', {'id': review_assignment.id}) }}" class='btn btn-sm btn-soft-primary btn-sm '>
-															Re-assign</a>
-													{% endif %}
+														<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+																+
+																{{review_assignment.reviewer.reviewAssignments|length}}
+															</span>
+														</a>
+													</span>
+												{% else %}
+													<span class="btn btn-xs btn-soft-success">Internal
+
+														<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+																+
+																{{review_assignment.reviewer.reviewAssignments|length}}
+															</span>
+														</a>
+													</span>
+												{% endif %}
+												<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-sm btn-soft-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
+													Unassign</a>
+
+												{% if review_assignment.closed %}
 
 
-												</form>
+													<a href="{{ path('reassign', {'id': review_assignment.id}) }}" class='btn btn-sm btn-soft-primary btn-sm '>
+														Re-assign</a>
+												{% endif %}
 
-												{# <script src="{{ asset('ui/js/jquery.min.js') }}"></script> #}
 
-											</div>
+											</form>
+
+											{# <script src="{{ asset('ui/js/jquery.min.js') }}"></script> #}
+
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						{% else %}No reviewers has been assigned yet
+					</div>
+					{% else %}No reviewers has been assigned yet
 
-					{% endfor %}
-				</div>
+				{% endfor %}
 			</div>
-		{% endblock %}
+		</div>
+	{% endblock %}
