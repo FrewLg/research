@@ -506,8 +506,10 @@ class UserController extends AbstractController
                 
              }
             if ($file3) {
-                $fundeddocDocsfileName3 = 'ARTICLE-'.  md5(uniqid()) . '.' . $file3;
-                $file3->move($this->getParameter('profile_pictures'), $fundeddocDocsfileName3);
+            $file3 = $publicationform->get('article_document')->getData();
+
+                $fundeddocDocsfileName3 = 'ARTICLE-'.  md5(uniqid()) . '.' . $file3->guessExtension();;
+                $file3->move($this->getParameter('users_publications'), $fundeddocDocsfileName3);
                 $publication->setArticleDocument($fundeddocDocsfileName3);
                
             }

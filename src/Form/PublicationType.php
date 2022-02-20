@@ -25,9 +25,11 @@ class PublicationType extends AbstractType
 
             ]])
             ->add('doi' , TextType::class,[ 'label'=>"DOI ",
+            'required' => false,
             
             'attr'=>[ 
             'placeholder'=>'DOI',
+            'required' => false,
             
             'class'=>'form-control mb-0'
 
@@ -75,15 +77,14 @@ class PublicationType extends AbstractType
           ))
           
             ->add('article_document' , FileType::class, [
-                'label' => ' Upload article document ',
-                'mapped' => false,
+                'label' => ' Upload article document ', 
+                    'mapped' => false,  'attr'=>[
+                        'class' => 'form-control  m-0   ',
+                                 'required' => false,
+                
+                ],
                 'required' => false,
-                "attr"=>[
-                    "accept"=>"image/*",
-                    "class"=>"form-control m-0",
-
-                ]
-            ])
+                ])
             // ->add('author')
         ;
     }
