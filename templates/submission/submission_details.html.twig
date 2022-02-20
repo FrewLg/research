@@ -17,49 +17,7 @@
 			</h4>
 
 			{{ include('submission/progress.html.twig') }}
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="row mb-0">
-						<div class="col-sm-2 text-sm-right">
-							<dt>
-								{% if submission.sentAt %}
-									{{ submission.sentAt|date() }}
-								{% endif %}
-							</dt>
-						</div>
-						<div class="col-sm-9 text-sm-left">
-
-							<div class="nowrap">
-								<div style="width: 100%;" class="text-success strong">
-									<h5 class="font-16 m-0 fw-bold">
-										{{ submission.Title }}:{{ submission.subTitle }}
-
-									</h5>
-								</div>
-							</div>
-							<small>
-								{{ submission.author }}
-							</small>
-						</dd>
-					</div>
-					<div class="col-sm-1 text-sm-left">
-
-						<div class="nowrap">
-							<div style="width: 100%;" class="text-success strong">
-
-								<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
-									PDF
-									<i class="fa fa-download"></i>
-								</a>
-
-
-							</div>
-						</div>
-
-					</div>
-
-				</div>
-			</div>
+			 <hr>
 
 			<div class="row m-t-sm">
 				<div class="col-lg-12">
@@ -620,7 +578,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+
 <div class="col-lg-3">
 	<div class="card team-card">
 		<div class="card-body">
@@ -658,9 +616,14 @@
 				</div>
 			</div>
 			<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{submission.CallForProposal.ResearchType}}
-				Team</h4>
+				 </h4>
 			<p class="text-muted mb-0">
 				{{submission.title}}</p>
+				<small class="text-muted mb-0">
+{% if submission.sentAt %}
+									{{ submission.sentAt|date() }}
+								{% endif %}
+				<small>
 
 			<div class="mt-4 d-flex justify-content-between">
 				<div class="img-group">
@@ -709,7 +672,13 @@
 				</div>
 
 			</div>
+<br>
 
+								
+								<a class="badge bg-primary align-right" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">
+									PDF
+									<i class="fa fa-download"></i>
+								</a>
 			<hr class="hr-dashed my-4">
 			{{ include('submission/progress.html.twig') }}
 
