@@ -43,13 +43,13 @@
 	</div>
 
 	{#  
-								<div class="col-md-2">
-									<div class="form-group select-wizard">
-									Upload approval of your clearance<br>
-										{{form_widget(researches.imageFile )}}
-							
-									</div>
-								</div> #}
+													<div class="col-md-2">
+														<div class="form-group select-wizard">
+														Upload approval of your clearance<br>
+															{{form_widget(researches.imageFile )}}
+												
+														</div>
+													</div> #}
 
 
 	<div class="col-md-1">
@@ -219,104 +219,108 @@
 	</div>
 	<div class="pb-4">
 		<ul class="nav-border nav nav-pills mb-0" id="pills-tab" role="tablist">
-			
-						<li class="nav-item">
+
+			<li class="nav-item">
 				<a class="nav-link active" id="settings_detail_tab" data-bs-toggle="pill" href="#About">About</a>
 			</li>
-								{% if is_granted("vw_all_sub")%}
-			
-			<li class="nav-item">
-				<a class="nav-link " id="Profile_Project_tab" data-bs-toggle="pill" href="#Profile_Project">Proposal submissions</a>
-			</li>
+			{% if is_granted("vw_all_sub")%}
 
 				<li class="nav-item">
-				<a class="nav-link" id="portfolio_detail_tab" data-bs-toggle="pill" href="#Profile_Portfolio">Project Membership</a>
-			</li>
+					<a class="nav-link " id="Profile_Project_tab" data-bs-toggle="pill" href="#Profile_Project">Proposal submissions</a>
+				</li>
 
-			<li class="nav-item">
-				<a class="nav-link  " id="userrevisions" data-bs-toggle="pill" href="#revisions">Review assignments</a>
-			</li>
-		
-								{% endif  %}
-		
+				<li class="nav-item">
+					<a class="nav-link" id="portfolio_detail_tab" data-bs-toggle="pill" href="#Profile_Portfolio">Project Membership</a>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link  " id="userrevisions" data-bs-toggle="pill" href="#revisions">Review assignments</a>
+				</li>
+
+			{% endif  %}
+
 
 			<li class="nav-item">
 				<a class="nav-link  " id="publications_tab" data-bs-toggle="pill" href="#Publications">Publications</a>
 			</li>
 
-				<li class="nav-item">
-				<a class="nav-link" id="Profile_Post_tab" data-bs-toggle="pill" href="#Profile_Post">Conferences</a>
+			<li class="nav-item">
+				<a class="nav-link" id="Conferences_tab" data-bs-toggle="pill" href="#Conferences">Conferences</a>
 			</li>
-			
+
 
 		</ul>
 	</div>
 	<div class="row">
 		<div class="col-12">
 			<div class="tab-content" id="pills-tabContent">
-				<div class="tab-pane fade " id="Profile_Project" role="tabpanel" aria-labelledby="Profile_Project_tab">
+				{% if is_granted("vw_all_sub")%}
 
-					<div class="row">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-header">
+					<div class="tab-pane fade " id="Profile_Project" role="tabpanel" aria-labelledby="Profile_Project_tab">
 
-									<div class="row align-items-center">
-										<div class="col">
-											<h4 class="card-title">Proposal submissions
+						<div class="row">
+							<div class="col-12">
+								<div class="card">
+									<div class="card-header">
 
-												{% if user.submissions|length>0%}
+										<div class="row align-items-center">
+											<div class="col">
+												<h4 class="card-title">Proposal submissions
+
+													{% if user.submissions|length>0%}
+
+														<a href="#" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+																{{user.submissions|length}}
+
+															</span>
+														</a>
+														{% else %}
+
+													{% endif %}
+												</h4>
+											</div>
+											<!--end col-->
+										</div>
+									</div>
+
+									<div class="card-body ">
+										{% for submission in user.submissions %}
+											<h5 class="">
+												<a href="{{ path('submission_show', {'id': submission.id}) }}" class='text-primary   '>
+													{{ submission.title }}
+												</a>
+
+
+												{% if submission.awardgranted %}
 
 													<a href="#" class="avatar-box thumb-xxs align-self-center">
-														<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
-															{{user.submissions|length}}
-
+														<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+															W
 														</span>
 													</a>
 													{% else %}
 
 												{% endif %}
-											</h4>
-										</div>
-										<!--end col-->
+
+											</h5>
+											{{ submission.callForProposal.college }}
+											<br>
+											<small class="mb-0   text-muted">{{ submission.sentAt|date('d M Y ') }}</small>
+
+										{% endfor %}
 									</div>
+									<!--end card-body-->
 								</div>
-
-								<div class="card-body ">
-									{% for submission in user.submissions %}
-										<h5 class="">
-										<a href="{{ path('submission_show', {'id': submission.id}) }}" class='text-primary   '>
-										{{ submission.title }}
-												</a>
-
-										
-
-											{% if submission.awardgranted %}
-
-												<a href="#" class="avatar-box thumb-xxs align-self-center">
-													<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-														W
-													</span>
-												</a>
-												{% else %}
-
-											{% endif %}
-
-										</h5>
-										{{ submission.callForProposal.college }}
-										<br>
-										<small class="mb-0   text-muted">{{ submission.sentAt|date('d M Y ') }}</small>
-
-									{% endfor %}
-								</div>
-								<!--end card-body-->
+								<!--end card-->
 							</div>
-							<!--end card-->
+							<!--end col-->
+							<div class="col-3"></div>
 						</div>
-						<!--end col-->
-						<div class="col-3"></div>
 					</div>
-				</div>
+
+				{% endif %}
+
 				<!--end tab-pane-->
 				<div class="tab-pane fade " id="Publications" role="tabpanel" aria-labelledby="publications_tab">
 
@@ -347,77 +351,29 @@
 								</div>
 
 								<div class="card-body ">
-<ol>
-									{% for publication in user.Publications %}
-										<li>
-										<h4 class="mb-0 fw-semibold ">
-											{{ publication.title}}
-										</h4>
-										<p class="mb-0 fw-semibold text-muted">Journal name:
-											{{ publication.journalName}}</p>
-										<p class="mb-0 fw-semibold text-muted">Publication year:
-											{{ publication.publishedAt|date('d M Y ') }}</p>
-										DOI:
-										<a href="{{publication.Doi}}" class="mb-0 fw-semibold  ">{{ publication.Doi }}</a>
+									<ol>
+										{% for publication in user.Publications %}
+											<li>
+												<h4 class="mb-0 fw-semibold ">
+													{{ publication.title}}
+												</h4>
+												<p class="mb-0 fw-semibold text-muted">Journal :
+													{{ publication.journalName}}</p>
+												<p class="mb-0 fw-semibold text-muted">Year of Publication:
+													{{ publication.publishedAt|date('d M Y ') }}</p>
+												DOI:
+												<a href="{{publication.Doi}}" class="mb-0 fw-semibold  ">{{ publication.Doi }}</a>
 
 
-										<a href="{{ asset('/files/proposals/review_files/'~ publication.ArticleDocument ) }}" class="btn btn-info btn-xs float-right">
-											Download
-											<i class="fa fa-download material-icons warning"></i>
-										</a>
-
-										</li>
-
-									{% endfor %}
-</ol>
-
-								</div>
-								<!--end card-body-->
-							</div>
-							<!--end card-->
-						</div>
-						<!--end col-->
-					</div>
-				</div>
-				<div class="tab-pane fade " id="revisions" role="tabpanel" aria-labelledby="userrevisions">
-
-					<div class="row">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-header">
-									<div class="row align-items-center">
-										<div class="col">
-											<h4 class="card-title">Review assignments
-
-												{% if user.reviewAssignments|length>0%}
-
-													<a href="#" class="avatar-box thumb-xxs align-self-center">
-														<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
-															{{user.reviewAssignments|length}}
-
-														</span>
-													</a>
-													{% else %}
-
-												{% endif %}
-											</h4>
-										</div>
-										<!--end col-->
-									</div>
-									<!--end row-->
-								</div>
-
-								<div class="card-body ">
-<ol>
-									 {% for submission in user.reviewAssignments %}
-											{# <li>	{{loop.index}}</li> #}
-<li>
-												<a href="{{ path('submission_show', {'id': submission.submission.id}) }}" class='text-primary   '>
-												{{ submission.submission.title }}
+												<a href="{{ asset('/files/proposals/review_files/'~ publication.ArticleDocument ) }}" class="btn btn-info btn-xs float-right">
+													Download
+													<i class="fa fa-download material-icons warning"></i>
 												</a>
-</li>
-											{% endfor %}
-<ol>
+
+											</li>
+
+										{% endfor %}
+									</ol>
 
 								</div>
 								<!--end card-body-->
@@ -427,8 +383,58 @@
 						<!--end col-->
 					</div>
 				</div>
+				{% if is_granted("vw_all_sub")%}
 
-				<div class="tab-pane fade" id="Profile_Post" role="tabpanel" aria-labelledby="Profile_Post_tab">
+					<div class="tab-pane fade " id="revisions" role="tabpanel" aria-labelledby="userrevisions">
+
+						<div class="row">
+							<div class="col-12">
+								<div class="card">
+									<div class="card-header">
+										<div class="row align-items-center">
+											<div class="col">
+												<h4 class="card-title">Review assignments
+
+													{% if user.reviewAssignments|length>0%}
+
+														<a href="#" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+																{{user.reviewAssignments|length}}
+
+															</span>
+														</a>
+														{% else %}
+
+													{% endif %}
+												</h4>
+											</div>
+											<!--end col-->
+										</div>
+										<!--end row-->
+									</div>
+
+									<div class="card-body ">
+										<ol>
+											{% for submission in user.reviewAssignments %}
+												{# <li>	{{loop.index}}</li> #}
+												<li>
+													<a href="{{ path('submission_show', {'id': submission.submission.id}) }}" class='text-primary   '>
+														{{ submission.submission.title }}
+													</a>
+												</li>
+											{% endfor %}
+										</ol>
+									</div>
+									<!--end card-body-->
+								</div>
+								<!--end card-->
+							</div>
+							<!--end col-->
+						</div>
+					</div>
+				{% endif %}
+
+				<div class="tab-pane fade" id="Conferences" role="tabpanel" aria-labelledby="Conferences_tab">
 					<div class="row">
 						<div class="col-lg-9">
 							<div
@@ -468,67 +474,69 @@
 					<!--end col-->
 				</div>
 				<!--end row-->
+				{% if is_granted("vw_all_sub")%}
 
-				<div class="tab-pane fade" id="Profile_Portfolio" role="tabpanel" aria-labelledby="portfolio_detail_tab">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="card">
-								<div class="card-header">
+					<div class="tab-pane fade" id="Profile_Portfolio" role="tabpanel" aria-labelledby="portfolio_detail_tab">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="card-header">
 
-									<div class="row align-items-center">
-										<div class="col">
-											<h4 class="card-title">Proposal membership
+										<div class="row align-items-center">
+											<div class="col">
+												<h4 class="card-title">Proposal membership
 
-												{% if user.coAuthors|length>0%}
+													{% if user.coAuthors|length>0%}
+
+														<a href="#" class="avatar-box thumb-xxs align-self-center">
+															<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+																{{user.coAuthors|length}}
+
+															</span>
+														</a>
+														{% else %}
+
+													{% endif %}
+												</h4>
+											</div>
+											<!--end col-->
+										</div>
+									</div>
+
+									<div class="card-body ">
+										{% for submission in user.coAuthors %}
+											<h5 class="">
+
+												<a href="{{ path('submission_show', {'id': submission.submission.id}) }}" class='text-primary   '>
+													{{ submission.submission.title }}
+												</a>
+
+
+												{% if submission.submission.awardgranted %}
 
 													<a href="#" class="avatar-box thumb-xxs align-self-center">
-														<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
-															{{user.coAuthors|length}}
+														<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+															W
 
 														</span>
 													</a>
 													{% else %}
 
 												{% endif %}
-											</h4>
-										</div>
-										<!--end col-->
+
+											</h5>
+											{# {{ submission.callForProposal.college }} #}
+
+											<small class="mb-0   text-muted">{{ submission.submission.sentAt|date('d M Y ') }}</small>
+
+										{% endfor %}
 									</div>
 								</div>
 
-								<div class="card-body ">
-									{% for submission in user.coAuthors %}
-										<h5 class="">
-										
-											<a href="{{ path('submission_show', {'id': submission.submission.id}) }}" class='text-primary   '>
-										{{ submission.submission.title }}
-												</a>
-												
-
-											{% if submission.submission.awardgranted %}
-
-												<a href="#" class="avatar-box thumb-xxs align-self-center">
-													<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-														W
-
-													</span>
-												</a>
-												{% else %}
-
-											{% endif %}
-
-										</h5>
-										{# {{ submission.callForProposal.college }} #}
-
-										<small class="mb-0   text-muted">{{ submission.submission.sentAt|date('d M Y ') }}</small>
-
-									{% endfor %}
-								</div>
 							</div>
-
 						</div>
 					</div>
-				</div>
+				{% endif %}
 
 				<div class="tab-pane fade active show" id="About" role="tabpanel" aria-labelledby="settings_detail_tab">
 					<div class="row">
@@ -551,14 +559,11 @@
 										<div class="col-sm-12">
 
 
-											
-
-
 											{% for submission in user.userGroup %}{% endfor %}
 											{# {% for submission in user.trainingParticipants %}
-																																																																				{{loop.index}}
-																																																																				{{submission.callForTraining.name}}
-																																																																			{% endfor %} #}
+																																																																																																																																				{{loop.index}}
+																																																																																																																																				{{submission.callForTraining.name}}
+																																																																																																																																			{% endfor %} #}
 
 
 											<table class="table table-bordered">
@@ -593,6 +598,7 @@
 
 													</tr>
 
+				{% if is_granted("vw_all_sub")%}
 
 													<tr>
 														<th>CV</th>
@@ -609,6 +615,7 @@
 
 														</td>
 													</tr>
+															{% endif %}
 
 												</tbody>
 											</table>
