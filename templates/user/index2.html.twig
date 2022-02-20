@@ -5,9 +5,9 @@
 {% endblock %}
 {% block stylesheets %}
 	<style>
-		td a { 
+		td a {
 			color: blue;
-		} 
+		}
 	</style>
 {% endblock %}
 {% block maintitle %}User List
@@ -27,10 +27,9 @@
 
 	<div class="card  m-0">
 
-		<div class="card collapsed-card m-0">
-			<div class="card-header">
+ 			<div class="card-header">
 
-<h4>Users</h4>
+				<h4>Users ({{users.totalItemCount}})</h4>
 				<form class="form-inline card-title" method="get">
 					<div class="input-group ">
 						<input class="form-control" autocomplete="off" value="{{app.request.query.get('search')}}" name="search" type="search" placeholder="Search" aria-label="Search">
@@ -40,18 +39,8 @@
 							</button>
 						</div>
 					</div>
-				</form>
-
-				 
-
-
-				<!-- /.card-tools -->
-			</div>
-			<!-- /.card-header -->
-			<div class="card-body mb-0 pb-0"></div>
-			<!-- /.card-body -->
-		</div>
-
+				</form> 
+			</div> 
 		<div class="card-body m-0">
 			<div class="row m-0">
 
@@ -118,14 +107,14 @@
 									<td>{{ user.lastLoginAgo }}</td>
 									<td>
 										{# <a href="{{ path('user_show', {'id': user.id}) }}" class="btn btn-info btn-sm" title="show">
-																			<i class="fa fa-eye"></i>
-										</a> #}
+																													<i class="fa fa-eye"></i>
+																				</a> #}
 										<a href="{{ path('researcher', {'id': user.id}) }}" class="btn btn-primary  btn-sm" title="Profile">
 											<i class="fa fa-user"></i>
 										</a>
 										{# <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-warning btn-sm" title="edit">
-																													<i class="fa fa-pen"></i>
-																			</a> #}
+																																							<i class="fa fa-pen"></i>
+																													</a> #}
 									</td>
 								</tr>
 							{% else %}
@@ -227,8 +216,7 @@ $(document).on("click", ".take-action-submit-btn", function (e) {
 e.preventDefault();
 
 // console.log("data",$('.select-user-checkbox'))
-$('.take-action-form').append($('.select-user-checkbox'));{% if isFiltered %}
-$('#filteruserform').append($('.take-action'));
+$('.take-action-form').append($('.select-user-checkbox'));{% if isFiltered %}$('#filteruserform').append($('.take-action'));
 $('#filteruserform').append($('.action-with-selected'));
 $('#filteruserform').submit();
 

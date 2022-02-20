@@ -14,10 +14,10 @@
 
 
 	<div class="row">
-		<div class="col-lg-12 row">
+		<div class="col-lg-12  mb-2">
 			<div class="accordion" id="accordionExample">
 				<div class="accordion-item active">
-					<h5 class="accordion-header m-0" id="headingOne">
+					<h5 class="accordion-header m-0 " id="headingOne">
 						<button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
 							Filter
 						</button>
@@ -34,7 +34,7 @@
 									{% endif %}
 								{% endfor %}
 								<button class="btn  col-3 float-right btn-warning my-3  schedule-submit-button" type="reset">Clear</button>
-								<button class="btn mx-1  col-3 float-right btn-success my-3  schedule-submit-button" type="submit">Filter</button>
+								<button class="btn mx-1  col-3 float-right btn-info my-3  schedule-submit-button" type="submit">Filter</button>
 
 								{{ form_end(sumissionFilterForm) }}
 
