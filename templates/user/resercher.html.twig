@@ -219,22 +219,36 @@
 	</div>
 	<div class="pb-4">
 		<ul class="nav-border nav nav-pills mb-0" id="pills-tab" role="tablist">
+			
+						<li class="nav-item">
+				<a class="nav-link active" id="settings_detail_tab" data-bs-toggle="pill" href="#About">About</a>
+			</li>
+			
 			<li class="nav-item">
 				<a class="nav-link " id="Profile_Project_tab" data-bs-toggle="pill" href="#Profile_Project">Proposal submissions</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" id="Profile_Post_tab" data-bs-toggle="pill" href="#Profile_Post">Conferences</a>
-			</li>
-			<li class="nav-item">
+
+				<li class="nav-item">
 				<a class="nav-link" id="portfolio_detail_tab" data-bs-toggle="pill" href="#Profile_Portfolio">Project Membership</a>
 			</li>
+								{% if is_granted("vw_all_sub")%}
+
+			<li class="nav-item">
+				<a class="nav-link  " id="userrevisions" data-bs-toggle="pill" href="#revisions">Review assignments</a>
+			</li>
+		
+								{% endif  %}
+		
 
 			<li class="nav-item">
 				<a class="nav-link  " id="publications_tab" data-bs-toggle="pill" href="#Publications">Publications</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link active" id="settings_detail_tab" data-bs-toggle="pill" href="#About">About</a>
+
+				<li class="nav-item">
+				<a class="nav-link" id="Profile_Post_tab" data-bs-toggle="pill" href="#Profile_Post">Conferences</a>
 			</li>
+			
+
 		</ul>
 	</div>
 	<div class="row">
@@ -270,7 +284,12 @@
 
 								<div class="card-body ">
 									{% for submission in user.submissions %}
-										<h5 class="">{{ submission.title }}
+										<h5 class="">
+										<a href="{{ path('submission_show', {'id': submission.id}) }}" class='text-primary   '>
+										{{ submission.title }}
+												</a>
+
+										
 
 											{% if submission.awardgranted %}
 
@@ -328,8 +347,9 @@
 								</div>
 
 								<div class="card-body ">
-
+<ol>
 									{% for publication in user.Publications %}
+										<li>
 										<h4 class="mb-0 fw-semibold ">
 											{{ publication.title}}
 										</h4>
@@ -346,9 +366,58 @@
 											<i class="fa fa-download material-icons warning"></i>
 										</a>
 
+										</li>
 
 									{% endfor %}
+</ol>
 
+								</div>
+								<!--end card-body-->
+							</div>
+							<!--end card-->
+						</div>
+						<!--end col-->
+					</div>
+				</div>
+				<div class="tab-pane fade " id="revisions" role="tabpanel" aria-labelledby="userrevisions">
+
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="row align-items-center">
+										<div class="col">
+											<h4 class="card-title">Review assignments
+
+												{% if user.reviewAssignments|length>0%}
+
+													<a href="#" class="avatar-box thumb-xxs align-self-center">
+														<span class="avatar-title bg-soft-primary rounded-circle font-13 font-weight-normal">
+															{{user.reviewAssignments|length}}
+
+														</span>
+													</a>
+													{% else %}
+
+												{% endif %}
+											</h4>
+										</div>
+										<!--end col-->
+									</div>
+									<!--end row-->
+								</div>
+
+								<div class="card-body ">
+<ol>
+									 {% for submission in user.reviewAssignments %}
+											{# <li>	{{loop.index}}</li> #}
+<li>
+												<a href="{{ path('submission_show', {'id': submission.submission.id}) }}" class='text-primary   '>
+												{{ submission.submission.title }}
+												</a>
+</li>
+											{% endfor %}
+<ol>
 
 								</div>
 								<!--end card-body-->
@@ -429,7 +498,12 @@
 
 								<div class="card-body ">
 									{% for submission in user.coAuthors %}
-										<h5 class="">{{ submission.submission.title }}
+										<h5 class="">
+										
+											<a href="{{ path('submission_show', {'id': submission.submission.id}) }}" class='text-primary   '>
+										{{ submission.submission.title }}
+												</a>
+												
 
 											{% if submission.submission.awardgranted %}
 
@@ -477,10 +551,7 @@
 										<div class="col-sm-12">
 
 
-											{% for submission in user.reviewAssignments %}
-												{{loop.index}}
-												{{ submission.submission.title }}
-											{% endfor %}
+											
 
 
 											{% for submission in user.userGroup %}{% endfor %}

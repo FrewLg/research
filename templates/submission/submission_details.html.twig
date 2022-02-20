@@ -594,7 +594,7 @@
 										  </span>
 									</div>
 									{% endif %}
-									
+
 				<div class="float-end">
 					<div class="dropdown d-inline-block"></div>
 				</div>
@@ -749,7 +749,7 @@
 							<div class="card-body ">
 								<div class="media align-items-center">
 
-									{% if review_assignment.reviewer.userInfo and review_assignment.reviewer.userInfo.image %}
+									{% if review_assignment.reviewer.userInfo!="" and review_assignment.reviewer.userInfo.image is defined%}
 
 										<img src="{{ asset('files/profile_pictures/'~review_assignment.reviewer.userInfo.image ) }}" alt="" class="rounded-circle thumb-xs">
 									{% else %}
