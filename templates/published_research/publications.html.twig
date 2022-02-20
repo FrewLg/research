@@ -16,6 +16,7 @@
                 <th>Citation Score</th>
                 <th>Year</th>
                  <th>DOI</th>
+                 <th>Attachments</th>
               </tr>
         </thead>
         <tbody>
@@ -29,6 +30,19 @@
                 <td>{{ published_research.citationScore }}</td>
                 <td>{{ published_research.publishedAt|date('Y-m-d') }}</td>
                 <td>{{ published_research.doi }}</td>
+                <td>
+        {% if published_research.ArticleDocument   %}
+                
+                <a href="{{ asset('/files/users_publications/'~ published_research.ArticleDocument ) }}" class="btn btn-soft-info btn-xs float-right">
+													 
+													<i class="fa fa-download material-icons warning"></i>
+												</a>
+        {% else %}
+
+<i class="fas fa-close material-icons text-danger">x</i>
+        {% endif %}
+
+                                                </td>
                
             </tr>
         {% else %}
@@ -38,5 +52,6 @@
         {% endfor %}
         </tbody>
     </table>
+					<div class="navigation">{{ knp_pagination_render(published_researches) }}</div>
  
 {% endblock %}

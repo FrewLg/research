@@ -674,6 +674,7 @@
 				</div>
 
 				<hr class="hr-dashed my-4">
+			{{ include('submission/progress.html.twig') }}
 
 				{% if submission.awardgranted==1 %}
 
@@ -688,6 +689,7 @@
 					<a href="{{ path('grant_winner', {'id': submission.id}) }}" class='container btn mt-2 btn-primary btn-sm btn-block'>Declare grant</a>
 
 				{% endif %}
+				
 			</div>
 			</div>
 			<div class="card">

@@ -67,6 +67,7 @@
 									<th>Title</th>
 									<th>Researcher(PI)</th>
 									<th>Submission Date</th>
+									<th>Progress</th>
 									<th>Status</th>
 									<th>Action</th>
 								</tr>
@@ -119,6 +120,10 @@
 											{% if submission.sentAt %}
 												{{ submission.sentAt|date('d-m-y h:s a') }}
 											{% endif %}
+										</td>
+										<td>
+													{{ include('submission/progress.html.twig') }}
+
 										</td>
 										<td nowrap="nowrap">
 
