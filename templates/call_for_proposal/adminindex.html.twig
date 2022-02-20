@@ -60,7 +60,11 @@
 										{% for call_for_proposal in call_for_proposals %}
 											<tr>
 												<td>{{ loop.index  }}</td>
-												<td>{{ call_for_proposal.subject |raw }}</td>
+												<td>
+												<a href="{{ path('call__details', {'id': call_for_proposal.id }) }}" class='text-primary'>
+														{{ call_for_proposal.subject |raw }}
+													</a>
+												</td>
 												<td>
 													{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('Y-m-d H:i') : '' }}
 												</td>
@@ -68,17 +72,15 @@
 													{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d H:i') : '' }}
 												</td>
 												<td nowrap="nowrap">
-													<a href="{{ path('call__details', {'id': call_for_proposal.id }) }}" class='btn btn-success btn-xs'>
-														Details
-													</a>
+													
 													{% if call_for_proposal.researchReportPhase %}
 
-														<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}" class='btn btn-secondary btn-xs'>
+														<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}" class='btn btn-soft-warning btn-sm'>
 															Reports
 														</a>
 													{% endif %}
-													<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-xs btn-primary">Edit</a>
-													<a href="{{ path('allawarded', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-primary btn-xs'>Winners</a>
+													<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-soft-primary btn-sm">Edit</a>
+													<a href="{{ path('allawarded', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-soft-primary btn-sm'>Winners</a>
 												</td>
 
 											</tr>

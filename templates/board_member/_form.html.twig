@@ -1,7 +1,7 @@
 {{ form_start(form) }}
 <div class="row">
 	<div class="form-group col-4">
-        	<label>{{ form_label(form.user) }}</label>
+        	<label >{{ form_label(form.user) }}</label>
 		{{ form_widget(form.user) }}
 	</div>
 
@@ -9,7 +9,8 @@
 			<label>{{ form_label(form.role) }}</label>
             {{ form_widget(form.role) }}
 	</div>
+<button class="btn btn-primary btn-xs float-end col-4">{{ button_label|default('Save') }}</button>
+
 </div>
 
-<button class="btn btn-success float-end col-3">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

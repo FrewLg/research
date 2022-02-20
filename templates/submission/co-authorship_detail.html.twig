@@ -608,6 +608,13 @@ $("#showEditRequestContent").html("Problem");
 			<div class="col-lg-3">
 				<div class="card team-card">
 					<div class="card-body">
+					{% if submission.awardgranted %} 
+									<div class="ribbon2 rib2-success">
+										<span class="ribbon4-band ribbon4-band-primary text-white text-center">
+										<i class='fa  fa-sun'></i>
+										  </span>
+									</div>
+									{% endif %}
 						<div class="float-end">
 							<div
 								class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="teams{{submission.id}}#" role="button" aria-haspopup="false" aria-expanded="false">
