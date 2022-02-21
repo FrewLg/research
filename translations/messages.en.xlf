@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="XZweR.t" resname="Save Participated">
+        <source>Save Participated</source>
+        <target>__Save Participated</target>
+      </trans-unit>
+      <trans-unit id="RkxP.QG" resname="Edit">
+        <source>Edit</source>
+        <target>__Edit</target>
+      </trans-unit>
+      <trans-unit id="wlM3BVR" resname="Roles">
+        <source>Roles</source>
+        <target>__Roles</target>
+      </trans-unit>
+      <trans-unit id="1pajW90" resname="Profile">
+        <source>Profile</source>
+        <target>__Profile</target>
+      </trans-unit>
+      <trans-unit id="HN_AYc5" resname="Dataset attachment">
+        <source>Dataset attachment</source>
+        <target>__Dataset attachment</target>
+      </trans-unit>
+      <trans-unit id="6llGCAA" resname="No attachement found">
+        <source>No attachement found</source>
+        <target>__No attachement found</target>
+      </trans-unit>
+      <trans-unit id=".kXzoa3" resname="User Management">
+        <source>User Management</source>
+        <target>__User Management</target>
+      </trans-unit>
+      <trans-unit id="NMoOdmC" resname="Group">
+        <source>Group</source>
+        <target>__Group</target>
+      </trans-unit>
+      <trans-unit id="R1lJisK" resname="Create">
+        <source>Create</source>
+        <target>__Create</target>
+      </trans-unit>
+      <trans-unit id="hDgJZ5z" resname="Log history">
+        <source>Log history</source>
+        <target>__Log history</target>
+      </trans-unit>
+      <trans-unit id="3NHVIj9" resname="Name">
+        <source>Name</source>
+        <target>__Name</target>
+      </trans-unit>
+      <trans-unit id="Um4Ah8w" resname="Description">
+        <source>Description</source>
+        <target>__Description</target>
+      </trans-unit>
+      <trans-unit id="q8zHjMk" resname="Permissions">
+        <source>Permissions</source>
+        <target>__Permissions</target>
+      </trans-unit>
+      <trans-unit id="HAX68B." resname="Role Name">
+        <source>Role Name</source>
+        <target>__Role Name</target>
+      </trans-unit>
+      <trans-unit id="GP3VSbL" resname="New">
+        <source>New</source>
+        <target>__New</target>
+      </trans-unit>
+      <trans-unit id="pt5lzwJ" resname="Manage backup Settings">
+        <source>Manage backup Settings</source>
+        <target>__Manage backup Settings</target>
+      </trans-unit>
+      <trans-unit id="lkO6LvA" resname="Backup Settings">
+        <source>Backup Settings</source>
+        <target>__Backup Settings</target>
+      </trans-unit>
+      <trans-unit id="K2LGj3Y" resname="Backup History">
+        <source>Backup History</source>
+        <target>__Backup History</target>
+      </trans-unit>
+      <trans-unit id="mcQKtAW" resname="Date">
+        <source>Date</source>
+        <target>__Date</target>
+      </trans-unit>
+      <trans-unit id="kg5BPH1" resname="Status">
+        <source>Status</source>
+        <target>__Status</target>
+      </trans-unit>
+      <trans-unit id="1NRN040" resname="Remote resource path">
+        <source>Remote resource path</source>
+        <target>__Remote resource path</target>
+      </trans-unit>
+      <trans-unit id="Zy80U_H" resname="Remote IP">
+        <source>Remote IP</source>
+        <target>__Remote IP</target>
+      </trans-unit>
+      <trans-unit id="82hrsyj" resname="Successful">
+        <source>Successful</source>
+        <target>__Successful</target>
+      </trans-unit>
+      <trans-unit id="AxqPD2W" resname="Failed">
+        <source>Failed</source>
+        <target>__Failed</target>
+      </trans-unit>
+      <trans-unit id="OEBD57w" resname="Email to">
+        <source>Email to</source>
+        <target>__Email to</target>
+      </trans-unit>
+      <trans-unit id="hI8MosE" resname="Email subject">
+        <source>Email subject</source>
+        <target>__Email subject</target>
+      </trans-unit>
+      <trans-unit id="4Sp4aJs" resname="Enter Asset name for List of AssetTransaction Record">
+        <source>Enter Asset name for List of AssetTransaction Record</source>
+        <target>__Enter Asset name for List of AssetTransaction Record</target>
+      </trans-unit>
+      <trans-unit id="fZ63rLE" resname="Close">
+        <source>Close</source>
+        <target>__Close</target>
+      </trans-unit>
+      <trans-unit id="YMm3XxU" resname="Test Content">
+        <source>Test Content</source>
+        <target>__Test Content</target>
+      </trans-unit>
+      <trans-unit id="DfbxytN" resname="Show">
+        <source>Show</source>
+        <target>__Show</target>
+      </trans-unit>
+      <trans-unit id="_456Gjy" resname="Items">
+        <source>Items</source>
+        <target>__Items</target>
+      </trans-unit>
+      <trans-unit id="H.V6Kdf" resname="Next">
+        <source>Next</source>
+        <target>__Next</target>
+      </trans-unit>
+      <trans-unit id="xdeTzwm" resname="Move element up">
+        <source>Move element up</source>
+        <target>__Move element up</target>
+      </trans-unit>
+      <trans-unit id=".CQDHkH" resname="Move element down">
+        <source>Move element down</source>
+        <target>__Move element down</target>
+      </trans-unit>
+      <trans-unit id="PNlhEom" resname="Delete element">
+        <source>Delete element</source>
+        <target>__Delete element</target>
+      </trans-unit>
+      <trans-unit id="GGBRhP_" resname="Add element">
+        <source>Add element</source>
+        <target>__Add element</target>
+      </trans-unit>
+      <trans-unit id="BCS9RIw" resname="Duplicate element">
+        <source>Duplicate element</source>
+        <target>__Duplicate element</target>
+      </trans-unit>
+      <trans-unit id="1LHqVwj" resname="Overview">
+        <source>Overview</source>
+        <target>__Overview</target>
+      </trans-unit>
+      <trans-unit id="jzqNGti" resname="Project /Research PI">
+        <source>Project /Research PI</source>
+        <target>__Project /Research PI</target>
+      </trans-unit>
+      <trans-unit id="Wexx_iU" resname="Application  to Institute/College">
+        <source>Application  to Institute/College</source>
+        <target>__Application  to Institute/College</target>
+      </trans-unit>
+      <trans-unit id="0TTxc44" resname="Project /Research Title">
+        <source>Project /Research Title</source>
+        <target>__Project /Research Title</target>
+      </trans-unit>
+      <trans-unit id="05keMC_" resname="Project Description (provide a one paragraph description of your">
+        <source>Project Description (provide a one paragraph description of your</source>
+        <target>__Project Description (provide a one paragraph description of your</target>
+      </trans-unit>
+      <trans-unit id="lDKObaY" resname="Project Start Date">
+        <source>Project Start Date</source>
+        <target>__Project Start Date</target>
+      </trans-unit>
+      <trans-unit id="vu3cnOW" resname="Project End Date">
+        <source>Project End Date</source>
+        <target>__Project End Date</target>
+      </trans-unit>
+      <trans-unit id="9qQD5w5" resname="Project Location (where work will be done)">
+        <source>Project Location (where work will be done)</source>
+        <target>__Project Location (where work will be done)</target>
+      </trans-unit>
+      <trans-unit id="jwAzHqL" resname="Project Type">
+        <source>Project Type</source>
+        <target>__Project Type</target>
+      </trans-unit>
+      <trans-unit id="ZXwq7VL" resname="Application Type">
+        <source>Application Type</source>
+        <target>__Application Type</target>
+      </trans-unit>
+      <trans-unit id="Fd5kvhJ" resname="Research Subjects">
+        <source>Research Subjects</source>
+        <target>__Research Subjects</target>
+      </trans-unit>
+      <trans-unit id="EESkwFb" resname="Members">
+        <source>Members</source>
+        <target>__Members</target>
+      </trans-unit>
+      <trans-unit id="DXH4MKl" resname="Mitigation Strategies">
+        <source>Mitigation Strategies</source>
+        <target>__Mitigation Strategies</target>
+      </trans-unit>
+      <trans-unit id="AIh9EiL" resname="ATTACHMENTS">
+        <source>ATTACHMENTS</source>
+        <target>__ATTACHMENTS</target>
+      </trans-unit>
+      <trans-unit id="xuJym.e" resname="DOCUMENT ATTACHMENTS">
+        <source>DOCUMENT ATTACHMENTS</source>
+        <target>__DOCUMENT ATTACHMENTS</target>
+      </trans-unit>
+      <trans-unit id="10MHBUC" resname="Confirmation">
+        <source>Confirmation</source>
+        <target>__Confirmation</target>
+      </trans-unit>
+      <trans-unit id="fozSBW2" resname="Title">
+        <source>Title</source>
+        <target>__Title</target>
+      </trans-unit>
+      <trans-unit id="XAB40N9" resname="Name of CO-PI">
+        <source>Name of CO-PI</source>
+        <target>__Name of CO-PI</target>
+      </trans-unit>
+      <trans-unit id="UwSrmOW" resname="Department">
+        <source>Department</source>
+        <target>__Department</target>
+      </trans-unit>
+      <trans-unit id="FHNqLrn" resname="Role">
+        <source>Role</source>
+        <target>__Role</target>
+      </trans-unit>
+      <trans-unit id="lpzL089" resname="Email">
+        <source>Email</source>
+        <target>__Email</target>
+      </trans-unit>
+      <trans-unit id="Dhirl47" resname="New amendment request">
+        <source>New amendment request</source>
+        <target>__New amendment request</target>
+      </trans-unit>
+      <trans-unit id="knuPi3t" resname="Send Revision">
+        <source>Send Revision</source>
+        <target>__Send Revision</target>
+      </trans-unit>
+      <trans-unit id="561SLqM" resname="Application">
+        <source>Application</source>
+        <target>__Application</target>
+      </trans-unit>
+      <trans-unit id="BkmaMJ4" resname="Reviewers">
+        <source>Reviewers</source>
+        <target>__Reviewers</target>
+      </trans-unit>
+      <trans-unit id="Lrx_xqM" resname="Add  Reviewer">
+        <source>Add  Reviewer</source>
+        <target>__Add  Reviewer</target>
+      </trans-unit>
+      <trans-unit id="zPTeq2o" resname="Submited by">
+        <source>Submited by</source>
+        <target>__Submited by</target>
+      </trans-unit>
+      <trans-unit id="S0U3g5U" resname="Sumitted At">
+        <source>Sumitted At</source>
+        <target>__Sumitted At</target>
+      </trans-unit>
+      <trans-unit id="ei8XAmO" resname="Poject Start Date">
+        <source>Poject Start Date</source>
+        <target>__Poject Start Date</target>
+      </trans-unit>
+      <trans-unit id="miWFPGT" resname="Poject End Date">
+        <source>Poject End Date</source>
+        <target>__Poject End Date</target>
+      </trans-unit>
+      <trans-unit id="FbYZdLJ" resname="Location">
+        <source>Location</source>
+        <target>__Location</target>
+      </trans-unit>
+      <trans-unit id="SHkI5h4" resname="Renew Clearance">
+        <source>Renew Clearance</source>
+        <target>__Renew Clearance</target>
+      </trans-unit>
+      <trans-unit id=".g1yU.j" resname="Request amendment">
+        <source>Request amendment</source>
+        <target>__Request amendment</target>
+      </trans-unit>
+      <trans-unit id="xXuV34Y" resname="Review Decision">
+        <source>Review Decision</source>
+        <target>__Review Decision</target>
+      </trans-unit>
+      <trans-unit id="N24Ku1B" resname="IRB Decision">
+        <source>IRB Decision</source>
+        <target>__IRB Decision</target>
+      </trans-unit>
+      <trans-unit id="Cn5XLU1" resname="Please Send Revision">
+        <source>Please Send Revision</source>
+        <target>__Please Send Revision</target>
+      </trans-unit>
+      <trans-unit id="RZid5J_" resname="Details">
+        <source>Details</source>
+        <target>__Details</target>
+      </trans-unit>
+      <trans-unit id="BjXw2FQ" resname="Research subject">
+        <source>Research subject</source>
+        <target>__Research subject</target>
+      </trans-unit>
+      <trans-unit id="v.lvflc" resname="Covid-19 mitigation">
+        <source>Covid-19 mitigation</source>
+        <target>__Covid-19 mitigation</target>
+      </trans-unit>
+      <trans-unit id="Y03hFHd" resname="Attachments">
+        <source>Attachments</source>
+        <target>__Attachments</target>
+      </trans-unit>
+      <trans-unit id="pLMjrlG" resname="Amendment">
+        <source>Amendment</source>
+        <target>__Amendment</target>
+      </trans-unit>
+      <trans-unit id="2oCx1XQ" resname="Revisions">
+        <source>Revisions</source>
+        <target>__Revisions</target>
+      </trans-unit>
+      <trans-unit id="p5uiCe8" resname="Research team">
+        <source>Research team</source>
+        <target>__Research team</target>
+      </trans-unit>
+      <trans-unit id="fAbv2Ic" resname="PI">
+        <source>PI</source>
+        <target>__PI</target>
+      </trans-unit>
+      <trans-unit id="te.x29A" resname="More details">
+        <source>More details</source>
+        <target>__More details</target>
+      </trans-unit>
+      <trans-unit id="qVDyg7E" resname="Amendments">
+        <source>Amendments</source>
+        <target>__Amendments</target>
+      </trans-unit>
+      <trans-unit id="1OiDCnH" resname="Purpose">
+        <source>Purpose</source>
+        <target>__Purpose</target>
+      </trans-unit>
+      <trans-unit id="5XKXG9E" resname="Requested At">
+        <source>Requested At</source>
+        <target>__Requested At</target>
+      </trans-unit>
+      <trans-unit id="ZM.xMZ0" resname="Action">
+        <source>Action</source>
+        <target>__Action</target>
+      </trans-unit>
+      <trans-unit id="8J67e2i" resname="No record">
+        <source>No record</source>
+        <target>__No record</target>
+      </trans-unit>
+      <trans-unit id="LlFtaPQ" resname="Revision">
+        <source>Revision</source>
+        <target>__Revision</target>
+      </trans-unit>
+      <trans-unit id="ldcy56V" resname="No research subject specified">
+        <source>No research subject specified</source>
+        <target>__No research subject specified</target>
+      </trans-unit>
+      <trans-unit id="LJ3spxS" resname="No attachment found">
+        <source>No attachment found</source>
+        <target>__No attachment found</target>
+      </trans-unit>
+      <trans-unit id="pmV3Cyk" resname="Attachment Type">
+        <source>Attachment Type</source>
+        <target>__Attachment Type</target>
+      </trans-unit>
+      <trans-unit id="Kz7txqR" resname="Research Subject Category">
+        <source>Research Subject Category</source>
+        <target>__Research Subject Category</target>
+      </trans-unit>
+      <trans-unit id="gRrC17K" resname="Research Subject">
+        <source>Research Subject</source>
+        <target>__Research Subject</target>
+      </trans-unit>
+      <trans-unit id="d3_g70K" resname="Guideline attachemnts">
+        <source>Guideline attachemnts</source>
+        <target>__Guideline attachemnts</target>
+      </trans-unit>
+      <trans-unit id="id9_2yJ" resname="Tabulated report">
+        <source>Tabulated report</source>
+        <target>__Tabulated report</target>
+      </trans-unit>
+      <trans-unit id="iknriYO" resname="Report visualization">
+        <source>Report visualization</source>
+        <target>__Report visualization</target>
+      </trans-unit>
+      <trans-unit id="AXI1Jq0" resname="Remarks and feedbacks">
+        <source>Remarks and feedbacks</source>
+        <target>__Remarks and feedbacks</target>
+      </trans-unit>
+      <trans-unit id="Lj9hYg." resname="Visualized">
+        <source>Visualized</source>
+        <target>__Visualized</target>
+      </trans-unit>
+      <trans-unit id="J_6jJGa" resname="Research category">
+        <source>Research category</source>
+        <target>__Research category</target>
+      </trans-unit>
+      <trans-unit id="dE3af_j" resname="Publication count">
+        <source>Publication count</source>
+        <target>__Publication count</target>
+      </trans-unit>
+      <trans-unit id="bi6mN7M" resname="No records found">
+        <source>No records found</source>
+        <target>__No records found</target>
+      </trans-unit>
+      <trans-unit id="tQJcc1A" resname="Remarks">
+        <source>Remarks</source>
+        <target>__Remarks</target>
+      </trans-unit>
+      <trans-unit id="Y44kn0o" resname="Filter">
+        <source>Filter</source>
+        <target>__Filter</target>
+      </trans-unit>
+      <trans-unit id="6it5jXF" resname="Work units">
+        <source>Work units</source>
+        <target>__Work units</target>
+      </trans-unit>
+      <trans-unit id="O8rzdWL" resname="Tabulated reort">
+        <source>Tabulated reort</source>
+        <target>__Tabulated reort</target>
+      </trans-unit>
+      <trans-unit id="dne.sKt" resname="Research type">
+        <source>Research type</source>
+        <target>__Research type</target>
+      </trans-unit>
+      <trans-unit id="9ulLTxu" resname="Thematic Areas">
+        <source>Thematic Areas</source>
+        <target>__Thematic Areas</target>
+      </trans-unit>
+      <trans-unit id="X71wnFg" resname="Attachment files">
+        <source>Attachment files</source>
+        <target>__Attachment files</target>
+      </trans-unit>
+      <trans-unit id="Xz2x90P" resname="Researches">
+        <source>Researches</source>
+        <target>__Researches</target>
+      </trans-unit>
+      <trans-unit id="NzRZYyw" resname="Apply for External Grant">
+        <source>Apply for External Grant</source>
+        <target>__Apply for External Grant</target>
+      </trans-unit>
+      <trans-unit id="XYxxq8U" resname="About Us">
+        <source>About Us</source>
+        <target>__About Us</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
