@@ -80,13 +80,13 @@
 										
 										
 										{% if app.user.id==submission.author.id  %}
- 												<a href="{{ path('submission_status', {'id': submission.id}) }}" class='text-primary '>
+ 												<a href="{{ path('submission_status', {'id': submission.id}) }}" class='text-info '>
 													{{ submission.title }}  </a>
 											</a>
 											 
 
 										{% else %}
-											 <a href="{{ path('submission_show', {'id': submission.id}) }}" class="text-primary">
+											 <a href="{{ path('submission_show', {'id': submission.id}) }}" class="text-info">
 										{{ submission.title }} </a>
 										{% endif %}
 

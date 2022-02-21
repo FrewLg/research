@@ -633,8 +633,13 @@
 						<i class="fa fa-circle text-success"></i>
 					</div>
 					<div class="media-body ms-3 align-self-center">
-						<h4 class="team-leader m-0">{{submission.author.userInfo}}</h4>
-						<p class="text-muted font-12 mb-0">Research PI</p>
+						<h4 class="team-leader m-0">
+						<a href='{{path('researcher',{'id':submission.author.id})}}'>
+							
+								{{submission.author.userInfo}}
+								</a>
+								</h4>
+						<p class="text-muted font-12 mb-0">  Principal Investigator</p>
 						
 					</div>
 				</div>
@@ -675,8 +680,7 @@
 										</a>
 
 
-										{# <img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;"> #}
-									{% else %}
+ 									{% else %}
 										<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
 											<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
 										</a>
@@ -735,7 +739,8 @@
 
 
 						{% for member in submission.coAuthors %}
-							{{loop.index}}{# {{member.researcher}} #}<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+							{{loop.index}}{# {{member.researcher}} #}
+							<a href='{{path('researcher',{'id':member.researcher.id})}}'>
 								{{ member.researcher.userInfo }}</a>
 							{% if member.confirmed=='1' %}
 								<i class="fa fa-check text-success"></i>
