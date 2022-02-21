@@ -21,8 +21,8 @@
 						<!--end col-->
 						<div
 							class="col-auto">{# <a href="{{ path(' ') }}" class='btn btn-primary btn-sm'>
-																																																								Create   new
-																																																							</a> #}
+																																																																								Create   new
+																																																																							</a> #}
 						</div>
 						<!--end col-->
 					</div>
@@ -31,7 +31,6 @@
 
 					<div class="row">
 						{% if is_granted('mng_brd_mbr') %}
-
 
 							<div class="col-12">
 
@@ -55,81 +54,208 @@
 
 
 						{% endif %}
-					</br>
+						<br>
+						<br>
+						<br>
 
 
-					<div class="col-12"></br>
-					<form action="" class="float form-horizontal flex-column form-inline ">
-						<h6 class=" d-inline">Board Members List(Total:-{{board_members.totalItemCount}})
-						</h6>
-						<input type="search" name="search" value="{{app.request.query.get('search')}}" class=" d-inline form-control mb-3" placeholder="Search">
+						<div class="col-12">
+							<form action="" class="float form-horizontal flex-column form-inline ">
+								<h6 class=" d-inline">Board Members List(Total:-{{board_members.totalItemCount}})
+								</h6>
+								<input type="search" name="search" value="{{app.request.query.get('search')}}" class=" d-inline form-control mb-3" placeholder="Search">
 
-					</form>
+							</form>
 
-					<table class="table table-bordered table-striped">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Name</th>
-								<th>College/Faculty</th>
-								<th>Department</th>
-								<th>Academic Rank</th>
-								<th>Roles</th>
+							<div class="row">
+								{% for board_member in board_members %}
 
+									<div class="col-lg-4">
+										<div class="card team-card">
+											<div class="card-body">
+												<div class="float-end">
+													<div class="dropdown d-inline-block">
+														<a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="apps#" role="button" aria-haspopup="false" aria-expanded="false">
+															<i class="las la-ellipsis-v font-24 text-muted"></i>
+														</a>
+														<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1" style="">
 
-								{% if  is_granted('mng_brd_mbr') %}
-
-									<th>actions</th>
-								{% endif %}
-							</tr>
-						</thead>
-						<tbody>
-							{% for board_member in board_members %}
-								<tr>
-									<td>{{ loop.index }}</td>
-
-									<td>{{ board_member.user }}</td>
-									<td>{{ board_member.college }}</td>
-									<td>{{ board_member.user.userInfo.department }}</td>
-									<td>{{ board_member.user.userInfo.academicrank }}</td>
-									<td>
-
-										<form action="" method="POST" class="float form-horizontal flex-column form-inline ">
-											<input hidden name="change-role" value="true"/>
-											<input hidden name="board_member" value="{{board_member.id}}"/>
-											<select name="roles" class="form-control" onchange="if(confirm('Save changes?')){this.form.submit()}">
-												<optgroup label="Role">
-
-													<option value="Member" {{board_member.role=='Member'?"selected":""}}>Member</option>
-													<option value="Secretary" {{board_member.role=='Secretary'?"selected":""}}>
-														Secretary</option>
-													<option value="Chair" {{board_member.role=='Chair'?"selected":""}}>Chair</option>
-												</optgroup>
-
-											</select>
-										</form>
+															<a class="dropdown-item" href="apps#">
+																{% if  is_granted('mng_brd_mbr') %}
 
 
-									</td>
+																	{{ include('board_member/_delete_form.html.twig') }}
 
-									{% if  is_granted('mng_brd_mbr') %}
+																{% endif %}
+															</a>
 
-										<td>
-											{{ include('board_member/_delete_form.html.twig') }}
-										</td>
-									{% endif %}
-								</tr>
-							{% else %}
-								<tr>
-									<td colspan="4">no records found</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
 
-					<div class="float-right" id="custompag	inator">{{ knp_pagination_render(board_members) }}</div>
+														</div>
+													</div>
+												</div>
+												<div
+													class="media align-items-center">
+													{# <img src="assets/images/users/user-4.jpg" alt="" class="rounded-circle user-img"> #}
+
+													{% if board_member.user.userInfo and  board_member.user.userInfo.image %}
+
+
+														<img src="{{ asset('files/profile_pictures/'~ board_member.user.userInfo.image ) }}" alt="user" class="rounded-circle user-img">
+
+
+													{% else %}
+
+														<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle user-img">
+
+													{% endif %}
+
+													<div class="online-circle">
+														<i class="fa fa-circle text-success"></i>
+													</div>
+													<div class="media-body ms-3 align-self-center">
+														<h4 class="team-leader m-0">
+															<a href='{{path('researcher',{'id':board_member.user.userInfo.id})}}'>
+
+																{{ board_member.user.userInfo }}
+															</a>
+
+														</h4>
+														<p class="text-muted font-12 mb-0">{{ board_member.role }}</p>
+													</div>
+												</div>
+												<h4 class="m-0 mt-4 font-12 font-weight-semibold">
+												College/Faculty:
+												
+													{% if  board_member.college %}
+														{{ board_member.college }}
+
+													{% else %}
+														Unknown
+													{% endif %}
+												</h4>
+<h4 class="m-0   font-12 font-weight-semibold">
+												Department:
+													{% if  board_member.user.userInfo.department %}
+														{{ board_member.user.userInfo.department }}
+
+													{% else %}
+														Unknown
+													{% endif %}
+
+												</h4>
+												{% if  board_member.user.userInfo.bio %}
+													
+														<p class="text-muted font-12 mb-0">	{{ board_member.user.userInfo.bio }}</p>
+
+													{% else %}
+											 	<p class="text-muted font-12 mb-0">	 Bio  </p>
+
+													{% endif %}
+
+												 
+												 
+												<hr class="hr-dashed my-3">
+												<div class="media align-items-center">
+													{# <img src="assets/images/widgets/project2.jpg" alt="" class="rounded-circle thumb-sm"> #}
+													<div class="media-body ms-3 align-self-center">
+
+														{% if  is_granted('mng_brd_mbr') %}
+
+
+															<form action="" class="float form-horizontal flex-column form-inline " method="POST">
+																<input hidden name="change-role" value="true"/>
+																<input hidden name="board_member" value="{{board_member.id}}"/>
+																<select name="roles" class="form-control" onchange="if(confirm('Save changes?')){this.form.submit()}">
+																	<optgroup label="Role">
+
+																		<option value="Member" {{board_member.role=='Member'?"selected":""}}>Member</option>
+																		<option value="Secretary" {{board_member.role=='Secretary'?"selected":""}}>
+																			Secretary</option>
+																		<option value="Chair" {{board_member.role=='Chair'?"selected":""}}>Chair</option>
+																	</optgroup>
+
+																</select>
+															</form>
+														{% endif %}
+
+  </div>
+												</div>
+											</div>
+											<!--end card-body-->
+										</div>
+										<!--end card-->
+									</div>
+								{% else %}
+									No records found
+
+								{% endfor %}
+
+							</div>
+
+							{# <table class="table table-bordered table-striped">
+																			<thead>
+																				<tr>
+																					<th>#</th>
+																					<th>Name</th>
+																					<th>College/Faculty</th>
+																					<th>Department</th>
+																					<th>Academic Rank</th>
+																					<th>Roles</th>
+													
+													
+																					{% if  is_granted('mng_brd_mbr') %}
+													
+																						<th>actions</th>
+																					{% endif %}
+																				</tr>
+																			</thead>
+																			<tbody>
+																				{% for board_member in board_members %}
+																					<tr>
+																						<td>{{ loop.index }}</td>
+													
+																						<td>{{ board_member.user }}</td>
+																						<td>{{ board_member.college }}</td>
+																						<td>{{ board_member.user.userInfo.department }}</td>
+																						<td>{{ board_member.user.userInfo.academicrank }}</td>
+																						<td>
+													
+																							<form action="" method="POST" class="float form-horizontal flex-column form-inline ">
+																								<input hidden name="change-role" value="true"/>
+																								<input hidden name="board_member" value="{{board_member.id}}"/>
+																								<select name="roles" class="form-control" onchange="if(confirm('Save changes?')){this.form.submit()}">
+																									<optgroup label="Role">
+													
+																										<option value="Member" {{board_member.role=='Member'?"selected":""}}>Member</option>
+																										<option value="Secretary" {{board_member.role=='Secretary'?"selected":""}}>
+																											Secretary</option>
+																										<option value="Chair" {{board_member.role=='Chair'?"selected":""}}>Chair</option>
+																									</optgroup>
+													
+																								</select>
+																							</form>
+													
+													
+																						</td>
+													
+																						{% if  is_granted('mng_brd_mbr') %}
+													
+																							<td>
+																								{{ include('board_member/_delete_form.html.twig') }}
+																							</td>
+																						{% endif %}
+																					</tr>
+																				{% else %}
+																					<tr>
+																						<td colspan="4">no records found</td>
+																					</tr>
+																				{% endfor %}
+																			</tbody>
+																		</table> #}
+
+							<div class="float-right" id="custompag	inator">{{ knp_pagination_render(board_members) }}</div>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-{% endblock %}
+		{% endblock %}
