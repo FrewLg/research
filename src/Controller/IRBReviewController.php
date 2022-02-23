@@ -277,11 +277,8 @@ $entityManager = $this->getDoctrine()->getManager();
                 'You have been re-assigned!'
             );
             return $this->redirectToRoute('rereviewsubmission', array('id' => $reviewAssignment->getId()));
-        }
-
-
-
-        $review = new Review();
+        } 
+         $review = new Review();
         $review->setReviewAssignment($reviewAssignment);
         $review->setSubmission($reviewAssignment->getSubmission());
         $review->setReviewedBy($measareviewer);

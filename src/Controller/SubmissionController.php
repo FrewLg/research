@@ -64,7 +64,8 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/", name="submission_index", methods={"GET","POST"})
      */
-    public function index(Request $request,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
+    // public function index(Request $request, CallForProposal $call,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
+    public function index(Request $request,    SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
     {
         $this->denyAccessUnlessGranted('vw_all_sub');
         $em = $this->getDoctrine()->getManager();
@@ -72,7 +73,8 @@ class SubmissionController extends AbstractController
         $formFilter = $this->createForm(SubmissionFilterType::class);
         $formFilter->handleRequest($request);
         $info = 'All';
-        $submissionData = $submissionRepository->getSubmissions();
+        $submissionData = $submissionRepository->getSubmissions( );
+        // $submissionData = $submissionRepository->getSubmissions(['callForProposal'=>$call]);
         if ($request->query->has($formFilter->getName())) {
             $filter = new FilterFunctions();
             $lexikFormFilter = $this->get('lexik_form_filter.query_builder_updater');
@@ -82,10 +84,8 @@ class SubmissionController extends AbstractController
         $sumissionFilterForm->handleRequest($request);
         if ($sumissionFilterForm->isSubmitted() && $sumissionFilterForm->isValid()) {
 
-            $submissionData = $submissionRepository->getSubmissions($sumissionFilterForm->getData());
-
-            //    dd($submissionData);
-
+            $submissionData = $submissionRepository->getSubmissions(  $sumissionFilterForm->getData()  );
+ 
         }
 
         // Paginate the results of the query
@@ -327,7 +327,7 @@ class SubmissionController extends AbstractController
 
                 if ($files == NULL) {
 
-                    $this->addFlash('danger', "Please upload a file with only valid word file format! Allowed file formats are  .doc , .docx , .odp ,
+               $this->addFlash('danger', "Please upload a file with only valid word file format! Allowed file formats are  .doc , .docx , .odp ,
                 ");
 
                     return $this->redirectToRoute('submission_firststepold', ["uidentifier" => $callForProposal->getUidentifier()]);

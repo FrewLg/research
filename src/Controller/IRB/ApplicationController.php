@@ -144,12 +144,22 @@ class ApplicationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // $application->setType(1);
+             if (!$form->get('applicationAttachments')->getdata()){
+                 dd();
+                 $this->addFlash("danger","attachement must be uploaded!");
+                }
+                 foreach ($form->get('applicationAttachments')->getdata() as $key => $value) {
+          
+        $attachment=  new ApplicationAttachment();
+        // $attachment->setType($value);
+        $application->addApplicationAttachment($attachment);
+     }
+
             $application=$this->removeUnchecked($application);
 
             $entityManager->persist($application);
             $entityManager->flush();
-            $this->addFlash("success","Request sent successfully");
+            $this->addFlash("success","IRB request sent successfully");
             return $this->redirectToRoute('myapplication', [], Response::HTTP_SEE_OTHER);
         }
 
