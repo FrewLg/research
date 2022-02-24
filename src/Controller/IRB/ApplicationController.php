@@ -11,7 +11,6 @@ use App\Entity\IRB\ApplicationResearchSubject;
 use App\Entity\IRB\ApplicationReview;
 use App\Entity\IRB\AttachmentType;
 use App\Entity\IRB\IRBReview;
-use App\Entity\IRB\IRBStatus;
 use App\Entity\IRB\MitigationStrategy;
 use App\Entity\IRB\MitigationStrategyGroup;
 use App\Entity\IRB\RenewalRequest;
@@ -37,23 +36,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/application')]
+#[Route('/irb/application')]
 class ApplicationController extends AbstractController
 {
     #[Route('/', name: 'application_index', methods: ['GET',"POST"])]
     public function index(ApplicationRepository $applicationRepository, Request $request, PaginatorInterface $paginatorInterface): Response
     {
+         
         $this->denyAccessUnlessGranted('vw_irb_rqst');
-        
-        $queryBuilder = $applicationRepository->getData([],$this->isGranted('ROLE_SECRETARY')?null:$this->getUser(),true);
+        $queryBuilder = $applicationRepository->getData();
         $application_filter_form=$this->createForm(ApplicationFilterType::class)->handleRequest($request);
        
-        if ($application_filter_form->isSubmitted() && $application_filter_form->isValid()) {   
-            $queryBuilder = $applicationRepository->getData($application_filter_form->getData(),$this->isGranted('ROLE_SECRETARY'));
-
-            
-
-        }
+        if ($application_filter_form->isSubmitted() && $application_filter_form->isValid()) {
+  
+            $queryBuilder = $applicationRepository->getData($application_filter_form->getData());
+ 
+  }
         $data= $paginatorInterface->paginate(
 
             $queryBuilder,
@@ -66,9 +64,51 @@ class ApplicationController extends AbstractController
         ]);
     }
 
+    #[Route('/my-applications', name: 'myapplication', methods: ['GET', 'POST'])]
+    public function myapplications(  Request $request, PaginatorInterface $paginatorInterface): Response
+    {
+        $me=$this->getUser();
+        $em=$this->getDoctrine()->getManager();
+        
+        $allappsbyme=  array_reverse($em->getRepository(Application::class)->findBy(  array('submittedBy'=>$me)));      
+
+        $data= $paginatorInterface->paginate( 
+            $allappsbyme,
+            $request->query->getInt('page', 1),
+            10
+        );
+        return $this->render('application/index.html.twig', [
+            'applications' => $data,
+         ]); 
+    }
+
+
     #[Route('/new', name: 'application_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+
+        $userdetails = $this->getUser()->getUserInfo();
+        
+        
+        if (!$userdetails) {
+
+            $this->addFlash("danger", "Please complete your profile first before you apply  !");
+
+            return $this->redirectToRoute('researchworks');
+        }
+
+        if (
+            $userdetails->getFirstName() == '' || $userdetails->getMidleName() == '' ||
+            $userdetails->getLastName() == '' ||
+            $userdetails->getCollege() == '' ||
+            $userdetails->getEducationLevel() == '' || $userdetails->getAcademicRank() == ''
+        ) {
+
+            $this->addFlash("danger", "Please complete your profile first before you apply  !");
+
+            return $this->redirectToRoute('researchworks');
+        }
+
         
         $em=$this->getDoctrine()->getManager();
         $application = new Application();
@@ -103,15 +143,24 @@ class ApplicationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $application->setStatus($entityManager->getRepository(IRBStatus::class)->find(1));
 
-            $application->setType(1);
+             if (!$form->get('applicationAttachments')->getdata()){
+                 dd();
+                 $this->addFlash("danger","attachement must be uploaded!");
+                }
+                 foreach ($form->get('applicationAttachments')->getdata() as $key => $value) {
+          
+        $attachment=  new ApplicationAttachment();
+        // $attachment->setType($value);
+        $application->addApplicationAttachment($attachment);
+     }
+
             $application=$this->removeUnchecked($application);
 
             $entityManager->persist($application);
             $entityManager->flush();
-            $this->addFlash("success","Request sent successfully");
-            return $this->redirectToRoute('application_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash("success","IRB request sent successfully");
+            return $this->redirectToRoute('myapplication', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('application/new.html.twig', [
@@ -157,7 +206,7 @@ class ApplicationController extends AbstractController
          }
         $form2 = $this->createForm(RevisionType::class, $revision);
         $form2->handleRequest($request);
-        $review=$entityManager->getRepository(IRBReview::class)->findOneBy(['application'=>$application,"from_director"=>true,'allow_to_view'=>true]);
+        $review=$entityManager->getRepository(IRBReview::class)->findOneBy(['application'=>$application ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
         $att=$request->files->get('amendment')["attachment"];
@@ -184,7 +233,8 @@ class ApplicationController extends AbstractController
                 $entityManager->persist($revision);
                 $entityManager->flush();
                 $this->addFlash("success","Revision sent successfully");
-                return $this->redirectToRoute('application_show', ["id"=>$application->getId()], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('application_show',
+                 ["id"=>$application->getId()], Response::HTTP_SEE_OTHER);
             }
 
 
@@ -224,6 +274,8 @@ class ApplicationController extends AbstractController
         return $application;
 
     }
+
+    
 
     #[Route('/{id}/edit', name: 'application_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Application $application, EntityManagerInterface $entityManager): Response
@@ -299,6 +351,5 @@ class ApplicationController extends AbstractController
             "Attachment" => true,
         ]);
     }
-
-    
+ 
 }

@@ -39,6 +39,7 @@ security:
         ROLE_DIRECTORATE: ROLE_COLLEGECOORDINATOR
         ROLE_VICEPRESIDENT: ROLE_DIRECTORATE
         ROLE_PRESIDENT: ROLE_VICEPRESIDENT
+        ROLE_SECRETARY: ROLE_BOARD_MEMBER
         ROLE_VICE_CHAIR: ROLE_SECRETARY
         ROLE_CHAIR: ROLE_VICE_CHAIR
 
@@ -46,6 +47,7 @@ security:
     access_control:
          - { path: ^/$, role: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY } 
+         - { path: ^/irb-clearance/, role: IS_AUTHENTICATED_ANONYMOUSLY } 
          - { path: ^/logout, role: IS_AUTHENTICATED_ANONYMOUSLY } 
          - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/call-for-proposal/$, role: IS_AUTHENTICATED_ANONYMOUSLY }

@@ -23,11 +23,15 @@ class SubmissionVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
+          /** 
+         * @var \App\Entity\User|null $user
+         */
+
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'SUBMISSION_VIEW':
-                if($user->getCollege()==$subject->getCallForProposal()->getCollege()){
+                if($user->getUserInfo()->getCollege()==$subject->getCallForProposal()->getCollege()){
                     return true;
                 }
                 return false;

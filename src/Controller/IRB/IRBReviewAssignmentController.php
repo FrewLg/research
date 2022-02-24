@@ -44,7 +44,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/irb-reviewer-assignment")
+ * @Route("/irb/reviewer-assignment")
  */
 class IRBReviewAssignmentController extends AbstractController
 {
@@ -63,7 +63,7 @@ class IRBReviewAssignmentController extends AbstractController
 
         if ($submission->getSubmittedBy() == $this->getUser()) {
             $this->addFlash('danger', 'Sorry! You can not assign by yourself a reviewer to the submission you made!');
-            return $this->redirectToRoute('submission_index');
+            return $this->redirectToRoute('application_index');
         }
         ///// check if the submission is completed or not 
         $reviewAssignment = new IRBReviewAssignment();
@@ -87,15 +87,13 @@ class IRBReviewAssignmentController extends AbstractController
 
                 return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
 
-
-
+ 
             $reviewAssignment->setApplication($submission);
             $duedate = $reviewAssignment->getDuedate();
             $reviewAssignment->setInvitationSentAt(new \DateTime());
             // dd($submission->getId());
             $reviewAssignment->getApplication()->setStatus($entityManager->getRepository(IRBStatus::class)->find(2));
-            
-            
+             
             $entityManager->persist($reviewAssignment);
             $entityManager->flush();
             $this->addFlash(
@@ -104,7 +102,7 @@ class IRBReviewAssignmentController extends AbstractController
             );
             $suffix = $reviewAssignment->getIRBReviewer();
             $theFirstName = $reviewAssignment->getIRBReviewer()->getUserInfo()->getFirstName();
-            $invitation_url = "irb-review/" . $reviewAssignment->getId() . "/accept/";
+            $invitation_url = "irb/reviewer-assignment/" . $reviewAssignment->getId() . "/revise/";
             $theEmail = $reviewAssignment->getIRBReviewer()->getEmail();
 
 
@@ -175,7 +173,7 @@ class IRBReviewAssignmentController extends AbstractController
 
 
     /**
-     * @Route("/", name="irb_myassigned", methods={"GET"})
+     * @Route("/my-assigned", name="irb_myassigned", methods={"GET"})
      */
     public function myassigned(Request $request, PaginatorInterface $paginator): Response
     {
@@ -183,14 +181,15 @@ class IRBReviewAssignmentController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
-        if($this->isGranted('ROLE_SECRETARY') || $this->isGranted('vw_all_irb_assgn')){
-        // $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL], ["id" => "ASC"]);
-        // // if($this->isGranted('ROLE_SECRETARY')){
-            $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->getActiveApplication();
-        }
-        else{
+        // if($this->isGranted('ROLE_SECRETARY') || $this->isGranted('vw_all_irb_assgn')){
+        // // $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL], ["id" => "ASC"]);
+        // // // if($this->isGranted('ROLE_SECRETARY')){
+        //     $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->getActiveApplication();
+        // }
+        // else{
+
             $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL], ["id" => "DESC"]);
-        }
+        // }
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results
@@ -212,7 +211,7 @@ class IRBReviewAssignmentController extends AbstractController
         #######################
         $query3 = $entityManager->createQuery(
             'SELECT    b.id , ass.invitation_sent_at as InvitationSentAt,     ass.Declined as Declined,  b.title , s.createdAt  , ass.duedate  as dueDate
-        FROM App\Entity\IRB\IRBReview s 
+         FROM App\Entity\IRB\IRBReview s 
         JOIN s.application b     
         JOIN s.iRBReviewAssignment ass      
         WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed 
@@ -221,7 +220,7 @@ class IRBReviewAssignmentController extends AbstractController
             ->setParameter('closed', 1)
             ->setParameter('reviewer', $this_is_me);
 
-        $closeds = $query3->getResult();
+        $closeds = $query3->getResult(); 
 
 
         #################################################
@@ -272,9 +271,9 @@ class IRBReviewAssignmentController extends AbstractController
         $submissionOfreviewer = $entityManager->getRepository(IRBReviewAssignment::class)->find($reviewAssignment);
         $submissions = $submissionOfreviewer->getApplication();
         #######################
-        if ($reviewAssignment->getClosed() == 1) {
-            return $this->redirectToRoute('irb_myassigned');
-        }
+        // if ($reviewAssignment->getClosed() == 1) {
+        //     return $this->redirectToRoute('irb_myassigned');
+        // }
         #######################
 
         $measareviewer = $this->getUser();
@@ -309,7 +308,8 @@ class IRBReviewAssignmentController extends AbstractController
             $cert->setCertificateCode('sass');
             $cert->setApprovedAt(new \DateTime());
             $cert->setValidUntil(new \DateTime());
-            $cert->setIrbRequest($reviewAssignment->getApplication());
+           #######################Certificategeneration################# 
+            // $cert->setIrbRequest($reviewAssignment->getApplication());
             #######################Certificategeneration#################
 
             // $reviewAssignment->setClosed(1);
@@ -337,6 +337,50 @@ class IRBReviewAssignmentController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+    /**
+     * @Route("/{id}/decide", name="decisions_application", methods={"GET","POST"})
+     */
+    public function decide(Request $request,  Application $reviewAssignment): Response
+    {
+        ////Ultimate reviewers page
+
+        $entityManager = $this->getDoctrine()->getManager(); 
+        $review = new IRBReview(); 
+        $form = $this->createForm(IRBReviewType::class, $review);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager(); 
+            $review->setCreatedAt(new \DateTime());
+            $review->setReviewedBy($this->getUser());
+            $review->setFromDirector(1); 
+           #######################Certificategeneration#################
+            $cert= new IrbCertificate();
+            $cert->setIrbApplication($reviewAssignment);
+            $cert->setCertificateCode('sass');
+            $cert->setApprovedAt(new \DateTime());
+            $cert->setValidUntil(new \DateTime());
+           #######################Certificategeneration################# 
+            // $reviewAssignment->setClosed(1);
+            // $review=$reviewAssignment->getIRBReviewAssignments();
+
+            $entityManager->persist($cert);
+            $entityManager->persist($review);
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'You have  completed a revision successfully!'
+            );
+            return $this->redirectToRoute('irb_myassigned', array('id' => $reviewAssignment->getId()));
+        } 
+        return $this->render('application/irb-revision-decision.html.twig', [
+             'review_assignment' => $reviewAssignment,
+             'submission' => $reviewAssignment, 
+            'form' => $form->createView(),
+        ]);
+    }
+
     /**
      * @Route("/{id}/delete", name="review_assignment_delete")
      */

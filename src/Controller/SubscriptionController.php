@@ -58,7 +58,7 @@ class SubscriptionController extends AbstractController
             $subscription->setEmail($user->getEmail());
             $entityManager->persist($subscription);
             $entityManager->flush();
-            return $this->redirectToRoute('myprofile');
+            return $this->redirectToRoute('researchworks');
         }
         return $this->render('subscription/new.html.twig', [
             'subscription' => $subscription,
@@ -100,7 +100,7 @@ class SubscriptionController extends AbstractController
             $subscription->setUser($me); 
             $entityManager->persist($subscription);
             $entityManager->flush();
-            return $this->redirectToRoute('myprofile');
+            return $this->redirectToRoute('researchworks');
         }
         return $this->render('subscription/unsubscribe.html.twig', [
             'subscription' => $subscription,

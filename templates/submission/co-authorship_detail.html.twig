@@ -608,17 +608,25 @@ $("#showEditRequestContent").html("Problem");
 			<div class="col-lg-3">
 				<div class="card team-card">
 					<div class="card-body">
+					{% if submission.awardgranted %} 
+									<div class="ribbon2 rib2-success">
+										<span class="ribbon4-band ribbon4-band-primary text-white text-center">
+										<i class="fas fa-badge-check"></i>
+										  </span>
+									</div>
+									{% endif %}
 						<div class="float-end">
 							<div
-								class="dropdown d-inline-block">{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="teams{{submission.id}}#" role="button" aria-haspopup="false" aria-expanded="false">
-																																																				<i class="las la-ellipsis-v font-24 text-muted"></i>
-																																																			</a>
-																																																			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
-																																																				<a class="dropdown-item" href="teams{{submission.id}}#">Open Project</a>
-																																																				<a class="dropdown-item" href="teams{{submission.id}}#">Edit Card</a>
-																																																				<a class="dropdown-item" href="teams{{submission.id}}#">Delete</a>
-																																																			</div> #}
-							</div>
+								class="dropdown d-inline-block">
+{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="teams{{submission.id}}#" role="button" aria-haspopup="false" aria-expanded="false">
+				<i class="las la-ellipsis-v font-24 text-muted"></i>
+			</a>
+			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
+				<a class="dropdown-item" href="teams{{submission.id}}#">Open Project</a>
+				<a class="dropdown-item" href="teams{{submission.id}}#">Edit Card</a>
+				<a class="dropdown-item" href="teams{{submission.id}}#">Delete</a>
+			</div> #}
+</div>
 						</div>
 						<div class="media align-items-center">
 

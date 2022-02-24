@@ -64,7 +64,8 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/", name="submission_index", methods={"GET","POST"})
      */
-    public function index(Request $request,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
+    // public function index(Request $request, CallForProposal $call,   SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
+    public function index(Request $request,    SubmissionRepository $submissionRepository,  PaginatorInterface $paginator,  FilterBuilderUpdaterInterface $query_builder_updater): Response
     {
         $this->denyAccessUnlessGranted('vw_all_sub');
         $em = $this->getDoctrine()->getManager();
@@ -72,7 +73,8 @@ class SubmissionController extends AbstractController
         $formFilter = $this->createForm(SubmissionFilterType::class);
         $formFilter->handleRequest($request);
         $info = 'All';
-        $submissionData = $submissionRepository->getSubmissions();
+        $submissionData = $submissionRepository->getSubmissions( );
+        // $submissionData = $submissionRepository->getSubmissions(['callForProposal'=>$call]);
         if ($request->query->has($formFilter->getName())) {
             $filter = new FilterFunctions();
             $lexikFormFilter = $this->get('lexik_form_filter.query_builder_updater');
@@ -82,10 +84,8 @@ class SubmissionController extends AbstractController
         $sumissionFilterForm->handleRequest($request);
         if ($sumissionFilterForm->isSubmitted() && $sumissionFilterForm->isValid()) {
 
-            $submissionData = $submissionRepository->getSubmissions($sumissionFilterForm->getData());
-
-            //    dd($submissionData);
-
+            $submissionData = $submissionRepository->getSubmissions(  $sumissionFilterForm->getData()  );
+ 
         }
 
         // Paginate the results of the query
@@ -109,7 +109,7 @@ class SubmissionController extends AbstractController
      */
     public function callresponses(Request $request, CallForProposal $call, PaginatorInterface $paginator): Response
     {
-        $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $this->denyAccessUnlessGranted('vw_all_sub');
         $em = $this->getDoctrine()->getManager();
         //  $submissionRepository = array_reverse($em->getRepository(Submission::class)->findAll());
         $formFilter = $this->createForm(SubmissionFilterType::class);
@@ -157,7 +157,7 @@ class SubmissionController extends AbstractController
      */
     public function alert(MailerInterface $mailer): Response
     {
-        $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $this->denyAccessUnlessGranted('vw_all_sub');
         #####################################
         ///////////// Let us email  co-pis    to  remind
         $entityManager = $this->getDoctrine()->getManager();
@@ -249,8 +249,7 @@ class SubmissionController extends AbstractController
      */
     public function metadata(Request $request, CallForProposal $callForProposal, UserController $test, MailerInterface $mailer): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
+        
 
         #######################
         $em  = $this->getDoctrine()->getManager();
@@ -268,7 +267,7 @@ class SubmissionController extends AbstractController
         $userdetails = $this->getUser()->getUserInfo();
         if ($userdetails == '') {
             $test->checkuser();
-            return $this->redirectToRoute('myprofile');
+            return $this->redirectToRoute('researchworks');
         }
         // dd($userdetails);
         if (
@@ -280,7 +279,7 @@ class SubmissionController extends AbstractController
 
             $this->addFlash("danger", "Please complete your profile first before you submit the proposal  !");
 
-            return $this->redirectToRoute('myprofile');
+            return $this->redirectToRoute('researchworks');
         }
 
         ##########################
@@ -328,7 +327,7 @@ class SubmissionController extends AbstractController
 
                 if ($files == NULL) {
 
-                    $this->addFlash('danger', "Please upload a file with only valid word file format! Allowed file formats are  .doc , .docx , .odp ,
+               $this->addFlash('danger', "Please upload a file with only valid word file format! Allowed file formats are  .doc , .docx , .odp ,
                 ");
 
                     return $this->redirectToRoute('submission_firststepold', ["uidentifier" => $callForProposal->getUidentifier()]);
@@ -450,7 +449,7 @@ class SubmissionController extends AbstractController
     public function exportnow(Request $request, $uid)
     {
 
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
 
         $em = $this->getDoctrine()->getManager();
 
@@ -496,7 +495,7 @@ class SubmissionController extends AbstractController
      */
     public function metadataedit(Request $request, Submission $submission, CallForProposalRepository $callForProposalRepository, SmsHelper $smsHelper): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
         $callForProposal = $submission->getCallForProposal();
         //////// =======check whather it is confirmed or not============
@@ -593,7 +592,7 @@ class SubmissionController extends AbstractController
     public function statusubmission(Request $request, Submission $submission, SubmissionHelper $submissionHelper): Response
     {
         ////Ultimate reviewers page
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
 
         ################### Are you the one? #################################
@@ -773,8 +772,7 @@ class SubmissionController extends AbstractController
 
 
         $attachements = $entityManager->getRepository(PublishedSubmissionAttachment::class)->findBy(['published_submission' => $publicationstatus]);
-        $datasetused = new PublishedSubmissionAttachment();
-        $entityManager = $this->getDoctrine()->getManager();
+         $entityManager = $this->getDoctrine()->getManager();
         $publicationstatus = $entityManager->getRepository(PublishedSubmission::class)->findBy(['submission' => $submission]);
         $Expenses = $entityManager->getRepository(SubmissionBudget::class)->findBy(['submission' => $submission]);
         $reviewsatge = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission], ["id" => "DESC"]);
@@ -910,7 +908,7 @@ class SubmissionController extends AbstractController
      */
     public function directorshow(Request $request,  Submission $submission, ReviewRepository $reviewRepository, MailerInterface $mailer): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_all_sub');
         $entityManager = $this->getDoctrine()->getManager();
         ################### Are you the one? #################################
         $thisUser = $this->getUser();
@@ -924,8 +922,7 @@ class SubmissionController extends AbstractController
         #####################################
 
         # $review = $entityManager->getRepository(Review::class)->findBy(['submission' => $submission ] );
-        $budger_requests = $entityManager->getRepository(Expense::class)->findBy(['submission' => $submission]);
-        $contributors = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission]);
+         $contributors = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission]);
         $CollaboratingInstitutions = $entityManager->getRepository(CollaboratingInstitution::class)->findBy(['submission' => $submission]);
         $Expenses = $entityManager->getRepository(SubmissionBudget::class)->findBy(['submission' => $submission]);
         $em = $this->getDoctrine()->getManager();
@@ -1032,7 +1029,6 @@ class SubmissionController extends AbstractController
      */
     public function mymembership(Request $request,  PaginatorInterface $paginator): Response
     {
-        $this->denyAccessUnlessGranted('vw_own_mmbr');
         $entityManager = $this->getDoctrine()->getManager();
 
         $myemail = $this->getUser();
@@ -1049,8 +1045,7 @@ class SubmissionController extends AbstractController
             'collaborations' => $Allmyresearches,
         ]);
     }
-
-
+ 
 
     /**
      * @Route("/all-grant-winners/", name="allawarded", methods={"GET","POST"})
@@ -1059,7 +1054,7 @@ class SubmissionController extends AbstractController
     public function allawarded(Request $request,  PaginatorInterface $paginator): Response
     {
 
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_all_sub');
         $entityManager = $this->getDoctrine()->getManager();
         $allawarded = $entityManager->getRepository(Submission::class)->findBy(['awardgranted' => 1]);
         $Allmyresearches = $paginator->paginate(
@@ -1078,7 +1073,7 @@ class SubmissionController extends AbstractController
      */
     public function call_winners(Request $request, CallForProposal $callForProposal, PaginatorInterface $paginator): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_all_sub');
         $entityManager = $this->getDoctrine()->getManager();
         $allawarded = $entityManager->getRepository(Submission::class)->findBy(['awardgranted' => 1, 'call_for_proposal' => $callForProposal]);
 
@@ -1101,13 +1096,9 @@ class SubmissionController extends AbstractController
     public function mymembershipdetails(Submission $submission): Response
     {
 
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        
         $entityManager = $this->getDoctrine()->getManager();
-        $myresearche = $entityManager->getRepository(Submission::class)->find($submission);
-
-        $user = $this->getUser();
-        $allcoauthors = $entityManager->getRepository(CoAuthor::class)->find($submission);
-        $member = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission, 'researcher' => $this->getUser()]);
+          $member = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission, 'researcher' => $this->getUser()]);
 
 
         if (!$member) {
@@ -1139,7 +1130,6 @@ class SubmissionController extends AbstractController
      */
     public function myresearches(Request $request, PaginatorInterface $paginator): Response
     {
-        $this->denyAccessUnlessGranted('vw_own_sub');
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();

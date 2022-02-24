@@ -91,6 +91,13 @@ class ApplicationType extends AbstractType
             'by_reference' => false,
             'allow_delete' => true,
         ])
+        ->add('college', EntityType::class, [
+            'class' => \App\Entity\College::class,
+            'attr' => ['label' => 'Application  to Institute/College'
+        ,'class'=>'select2 chosen-select form-control'
+        ],
+            
+        ])
       
 
         ;

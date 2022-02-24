@@ -17,7 +17,7 @@ class BoardMemberType extends AbstractType
             ->add('user', null, [
                 "placeholder" => "Select User",
                 "attr" => [
-                    "class" => "select2"
+                    "class" => "select2  form-control col-2"
                 ]
             ])
         
@@ -30,9 +30,10 @@ class BoardMemberType extends AbstractType
                     "Vice Chair" => BoardMember::ROLE_VICE_CHAIR,
                     "Secretary" => BoardMember::ROLE_SECRETARY,
                     "Member" => BoardMember::ROLE_MEMBER,
+                    "Coordinator" => 'ROLE_COORDINATOR',
                 ],
                 "attr" => [
-                    "class" => "select2"
+                    "class" => "select2 form-control col-4"
                 ]
             ]);
     }

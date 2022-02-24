@@ -49,7 +49,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
 /**
- * @Route("/irb-review")
+ * @Route("/subm-review")
  */
 class IRBReviewController extends AbstractController
 {
@@ -61,8 +61,7 @@ class IRBReviewController extends AbstractController
      */
     public function myassigned(Request $request, PaginatorInterface $paginator): Response {
         
-        $this->denyAccessUnlessGranted('vw_own_assign');
-        
+       
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
@@ -278,11 +277,8 @@ $entityManager = $this->getDoctrine()->getManager();
                 'You have been re-assigned!'
             );
             return $this->redirectToRoute('rereviewsubmission', array('id' => $reviewAssignment->getId()));
-        }
-
-
-
-        $review = new Review();
+        } 
+         $review = new Review();
         $review->setReviewAssignment($reviewAssignment);
         $review->setSubmission($reviewAssignment->getSubmission());
         $review->setReviewedBy($measareviewer);
@@ -507,17 +503,15 @@ $entityManager = $this->getDoctrine()->getManager();
      * @Route("/{id}/granted", name="grant_winner", methods={"GET","POST"})
      */
     public function grantwinner(Submission $submission,  MailerInterface $mailer ): Response {
-        ////Ultimate reviewers page
-        $this->denyAccessUnlessGranted('ROLE_USER');
-         
+     
         $submission->setAwardgranted(1);
         $this->getDoctrine()->getManager()->flush();
         
 
         $entityManager = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery(
-            "SELECT u.email , s.id ,  u.username,   s.title  
-                      , pi.first_name  , ui.alternative_email 
+            "SELECT u.email , s.id ,  u.username,   s.title   
+                      , pi.first_name  , ui.alternative_email  
                     FROM App:CoAuthor c
                     JOIN c.researcher u
                     JOIN u.userInfo ui

@@ -44,6 +44,8 @@ class GeneralVoter extends Voter {
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
+       
+       
         $user = $token->getUser();
 
         if ($user &&   $user->getIsSuperAdmin())
@@ -74,9 +76,7 @@ class GeneralVoter extends Voter {
             case self::LIST_PERMISSION:
                 $permission = "LIST_PERMISSION";
                 return $this->checkAuthorization($user, $permission);
-            case self::LIST_ASSET_TYPE:
-                $permission = "LIST_ASSET_TYPE";
-                return $this->checkAuthorization($user, $permission);
+
             case self::CREATE_GROUP:
                 $permission = "CREATE_GROUP";
                 return $this->checkAuthorization($user, $permission);

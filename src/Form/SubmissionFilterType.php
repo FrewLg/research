@@ -45,10 +45,14 @@ class SubmissionFilterType extends AbstractType
                     "In progress" => 0,
                 ]
             ])
-            ->add('submission_type',SubmissionCategoryType::class)
+            // ->add('submission_type',SubmissionCategoryType::class)
             ->add('funding_organization')
             ->add('reference')
             ->add('project_start_at',TextType::class,[
+             
+                "label"=>"project start at",
+                // "placeholder"=>"daterangerpicker",
+             
                 "attr"=>[
                     "class"=>"daterangerpicker",
                     "autocomplete"=>"off"

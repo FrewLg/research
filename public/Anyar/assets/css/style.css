@@ -15,7 +15,9 @@ body {
 
 a {
   text-decoration: none;
-  color: #0880e8;
+  
+  color: rgba(32, 114, 185, 0.9)  ;
+
 }
 
 a:hover {
@@ -119,7 +121,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 14px;
   transition: all 0.5s;
   overflow: hidden;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.8); 
   z-index: 996;
 }
 #topbar.topbar-scrolled {
@@ -187,11 +189,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-inner-pages {
-  background: rgba(5, 87, 158, 0.9) !important;
+  background: rgba(32, 114, 185, 0.9) !important;
+  
 }
 
 .topbar-inner-pages {
-  background: rgba(6, 98, 178, 0.9) !important;
+  background: rgba(202, 213, 223, 0.97) !important;
 }
 
 /*--------------------------------------------------------------

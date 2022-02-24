@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/irb-setting/application-type')]
+#[Route('/irb/setting/application-type')]
 class ApplicationTypeController extends AbstractController
 {
     #[Route('/', name: 'i_r_b_application_type_index', methods: ['GET'])]

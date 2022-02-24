@@ -60,7 +60,7 @@ class TrainingParticipantController extends AbstractController
             
             $this->addFlash("danger", "Please complete your profile first before you  register for participation  !");
 
-            return $this->redirectToRoute('myprofile');
+            return $this->redirectToRoute('researchworks');
         }
 
         $ifexists = $entityManager->getRepository('App:TrainingParticipant')->findBy(['participant'=>$user, 'training'=>$callForTraining] );

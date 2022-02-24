@@ -6,7 +6,9 @@
 		<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
 		<title>
-			{{ app_name}} 	| 	{%block title%}{%endblock%}
+			{{ app_name}}
+			|
+			{%block title%}{%endblock%}
 		</title>
 		<meta content="" name="description">
 		<meta
@@ -17,7 +19,6 @@
 		<link href="{{ asset('Anyar/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
 		<!-- Google Fonts -->
-		{# <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet"> #}
 
 		<!-- Vendor CSS Files -->
 		<link href="{{ asset('Anyar/assets/vendor/animate.css/animate.min.css') }}" rel="stylesheet"> <link href="{{ asset('Anyar/assets/vendor/aos/aos.css') }}" rel="stylesheet">
@@ -26,20 +27,11 @@
 		<link href="{{ asset('Anyar/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
 		<link href="{{ asset('Anyar/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
 		<link href="{{ asset('Anyar/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-		<link
-		href="{{ asset('Anyar/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
-		{# <link href="{{ asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css"/> #}
 		<link href="{{ asset('Anyar/assets/css/style.css') }}" rel="stylesheet">
-
-
 		<link href="{{ asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css"/>
 		<link rel="stylesheet" href="{{ asset('assets/tagsinput.css')}}"/>
 
-
-		<link
-		rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
-	{# <link 	rel="stylesheet" type="text/css" href="{{ asset('classic/classic_files/font-awesome.css') }}"> #}
 
 	</head>
 
@@ -50,12 +42,19 @@
 			<div class="container d-flex align-items-center justify-content-center justify-content-md-between">
 				<div class="contact-info d-flex align-items-center">
 					<i class="bi bi-envelope-fill"></i>
-					<a href="mailto:contact@example.com">research@ju.edu.et</a>
+					<a href="mailto:contact@example.com" class='text-dark'>research@ju.edu.et</a>
 					<i class="bi bi-phone-fill phone-icon"></i>
-					+251-471112453
+					<span class='text-dark'>
+						+251-471112453</span>
 				</div>
 
-				<div class="cta d-none d-md-block"></div>
+				<div class="cta d-none d-md-block">
+					<span class='text-dark'>
+						{{motto}}</span>
+
+				</div>
+
+
 			</div>
 
 		</div>
@@ -73,22 +72,24 @@
 				<nav id="navbar" class="navbar">
 					<ul>
 						<li>
-							<a class="nav-link scrollto " href="{{path('homepage')}}">Home</a>
+							<a class="nav-link scrollto " href="{{path('homepage')}}">
+								<b>Home</b>
+							</a>
 						</li>
 						<li>
-							{# <a class="nav-link scrollto" href="#about">About</a> #}
-							<a href="{{path('call_for_proposal_all')}}" class="nav-link scrollto">Call for proposals</a>
+							<a href="{{path('call_for_proposal_all')}}" class="nav-link scrollto">
+								<b>Call for proposals</b>
+							</a>
 
 						</li>
- 						<li>
- 							<a href="{{path('application_new')}}" class="nav-link scrollto">IRB Request</a>
+						{% if is_granted("ROLE_USER")%}{% endif %}
 
-						</li>
-						
 
 						<li class="dropdown">
 							<a href="#">
-								<span>Opportunities</span>
+								<span>
+									<b>Opportunities</b>
+								</span>
 								<i class="bi bi-chevron-down"></i>
 							</a>
 							<ul>
@@ -100,8 +101,6 @@
 						</li>
 						{% if is_granted("ROLE_USER")%}
 
-							 
-
 
 							<li class="dropdown">
 
@@ -110,7 +109,8 @@
 
 										{% if app.user.userInfo and app.user.userInfo.image %}
 
-											{{  app.user.userInfo}}
+											<b>{{  app.user.userInfo.firstName|striptags|slice(0, 10)|raw}}</b>
+
 
 											<img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="profile-user" class="rounded-circle thumb-xs" style="width:30px;height: 30px;"/>
 										{% else %}
@@ -142,12 +142,12 @@
 
 								</ul>
 							</li>
-
-
 						{% else %}
+							<a href="{{path('app_login')}}" class="btn  btn-lg btn-block  text-default btn-outline-info p-2 m-2">
+								Login
 
-							<a href="{{path('app_login')}}" class="btn   btn-outline btn-primary" style="color:white">
-								Login</a>
+								<i data-feather="power" class="fa fa-lock"></i>
+							</a>
 						{% endif %}
 
 					</ul>
@@ -157,67 +157,46 @@
 			</div>
 		</header>
 		<main id="main">
-			<section id="breadcrumbs" class="breadcrumbs">
+			<section id="breadcrumbs" class="breadcrumbs" style="background-color:#f7f7f7;">
 				<div class="container">
-
 					<ol>
 						<li>
 							<a href="{{path('homepage')}}">Home</a>
 						</li>
 					</ol>
 					<h2>
-						{%block pagehead%}
-						{%endblock%}
+						{% block pagehead %}{% endblock %}
 					</h2>
 				</div>
 			</section><!-- End Breadcrumbs --><!-- ======= Blog Section ======= --><section id="blog" class="blog">
 				<div class="container" data-aos="fade-up">
-
 					<div class="row">
-
-						<div class="col-lg-8 entries">
+						<div class="col-lg-8    ">
 							{% for message in app.flashes('success') %}
-								<div class="alert alert-success alert-dismissible fade show border-0 mb-0" role="alert">
-									<strong>Success!
-									</strong>
+								<div class="alert alert-success alert-dismissible fade show border-0 mb-2" role="alert">
+									<strong>Success!</strong>
 									{{ message }}
 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 								</div>
 							{% endfor %}
 
 							{% for message in app.flashes('danger') %}
-								<div class="alert alert-danger alert-dismissible fade show border-0 mb-0" role="alert">
+								<div class="alert alert-danger alert-dismissible fade show border-0 mb-2" role="alert">
 									<strong></strong>
 									{{ message }}
 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 								</div>
 							{% endfor %}
 							{% for message in app.flashes('warning') %}
-								<div class="alert alert-warning alert-dismissible fade show border-0 mb-0" role="alert">
+								<div class="alert alert-warning alert-dismissible fade show border-0 mb-2" role="alert">
 									<strong>Warning!
 									</strong>
 									{{ message }}
 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 								</div>
+								<br>
 							{% endfor %}
 
-
-							{% for message in app.flashes('danger') %}
-
-								<div class="alert custom-alert custom-alert-danger icon-custom-alert shadow-sm fade show d-flex justify-content-between" role="alert">
-									<div class="media">
-										<i class="la la-exclamation-triangle alert-icon text-primary align-self-center font-30 me-3"></i>
-										<div class="media-body align-self-center">
-											<h5 class="mb-1 fw-bold mt-0"></h5>
-											<span>{{ message }}
-											</span>
-										</div>
-									</div>
-									<button type="button" class="btn-close align-self-center" data-bs-dismiss="alert" aria-label="Close"></button>
-								</div>
-
-
-							{% endfor %}
 
 							<article class="entry">
 								{% block body%}
@@ -226,135 +205,147 @@
 						</article>
 					</div>
 					<div class="col-lg-4">
-						<div class="entry"> {% block asidetwo %}{% endblock %}
-							</div>
-							<div class="entry"> {% block aside %}{% endblock %}
+						<div class="entry">
+							{% block asidetwo %}
+								<a href='{{ path('irb_validate') }}' class="btn  btn-md btn-block  w-100  btn-outline-primary ">Verify IRB clearance
+								</a>
 								{% if is_granted("ROLE_USER")%}
-									<aside class="entsry  ">
-										<h4 class="widget-title">Guidelines</h4>
 
-										<hr>
-										<a href='{{ asset('Guidelines.pdf') }}'>Download proposal submission guideline
-											<i data-feather="power" class="fa fa-file-pdf"></i>
-										</a>
-										<hr>
-
-
-										<a href='{{ path('user_feedback_new') }}'>Send us a feedback</a>
-										<hr>
-
-										<h4 class="widget-title">Research  Directorates</h4>
-										<hr>
-										<ul class='nav'>
-											<li>
-												<a href="https://www.ju.edu.et/technology-transfer">Technology Transfer</a>
-												<span></span>
-											</li>
-											<li>
-												<a href="https://www.ju.edu.et/university-industry-linkage">University Industry Linkage
-												</a>
-											</li>
-											<li>
-												<a href="https://www.ju.edu.et/?q=director-research">Senior research directorate
-												</a>
-												<span></span>
-											</li>
-											<li>
-												<a href="https://www.ju.edu.et/?q=director-community-services-and-engagement">Community Service</a>
-												<span></span>
-											</li>
-
-										</ul>
-
-
-									</aside>
-
-
+									{# <a href='{{ path('application_new') }}' class="btn  btn-md btn-block  w-100  btn-outline-success mt-2" >New  IRB Application   </a> #}
 								{% endif %}
-							</div>
 
-
-							{# <div class="col-xl-12   	"> #}
-							{# <div class="  entry m-0	">
-
-								<h5 class="  ">Institutes and Colleges</h5>
-								<hr>
-
-								<div class="col-lg-12">
-									<ul class="list-group list-group-flush">
-										<li class="list-group-item">
-											<i class="la la-angle-double-right text-info me-2"></i>
-											<a href="{{path('college_detail',{'prefix':'jih'})}}">Jimma Institute of Health</a>
-										</li>
-										<li class="list-group-item">
-											<i class="la la-angle-double-right text-info me-2"></i>
-											<a href="{{path('college_detail',{'prefix':'jit'})}}">Jimma Institute of Technology</a>
-										</li>
-										<li class="list-group-item">
-											<i class="la la-angle-double-right text-info me-2"></i>
-											<a href="{{path('college_detail',{'prefix':'jucavm'})}}">College of Agriculture and Veternary Medicine
-											</a>
-										</li>
-										<li class="list-group-item">
-											<i class="la la-angle-double-right text-info me-2"></i>
-											<a href="{{path('college_detail',{'prefix':'beco'})}}">College of  Business and Economics</a>
-										</li>
-										<li class="list-group-item">
-											<i class="la la-angle-double-right text-info me-2"></i>
-											<a href="{{path('college_detail',{'prefix':'cssh'})}}">College of  Social Sciences and Humanities</a>
-										</li>
-										<li class="list-group-item">
-											<i class="la la-angle-double-right text-info me-2"></i>
-											<a href="{{path('college_detail',{'prefix':'cebs'})}}">College of  Education and Behavoural  Sciences
-											</a>
-										</li>
-										<li class="list-group-item">
-											<i class="la la-angle-double-right text-info me-2"></i>
-											<a href="{{path('college_detail',{'prefix':'cns'})}}">College of  Natural   Sciences
-											</a>
-										</li>
-										<li class="list-group-item">
-											<i class="la la-angle-double-right text-info me-2"></i>
-											<a href="{{path('college_detail',{'prefix':'clg'})}}">College of  Law and Governance
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div> #}
-
-							{# </div> #}
+							{% endblock %}
 						</div>
-					</div>
 
-				</section>
-			</main>
-			<footer id="footer" style="background-color:#023b6d;">
-				<div class="container">
-					<div class="copyright">&copy; Copyright
-						<script>
-							document.write(new Date().getFullYear())
-						</script>
-						<strong>
-							<span>
-								{{app_name}}.
-							</span>
-						</strong>
-						All Rights Reserved</div>
-					<div class="credits">Designed by<a href="">
-							Jimma University ICT-DO <b class='text-info'> Version 1.0</b></a>
+						<div class="entry"> {% block aside %}{% endblock %}
+
+
+							{% if is_granted("ROLE_USER")%}
+								<aside class="entsry  ">
+									<h4 class="widget-title">Guidelines</h4><hr>
+									<a href='{{ asset('Guidelines.pdf') }}'>Download proposal submission guideline
+										<i data-feather="power" class="fa fa-file-pdf"></i>
+									</a>
+									<hr>
+
+
+									<a href='{{ path('user_feedback_new') }}'>Send us a feedback</a>
+									<hr>
+
+									<h4 class="widget-title">Research  Directorates</h4>
+									<hr>
+									<ul class='nav'>
+										<li>
+											<a href="https://www.ju.edu.et/technology-transfer">Technology Transfer</a>
+											<span></span>
+										</li>
+										<li>
+											<a href="https://www.ju.edu.et/university-industry-linkage">University Industry Linkage
+											</a>
+										</li>
+										<li>
+											<a href="https://www.ju.edu.et/?q=director-research">Senior research directorate
+											</a>
+											<span></span>
+										</li>
+										<li>
+											<a href="https://www.ju.edu.et/?q=director-community-services-and-engagement">Community Service</a>
+											<span></span>
+										</li>
+
+									</ul>
+
+
+								</aside>
+
+
+							{% endif %}
+						</div>
+
+
+						{# <div class="col-xl-12   	"> #}
+					{# <div class="  entry m-0	">
+					
+													<h5 class="  ">Institutes and Colleges</h5>
+													<hr>
+					
+													<div class="col-lg-12">
+														<ul class="list-group list-group-flush">
+															<li class="list-group-item">
+																<i class="la la-angle-double-right text-info me-2"></i>
+																<a href="{{path('college_detail',{'prefix':'jih'})}}">Jimma Institute of Health</a>
+															</li>
+															<li class="list-group-item">
+																<i class="la la-angle-double-right text-info me-2"></i>
+																<a href="{{path('college_detail',{'prefix':'jit'})}}">Jimma Institute of Technology</a>
+															</li>
+															<li class="list-group-item">
+																<i class="la la-angle-double-right text-info me-2"></i>
+																<a href="{{path('college_detail',{'prefix':'jucavm'})}}">College of Agriculture and Veternary Medicine
+																</a>
+															</li>
+															<li class="list-group-item">
+																<i class="la la-angle-double-right text-info me-2"></i>
+																<a href="{{path('college_detail',{'prefix':'beco'})}}">College of  Business and Economics</a>
+															</li>
+															<li class="list-group-item">
+																<i class="la la-angle-double-right text-info me-2"></i>
+																<a href="{{path('college_detail',{'prefix':'cssh'})}}">College of  Social Sciences and Humanities</a>
+															</li>
+															<li class="list-group-item">
+																<i class="la la-angle-double-right text-info me-2"></i>
+																<a href="{{path('college_detail',{'prefix':'cebs'})}}">College of  Education and Behavoural  Sciences
+																</a>
+															</li>
+															<li class="list-group-item">
+																<i class="la la-angle-double-right text-info me-2"></i>
+																<a href="{{path('college_detail',{'prefix':'cns'})}}">College of  Natural   Sciences
+																</a>
+															</li>
+															<li class="list-group-item">
+																<i class="la la-angle-double-right text-info me-2"></i>
+																<a href="{{path('college_detail',{'prefix':'clg'})}}">College of  Law and Governance
+																</a>
+															</li>
+														</ul>
+													</div>
+												</div> #}
+
+						{# </div> #}
 					</div>
 				</div>
-			</footer>
-			<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
-				<i class="bi bi-arrow-up-short"></i>
-			</a>
-			<script src="{{ asset('Anyar/assets/vendor/aos/aos.js') }}"></script>
-			<script src="{{ asset('Anyar/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-			<script src="{{ asset('Anyar/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-			<script src="{{ asset('Anyar/assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
-			<script src="{{ asset('Anyar/assets/vendor/php-email-form/validate.js') }}"></script>
-			<script src="{{ asset('Anyar/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
-			<script src="{{ asset('Anyar/assets/js/main.js') }}"></script>
-		</body>
+
+			</section>
+		</main>
+		<footer id="footer" style="background-color:#12304a;">
+			<div class="container">
+				<div class="copyright">&copy; Copyright
+					<script>
+						document.write(new Date().getFullYear())
+					</script>
+					<strong>
+						<span>
+							{{app_name}}.
+						</span>
+					</strong>
+					All Rights Reserved</div>
+				<div class="credits">Designed by<a href="">
+						Jimma University ICT-DO
+						<b class='text-info'>
+							Version 1.0</b>
+					</a>
+				</div>
+			</div>
+		</footer>
+		<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+			<i class="bi bi-arrow-up-short"></i>
+		</a>
+		<script src="{{ asset('Anyar/assets/vendor/aos/aos.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/vendor/php-email-form/validate.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+		<script src="{{ asset('Anyar/assets/js/main.js') }}"></script>
 	</body>
-</html>
+</body></html>

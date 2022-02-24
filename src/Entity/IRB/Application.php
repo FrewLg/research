@@ -177,6 +177,12 @@ class Application
     private $meeting;
 
 
+     /**
+     * @ORM\ManyToOne(targetEntity=\App\Entity\College::class, inversedBy="applications")
+     */
+    private $college;
+
+
     public function __construct()
     {
         $this->createdAt = new DateTime();
@@ -216,6 +222,17 @@ class Application
         return (new \DateTime('now')) > $this->createdAt->modify('+1 year') ;
     }
 
+    public function getCollege(): ?\App\Entity\College
+    {
+        return $this->college;
+    }
+
+    public function setCollege(?\App\Entity\College $college): self
+    {
+        $this->college = $college;
+
+        return $this;
+    }
 
     /**
      * @return Collection|iRBReviewAssignments[]

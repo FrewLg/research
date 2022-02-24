@@ -16,12 +16,10 @@
 					<li class="nav-item  waves-effect waves-light">
 						<a class="nav-link " data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
 					</li>
-					{% if is_granted('ROLE_SECRETARY') %}
- 
+
 					<li class="nav-item  waves-effect waves-light">
-						<a class="nav-link " data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Decision</a>
+						<a class="nav-link " data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Revision</a>
 					</li>
-					{% endif %}
 					<li class="nav-item  waves-effect waves-light">
 						<a class="nav-link active" data-bs-toggle="tab" href="#review-checklist" role="tab" aria-selected="false">Checklist</a>
 					</li>
@@ -98,7 +96,6 @@
 						</div>
 					</div>
 
-				{% if is_granted('ROLE_SECRETARY') %}
 					<div class="tab-pane  p-3	 " id="profile" role="tabpanel">
 
 						<div class="card">
@@ -107,6 +104,7 @@
 								</h5>
 							</div>
 							<div class="card-body">
+
 								{{ form_start(form) }}
 								{{ form_widget(form) }}
 								<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
@@ -114,15 +112,9 @@
 							</div>
 						</div>
 					</div>
-				{% endif %}
-				
-					{% if review_assignment.reviewedAt %}
-					{% include "application/tabs/checklist_response.html.twig" %}
+ 					{% include "application/tabs/checklist_response.html.twig" %}
 
-					{% else %}
-					{% include "application/tabs/checklist.html.twig" %}
-						
-					{% endif %}
+				  
 					
 				</div>
 			</div>
@@ -142,7 +134,7 @@
 							
 					<ol class='row mt-2 d-flex align-items-center'>
 
-							{% for guideline_for_reviewer in review_assignment.application.SubmittedBy.userInfo.college.irbReviewAtachements %}
+							{% for guideline_for_reviewer in   submission.SubmittedBy.userInfo.college.irbReviewAtachements %}
 
 <li>
 								<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ guideline_for_reviewer.attachement ) }}">
@@ -170,12 +162,7 @@
 						<p class="text-muted  mb-0 font-15">
 							<span class="text-dark">
 
-								Invited At:
-								{{ review_assignment.InvitationSentAt ? review_assignment.InvitationSentAt|date('d-m-y H:i') : '' }}
-								<br>
-								Review duedate:
-								{{ review_assignment.duedate ? review_assignment.duedate|date('d-m-y') : '' }}
-							</span>
+								 </span>
 						 
 						</p>
 					</div>
@@ -191,7 +178,7 @@
 
 
 					<ol class='row mt-2 d-flex align-items-center'>
-						{% for Attachment in review_assignment.application.applicationAttachments %}
+						{% for Attachment in  submission.applicationAttachments %}
 
 							<li>
 								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">

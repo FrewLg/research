@@ -23,7 +23,9 @@
 								<div class="nowrap">
 									<div style="width: 100%;" class="font-16 m-0 fw-bold">
 										<strong>
-											{{ submission.Title }}:{{ submission.subTitle }}
+											{{ submission.Title }}
+											{% if submission.subTitle !=''   %}:{{ submission.subTitle }}{% endif %}
+
 										</strong>
 									</div>
 								</div>
@@ -60,6 +62,14 @@
 				<div class="tab-content">
 					<div class="tab-pane p-3  " id="home" role="tabpanel">
 						<div class="table-responsive">
+							
+							<div class="card">
+							<div class="card-header">
+								<h5>Research project details
+								</h5>
+							</div>
+							<div class="card-body">
+
 							<table class="table shoping-cart-table">
 
 								<tbody>
@@ -113,7 +123,17 @@
 							</table>
 						</div>
 					</div>
+						</div>
+					</div>
 					<div class="tab-pane p-3 " id="evaluation" role="tabpanel">
+						
+	<div class="card">
+							<div class="card-header">
+								<h5>  Evaluation </h5>
+							</div>
+							<div class="card-body">
+
+
 						<form method="post" action="{{ path('evaluation_form_option_new', {'id': submission.id}) }}">
 							<ol type="I" class="list">
 								{% for evaluationForm in evaluationForms %}
@@ -185,8 +205,11 @@
 							<button class="btn btn-primary">{{ button_label|default('Submit evaluation') }}</button>
 
 						</form>
+						</div>
 					</div>
-					<div class="tab-pane p-2	 active" id="profile" role="tabpanel">
+					</div>
+					<div class="tab-pane p-3	
+					 active" id="profile" role="tabpanel">
 
 						<div class="card">
 							<div class="card-header">
@@ -219,21 +242,17 @@
 				<div class="card-body ">
 					<div
 						class="text-">
-						{# {{ review_assignment.submission.callForProposal}} #}
+{# {{ review_assignment.submission.callForProposal}} #}
 
-					
 
-						<br>
-						<br>
-
-					
 
 <br>
+<br>
 
-					
-						
-						
-						<br>
+
+
+<br>
+ 
 
 
 						<br>

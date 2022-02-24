@@ -13,6 +13,7 @@ parameters:
     irb_uploads: '%kernel.project_dir%/public/files/irb_uploads'
     uploads_folder: '%kernel.project_dir%/public/files/uploads'
     profile_pictures: '%kernel.project_dir%/public/files/profile_pictures'
+    users_publications: '%kernel.project_dir%/public/files/users_publications'
     site_setting: '%kernel.project_dir%/public/files/site_setting'
     collaborators_cv: '%kernel.project_dir%/public/files/collaborators_cv'
     grant_winners_award: '%kernel.project_dir%/public/files/grant_winners_award' 
