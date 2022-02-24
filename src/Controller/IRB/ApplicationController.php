@@ -207,6 +207,9 @@ class ApplicationController extends AbstractController
 
     public function removeUnchecked(Application $application )
     {
+        foreach ($application->getApplicationAttachments() as $key => $value) {
+            $value->setChecked($value->getType()->getIsRequired());
+        }
         $vars=[ $application->getApplicationAttachments(),
                 $application->getApplicationMitigationStrategies(),
                 $application->getApplicationReviews(),
