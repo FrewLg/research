@@ -380,11 +380,16 @@
 																			{{loop.index }}
 																		</div>
 																		<div class="card-body">
+																		<ul>
 																			{% for attachment in revision.revisionAttachments %}
+																		<li>
 																				<a href='{{ asset('/uploads/application/' ~ attachment.file) }}' class="btn btn-sm btn-soft-primary m-1">{{ attachment.type }}
 																					<span class="fa fa-download m-1"></span>
 																				</a>
+																		</li>
+
 																			{% endfor %}
+																		</ul>
 
 																		</div>
 																	</div>
@@ -441,15 +446,23 @@
 										</div>
 
 										<div class="tab-pane p-3 " id="attachments" role="tabpanel">
+
+										<ol>
+ 																		
+
 											{% for attachment in application.applicationAttachments %}
-												<a style="margin-top:3px;" href="{{ asset('/uploads/application/'~ attachment.file ) }}" class="mx-1 btn btn-info btn-xs float-right">
+												
+												<li  class="text-info   pt-2">
+												<a style="margin-top:3px;" href="{{ asset('/uploads/application/'~ attachment.file ) }}" class="text-info    pt-3 mt-2">
 													{{attachment}}
 													<i class="fa fa-download material-icons warning"></i>
 												</a>
+												</li>
 											{% else %}
 												<span class="label label-danger">
 													{% trans %}No attachment found{% endtrans %}</span>
 											{% endfor %}
+											<ol>
 										</div>
 									</div>
 								</div>

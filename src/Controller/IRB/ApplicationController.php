@@ -142,9 +142,10 @@ class ApplicationController extends AbstractController
         $form = $this->createForm(ApplicationType::class, $application);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) { 
 
-             if (!$form->get('applicationAttachments')->getdata()){
+
+     if (!$form->get('applicationAttachments')->getdata()){
                  dd();
                  $this->addFlash("danger","attachement must be uploaded!");
                 }
@@ -155,6 +156,8 @@ class ApplicationController extends AbstractController
         $application->addApplicationAttachment($attachment);
      }
 
+
+ 
             $application=$this->removeUnchecked($application);
 
             $entityManager->persist($application);
@@ -258,7 +261,8 @@ class ApplicationController extends AbstractController
     public function removeUnchecked(Application $application )
     {
         foreach ($application->getApplicationAttachments() as $key => $value) {
-            $value->setChecked($value->getIsRequired());
+            if($value->getType())
+            $value->setChecked($value->getType()->getIsRequired());
         }
         $vars=[ $application->getApplicationAttachments(),
                 $application->getApplicationMitigationStrategies(),
