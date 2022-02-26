@@ -142,45 +142,20 @@ class ApplicationController extends AbstractController
         $form = $this->createForm(ApplicationType::class, $application);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) { 
 
-            
-                if (!$form->get('applicationAttachments')->getdata()){
-
-          foreach ($form->get('applicationAttachments')->getdata() as $key => $value) {
-                    $attachment=  new ApplicationAttachment();
+            if (!$form->get('applicationAttachments')->getdata()){
+                dd();
+                $this->addFlash("danger","attachement must be uploaded!");
+               }
+               
+            foreach ($form->get('applicationAttachments')->getdata() as $key => $value) {
           
-                    $reviewfile = $value->getFile();
-                    #('file')->getData();
-                    $Areviewfile = md5(uniqid()) . '.' . $reviewfile->guessExtension();
-                    $reviewfile->move($this->getParameter('review_files'), $Areviewfile);
+                $attachment=  new ApplicationAttachment();
+                // $attachment->setType($value);
+                $application->addApplicationAttachment($attachment);
+             }
 
-        // $attachment->setType($value);
-        $attachment->setApplication($application);
-         $attachment->setFile($Areviewfile);
-        $entityManager->persist($attachment);
-
-     }
-     }
-     else {
-                
-        $this->addFlash("danger","attachement must be uploaded!");
-
-         foreach ($form->get('applicationAttachments')->getdata() as $key => $value) {
-                    $attachment=  new ApplicationAttachment();
-          
-                    $reviewfile = $value->getFile();
-                    #('file')->getData();
-                    $Areviewfile = md5(uniqid()) . '.' . $reviewfile->guessExtension();
-                    $reviewfile->move($this->getParameter('review_files'), $Areviewfile);
-
-        // $attachment->setType($value);
-        $attachment->setApplication($application);
-         $attachment->setFile($Areviewfile);
-        $entityManager->persist($attachment);
-
-       }
-       }
  
             $application=$this->removeUnchecked($application);
 
