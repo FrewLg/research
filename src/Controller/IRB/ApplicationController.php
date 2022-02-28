@@ -87,6 +87,8 @@ class ApplicationController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
+        $irbReviewAtachements=  $entityManager ->getRepository(IrbReviewAtachement::class)->findAll( );      
+
         $userdetails = $this->getUser()->getUserInfo();
         
         
@@ -168,6 +170,7 @@ class ApplicationController extends AbstractController
 
         return $this->render('application/new.html.twig', [
             'application' => $application,
+            'irbReviewAtachements' => $irbReviewAtachements,
             'form' => $form->createView(),
             'subject_category' => $em->getRepository(ResearchSubjectCategory::class)->findAll(),
             'mitigation_strategy_group' => $em->getRepository(MitigationStrategyGroup::class)->findAll(),

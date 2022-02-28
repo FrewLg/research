@@ -183,16 +183,18 @@
     <button class="btn btn-info">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 
-
+<ol>
 {% for guideline_for_reviewer in college.irbReviewAtachements %}
-										 
+	<li>									 
    
 											  <a class="badge bg-primary" href="{{ asset('files/guidelines/'~ guideline_for_reviewer.attachement ) }}">
  {{guideline_for_reviewer.attachmentName}}							<i class="fa fa-download"></i>
 						</a>
+	</li>									 
 
 					  	{% else %}
  									{% endfor %} 
+</ol>
 
 						</div>
 					</div>
