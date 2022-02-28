@@ -43,7 +43,7 @@ class ApplicationController extends AbstractController
     public function index(ApplicationRepository $applicationRepository, Request $request, PaginatorInterface $paginatorInterface): Response
     {
          
-        $this->denyAccessUnlessGranted('vw_irb_rqst');
+        $this->denyAccessUnlessGranted('ROLE_BOARD_MEMBER');
         $queryBuilder = $applicationRepository->getData();
         $application_filter_form=$this->createForm(ApplicationFilterType::class)->handleRequest($request);
        
