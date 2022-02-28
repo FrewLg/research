@@ -87,7 +87,9 @@
 												{{ userInfo.affiliation }}
 												{% else %}
 											{% endif %}
+ {% if userInfo.college  is defined %}
 											{{ user.userInfo.college }}
+{% endif %}
 										</p>
 									</div>
 								</div>
@@ -99,8 +101,10 @@
 										<b>
 											Phone
 										</b>
-										:
-										{{ user.userInfo.phoneNumber }}</li>
+										{% if user.userInfo.phoneNumber   is defined %}:
+										{{ user.userInfo.phoneNumber }}
+{% endif %}
+</li>
 									<li class="mt-2">
 										<i class="ti ti-email text-secondary font-16 align-middle me-2"></i>
 										<b>
@@ -114,7 +118,10 @@
 											Alternative      Email
 										</b>
 										:
-										{{ user.userInfo.alternativeEmail }}</li>
+{% if user.userInfo.alternativeEmail   is defined %}
+									{{ user.userInfo.alternativeEmail }}
+{% endif %}
+</li>
 
 
 									<li class="mt-2">
