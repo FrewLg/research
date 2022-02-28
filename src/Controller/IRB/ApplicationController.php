@@ -19,6 +19,8 @@ use App\Entity\IRB\ResearchSubjectCategory;
 use App\Entity\IRB\ReviewStatus;
 use App\Entity\IRB\ReviewStatusGroup;
 use App\Entity\IRB\Revision;
+use App\Entity\IRB\IrbReviewAtachement;
+
 use App\Entity\IRB\RevisionAttachment;
 use App\Entity\IrbCertificate;
 use App\Form\IRB\ApplicationFilterType;
