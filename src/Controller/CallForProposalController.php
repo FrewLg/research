@@ -82,7 +82,7 @@ class CallForProposalController extends AbstractController
      */
     public function new(Request $request, MailerInterface $mailer): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_cll_fr_prop');
         $callForProposal = new CallForProposal();
         $form = $this->createFormBuilder($callForProposal)
             ->add('research_type', ResearchType::class)
@@ -249,7 +249,7 @@ class CallForProposalController extends AbstractController
     public function undoapprove(CallForProposal $callForProposal): Response
     {
 
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_cll_fr_prop');
 
         $approver = $this->getUser();
         $callForProposal->setApproved(0);
@@ -281,7 +281,7 @@ class CallForProposalController extends AbstractController
     public function approve(CallForProposal $callForProposal): Response
     {
 
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_cll_fr_prop');
 
         $approver = $this->getUser();
         $callForProposal->setApproved(1);
@@ -297,7 +297,7 @@ class CallForProposalController extends AbstractController
      */
     public function sendbatch(CallForProposal $callForProposal, MailerInterface $mailer): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_cll_fr_prop');
         $entityManager = $this->getDoctrine()->getManager();
 
         ///////////// Let us email subscribed users to announcements 
@@ -364,7 +364,7 @@ class CallForProposalController extends AbstractController
      */
     public function details(CallForProposal $callForProposal): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_cll_fr_prop');
 
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
@@ -415,7 +415,7 @@ class CallForProposalController extends AbstractController
      */
     public function edit(Request $request, CallForProposal $callForProposal): Response
     {
-        //    $this->denyAccessUnlessGranted('ROLE_ADMIN');
+           $this->denyAccessUnlessGranted('vw_cll_fr_prop');
 
         $form = $this->createForm(CallForProposalType::class, $callForProposal);
         $form->handleRequest($request);
@@ -437,7 +437,7 @@ class CallForProposalController extends AbstractController
      */
     public function delete(Request $request, CallForProposal $callForProposal): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('vw_cll_fr_prop');
 
         if ($this->isCsrfTokenValid('delete' . $callForProposal->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
