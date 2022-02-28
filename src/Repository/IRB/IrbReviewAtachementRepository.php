@@ -2,7 +2,7 @@
 
 namespace App\Repository\IRB;
 
-use App\Entity\IrbReviewAtachement;
+use App\Entity\IRB\IrbReviewAtachement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

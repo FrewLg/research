@@ -89,7 +89,7 @@ class ApplicationController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-        $irbReviewAtachements=  $entityManager ->getRepository(IrbReviewAtachement::class)->findAll( );      
+        $irbReviewAtachements=  $entityManager->getRepository(IrbReviewAtachement::class)->findAll( );      
 
         $userdetails = $this->getUser()->getUserInfo();
         
