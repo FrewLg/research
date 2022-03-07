@@ -37,9 +37,8 @@ class DefaultController extends AbstractController
     	->where('e.complete = :status' ) 
     	->setParameter( 'status', 0 ) 
     	->groupBy('e.id')
-    	->getQuery()->getResult(); 
-
-   	    $totalsubmissions = $submissionRepository->createQueryBuilder('a')
+    	->getQuery()->getResult();  
+            $totalsubmissions = $submissionRepository->createQueryBuilder('a')
         ->select('count(a.id)')
 	->andWhere('a.complete = :status' ) 
 	->setParameter( 'status', 0 ) 

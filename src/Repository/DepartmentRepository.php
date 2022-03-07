@@ -53,7 +53,7 @@ class DepartmentRepository extends ServiceEntityRepository
         //dd($productNmae);
         return $this->createQueryBuilder('s')
 
-
+ 
             ->Select('s.name')
 
             ->addSelect('s.id')

@@ -95,6 +95,10 @@ class CallForProposal
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $funding_source;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $attachement;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -350,6 +354,17 @@ class CallForProposal
     public function setFundingSource(?string $funding_source): self
     {
         $this->funding_source = $funding_source;
+
+        return $this;
+    }
+    public function getAttachement(): ?string
+    {
+        return $this->attachement;
+    }
+
+    public function setAttachement(?string $attachement): self
+    {
+        $this->attachement = $attachement;
 
         return $this;
     }

@@ -125,22 +125,32 @@
 
 								</div>
 								<div class="col-md-6">
-									<div class="small text-right"></div>
+									<div class="small text-right"> 
+									
+									{% if call_for_proposal.attachement %}
+							 
+ <a class="badge bg-primary" href="{{ asset('files/guidelines/'~ call_for_proposal.attachement) }}">
+							 Download PDF
+							<i class="fa fa-download"></i>
+						</a> 
+								 
+								 
+							{% else %}
+								 
+							{% endif %}
+
+									
+									</div>
 								</div>
 							</div>
 
 
 						</div>
 					</div>
-</div>
-
-
-<script>
-    // Set the date we're counting down to
-
+</div> 
+<script> 
     // var countDownDate = new Date("Jan 5, 2020 15:37:25").getTime();
-    var countDownDate = new Date("{% if call_for_proposal.deadline %}
-{{ call_for_proposal.deadline|date('M d, y h:i ') }}{% endif %}").getTime();
+    var countDownDate = new Date("{% if call_for_proposal.deadline %}{{ call_for_proposal.deadline|date('M d, y h:i ') }}{% endif %}").getTime(); 
 
     // Update the count down every 1 second
     var x = setInterval(function () {

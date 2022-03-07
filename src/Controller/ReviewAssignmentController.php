@@ -301,7 +301,7 @@ class ReviewAssignmentController extends AbstractController
             $email = (new TemplatedEmail())
                 ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
                 ->to(new Address($ext_email, $external_reviewer_name))
-                ->subject($subject)
+                ->subject($subject) 
                 ->htmlTemplate('emails/review_invitation_external.html.twig')
                 ->context([
                     'subject' => $subject,
