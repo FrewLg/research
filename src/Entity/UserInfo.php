@@ -421,12 +421,12 @@ class UserInfo
         return $this;
     }
 
-    public function getSuffix(): ?Suffixe
+    public function getSuffix(): ?\App\Entity\Suffixe
     {
         return $this->suffix;
     }
 
-    public function setSuffix(?Suffixe $suffix): self
+    public function setSuffix(?\App\Entity\Suffixe $suffix): self
     {
         $this->suffix = $suffix;
 
