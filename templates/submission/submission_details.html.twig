@@ -318,7 +318,7 @@
 																				{% endif %}
 
 																				<h5 class="fw-bold mt-3 mb-1">{{ submission.author.userInfo}}
-																					<sapn class="text-muted mb-0">({{submission.author.userInfo}})</span>
+																					<sapn class="text-muted mb-0">({{submission.author.userInfo.educationLevel}})</span>
 																				</h5>
 																				<p class="text-muted mb-0">  {{ submission.author.userInfo.college}}</p>
 																				<p class="text-muted mb-0">{{ submission.author.userInfo.department }}</p>
@@ -329,7 +329,7 @@
 																					 
 																				</div>
 
-																				<a href='{{path('researcher',{'id':submission.author.id})}}' class="btn btn-sm btn-soft-primary">More details</a>
+																				<a href='{{path('researcher',{'id':submission.author.id})}}' class="btn btn-sm btn-soft-primary">About researcher</a>
 
 																			</div>
 																		</div>
@@ -364,7 +364,7 @@
 																				 
 																				</div>
 
-																				<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">More details</a>
+																				<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">About researcher</a>
 
 																			</div>
 																		</div>
