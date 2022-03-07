@@ -28,7 +28,14 @@
 							<div class="card-header ">
 								
 								<h5 class="font-18 m-0 fw-bold">{% trans %}Reviewers{% endtrans %}
-									({{application.IRBreviewAssignments|length}})
+									 
+
+										<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+										 {{application.IRBreviewAssignments|length}}
+										</span>
+									</a>
+
 									{% if   is_granted("vw_irb_dbrd") %}
 									<a href="{{ path('irb_review_assignment_new', {'id': application.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
 										{% trans %}Add  Reviewer{% endtrans %}</a>
@@ -209,7 +216,13 @@
 									<!-- Tab panes -->
 									<div class="tab-content">
 										<div class="tab-pane p-3 active" id="members" role="tabpanel">
-											<h4 class='text-'>{% trans %}Research team{% endtrans %}({{  application.members|length +1}})</h4>
+											<h4 class='text-'>{% trans %}Research team{% endtrans %}
+											<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+										 {{ application.members|length +1}}
+										</span>
+									</a>
+											 </h4>
 											<div class="row">
 												{% set co_author = application.pi ? application.pi : application.submittedBy  %}
 												<div class="col-lg-4">
