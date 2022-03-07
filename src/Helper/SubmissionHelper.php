@@ -136,6 +136,8 @@ class SubmissionHelper
                 $submission_report_schedule->setSubmission($submission);
                 $submission_report_schedule->setPhase(explode("_", $key)[1]);
                 $submission_report_schedule->setSubmissionDate(new \DateTime($value));
+                 $submission_report_schedule->setIsSubmitted(1);
+
                 $this->em->persist($submission_report_schedule);
 
                 $this->em->flush();
