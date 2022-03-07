@@ -102,7 +102,7 @@
 
 														<img src="{{ asset('files/profile_pictures/'~ board_member.user.userInfo.image ) }}" alt="user" class="rounded-circle user-img">
 
-
+ 
 													{% else %}
 
 														<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle user-img">
@@ -165,7 +165,7 @@
 															<form action="" class="float form-horizontal flex-column form-inline " method="POST">
 																<input hidden name="change-role" value="true"/>
 																<input hidden name="board_member" value="{{board_member.id}}"/>
-																<select name="roles" class="form-control" onchange="if(confirm('Save changes?')){this.form.submit()}">
+																<select name="roles" class="form-control" onchange="if(confirm('Are you sure you want to save member role changes?')){this.form.submit()}">
 																	<optgroup label="Role">
 
 																		<option value="Member" {{board_member.role=='Member'?"selected":""}}>Member</option>

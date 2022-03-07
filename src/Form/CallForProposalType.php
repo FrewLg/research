@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
@@ -89,7 +91,15 @@ class CallForProposalType extends AbstractType
                 ],
             ])
 
-
+            ->add('attachement', FileType::class, [
+                'label' => 'Upload proposal attachment',
+                'mapped' => false,  'attr'=>[
+                    'class' => 'form-control  m-0   ',
+                             'required' => true,
+            
+            ],
+                'required' => true,
+                ])
             // ->add('work_unit')
         ;
     }

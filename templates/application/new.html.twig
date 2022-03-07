@@ -381,7 +381,8 @@
 					<div class="form-check">
 						<input id="agree" type="checkbox" class="form-check-input">
 						<label class="form-check-label" > I HAVE READ AND UNDERSTOOD THE ABOVE POLICIES. AND AGREE TO ABIDE BY THEM.</label>
-						<div  class="text-danger d-none" id="agree-error">Please indicate that you have read and agree to the policies</div>
+						<br>
+						<div  class="text-danger d-none mt-4" id="agree-error">Please indicate that you have read and agree to the policies</div>
 					</div>
                 </div>
 
@@ -402,9 +403,9 @@
 		<div class ="card-body">
 <ol>
 {% for guideline_for_reviewer in  irbReviewAtachements %}
-	<li>									 
-   
-											  <a class="badge bg-primary" href="{{ asset('files/guidelines/'~ guideline_for_reviewer.attachement ) }}">
+	<li>								
+	
+	  <a class="badge bg-primary" href="{{ asset('files/guidelines/'~ guideline_for_reviewer.attachement ) }}">
  {{guideline_for_reviewer.attachmentName}}							<i class="fa fa-download"></i>
 						</a>
 	</li>									 
@@ -568,7 +569,7 @@ $(this).parentsUntil(".parent").find(".my-hidden").find('input').prop('required'
 jQuery(document).ready(function () {
 $('input[type=radio][name="application[type]"]').change(function () {
 
-if (this.value == '1') {
+if (this.value == '1')  
 $("#div-pi").addClass("d-none")
 $('input[type=radio][name="application[type]"]').prop('required', false);
 

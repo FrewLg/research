@@ -155,6 +155,15 @@ class CallForProposalController extends AbstractController
             ->add('allow_pi_from_other_university')
             ->add('commitment_from_other_research')
             ->add('is_call_from_center')
+            ->add('attachement', FileType::class, [
+                'label' => 'Upload   attachment',
+                'mapped' => false,  'attr'=>[
+                    'class' => 'form-control  m-0   ',
+                             'required' => false,
+            
+            ],
+                'required' => false,
+                ])
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -174,6 +183,16 @@ class CallForProposalController extends AbstractController
                 // $this->getUser()->getUserInfo()->getCollege( );
 
                 $Princiapal_contacts = $this->getUser()->getUserInfo()->getCollege()->getPrincipalContact();
+            }
+
+            $attachement = $form->get('attachement')->getData();
+            if (!$attachement) {
+                echo 'File not uploaded';
+            } else {
+                $attachement = $form->get('evaluationfrom')->getData();
+                $file_name = 'Call For Proposal Attachement ' . md5(uniqid()) . '.' . $attachement->guessExtension();
+                $attachement->move($this->getParameter('college_guidelines'), $file_name);
+                $callForProposal->setAttachement($file_name);
             }
 
             $entityManager->persist($callForProposal);
