@@ -21,20 +21,34 @@ class CallForTrainingType extends AbstractType
               ->add('document_attachment', FileType::class, [
                                 'label' => 'Upload document attachment',
                                 'mapped' => false,
+                                'required' => false, 
+                        'attr' => ['placeholder' => 'Description and  details',
+                                'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
                                 'required' => false,
+            
+                            ]
                             ])
 
                 
             ->add('description' , CKEditorType::class, [
-                'attr' => ['placeholder' => 'Description and  details',
+                'attr' => ['label' => 'Description and  details',
                     'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
                     'required' => false,
 
                 ]])
             ->add('deadline' , DateType::class, array(
+                'label' => 'Registration deadline',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ))
+            ->add('trainingStartAt' , DateType::class, array(
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+            ))
+            // ->add('trainingEndAt' , DateType::class, array(
+            //     'widget' => 'single_text',
+            //     'format' => 'yyyy-MM-dd',
+            // ))
          ;
     }
 

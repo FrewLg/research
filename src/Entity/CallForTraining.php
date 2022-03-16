@@ -36,10 +36,23 @@ class CallForTraining
     private $description;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime" , nullable=true)
      * @Gedmo\Versioned
      */
     private $deadline;
+
+    /**
+     * @ORM\Column(type="datetime" , nullable=true)
+     * @Gedmo\Versioned
+     */
+    private $trainingEndAt;
+
+    /**
+     * @ORM\Column(type="datetime" , nullable=true)
+     * @Gedmo\Versioned
+     */
+    private $trainingStartAt;
+  
 
     /**
      * @ORM\ManyToOne(targetEntity=College::class, inversedBy="callForTrainings")
@@ -131,6 +144,29 @@ class CallForTraining
 
         return $this;
     }
+    public function getTrainingEndtAt(): ?\DateTimeInterface
+    {
+        return $this->trainingEndAt;
+    }
+
+    public function setTrainingEndAt(\DateTimeInterface $trainingEndAt): self
+    {
+        $this->trainingEndAt = $trainingEndAt;
+
+        return $this;
+    }
+    public function getTrainingStartAt(): ?\DateTimeInterface
+    {
+        return $this->trainingStartAt;
+    }
+
+    public function setTrainingStartAt(\DateTimeInterface $trainingStartAt): self
+    {
+        $this->trainingStartAt = $trainingStartAt; 
+
+        return $this;
+    }
+    
     public function __toString(): string
     {
         return  $this->name;
