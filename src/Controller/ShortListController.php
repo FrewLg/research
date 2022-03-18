@@ -79,13 +79,23 @@ class ShortListController extends AbstractController {
         $content = '';
 
         if (!$filePath || !file_exists($filePath)) {
-            return false;
+            $this->addFlash(
+                'danger',
+                'File not found!'
+            );
+            return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
+
         }
 
         $zip = zip_open($filePath);
 
         if (!$zip || is_numeric($zip)) {
-            return false;
+            $this->addFlash(
+                'danger',
+                'Numeric data!'
+            );
+            return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
+
         }
 
         while ($zip_entry = zip_read($zip)) {
@@ -125,15 +135,10 @@ class ShortListController extends AbstractController {
 
             $this->addFlash(
                 'success',
-                'Clear!'
+                "Clear! the researcher's name is not found in the proposal document"
             );
         }
-        // $collaborations='';
-        // return $this->render('submission/co-authorship.html.twig', [
-        //     'contents' => $striped_content,
-        //     'collaborations' => $collaborations,
-        // ]);
-
+        
         return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
 
     }

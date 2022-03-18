@@ -710,11 +710,7 @@
 							PDF
 							<i class="fa fa-download"></i>
 						</a>
-						<a class="badge bg-info align-right"
-						 href="{{ path('short_list_findone', {'id': submission.id }) }}">
-							Search Researcher Name in proposal  
-							 
-						</a>
+						
 						<hr class="hr-dashed my-4">
 						{{ include('submission/includes/progress.html.twig') }}
 
@@ -736,6 +732,14 @@
 							<span class="label label-danger">
 								{% trans %}No attachement found{% endtrans %}</span>
 						{% endfor %}
+						<hr class="hr-dashed my-4">
+
+						<a class="btn btn-block btn-info  "
+						 href="{{ path('short_list_findone', {'id': submission.id }) }}">
+							Search researcher name in proposal  
+							 
+						</a>
+
 					</div>
 				</div>
 				<div class="card">
