@@ -710,6 +710,11 @@
 							PDF
 							<i class="fa fa-download"></i>
 						</a>
+						<a class="badge bg-info align-right"
+						 href="{{ path('short_list_findone', {'id': submission.id }) }}">
+							Search Researcher Name in proposal  
+							 
+						</a>
 						<hr class="hr-dashed my-4">
 						{{ include('submission/includes/progress.html.twig') }}
 

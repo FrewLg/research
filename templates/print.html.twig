@@ -7,7 +7,7 @@
 
 		<meta name="description" content=""/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-	<link rel="stylesheet" href="{{ absolute_url(asset('assets/dist/css/adminlte.min.css'))}}"/>
+		<link rel="stylesheet" href="{{ absolute_url(asset('assets/dist/css/adminlte.min.css'))}}"/>
 		<style>
 
 			.page_break {
@@ -19,7 +19,7 @@
 			#footer {
 				position: fixed;
 				right: 0;
-				width:100%;
+				width: 100%;
 				bottom: 10px;
 				text-align: center;
 				border-top: 1px solid black;
@@ -29,7 +29,7 @@
 				right: 0;
 				text-align: right;
 				font-size: 10px;
-				
+
 			}
 			#footer-left {
 				position: fixed;
@@ -43,7 +43,7 @@
 			@page {
 				margin: 20px 30px 40px 50px;
 			}
-			
+
 			.amharic1 {
 				font-family: amharic !important;
 			}
@@ -114,25 +114,25 @@
 		</div>
 		<div style="margin-top:15px;"> {% block body %}{% endblock %}
 			</div>
-{% if footer %}
+			{% if footer %}
 
-			<div id="footer">
-			
-					
-<div id="footer-left">
-		Jimma Institute of health IRB<br>
-				
-			</div>
+				<div id="footer">
 
 
-			<div id="footer-right">
-				{# Tel: 6238<br>
-				Address: Jimma, Oromia, Ethiopia #}
-			</div>
+					<div id="footer-left">
+						Jimma Institute of health IRB<br>
 
-			</div>
-			
-		{% endif %}
+					</div>
+
+
+					<div
+						id="footer-right">{# Tel: 6238<br>
+											Address: Jimma, Oromia, Ethiopia #}
+					</div>
+
+				</div>
+
+			{% endif %}
 
 		</body>
 	</html>

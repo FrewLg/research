@@ -5,6 +5,7 @@
 parameters:
     site_settingsfile: '%kernel.project_dir%/config/packages/site_settings.yaml'
     submission_files: '%kernel.project_dir%/public/files/proposals/submissions'
+    upload_destination: '%kernel.project_dir%/public/uploads/submission'
     college_guidelines: '%kernel.project_dir%/public/files/guidelines'
     site_backup_settings_file: '/home/ghost/Desktop/projects/harona/ParameterVariables.sh'
     site_backup_file: '/home/ghost/Desktop/projects/harona/jubackup.sh'

@@ -884,7 +884,8 @@ class SubmissionController extends AbstractController
             'datasetusedform' => $datasetusedform->createView(),
 
         ]);
-    }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+    
 
     /**
      * @Route("/attachment/{id}/deleteAttachment", name = "submission_attachment_delete", methods= {"DELETE"})
