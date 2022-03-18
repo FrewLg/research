@@ -89,14 +89,14 @@ class ShortListController extends AbstractController {
 
         $zip = zip_open($filePath);
 
-        if (!$zip || is_numeric($zip)) {
-            $this->addFlash(
-                'danger',
-                'Numeric data!'
-            );
-            return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
+        // if (!$zip || is_numeric($zip)) {
+        //     $this->addFlash(
+        //         'danger',
+        //         'Numeric data!'
+        //     );
+        //     return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
 
-        }
+        // }
 
         while ($zip_entry = zip_read($zip)) {
 
@@ -142,6 +142,7 @@ class ShortListController extends AbstractController {
         return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
 
     }
+
 
     public function read_file_docx($filename) {
 
