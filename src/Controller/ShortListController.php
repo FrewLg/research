@@ -132,9 +132,9 @@ class ShortListController extends AbstractController {
         
         $patterns = array();
 $patterns[0] =$submission->getAuthor()->getUserInfo()->getFirstName();
-// $patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
+$patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
 $patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
-$patterns[1] = 'considera';
+// $patterns[1] = 'considera';
 $replacements = array();
 $replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patterns[0]."</b>";
 $replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patterns[1]."</b>";
