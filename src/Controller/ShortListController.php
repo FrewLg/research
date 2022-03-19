@@ -89,6 +89,16 @@ class ShortListController extends AbstractController {
 
         $zip = zip_open($filePath);
 
+
+        if (!$zip ) {
+            $this->addFlash(
+                'danger',
+                'File not found!'
+            );
+            return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
+
+        }
+
         // if (!$zip || is_numeric($zip)) {
         //     $this->addFlash(
         //         'danger',
