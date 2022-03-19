@@ -93,7 +93,7 @@ class ShortListController extends AbstractController {
         if (!$zip ) {
             $this->addFlash(
                 'danger',
-                'File not found!'
+                'File not found! or invalid    file format'
             );
             return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
 
@@ -150,6 +150,7 @@ $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255
                 'danger',
                 "Researcher's name is found in proposal file!"
             );
+            
         }
         else{
 
@@ -159,7 +160,7 @@ $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255
                 "Clear! the researcher's name is not found in the proposal document"
             );
         }
-        $count--;
+        
         return $this->render('submission/doc.html.twig', [
              'document' => $striped_content,
              'result' => $result,
