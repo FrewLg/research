@@ -89,14 +89,14 @@ class ShortListController extends AbstractController {
 
         $zip = zip_open($filePath);
 
-        if (!$zip || is_numeric($zip)) {
-            $this->addFlash(
-                'danger',
-                'Numeric data!'
-            );
-            return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
+        // if (!$zip || is_numeric($zip)) {
+        //     $this->addFlash(
+        //         'danger',
+        //         'Numeric data!'
+        //     );
+        //     return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
 
-        }
+        // }
 
         while ($zip_entry = zip_read($zip)) {
 
@@ -115,33 +115,40 @@ class ShortListController extends AbstractController {
 
         zip_close($zip);
 
-        //echo $content;
-        //echo "<hr>";
-        //file_put_contents('1.xml', $content);
+        
 
         $content = str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
         $content = str_replace('</w:r></w:p>', "\r\n", $content);
         $striped_content = strip_tags($content);
         
-        $search =  $submission->getAuthor()->getUserInfo();
+        $search =  $submission->getAuthor()->getUserInfo()->getFirstName();
         if(preg_match("/{$search}/i", $striped_content)) {
+          $result="Researcher's name is found in file!";
+
+          $striped_content= str_replace($search, "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$search."</b>", $striped_content);
           
             $this->addFlash(
                 'danger',
-                'Researcher\'s name is found in file!'
+                "Researcher's name is found in file!"
             );
         }
         else{
 
+            $result="Researcher's name is not found in file!"; 
             $this->addFlash(
                 'success',
                 "Clear! the researcher's name is not found in the proposal document"
             );
         }
         
-        return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
+        return $this->render('submission/doc.html.twig', [
+             'document' => $striped_content,
+             'result' => $result,
+             'name' => $submission->getAuthor()->getUserInfo(),
+         ]);
 
     }
+
 
     public function read_file_docx($filename) {
 

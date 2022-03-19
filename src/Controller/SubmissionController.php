@@ -286,22 +286,35 @@ class SubmissionController extends AbstractController
 
         $p_i_college = $this->getUser()->getUserInfo()->getCollege();
 
-        if (!$p_i_college == $callForProposal->getCollege()) {
+        if (!$p_i_college == $callForProposal->getCollege() and $callForProposal->getAllowPiFromOtherUniversity()=='') {
 
             $this->addFlash("danger", "You are not allowed make a submission from" . $p_i_college . " !");
 
             return $this->redirectToRoute('researchworks');
         }
+        ##########################Check submission exists #######################
+
+        $entityManager = $this->getDoctrine()->getManager(); 
+        $submission = $entityManager->getRepository('App:Submission')->findOneBy(['author' =>$this->getUser(), 'callForProposal'=>$callForProposal]);
+      
+        if ($p_i_college == $callForProposal->getCollege() and $callForProposal->getAllowPiFromOtherUniversity()=='') {
+
+            $this->addFlash("danger", "You have already a submission under this call!");
+
+            return $this->redirectToRoute('myreviews');
+        }
+        ##########################End Check submission exists #######################
 
         $entityManager = $this->getDoctrine()->getManager();
         $new = false;
 
         //dd($request->request);
         $submission = $entityManager->getRepository(Submission::class)->findOneBy(['author' => $this->getUser(), 'callForProposal' => $callForProposal]);
-        if ($submission == null) {
+        if (!$submission ) {
             $new = true;
             $submission = new Submission();
-        } else {
+        }
+     else {
             if ($submission->getStep() == 10) {
                 $this->addFlash('warning', "You have a  submission with this call. Edit your submission instead.");
                 // return $this->redirectToRoute('myreviews');
@@ -885,7 +898,7 @@ class SubmissionController extends AbstractController
 
         ]);
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-    
+
 
     /**
      * @Route("/attachment/{id}/deleteAttachment", name = "submission_attachment_delete", methods= {"DELETE"})

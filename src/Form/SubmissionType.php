@@ -35,14 +35,14 @@ class SubmissionType extends AbstractType
                     ],
                 ]
             )
-            ->add('actionplan',   CKEditorType::class, [
-                'attr' => [
-                    'placeholder' => 'References',
-                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                    'required' => false,
+            // ->add('actionplan',   CKEditorType::class, [
+            //     'attr' => [
+            //         'placeholder' => 'References',
+            //         'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+            //         'required' => false,
 
-                ],
-            ])
+            //     ],
+            // ])
             // ->add('abstract' ) 
             ->add(
                 'background_and_rationale',
@@ -163,7 +163,7 @@ class SubmissionType extends AbstractType
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'by_reference' => false,
-                'required' => false,
+                'required' => true,
                 'allow_delete' => true,
                 // 'constraints' => [
                 //     new Count([
