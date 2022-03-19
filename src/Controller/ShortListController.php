@@ -102,7 +102,7 @@ class ShortListController extends AbstractController {
         if (!$zip || is_numeric($zip)) {
             $this->addFlash(
                 'danger',
-                'Unable to read document data!'
+                'Unable to read document data! Invalid document  file'
             );
             return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
 
@@ -123,28 +123,27 @@ class ShortListController extends AbstractController {
             zip_entry_close($zip_entry);
         } // end while
 
-        zip_close($zip);
-
-        
+        zip_close($zip); 
 
         $content = str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
         $content = str_replace('</w:r></w:p>', "\r\n", $content);
         $striped_content = strip_tags($content);
         
         $search =  $submission->getAuthor()->getUserInfo()->getFirstName();
-        if(preg_match("/{$search}/i", $striped_content)) {
+        // if(preg_match("/{$search}/i", $striped_content) || preg_match("/{$search}\b/i", $striped_content)) {
+        if(  preg_match("/{$search}\b/i", $striped_content)) {
           $result="Researcher's name is found in file!";
 
           $striped_content= str_replace($search, "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$search."</b>", $striped_content);
           
             $this->addFlash(
                 'danger',
-                "Researcher's name is found in file!"
+                "Researcher's name is found in proposal file!"
             );
         }
         else{
 
-            $result="Researcher's name is not found in file!"; 
+            $result="Researcher's name is not found in proposal  file!"; 
             $this->addFlash(
                 'success',
                 "Clear! the researcher's name is not found in the proposal document"
