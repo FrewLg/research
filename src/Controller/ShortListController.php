@@ -128,14 +128,24 @@ class ShortListController extends AbstractController {
         $content = str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
         $content = str_replace('</w:r></w:p>', "\r\n", $content);
         $striped_content = strip_tags($content);
+        $count=0;
         
-        $search =  $submission->getAuthor()->getUserInfo()->getFirstName();
-         if(preg_match("/{$search}/i", $striped_content) || preg_match("/{$search}\b/i", $striped_content)) {
-        //if(  preg_match("/{$search}\b/i", $striped_content)) {
-          $result="Researcher's name is found in file!"; 
-          $striped_content= str_replace($search, "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$search."</b>", $striped_content);
-          
-            $this->addFlash(
+        $patterns = array();
+$patterns[0] =$submission->getAuthor()->getUserInfo()->getFirstName();
+$patterns[1] = $submission->getAuthor()->getUserInfo()->getLastName();
+$patterns[2] = $submission->getAuthor()->getUserInfo()->getMidleName();
+$replacements = array();
+$replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patterns[2]."</b>";
+$replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patterns[1]."</b>";
+$replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patterns[0]."</b>";
+   
+         if(preg_match("/{$patterns[0] }/i", $striped_content) 
+             || preg_match("/{$patterns[1] }/i", $striped_content)  
+             || preg_match("/{$patterns[2] }/i", $striped_content)  
+         ) {
+         $result="Researcher's name is found in file!"; 
+          $striped_content=  str_replace($patterns, $replacements, $striped_content,$count);  
+        $this->addFlash(
                 'danger',
                 "Researcher's name is found in proposal file!"
             );
@@ -148,10 +158,11 @@ class ShortListController extends AbstractController {
                 "Clear! the researcher's name is not found in the proposal document"
             );
         }
-        
+        $count--;
         return $this->render('submission/doc.html.twig', [
              'document' => $striped_content,
              'result' => $result,
+             'count' => $count,
              'name' => $submission->getAuthor()->getUserInfo(),
          ]);
 
