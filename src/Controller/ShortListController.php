@@ -130,10 +130,9 @@ class ShortListController extends AbstractController {
         $striped_content = strip_tags($content);
         
         $search =  $submission->getAuthor()->getUserInfo()->getFirstName();
-        // if(preg_match("/{$search}/i", $striped_content) || preg_match("/{$search}\b/i", $striped_content)) {
-        if(  preg_match("/{$search}\b/i", $striped_content)) {
-          $result="Researcher's name is found in file!";
-
+         if(preg_match("/{$search}/i", $striped_content) || preg_match("/{$search}\b/i", $striped_content)) {
+        //if(  preg_match("/{$search}\b/i", $striped_content)) {
+          $result="Researcher's name is found in file!"; 
           $striped_content= str_replace($search, "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$search."</b>", $striped_content);
           
             $this->addFlash(
