@@ -57,8 +57,33 @@
 					<div class="row ">
 						{{result}}
 						<hr class="hr-dashed my-4">
-					<b>	Appearance:
-						{{count}}</b>
+						<b>
+							Appearance:
+							{{count}}</b>
+						<hr class="hr-dashed my-4">
+						 	<ol class='m-2'>
+								<li class='text-primary'>
+									
+									<a href='{{path('researcher',{'id':submission.Author.id})}}'  class='text-primary' >
+											{{submission.Author}} [PI]</a>
+								</li>
+								{% for member in submission.coAuthors %}
+									<li>
+										<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+											{{ member.researcher.userInfo }}</a>
+
+										{% if member.confirmed=='1' %}
+											<i class="fa fa-check text-success"></i>
+										{% elseif member.confirmed==''    %}
+											<i class="fa fa-times-circle text-danger"></i>
+
+										{% else  %}
+											<i class="fa fa-close text-danger"></i>
+										{% endif %}<br>
+									</li>
+									{% else %}No Co-PI has been involved
+								{% endfor %}
+							</ol>  
 					</div>
 
 				</div>

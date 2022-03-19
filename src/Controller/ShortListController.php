@@ -215,7 +215,7 @@ $found=1;
              'document' => $striped_content,
              'result' => $result,
              'count' => $count,
-             'name' => $submission->getAuthor()->getUserInfo(),
+             'submission' => $submission ,
          ]);
 
     }
