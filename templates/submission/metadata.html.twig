@@ -421,7 +421,7 @@
 										<h4 class="font-20 fw-bold d-block mt-2"> 
 								Add Budget Expense and Time schedules </h4>
 								
-								{{form_widget(submissionform.actionplan)}}
+								 
 							</div>
 
 							<div class="col-12">
@@ -957,9 +957,13 @@ var $input = $('<button class="btn btn-success" type="submit">Save</button>');
 $input.appendTo($('ul[aria-label=Pagination]'));
 	</script>
 	<script>
-		$(function () {
-$(".select2").select2();
 
-})
+ 
+
+window.onload = function() {
+  init();
+$(".select2").select2();
+};
+
 	</script>
 {% endblock %}

@@ -24,36 +24,38 @@ class CallForProposalType extends AbstractType
     {
         $builder
 
-            ->add('research_type', ResearchType::class)
+        ->add('research_type', ResearchType::class)
 
-            ->add('subject',  CKEditorType::class, [
+             ->add('subject', CKEditorType::class, [
                 'attr' => [
                     'placeholder' => 'Body of the call',
                     'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
                     'required' => false,
 
-                ],
+                ]
             ])
-            ->add('heading',  CKEditorType::class, [
+            ->add('heading', CKEditorType::class, [
                 'attr' => [
                     'placeholder' => 'Heading title of the call',
                     'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
                     'required' => false,
 
-                ],
+                ]
             ])
-            ->add('guidelines',  CKEditorType::class, [
+            ->add('guidelines', CKEditorType::class, [
                 'attr' => [
                     'placeholder' => 'Guideline details',
                     'class' => 'form-control  col col-md-12 col-sm-12 col-lg-9  ',
                     'required' => false,
 
-                ],
+                ]
             ])
             ->add('deadline', DateType::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ))
+
+           
             ->add('funding_source', TextType::class, [
                 'attr' => ['class' => 'form-control col col-md-12 col-sm-12 col-lg-9 '],
             ])
@@ -75,33 +77,20 @@ class CallForProposalType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ))
-
-
-            ->add('number_of_co_pi')
+            
             ->add('allow_non_academic_staff_as_pi')
-            // ->add('allow_researcher_from_another_college')
-            ->add('allow_pi_from_other_university')
-            //->add('commitment_from_other_research', ChoiceType::class,['class'=>'switchery switchery-default'],)
-            ->add('commitment_from_other_research', ChoiceType::class, [
-                'placeholder' => '-- Select Research Type--',
-                'expanded' => true,
-                'attr' => [
-                    'class' => 'switchery switchery-default  col col-md-12 col-sm-12 col-lg-9  ',
-                    'required' => true,
-
-                ],
-            ])
-
+             ->add('allow_pi_from_other_university') 
+            ->add('commitment_from_other_research')
+            ->add('is_call_from_center')
             ->add('attachement', FileType::class, [
-                'label' => 'Upload proposal attachment',
+                'label' => 'Upload   attachment',
                 'mapped' => false,  'attr'=>[
                     'class' => 'form-control  m-0   ',
-                             'required' => true,
+                             'required' => false,
             
             ],
-                'required' => true,
+                'required' => false,
                 ])
-            // ->add('work_unit')
         ;
     }
 
