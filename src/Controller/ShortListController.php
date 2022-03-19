@@ -99,14 +99,14 @@ class ShortListController extends AbstractController {
 
         }
 
-        // if (!$zip || is_numeric($zip)) {
-        //     $this->addFlash(
-        //         'danger',
-        //         'Numeric data!'
-        //     );
-        //     return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
+        if (!$zip || is_numeric($zip)) {
+            $this->addFlash(
+                'danger',
+                'Unable to read document data!'
+            );
+            return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
 
-        // }
+        }
 
         while ($zip_entry = zip_read($zip)) {
 
