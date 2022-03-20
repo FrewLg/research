@@ -89,8 +89,7 @@ class ShortListController extends AbstractController {
 
         $zip = zip_open($filePath);
 
-
-        if (!$zip ) {
+        if (!$zip) {
             $this->addFlash(
                 'danger',
                 'File not found! or invalid    file format'
@@ -123,145 +122,107 @@ class ShortListController extends AbstractController {
             zip_entry_close($zip_entry);
         } // end while
 
-        zip_close($zip); 
+        zip_close($zip);
 
         $content = str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
         $content = str_replace('</w:r></w:p>', "\r\n", $content);
         $striped_content = strip_tags($content);
-        $count=0;
-        
+        $count = 0;
+
         $patterns = array();
-$patterns[0] =$submission->getAuthor()->getUserInfo()->getFirstName();
-$patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
-$patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
+        $patterns[0] = $submission->getAuthor()->getUserInfo()->getFirstName();
+        $patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
+        $patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
 // $patterns[1] = 'considera';
-$replacements = array();
-$replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patterns[0]."</b>";
-$replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patterns[1]."</b>";
-$replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patterns[2]."</b>";
-   
-        //  if(preg_match("/{$patterns[0]}\b/i", $striped_content) 
-        //      || preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)  
-        //      || preg_match("/{$patterns[2]}\b/i", $striped_content)  
+        $replacements = array();
+        $replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[0] . "</b>";
+        $replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[1] . "</b>";
+        $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[2] . "</b>";
+
+        //  if(preg_match("/{$patterns[0]}\b/i", $striped_content)
+        //      || preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
+        //      || preg_match("/{$patterns[2]}\b/i", $striped_content)
         //  ) {
-        //  $result="Researcher's name is found in file!"; 
-        //   $striped_content=  str_replace($patterns, $replacements, $striped_content, $count);  
+        //  $result="Researcher's name is found in file!";
+        //   $striped_content=  str_replace($patterns, $replacements, $striped_content, $count);
         // $this->addFlash(
         //         'danger',
         //         "Researcher's name is found in proposal file!"
         //     );
-            
+
         // }
         // else{
 
-        //     $result="Researcher's name is not found in proposal  file!"; 
+        //     $result="Researcher's name is not found in proposal  file!";
         //     $this->addFlash(
         //         'success',
         //         "Clear! the researcher's name is not found in the proposal document"
         //     );
         // }
-        
-$copis = $submission->getCoAuthors();
-foreach($copis  as $value){
-    $count=0;
-        
-    $patternsc = array();
-$patternsc[0] =$value->getResearcher()->getUserInfo()->getFirstName();
-$patternsc[1] = $value->getResearcher()->getUserInfo()->getMidleName();
-$patternsc[2] = $value->getResearcher()->getUserInfo()->getLastName();
+
+        $copis = $submission->getCoAuthors();
+        foreach ($copis as $value) {
+            $count = 0;
+
+            $patternsc = array();
+            $patternsc[0] = $value->getResearcher()->getUserInfo()->getFirstName();
+            $patternsc[1] = $value->getResearcher()->getUserInfo()->getMidleName();
+            $patternsc[2] = $value->getResearcher()->getUserInfo()->getLastName();
 // $patterns[1] = 'considera';
-$replacementsc = array();
-$replacementsc[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patternsc[0]."</b>";
-$replacementsc[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patternsc[1]."</b>";
-$replacementsc[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> ".$patternsc[2]."</b>";
+            $replacementsc = array();
+            $replacementsc[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[0] . "</b>";
+            $replacementsc[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[1] . "</b>";
+            $replacementsc[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[2] . "</b>";
 
+            if (
+                preg_match("/{$patternsc[0]}\b/i", $striped_content)
+                || preg_match("/{$patternsc[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
+                || preg_match("/{$patternsc[2]}\b/i", $striped_content)
+                || preg_match("/{$patterns[0]}\b/i", $striped_content)
+                || preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
+                || preg_match("/{$patterns[2]}\b/i", $striped_content)
 
-if(
-preg_match("/{$patternsc[0]}\b/i", $striped_content) 
-|| preg_match("/{$patternsc[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)  
-|| preg_match("/{$patternsc[2]}\b/i", $striped_content)  
-|| preg_match("/{$patterns[0]}\b/i", $striped_content) 
-|| preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)  
-|| preg_match("/{$patterns[2]}\b/i", $striped_content)  
+            ) {
+                $result = "Name of the researcher has been found in   proposal file!";
+                $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
+                $striped_content = str_replace($patternsc, $replacementsc, $striped_content, $count);
 
-) {
-$result="Researcher's name is found in file!"; 
-$striped_content=  str_replace($patterns, $replacements, $striped_content, $count) ;  
-$striped_content=  str_replace($patternsc, $replacementsc, $striped_content, $count) ;  
+                $found = 1;
 
-$found=1;
-
-}
-
+            }
 
         }
-        if($found){
+        if ($found) {
             $this->addFlash(
                 'danger',
-                "Researcher's name is found in proposal file!"
-             ); 
-        }
-        
-        else{
-
-            $result="Researcher's name is not found in proposal  file!"; 
-            $this->addFlash(
-               'success',
-               "Clear! the researcher's name is not found in the proposal document"
+                "Name of the researcher has been found in   proposal file!"
             );
-            }
-            
+        } else {
+
+            $result = "Researcher's name is not found in proposal  file!";
+            $this->addFlash(
+                'success',
+                "Clear! the researcher's name is not found in the proposal document"
+            );
+        }
+
+        if ($striped_content !== false) {
+         $docu=    nl2br($striped_content) ;
+        } 
+        else 
+        {
+            echo 'Couldn\'t the file. Please check that file.';
+        }
+
         return $this->render('submission/doc.html.twig', [
-             'document' => $striped_content,
-             'result' => $result,
-             'count' => $count,
-             'submission' => $submission ,
-         ]);
+            'document' => $docu,
+            // 'document' => $striped_content,
+            'result' => $result,
+            'count' => $count,
+            'submission' => $submission,
+        ]);
 
     }
 
-
-    public function read_file_docx($filename) {
-
-        $striped_content = '';
-        $content = '';
-
-        if (!$filename || !file_exists($filename)) {
-            return false;
-        }
-
-        $zip = zip_open($filename);
-
-        if (!$zip || is_numeric($zip)) {
-            return false;
-        }
-
-        while ($zip_entry = zip_read($zip)) {
-
-            if (zip_entry_open($zip, $zip_entry) == FALSE) {
-                continue;
-            }
-
-            if (zip_entry_name($zip_entry) != "word/document.xml") {
-                continue;
-            }
-
-            $content .= zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
-
-            zip_entry_close($zip_entry);
-        } // end while
-
-        zip_close($zip);
-
-        //echo $content;
-        //echo "<hr>";
-        //file_put_contents('1.xml', $content);
-
-        $content = str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
-        $content = str_replace('</w:r></w:p>', "\r\n", $content);
-        $striped_content = strip_tags($content);
-
-        return $striped_content;
-
-    }
+    
 }
