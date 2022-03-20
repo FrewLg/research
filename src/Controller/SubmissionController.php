@@ -282,7 +282,7 @@ class SubmissionController extends AbstractController
             return $this->redirectToRoute('researchworks');
         }
 
-        ##########################
+         ##########################
 
         $p_i_college = $this->getUser()->getUserInfo()->getCollege();
 
