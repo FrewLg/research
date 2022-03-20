@@ -53,7 +53,7 @@ class ShortListController extends AbstractController {
     /**
      * @Route("/{id}/findone", name="short_list_findone", methods={"DELETE", "GET","POST"})
      */
-    public function findone(Submission $submission, Request $request, PaginatorInterface $paginator): Response {
+    public function findone(Submission $submission): Response {
         // $this->denyAccessUnlessGranted('short_list_view');
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -149,14 +149,15 @@ class ShortListController extends AbstractController {
             $replacementsc[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[2] . "</b>";
 
             $patterns = array();
-$patterns[0] = $submission->getAuthor()->getUserInfo()->getFirstName();
-$patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
-$patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
-// $patterns[1] = 'considera';
-$replacements = array();
-$replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[0] . "</b>";
-$replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[1] . "</b>";
-$replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[2] . "</b>";
+
+            $patterns[0] = $submission->getAuthor()->getUserInfo()->getFirstName();
+            $patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
+            $patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
+            // $patterns[1] = 'considera';
+            $replacements = array();
+            $replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[0] . "</b>";
+            $replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[1] . "</b>";
+            $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[2] . "</b>";
 
 
 
@@ -194,7 +195,7 @@ $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255
 
 
         if (  preg_match("/{$patterns[0]}\b/i", $striped_content)
-            || preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
+            || preg_match("/{$patterns[1]}\b/i", $striped_content)
             || preg_match("/{$patterns[2]}\b/i", $striped_content)
 
         ) {
@@ -230,7 +231,6 @@ $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255
 
         return $this->render('submission/doc.html.twig', [
             'document' => $docu,
-            // 'document' => $striped_content,
             'result' => $result,
             'count' => $count,
             'submission' => $submission,
