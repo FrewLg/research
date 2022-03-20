@@ -139,26 +139,7 @@ class ShortListController extends AbstractController {
         $replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[1] . "</b>";
         $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[2] . "</b>";
 
-        //  if(preg_match("/{$patterns[0]}\b/i", $striped_content)
-        //      || preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
-        //      || preg_match("/{$patterns[2]}\b/i", $striped_content)
-        //  ) {
-        //  $result="Researcher's name is found in file!";
-        //   $striped_content=  str_replace($patterns, $replacements, $striped_content, $count);
-        // $this->addFlash(
-        //         'danger',
-        //         "Researcher's name is found in proposal file!"
-        //     );
-
-        // }
-        // else{
-
-        //     $result="Researcher's name is not found in proposal  file!";
-        //     $this->addFlash(
-        //         'success',
-        //         "Clear! the researcher's name is not found in the proposal document"
-        //     );
-        // }
+      
 
         $copis = $submission->getCoAuthors();
         foreach ($copis as $value) {
@@ -178,20 +159,30 @@ class ShortListController extends AbstractController {
                 preg_match("/{$patternsc[0]}\b/i", $striped_content)
                 || preg_match("/{$patternsc[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
                 || preg_match("/{$patternsc[2]}\b/i", $striped_content)
-                || preg_match("/{$patterns[0]}\b/i", $striped_content)
-                || preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
-                || preg_match("/{$patterns[2]}\b/i", $striped_content)
+                
 
             ) {
                 $result = "Name of the researcher has been found in   proposal file!";
-                $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
-                $striped_content = str_replace($patternsc, $replacementsc, $striped_content, $count);
+                 $striped_content = str_replace($patternsc, $replacementsc, $striped_content, $count);
 
                 $found = 1;
 
             }
 
         }
+
+        if (  preg_match("/{$patterns[0]}\b/i", $striped_content)
+            || preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
+            || preg_match("/{$patterns[2]}\b/i", $striped_content)
+
+        ) {
+            $result = "Name of the researcher has been found in   proposal file!";
+            $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
+ 
+            $found = 1;
+
+        }
+
         if ($found) {
             $this->addFlash(
                 'danger',
