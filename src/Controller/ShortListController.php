@@ -163,10 +163,10 @@ class ShortListController extends AbstractController {
 
             if (
                 preg_match("/{$patternsc[0]}\b/i", $striped_content)
-                || preg_match("/{$patternsc[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
+                || preg_match("/{$patternsc[1]}\b/i", $striped_content)
                 || preg_match("/{$patternsc[2]}\b/i", $striped_content)
                 || preg_match("/{$patterns[0]}\b/i", $striped_content)
-                || preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
+                || preg_match("/{$patterns[1]}\b/i", $striped_content)
                 || preg_match("/{$patterns[2]}\b/i", $striped_content)
                 
 
