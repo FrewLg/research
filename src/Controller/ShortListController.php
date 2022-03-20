@@ -129,19 +129,11 @@ class ShortListController extends AbstractController {
         $striped_content = strip_tags($content);
         $count = 0;
 
-        $patterns = array();
-        $patterns[0] = $submission->getAuthor()->getUserInfo()->getFirstName();
-        $patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
-        $patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
-// $patterns[1] = 'considera';
-        $replacements = array();
-        $replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[0] . "</b>";
-        $replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[1] . "</b>";
-        $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[2] . "</b>";
-
+     
       
 
         $copis = $submission->getCoAuthors();
+        if($copis){
         foreach ($copis as $value) {
             $count = 0;
 
@@ -149,27 +141,57 @@ class ShortListController extends AbstractController {
             $patternsc[0] = $value->getResearcher()->getUserInfo()->getFirstName();
             $patternsc[1] = $value->getResearcher()->getUserInfo()->getMidleName();
             $patternsc[2] = $value->getResearcher()->getUserInfo()->getLastName();
-// $patterns[1] = 'considera';
+
+            
             $replacementsc = array();
             $replacementsc[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[0] . "</b>";
             $replacementsc[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[1] . "</b>";
             $replacementsc[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[2] . "</b>";
 
+            $patterns = array();
+$patterns[0] = $submission->getAuthor()->getUserInfo()->getFirstName();
+$patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
+$patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
+// $patterns[1] = 'considera';
+$replacements = array();
+$replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[0] . "</b>";
+$replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[1] . "</b>";
+$replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[2] . "</b>";
+
+
+
             if (
                 preg_match("/{$patternsc[0]}\b/i", $striped_content)
                 || preg_match("/{$patternsc[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
                 || preg_match("/{$patternsc[2]}\b/i", $striped_content)
+                || preg_match("/{$patterns[0]}\b/i", $striped_content)
+                || preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
+                || preg_match("/{$patterns[2]}\b/i", $striped_content)
                 
 
             ) {
                 $result = "Name of the researcher has been found in   proposal file!";
                  $striped_content = str_replace($patternsc, $replacementsc, $striped_content, $count);
+                 $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
 
                 $found = 1;
 
             }
 
         }
+        }
+        else{
+//////////////////////////
+$patterns = array();
+$patterns[0] = $submission->getAuthor()->getUserInfo()->getFirstName();
+$patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
+$patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
+// $patterns[1] = 'considera';
+$replacements = array();
+$replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[0] . "</b>";
+$replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[1] . "</b>";
+$replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[2] . "</b>";
+
 
         if (  preg_match("/{$patterns[0]}\b/i", $striped_content)
             || preg_match("/{$patterns[1]}\/^\s*{(\w+)}\s*=/i", $striped_content)
@@ -182,6 +204,7 @@ class ShortListController extends AbstractController {
             $found = 1;
 
         }
+    }
 
         if ($found) {
             $this->addFlash(
