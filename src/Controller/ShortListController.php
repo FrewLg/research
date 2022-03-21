@@ -168,9 +168,9 @@ class ShortListController extends AbstractController {
                     || preg_match("/{$patterns[2]}\b/i", $striped_content)
 
                 ) {
-                    $result = "Name of the researcher has been found in   proposal file!";
-                    $striped_content = str_replace($patternsc, $replacementsc, $striped_content, $count);
+                     $striped_content = str_replace($patternsc, $replacementsc, $striped_content, $count);
                     $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
+                     $result = "Name of the research team members has been found in   proposal file  <a href='#' class='avatar-box thumb-xxs align-self-center'>  <span class='avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal'>  ".$count."   </span>  </a> times !";
 
                     $found = 1;
 
@@ -194,8 +194,8 @@ class ShortListController extends AbstractController {
                 || preg_match("/{$patterns[2]}\b/i", $striped_content)
 
             ) {
-                $result = "Name of the researcher has been found in   proposal file!";
                 $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
+                $result = "Name of the research team members has been found in   proposal file  <a href='#' class='avatar-box thumb-xxs align-self-center'>  <span class='avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal'>  ".$count."   </span>  </a> times !";
 
                 $found = 1;
 
@@ -205,7 +205,7 @@ class ShortListController extends AbstractController {
         if ($found) {
             $this->addFlash(
                 'danger',
-                "Name of the researcher has been found in   proposal file!"
+                "Name of the research team members has been found in   proposal file!"
             );
         } else {
 
@@ -227,12 +227,10 @@ class ShortListController extends AbstractController {
 
         $review = new Review();
         $review->setSubmission($submission);
-        $review->setReviewedBy($this->getUser());
-
-//////allow reviewer if he is only assigned to this submission
-// $form = $this->createFormBuilder($review)
-        $form = $this->createForm(ShortlistDecisionType::class, $review); 
-        $form->handleRequest($request); 
+        $review->setReviewedBy($this->getUser()); 
+//////allow reviewer if he is only assigned to this submission 
+        $form = $this->createForm(ShortlistDecisionType::class, $review);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $reviewfile = $form->get('attachment')->getData();
