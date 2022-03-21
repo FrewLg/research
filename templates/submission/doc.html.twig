@@ -25,65 +25,61 @@
 
 		<div class="col-lg-9">
 
-			<div class="card ">
-				<div class="card-header container">
-					<b>Blind Submission Checking
-					</b>
-				</div>
 
-				<div class="kanban-board m-0">
+			<div class="kanban-board m-0">
+
+				<div class="kanban-col ">
+					<div class="kanban-main-card">
+						<div class="kanban-box-title">
+							<h4 class="font-16  ">
+								Document
+								<br>
+							</h4>
+							<h4 class="font-13  ">
+
+								Highlight keywords as you type:</h4>
+							<form>
+
+								<input id="keywords" type='textarea' placeholder='Enter keyword' class='form-control'></p>
+						</form>
 
 
-					<div class="kanban-col ">
-						<div class="kanban-main-card">
-							<div class="kanban-box-title">
-								<h4 class="font-14  ">Highlight keywords as you type:</h4>
-								<form>
+					</div>
 
-									<input id="keywords" type='textarea' placeholder='Enter keyword' class='form-control'></p>
-							</form>
+					<div class="card  ">
+						<div class="card-body">
 
+							<div class="table-responsive">
+								<div id="playground">
+									<p>
+										{{ document |raw}}</p>
 
-						</div>
-
-						<div class="card  ">
-							<div class="card-body">
-
-								<div class="table-responsive">
-									<div id="playground">
-										<p>
-											{{ document |raw}}</p>
-
-									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
 			</div>
-		</div>
 
+
+		</div>
 	</div>
 	<div class="col-lg-3">
 		<div class="card ">
 			<div class="card-header  ">
-				<b>Result</b>
+				<b>Blind submission analysis result</b>
 			</div>
 			<div class="card-body container ">
-				<b>{{result}}
+				<b>{{result|raw}}
 				</b>
-				<hr class="hr-dashed my-4">
-				<b>
-					Research team member's name appearance count:
-					{{count}}</b>
+
 			</div>
 
 		</div>
 
 		<div class="card ">
 			<div class="card-header  ">
-				<b>Research team</b>
+				<b>Research team confirmation</b>
 			</div>
 			<div class="card-body container ">
 				<div class="row ">
@@ -92,48 +88,124 @@
 
 
 					<hr class="hr-dashed my-4">
-					<ol class='m-2'>
-						<li class='text-primary'>
 
-							<a href='{{path('researcher',{'id':submission.Author.id})}}' class='text-primary'>
-								{{submission.Author}}
-								[PI]</a>
-						</li>
-						{% for member in submission.coAuthors %}
-							<li>
-								<a href='{{path('researcher',{'id':member.researcher.id})}}'>
-									{{ member.researcher.userInfo }}</a>
+					<div class="card">
+						<div class="card-body">
+							<div class="row">
+								<div class="col">
+									<div class="media">
 
-								{% if member.confirmed=='1' %}
-									<i class="fa fa-check text-success"></i>
-								{% elseif member.confirmed==''    %}
-									<i class="fa fa-times-circle text-danger"></i>
 
-								{% else  %}
-									<i class="fa fa-close text-danger"></i>
-								{% endif %}<br>
-							</li>
-							{% else %}No Co-PI has been involved
-						{% endfor %}
-					</ol>
-				</div>
-			</div>
+										{% if  submission.Author.userInfo  and  submission.Author.userInfo.image  %}
+
+											<img src="{{ asset('files/profile_pictures/'~ submission.Author.userInfo.image ) }}" alt="" class="rounded-circle thumb-lg align-self-center">
+										{% else %}
+
+											<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle thumb-xs">
+										{% endif %}
+
+										<div class="media-body ms-3 align-self-center">
+											<h5 class="mt-0 mb-1">
+												<a href='{{path('researcher',{'id':submission.Author.id})}}' class='text-primary'>
+													{{submission.Author}}
+												</a>
+											</h5>
+											<p class="mb-0 text-muted">PI</p>
+										</div>
+									</div>
+									<!--end media-->
+								</div>
+								<!--end col-->
+								<div class="col-auto align-self-center">
+
+
+									<a href="apps-contact-list.html#" class="me-1 contact-icon">
+										<i class="fas fa-check text-success"></i>
+									</a>
+
+								</div>
+								<!--end col-->
+							</div>
+							<!--end row-->
+						</div>
+						<!--end card-body-->
+					</div>
+				 
+
+				{% for member in submission.coAuthors %}
+
+					<div class="card">
+						<div class="card-body">
+							<div class="row">
+								<div class="col">
+									<div class="media">
+
+
+										{% if  member.researcher.userInfo  and  member.researcher.userInfo.image  %}
+
+											<img src="{{ asset('files/profile_pictures/'~ member.researcher.userInfo.image ) }}" alt="" class="rounded-circle thumb-lg align-self-center">
+										{% else %}
+
+											<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle thumb-xs">
+										{% endif %}
+
+										<div class="media-body ms-3 align-self-center">
+											<h5 class="mt-0 mb-1">
+												<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+													{{ member.researcher.userInfo }}</a>
+											</h5>
+											<p class="mb-0 text-muted">{{ member.role}}</p>
+										</div>
+									</div>
+									<!--end media-->
+								</div>
+								<!--end col-->
+								<div class="col-auto align-self-center">
+
+									{% if member.confirmed=='1' %}
+										<a href="apps-contact-list.html#" class="me-1 contact-icon">
+											<i class="fas fa-check text-success"></i>
+										</a>
+									{% elseif member.confirmed==''    %}
+
+										<a href="apps-contact-list.html#" class="me-1 contact-icon">
+											<i class="fa fa-times-circle text-danger"></i>
+										</a>
+									{% else  %}
+										<i class="fa fa-close text-danger"></i>
+									{% endif %}
+
+								</div>
+							 
+							</div>
+						 
+						</div>
+					 
+					</div>
+				 
+
+
+				{% else %}No Co-PI has been involved
+			{% endfor %}
+
+
+		</div>
+		</div>
+	</div>
+
+	<div class="card ">
+		<div class="card-header  ">
+			<b>Decision</b>
+		</div>
+		<div class="card-body container ">
+			<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='  btn btn-sm btn-soft-primary btn-xs   '>
+				Assign  Reviewer</a>
+			<hr class="hr-dashed my-4">
+			<button type="button" class="btn btn-block btn-soft-danger btn-sm">Decline</button>
+			<button type="button" class="btn btn-block btn-soft-success btn-sm">Select for shortlist</button>
+
 		</div>
 
-		<div class="card ">
-			<div class="card-header  ">
-				<b>Decision</b>
-			</div>
-			<div class="card-body container ">
-				<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='  btn btn-sm btn-soft-primary btn-xs   '>
-					Assign  Reviewer</a>
-				<hr class="hr-dashed my-4">
-				<button type="button" class="btn btn-block btn-soft-danger btn-sm">Decline</button>
-				<button type="button" class="btn btn-block btn-soft-success btn-sm">Select for shortlist</button>
-
-			</div>
-
-		</div>
 
 	</div>
 {% endblock %}
