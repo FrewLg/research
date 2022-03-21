@@ -6,6 +6,7 @@
 {% endblock %}
 {% block header_contenttwo %}Profile
 {% endblock %}
+
 {% macro displayContent(researches) %}
 
 	<div class="col-md-4">
@@ -625,13 +626,7 @@
 												<br>
 												<br>
 												<br>
-												<ul id="contact-fields-list" class="m-t-5" data-prototype="{{_self.displayContent(submissionform.researches.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ submissionform.researches|length }}">
-													{% for coAuthor in submissionform.researches %}
-														<div class="row ">
-															{{ _self.displayContent(coAuthor) }}
-														</div>
-													{% endfor %}
-												</ul>
+												 
 											</div>
 										</div>
 									</div>
