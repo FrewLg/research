@@ -62,9 +62,10 @@ class ShortListController extends AbstractController {
         $entityManager = $this->getDoctrine()->getManager();
 
         $fileName = $entityManager->getRepository(SubmissionAttachement::class)->
-            findOneBy(['submission' => $submission]);
+            findOneBy(['submission' => $submission ]);
 
-        $filePath = $this->getParameter('upload_destination') . '/' . $fileName->getFile();
+
+        $filePath = $this->getParameter('upload_destination') . '/' . $fileName->getFile(1);
         if (!$filePath) {
             $this->addFlash(
                 'danger',
@@ -282,11 +283,11 @@ class ShortListController extends AbstractController {
         }
 
 ###################################Decision#################################################
-
-        return $this->render('submission/doc.html.twig', [
+         return $this->render('submission/doc.html.twig', [
             'document' => $docu,
             'result' => $result,
-            'count' => $count,
+            'count' => $count, 
+            'file' => $fileName,
             'submission' => $submission,
         ]);
 

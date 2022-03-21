@@ -32,7 +32,7 @@
 					<div class="kanban-main-card">
 						<div class="kanban-box-title">
 							<h4 class="font-16  ">
-								Document
+								Document {{file.name}}
 								<br>
 							</h4>
 							<h4 class="font-13  ">
@@ -118,7 +118,13 @@
 										<div class="media-body ms-3 align-self-center">
 											<h5 class="mt-0 mb-1">
 												<a href='{{path('researcher',{'id':submission.Author.id})}}'>
-													{{submission.Author}}
+													{{submission.Author.UserInfo.suffix}}
+												 
+
+													{{submission.Author.UserInfo}} 
+													{% if submission.Author.userInfo.educationLevel %}
+												({{ submission.Author.userInfo.educationLevel }})
+											{% endif %}
 												</a>
 											</h5>
 											<p class="mb-0 text-muted">PI</p>
@@ -128,9 +134,7 @@
 								</div>
 								<!--end col-->
 								<div class="col-auto align-self-center">
-
-
-									<a href="apps-contact-list.html#" class="me-1 contact-icon">
+ <a href="apps-contact-list.html#" class="me-1 contact-icon">
 										<i class="fas fa-check text-success"></i>
 									</a>
 
@@ -163,7 +167,9 @@
 											<div class="media-body ms-3 align-self-center">
 												<h5 class="mt-0 mb-1">
 													<a href='{{path('researcher',{'id':member.researcher.id})}}'>
-														{{ member.researcher.userInfo }}</a>
+														{{ member.researcher.userInfo.suffix }}
+														{{ member.researcher.userInfo }}
+														</a>
 												</h5>
 												<p class="mb-0 text-muted">{{ member.role}}</p>
 											</div>
