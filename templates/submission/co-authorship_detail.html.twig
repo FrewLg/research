@@ -26,35 +26,12 @@
 									<li>
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
 									</li>
-									{% if submission.copyedit is  not empty %}
-										<li>
-											<a class="nav-link" href="#copyedit" data-bs-toggle="tab">Progress report</a>
-										</li>
-
-									{% endif %}
-									{% if submission.copyedit is  not empty %}
-
-										<li>
-											<a class="nav-link" href="#progress-report" data-bs-toggle="tab">Progress report</a>
-										</li>
-									{% endif %}
+								 
+									 
 
 
-									{% if submission.copyedit is  not empty %}
-										<li>
-											<a class="nav-link" href="#research" data-bs-toggle="tab">Research</a>
-										</li>
-									{% endif %}
-									{% if submission.terminalreport is  not  empty %}
-										<li>
-											<a class="nav-link" href="#terminal-report" data-bs-toggle="tab">Publication</a>
-										</li>
-									{% endif %}
-									{% if submission.published is  not empty %}
-										<li>
-											<a class="nav-link" href="#publication" data-bs-toggle="tab">Publication</a>
-										</li>
-									{% endif %}
+									 
+									 
 								</ul>
 							</div>
 						</div>
@@ -484,27 +461,10 @@
 									Revision not sent
 
 								{% endfor %}
-								{% if submission.copyedit is  not empty %}
-									<hr>
-
-									<h5 class="font-18 m-0 fw-bold">Your revision
-									</h5>
-
-									{{ form_start(form) }}
-									{{ form_widget(form) }}
-									<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
-									{{ form_end(form) }}
-								{% endif %}<hr>
-								{% if submission.copyedit is  not empty %}
-									<h3 class='text-success'>Comment</h3>
-									{{ form_start(form) }}
-									{{ form_widget(form) }}
-									<button class="btn">{{ button_label|default('Save') }}</button>
-									{{ form_end(form) }}
-								{% endif %}
+								 <hr>
+								 
 							</div>
-							<div class="tab-pane" id="copyedit">{{ submission.abstract|raw }}</div>
-							<div class="tab-pane" id="progress-report">{{ submission.title }}</div>
+						 
 							<div class="tab-pane" id="terminal-report">
 								<strong class='text-success'>Final report datails</strong>
 								<p>
@@ -617,15 +577,7 @@ $("#showEditRequestContent").html("Problem");
 									{% endif %}
 						<div class="float-end">
 							<div
-								class="dropdown d-inline-block">
-{# <a class="dropdown-toggle arrow-none" id="dLabel1" data-bs-toggle="dropdown" href="teams{{submission.id}}#" role="button" aria-haspopup="false" aria-expanded="false">
-				<i class="las la-ellipsis-v font-24 text-muted"></i>
-			</a>
-			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel1">
-				<a class="dropdown-item" href="teams{{submission.id}}#">Open Project</a>
-				<a class="dropdown-item" href="teams{{submission.id}}#">Edit Card</a>
-				<a class="dropdown-item" href="teams{{submission.id}}#">Delete</a>
-			</div> #}
+								class="dropdown d-inline-block"> 
 </div>
 						</div>
 						<div class="media align-items-center">
@@ -671,10 +623,7 @@ $("#showEditRequestContent").html("Problem");
 										<a class="user-avatar user-avatar-group" href="#">
 											<img src="{{ asset('files/profile_pictures/'~member.researcher.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
 										</a>
-
-
-										{# <img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle" style="width:110px; height:110px;"> #}
-									{% else %}
+ 	{% else %}
 										<a class="user-avatar user-avatar-group" href="#">
 											<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
 										</a>
