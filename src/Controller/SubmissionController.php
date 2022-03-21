@@ -292,14 +292,14 @@ class SubmissionController extends AbstractController
 
             return $this->redirectToRoute('researchworks');
         }
-        ##########################Check submission exists #######################
+        ########################## Check submission exists #######################
 
         $entityManager = $this->getDoctrine()->getManager(); 
         $submission = $entityManager->getRepository('App:Submission')->findOneBy(['author' =>$this->getUser(), 'callForProposal'=>$callForProposal]);
       
-        if ($p_i_college == $callForProposal->getCollege() and $callForProposal->getAllowPiFromOtherUniversity()=='') {
+        if ($p_i_college !== $callForProposal->getCollege() and $callForProposal->getAllowPiFromOtherUniversity()=='') {
 
-            $this->addFlash("danger", "You have already a submission under this call!");
+            $this->addFlash("danger", "You are not allowed to submit on this  call!");
 
             return $this->redirectToRoute('myreviews');
         }

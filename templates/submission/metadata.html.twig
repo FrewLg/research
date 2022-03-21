@@ -6,7 +6,10 @@
 {% block container_title %}New submission
 {% endblock %}
 
+{% block help_right %}
+	{% include "helps/submission_help.html.twig" %}
 
+{% endblock %}
 {% block pagehead %}New submission
 {% endblock %}
 {% block breadcrumb %}
@@ -231,7 +234,7 @@
 			<div class="card-header">
 				<h4 class="card-title">Response to call:
 					{{ call.subject| raw }}</h4>
-			 
+			 <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Help</button>
 			</div>
 			<!--end card-header-->
 			<div class="card-body">
@@ -958,7 +961,10 @@ $input.appendTo($('ul[aria-label=Pagination]'));
 	</script>
 	<script>
 
- 
+		$(function () {
+$(".select2").select2();
+
+})
 
 window.onload = function() {
   init();

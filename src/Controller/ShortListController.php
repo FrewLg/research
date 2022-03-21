@@ -3,14 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\CallForProposal;
+use App\Entity\Review;
 use App\Entity\ReviewAssignment;
 use App\Entity\Submission;
 use App\Entity\SubmissionAttachement;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Form\ShortlistDecisionType;
 use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
 // use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
@@ -53,7 +57,7 @@ class ShortListController extends AbstractController {
     /**
      * @Route("/{id}/findone", name="short_list_findone", methods={"DELETE", "GET","POST"})
      */
-    public function findone(Submission $submission): Response {
+    public function findone(Submission $submission, Request $request, MailerInterface $mailer): Response {
         // $this->denyAccessUnlessGranted('short_list_view');
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -129,83 +133,74 @@ class ShortListController extends AbstractController {
         $striped_content = strip_tags($content);
         $count = 0;
 
-     
-      
-
         $copis = $submission->getCoAuthors();
-        if($copis){
-        foreach ($copis as $value) {
-            $count = 0;
+        if ($copis) {
+            foreach ($copis as $value) {
+                $count = 0;
 
-            $patternsc = array();
-            $patternsc[0] = $value->getResearcher()->getUserInfo()->getFirstName();
-            $patternsc[1] = $value->getResearcher()->getUserInfo()->getMidleName();
-            $patternsc[2] = $value->getResearcher()->getUserInfo()->getLastName();
+                $patternsc = array();
+                $patternsc[0] = $value->getResearcher()->getUserInfo()->getFirstName();
+                $patternsc[1] = $value->getResearcher()->getUserInfo()->getMidleName();
+                $patternsc[2] = $value->getResearcher()->getUserInfo()->getLastName();
 
-            
-            $replacementsc = array();
-            $replacementsc[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[0] . "</b>";
-            $replacementsc[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[1] . "</b>";
-            $replacementsc[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[2] . "</b>";
+                $replacementsc = array();
+                $replacementsc[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[0] . "</b>";
+                $replacementsc[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[1] . "</b>";
+                $replacementsc[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patternsc[2] . "</b>";
 
+                $patterns = array();
+
+                $patterns[0] = $submission->getAuthor()->getUserInfo()->getFirstName();
+                $patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
+                $patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
+                // $patterns[1] = 'considera';
+                $replacements = array();
+                $replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[0] . "</b>";
+                $replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[1] . "</b>";
+                $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[2] . "</b>";
+
+                if (
+                    preg_match("/{$patternsc[0]}\b/i", $striped_content)
+                    || preg_match("/{$patternsc[1]}\b/i", $striped_content)
+                    || preg_match("/{$patternsc[2]}\b/i", $striped_content)
+                    || preg_match("/{$patterns[0]}\b/i", $striped_content)
+                    || preg_match("/{$patterns[1]}\b/i", $striped_content)
+                    || preg_match("/{$patterns[2]}\b/i", $striped_content)
+
+                ) {
+                    $result = "Name of the researcher has been found in   proposal file!";
+                    $striped_content = str_replace($patternsc, $replacementsc, $striped_content, $count);
+                    $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
+
+                    $found = 1;
+
+                }
+
+            }
+        } else {
+//////////////////////////
             $patterns = array();
-
             $patterns[0] = $submission->getAuthor()->getUserInfo()->getFirstName();
             $patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
             $patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
-            // $patterns[1] = 'considera';
+// $patterns[1] = 'considera';
             $replacements = array();
             $replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[0] . "</b>";
             $replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[1] . "</b>";
             $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[2] . "</b>";
 
-
-
-            if (
-                preg_match("/{$patternsc[0]}\b/i", $striped_content)
-                || preg_match("/{$patternsc[1]}\b/i", $striped_content)
-                || preg_match("/{$patternsc[2]}\b/i", $striped_content)
-                || preg_match("/{$patterns[0]}\b/i", $striped_content)
+            if (preg_match("/{$patterns[0]}\b/i", $striped_content)
                 || preg_match("/{$patterns[1]}\b/i", $striped_content)
                 || preg_match("/{$patterns[2]}\b/i", $striped_content)
-                
 
             ) {
                 $result = "Name of the researcher has been found in   proposal file!";
-                 $striped_content = str_replace($patternsc, $replacementsc, $striped_content, $count);
-                 $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
+                $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
 
                 $found = 1;
 
             }
-
         }
-        }
-        else{
-//////////////////////////
-$patterns = array();
-$patterns[0] = $submission->getAuthor()->getUserInfo()->getFirstName();
-$patterns[1] = $submission->getAuthor()->getUserInfo()->getMidleName();
-$patterns[2] = $submission->getAuthor()->getUserInfo()->getLastName();
-// $patterns[1] = 'considera';
-$replacements = array();
-$replacements[0] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[0] . "</b>";
-$replacements[1] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[1] . "</b>";
-$replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255, 102); color: rgb(0, 0, 0);'> " . $patterns[2] . "</b>";
-
-
-        if (  preg_match("/{$patterns[0]}\b/i", $striped_content)
-            || preg_match("/{$patterns[1]}\b/i", $striped_content)
-            || preg_match("/{$patterns[2]}\b/i", $striped_content)
-
-        ) {
-            $result = "Name of the researcher has been found in   proposal file!";
-            $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
- 
-            $found = 1;
-
-        }
-    }
 
         if ($found) {
             $this->addFlash(
@@ -222,12 +217,73 @@ $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255
         }
 
         if ($striped_content !== false) {
-         $docu=    nl2br($striped_content) ;
-        } 
-        else 
-        {
+            $docu = nl2br($striped_content);
+        } else {
             echo 'Couldn\'t the file. Please check that file.';
         }
+
+################################### Short list Decision #################################################
+        $em = $this->getDoctrine()->getManager();
+
+        $review = new Review();
+        $review->setSubmission($submission);
+        $review->setReviewedBy($this->getUser());
+
+//////allow reviewer if he is only assigned to this submission
+// $form = $this->createFormBuilder($review)
+        $form = $this->createForm(ShortlistDecisionType::class, $review); 
+        $form->handleRequest($request); 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $reviewfile = $form->get('attachment')->getData();
+            if ($reviewfile == "") {
+                $review->setAttachment('');
+            } else {
+                $reviewfile = $form->get('attachment')->getData();
+                $Areviewfile = md5(uniqid()) . '.' . $reviewfile->guessExtension();
+                $reviewfile->move($this->getParameter('review_files'), $Areviewfile);
+                $review->setAttachment($Areviewfile);
+            }
+            $review->setCreatedAt(new \DateTime());
+            $review->setReviewedBy($this->getUser());
+            ######################
+            $review->setFromDirector(1);
+            $review->setRemark(1);
+            $review->setAllowToView(1);
+            ######################
+            ########### Let us mail it ###########
+            $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'EMAIL_KEY_SUBMISSION_STATUS_DECLINED']);
+            $applicantsubject = $applicantmessages->getSubject();
+            $applicantbody = $applicantmessages->getBody();
+            $submission_url = 'submission/' . $submission->getId() . '/status';
+            $applicant = $submission->getAuthor()->getEmail();
+            $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
+            $emailtwo = (new TemplatedEmail())
+                ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+                ->to($applicant)
+                ->subject($applicantsubject)
+                ->htmlTemplate('emails/application_ack.html.twig')
+                ->context([
+                    'subject' => $applicantsubject,
+                    'body' => $applicantbody,
+                    'title' => $submission->getTitle(),
+                    'submission_url' => $submission_url,
+                    'name' => $applicantname,
+                    'Authoremail' => $applicant,
+                ]);
+
+            $mailer->send($emailtwo);
+
+            ########### End Let us mail it ###########
+
+            $entityManager->persist($review);
+            $entityManager->flush();
+
+            $this->addFlash("success", "Decision sent successfully!");
+            return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
+        }
+
+###################################Decision#################################################
 
         return $this->render('submission/doc.html.twig', [
             'document' => $docu,
@@ -238,5 +294,4 @@ $replacements[2] = "<b class='text-danger' style='background-color: rgb(255, 255
 
     }
 
-    
 }
