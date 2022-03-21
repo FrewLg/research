@@ -38,9 +38,20 @@
 							<h4 class="font-13  ">
 
 								Highlight keywords as you type:</h4>
-							<form>
+							<form id="form1" name="form1" method="post">
+								<div class='row'>
+									<div class="col-lg-8">
+										<input id="keywords" onclick="change()" value="{{ submission.author }}{% for member in submission.coAuthors %}{{ member.researcher.UserInfo }}{% endfor %}" placeholder='Enter keyword' class='form-control'></p>
 
-								<input id="keywords" type='textarea' placeholder='Enter keyword' class='form-control'></p>
+								</div>
+								<div class="col-lg-2">
+
+									<input type="button" class="btn btn-block btn-soft-success btn-sm" name="set_Value" id="set_Value" value="Search a member" onclick="setValue()"/>
+									<input type="reset" class="btn btn-block btn-soft-danger btn-sm"  value="Reset"/>
+ 
+								</div>
+							</div>
+
 						</form>
 
 
@@ -106,7 +117,7 @@
 
 										<div class="media-body ms-3 align-self-center">
 											<h5 class="mt-0 mb-1">
-												<a href='{{path('researcher',{'id':submission.Author.id})}}' class='text-primary'>
+												<a href='{{path('researcher',{'id':submission.Author.id})}}'>
 													{{submission.Author}}
 												</a>
 											</h5>
@@ -130,97 +141,108 @@
 						</div>
 						<!--end card-body-->
 					</div>
-				 
-
-				{% for member in submission.coAuthors %}
-
-					<div class="card">
-						<div class="card-body">
-							<div class="row">
-								<div class="col">
-									<div class="media">
 
 
-										{% if  member.researcher.userInfo  and  member.researcher.userInfo.image  %}
+					{% for member in submission.coAuthors %}
 
-											<img src="{{ asset('files/profile_pictures/'~ member.researcher.userInfo.image ) }}" alt="" class="rounded-circle thumb-lg align-self-center">
-										{% else %}
+						<div class="card">
+							<div class="card-body">
+								<div class="row">
+									<div class="col">
+										<div class="media">
 
-											<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle thumb-xs">
+
+											{% if  member.researcher.userInfo  and  member.researcher.userInfo.image  %}
+
+												<img src="{{ asset('files/profile_pictures/'~ member.researcher.userInfo.image ) }}" alt="" class="rounded-circle thumb-lg align-self-center">
+											{% else %}
+
+												<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle thumb-lg align-self-center">
+											{% endif %}
+
+											<div class="media-body ms-3 align-self-center">
+												<h5 class="mt-0 mb-1">
+													<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+														{{ member.researcher.userInfo }}</a>
+												</h5>
+												<p class="mb-0 text-muted">{{ member.role}}</p>
+											</div>
+										</div>
+										<!--end media-->
+									</div>
+									<!--end col-->
+									<div class="col-auto align-self-center">
+
+										{% if member.confirmed=='1' %}
+											<a href="apps-contact-list.html#" class="me-1 contact-icon">
+												<i class="fas fa-check text-success"></i>
+											</a>
+										{% elseif member.confirmed==''    %}
+
+											<a href="apps-contact-list.html#" class="me-1 contact-icon">
+												<i class="fa fa-times-circle text-danger"></i>
+											</a>
+										{% else  %}
+											<i class="fa fa-close text-danger"></i>
 										{% endif %}
 
-										<div class="media-body ms-3 align-self-center">
-											<h5 class="mt-0 mb-1">
-												<a href='{{path('researcher',{'id':member.researcher.id})}}'>
-													{{ member.researcher.userInfo }}</a>
-											</h5>
-											<p class="mb-0 text-muted">{{ member.role}}</p>
-										</div>
 									</div>
-									<!--end media-->
-								</div>
-								<!--end col-->
-								<div class="col-auto align-self-center">
-
-									{% if member.confirmed=='1' %}
-										<a href="apps-contact-list.html#" class="me-1 contact-icon">
-											<i class="fas fa-check text-success"></i>
-										</a>
-									{% elseif member.confirmed==''    %}
-
-										<a href="apps-contact-list.html#" class="me-1 contact-icon">
-											<i class="fa fa-times-circle text-danger"></i>
-										</a>
-									{% else  %}
-										<i class="fa fa-close text-danger"></i>
-									{% endif %}
 
 								</div>
-							 
+
 							</div>
-						 
+
 						</div>
-					 
-					</div>
-				 
 
 
-				{% else %}No Co-PI has been involved
-			{% endfor %}
+						{% else %}No Co-PI has been involved
+					{% endfor %}
 
 
-		</div>
-		</div>
-	</div>
-
-	<div class="card ">
-		<div class="card-header  ">
-			<b>Decision</b>
-		</div>
-		<div class="card-body container ">
-			<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='  btn btn-sm btn-soft-primary btn-xs   '>
-				Assign  Reviewer</a>
-			<hr class="hr-dashed my-4">
-			<button type="button" class="btn btn-block btn-soft-danger btn-sm">Decline</button>
-			<button type="button" class="btn btn-block btn-soft-success btn-sm">Select for shortlist</button>
-
+				</div>
+			</div>
 		</div>
 
+		<div class="card ">
+			<div class="card-header  ">
+				<b>Decision</b>
+			</div>
+			<div class="card-body container ">
+				<a href="{{ path('review_assignment_new', {'id': submission.id}) }}" class='  btn btn-sm btn-soft-primary btn-xs   '>
+					Assign  Reviewer</a>
+				<hr class="hr-dashed my-4">
+				<button type="button" class="btn btn-block btn-soft-danger btn-sm">Decline</button>
+				<button type="button" class="btn btn-block btn-soft-success btn-sm">Select for shortlist</button>
 
+			</div>
+		</div>
 	</div>
 {% endblock %}
 {% block script %}
 	<script src="{{ asset('plugins/select2/hilitor.js')}}"></script>
 
-	<script src="hilitor.js"></script>
 	<script>
-
+ 
 		window.addEventListener("DOMContentLoaded", function (e) {
 var myHilitor2 = new Hilitor("playground");
 myHilitor2.setMatchType("left");
 document.getElementById("keywords").addEventListener("keyup", function (e) {
 myHilitor2.apply(this.value);
+document.getElementById('keywords').value = "{{ submission.author }}{% for member in submission.coAuthors %}{{ member.researcher.UserInfo }}{% endfor %}";
+
 }, false);
 }, false);
+
 	</script>
+
+	<script>
+
+
+		{# function setValue() {
+
+document.getElementById('keywords').value = "{{ submission.author }}{% for member in submission.coAuthors %}{{ member.researcher.UserInfo }}{% endfor %}";
+
+} #}
+	</script>
+
 {% endblock %}
