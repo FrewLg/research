@@ -95,12 +95,9 @@
 
 												{{ userInfo.affiliation }}
 												{% else %}
-											{% endif %}
-
-
-											{{ user.userInfo.suffix   }}
-
-											{% if user.userInfo.educationLevel %}
+											{% endif %} 
+										
+										{% if user.userInfo.educationLevel %}
 												({{ user.userInfo.educationLevel }})
 											{% endif %}
 
