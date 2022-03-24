@@ -188,16 +188,20 @@ class SubmissionRepository extends ServiceEntityRepository
         return  $qb->orderBy('s.id', 'ASC')
             ->getQuery();;
     }
-    public function filterApproved(CallForProposal $callForProposal)
+    public function filterApproved(CallForProposal $callForProposal,$isGranted=false)
     {
         $qb = $this->createQueryBuilder('s');
 
         $qb->andWhere("s.callForProposal = :callForProposal")->setParameter('callForProposal', $callForProposal);
 
         $qb->leftJoin("App:Review", "r", "with", "s.id=r.submission");
-        $qb->andWhere("r.remark = 4")
+        $qb
+            ->andWhere("r.remark = 4")
             ->andWhere("r.from_director = 1");
 
+            if($isGranted){
+                $qb->andWhere("s.awardgranted = 1");
+            }
 
 
         // dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());

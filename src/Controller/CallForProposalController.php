@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * @Route("/call-for-proposals")
@@ -174,6 +177,51 @@ public function result(CallForProposal $callForProposal, SubmissionRepository $s
         'results' => $results,
         'call_for_proposal' => $callForProposal,
     ]);
+}
+
+
+/**
+ * @Route("/{uidentifier}/export", name="call_export_winner", methods={"GET"})
+ */
+public function export(CallForProposal $callForProposal, SubmissionRepository $submissionRepository): Response {
+
+        $results = $submissionRepository->filterApproved($callForProposal, true);
+
+        $spreadsheet = new Spreadsheet();
+        $no=1;
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', '#');
+        $sheet->setCellValue('B1', 'Title');
+        $sheet->setCellValue('C1', 'PI');
+        $sheet->setCellValue('D1', 'Email');
+        $sheet->setCellValue('E1', 'Co-PI Name');
+        $sheet->setCellValue('F1', 'Co-PI Email');
+        $sheet->setTitle("Winner's list");
+        $counter = 2;
+        foreach ($results as $submission) {
+            $sheet->setCellValue('A' . $counter, $no);
+            $sheet->setCellValue('B' . $counter, $submission->getTitle());
+            $counter2 = 2;
+            ########################
+            $sheet->setCellValue('C' . $counter, $submission->getAuthor()->getUserInfo());
+            $sheet->setCellValue('D' . $counter, $submission->getAuthor()->getEmail());
+            foreach ($submission->getCoAuthors() as $CoAuthors) {
+                $sheet->setCellValue('E' . $counter, $CoAuthors->getResearcher()->getUserInfo());
+               
+                    $sheet->setCellValue('F' . $counter, $CoAuthors->getResearcher()->getEmail());
+               
+                $counter++;
+                $counter2++;
+            }
+            $counter++;
+            $no++;
+        }
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Winners List.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        $writer->save($temp_file);
+        return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
 }
 /**
  * @Route("/{id}/approve", name="call__approve", methods={"GET"})
