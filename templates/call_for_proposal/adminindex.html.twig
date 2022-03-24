@@ -156,6 +156,7 @@
 											{% endif %}
 											<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-soft-primary btn-sm">Edit</a>
 											<a href="{{ path('allawarded', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-soft-primary btn-sm'>Winners</a>
+											<a href="{{ path('call_export_winner', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-soft-primary btn-sm'>Export Granted</a>
 										</td>
 
 									</tr>
