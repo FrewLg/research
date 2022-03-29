@@ -84,14 +84,6 @@ class SubmissionType extends AbstractType
                 ],
             ])
 
-            ->add('budget_and_time_schedule',   CKEditorType::class, [
-                'attr' => [
-                    'placeholder' => 'Budget and time schedule',
-                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                    'required' => false,
-
-                ],
-            ])
             ->add(
                 'GeneralObjective',
                 TextareaType::class,

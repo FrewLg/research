@@ -99,7 +99,7 @@ class CallForProposalController extends AbstractController {
             if (!$attachement) {
                 echo 'File not uploaded';
             } else {
-                $attachement = $form->get('evaluationfrom')->getData();
+                $attachement = $form->get('attachement')->getData();
                 $file_name = 'Call For Proposal Attachement ' . md5(uniqid()) . '.' . $attachement->guessExtension();
                 $attachement->move($this->getParameter('college_guidelines'), $file_name);
                 $callForProposal->setAttachement($file_name);
