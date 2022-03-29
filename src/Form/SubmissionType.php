@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Count;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class SubmissionType extends AbstractType
 {
@@ -84,13 +85,23 @@ class SubmissionType extends AbstractType
                 ],
             ])
 
-            ->add('budget_and_time_schedule',   CKEditorType::class, [
-                'attr' => [
-                    'placeholder' => 'Budget and time schedule',
-                    'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
-                    'required' => false,
+            // ->add('budget_and_time_schedule',   CKEditorType::class, [
+            //     'attr' => [
+            //         'placeholder' => 'Budget and time schedule',
+            //         'class' => 'form-control col col-md-12 col-sm-12 col-lg-9  ',
+            //         'required' => false,
 
-                ],
+            //     ],
+            // ])
+            ->add('proposalFile',VichFileType::class,[
+                'allow_delete' => false,
+                'label'=>"Proposal Attachement",
+                // 'allow_download' => true,
+               'download_label' => 'Download file',
+               "attr"=>[
+                   "accept"=>"application/msword,
+                   application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+               ]
             ])
             ->add(
                 'GeneralObjective',
@@ -180,13 +191,13 @@ class SubmissionType extends AbstractType
                 'by_reference' => false,
                 'error_bubbling' => false,
                 'allow_delete' => true,
-                'constraints' => [
-                    new Count([
-                        'min' => 1,
-                        'minMessage' => 'You have to add some  attachment',
-                        // also has max and maxMessage just like the Length constraint
-                    ]),
-                ],
+                // 'constraints' => [
+                //     new Count([
+                //         'min' => 1,
+                //         'minMessage' => 'You have to add some  attachment',
+                //         // also has max and maxMessage just like the Length constraint
+                //     ]),
+                // ],
                 'required' => false
             ])
             ->add('coAuthors', CollectionType::class, [

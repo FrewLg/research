@@ -297,12 +297,12 @@ class SubmissionController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager(); 
         $submission = $entityManager->getRepository('App:Submission')->findOneBy(['author' =>$this->getUser(), 'callForProposal'=>$callForProposal]);
       
-        if ($p_i_college !== $callForProposal->getCollege() and $callForProposal->getAllowPiFromOtherUniversity()=='') {
+        // if ($p_i_college !== $callForProposal->getCollege() and $callForProposal->getAllowPiFromOtherUniversity()=='') {
 
-            $this->addFlash("danger", "You are not allowed to submit on this  call!");
+        //     $this->addFlash("danger", "You are not allowed to submit on this  call!");
 
-            return $this->redirectToRoute('myreviews');
-        }
+        //     return $this->redirectToRoute('myreviews');
+        // }
         ##########################End Check submission exists #######################
 
         $entityManager = $this->getDoctrine()->getManager();

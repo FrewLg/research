@@ -8,11 +8,14 @@ use Doctrine\Common\Collections\Collection;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
 /**
  * @ORM\Entity(repositoryClass=SubmissionRepository::class)
+ * @Vich\Uploadable
  *
  */
 class Submission
@@ -235,6 +238,24 @@ class Submission
      */
     private $manuscript;
 
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $proposal;
+
+     /**
+     * 
+     * @Vich\UploadableField(mapping="proposal_file", fileNameProperty="proposal")
+     *  @Assert\File(
+     *     maxSize = "10m",
+     *     mimeTypes = {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"},
+     *     mimeTypesMessage = "Please upload a valid Docx or Doc file"
+     * )
+     * 
+     * @var File|null
+     */
+    public $proposalFile;
+
     public function __construct()
     {
 
@@ -262,6 +283,11 @@ class Submission
     public function __toString(): string
     {
         return $this->title;
+    }
+
+    public function getProposalFile(): ?File
+    {
+        return $this->proposalFile;
     }
 
     public function getAbstract(): ?string
@@ -945,6 +971,18 @@ class Submission
     public function setManuscript(?string $manuscript): self
     {
         $this->manuscript = $manuscript;
+
+        return $this;
+    }
+
+    public function getProposal(): ?string
+    {
+        return $this->proposal;
+    }
+
+    public function setProposal(string $proposal): self
+    {
+        $this->proposal = $proposal;
 
         return $this;
     }
