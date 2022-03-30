@@ -110,6 +110,11 @@ class College
      */
     private $irbReviewAtachements;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CallCategory::class, mappedBy="college")
+     */
+    private $callCategories;
+
 
  
    
@@ -127,6 +132,7 @@ class College
         $this->callForTrainings = new ArrayCollection();
         $this->boardMembers = new ArrayCollection();
         $this->irbReviewAtachements = new ArrayCollection();
+        $this->callCategories = new ArrayCollection();
       }
  
 
@@ -544,6 +550,36 @@ class College
             // set the owning side to null (unless already changed)
             if ($irbReviewAtachement->getCollege() === $this) {
                 $irbReviewAtachement->setCollege(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CallCategory>
+     */
+    public function getCallCategories(): Collection
+    {
+        return $this->callCategories;
+    }
+
+    public function addCallCategory(CallCategory $callCategory): self
+    {
+        if (!$this->callCategories->contains($callCategory)) {
+            $this->callCategories[] = $callCategory;
+            $callCategory->setCollege($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCallCategory(CallCategory $callCategory): self
+    {
+        if ($this->callCategories->removeElement($callCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($callCategory->getCollege() === $this) {
+                $callCategory->setCollege(null);
             }
         }
 

@@ -164,6 +164,11 @@ class CallForProposal
      */
     private $templateAndForms;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CallCategory::class, inversedBy="callForProposals")
+     */
+    private $callType;
+
  
 
     public function __construct()
@@ -551,6 +556,18 @@ class CallForProposal
                 $templateAndForm->setCallFor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCallType(): ?CallCategory
+    {
+        return $this->callType;
+    }
+
+    public function setCallType(?CallCategory $callType): self
+    {
+        $this->callType = $callType;
 
         return $this;
     }

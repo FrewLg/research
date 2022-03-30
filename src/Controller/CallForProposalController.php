@@ -55,7 +55,8 @@ class CallForProposalController extends AbstractController {
     public function allCalls(CallForProposalRepository $callForProposalRepository, PaginatorInterface $paginator, Request $request): Response {
         $em = $this->getDoctrine()->getManager();
         //$callForProposals = array_reverse($em->getRepository(CallForProposal::class)->findAll());
-        $callForProposals = $callForProposalRepository->getCalls(array('approved' => 1));
+        // $date = new (\date (''));
+        $callForProposals = $callForProposalRepository->getCalls(['approved' => 1, ]);
         // Paginate the results of the query
         $AllcallForProposal = $paginator->paginate(
             // Doctrine Query, not results

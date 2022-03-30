@@ -71,6 +71,7 @@ class PublicationType extends AbstractType
               'format' => 'yyyy-MM-dd',
                  'attr' => array(
                     'max'=>(new DateTime('now'))->format('Y-m-d'),
+                    //  'min' => new \DateTime('-7 year'),
                     'required' => true, 
         'class'=>'form-control',
         )              
