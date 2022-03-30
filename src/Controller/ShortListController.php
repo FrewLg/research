@@ -59,13 +59,18 @@ class ShortListController extends AbstractController {
      */
     public function findone(Submission $submission, Request $request, MailerInterface $mailer): Response {
         // $this->denyAccessUnlessGranted('short_list_view');
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager(); 
 
-        $fileName = $entityManager->getRepository(SubmissionAttachement::class)->
+        $fileName = $submission->getProposal(); 
+if ($fileName==""){
+$fileName = $entityManager->getRepository(SubmissionAttachement::class)->
             findOneBy(['submission' => $submission ]);
-
-
         $filePath = $this->getParameter('upload_destination') . '/' . $fileName->getFile(1);
+
+}
+
+        $filePath = $this->getParameter('upload_destination') . '/' . $submission->getProposal();
+
         if (!$filePath) {
             $this->addFlash(
                 'danger',
