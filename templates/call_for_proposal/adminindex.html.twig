@@ -14,172 +14,210 @@
 {% block body %}
 
 	<div class="row">
+		<div class="col-lg-6">
+			<ul class="list-inline">
+				<li class="list-inline-item">
+					<h5 class="mt-0">Here the list of all  call for proposal.
+						<span class="badge badge-pink">6</span>
+					</h5>
+				</li>
+			</ul>
+		</div>
+		<!--end col-->
 
-		{# {% for call_for_proposal in call_for_proposals %}
-			<div class="col-lg-4">
+		<div class="col-lg-6 text-end">
+			<div class="text-end">
+				<ul class="list-inline">
+
+					<li class="list-inline-item">
+						<button type="button" class="btn btn-soft-primary btn-sm">
+							<i class="fas fa-filter"></i>
+						</button>
+					</li>
+					<li class="list-inline-item">
+						<a href="{{ path('call_for_proposal_new') }}" class="btn btn-soft-primary btn-sm">Add New call for proposal</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--end col-->
+	</div>
+
+	<div class="row">
+		{% for call_for_proposal in call_for_proposals %}
+			<div class="col-lg-6">
 				<div class="card">
-					<div class="card-body">
-						<div class="task-box">
-							<div class="task-priority-icon">
-								<i class="fas fa-circle text-success"></i>
+					<div class="card-header">
+						<div class="row align-items-center">
+							<div class="col">
+								<h4 class="card-title">Call</h4>
 							</div>
-							<p class="text-muted float-end">
-								<span class="text-muted">01:33</span>
-								/
-								<span class="text-muted">9:30</span>
-								<span class="mx-1">·</span>
-								<span>
-									<i class="far fa-fw fa-clock"></i>
-									June 06</span>
-							</p>
-							<h5 class="mt-0">{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('Y-m-d H:i') : '' }}</h5>
-							<p class="text-muted mb-1">
-								{{ call_for_proposal.subject |raw }}</p>
-							<p class="text-muted text-end mb-1">15% Complete</p>
-							<div class="progress mb-4" style="height: 4px;">
-								<div class="progress-bar bg-secondary" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-							</div>
-							<div class="d-flex justify-content-between">
-								<div class="img-group">
-									<a class="user-avatar user-avatar-group" href="apps-tasks.html#">
-										<img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-xs">
+							<!--end col-->
+
+							<div class="col-auto">
+								<div class="dropdown">
+									<a href="apps-project-overview.html#" class="btn btn-sm btn-outline-light dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										All action
+										<i class="las la-angle-down ms-1"></i>
 									</a>
-									<a class="user-avatar user-avatar-group" href="apps-tasks.html#">
-										<img src="assets/images/users/user-5.jpg" alt="user" class="rounded-circle thumb-xs">
-									</a>
-									<a class="user-avatar user-avatar-group" href="apps-tasks.html#">
-										<img src="assets/images/users/user-7.jpg" alt="user" class="rounded-circle thumb-xs">
-									</a>
+									<div class="dropdown-menu dropdown-menu-end" style="">
+
+
+										<a href="{{ path('call_approved_result', {'uidentifier': call_for_proposal.uidentifier }) }}" class="dropdown-item">
+
+											Result</a>
+										<a href="{{ path('calsendbatch_email', {'uidentifier': call_for_proposal.uidentifier }) }}" class="dropdown-item" onsubmit="return confirm('Are you sure you want to send batch email?');">
+
+											Email shortlisted</a>
+
+										{# <a href="{{ path('submission_firststepold', {'uidentifier': call_for_proposal.uidentifier}) }}"  class="dropdown-item">[test]Submit proposal</a> #}
+
+										{% if call_for_proposal.approved=='1'%}
+											<a href="{{ path('call_approve_undo', {'id': call_for_proposal.id }) }} " class="dropdown-item">
+												Unpublish
+											</a>
+											<a href="{{ path('call_research_report_phase', {'id': call_for_proposal.id }) }}" class="dropdown-item">
+												Report Setting
+											</a>
+											<a href="{{ path('template_and_form_index', {'id': call_for_proposal.id }) }}" class="dropdown-item">
+												Templates and forms
+											</a>
+
+										{% else %}
+											<a href="{{ path('call__approve', {'id': call_for_proposal.id }) }}" class="dropdown-item">
+												Approve and publish</a>
+										{% endif %}
+										<a href="{{ path('allawarded', {'uidentifier': call_for_proposal.uidentifier}) }}" class="dropdown-item">Winners</a>
+										<a href="{{ path('call_export_winner', {'uidentifier': call_for_proposal.uidentifier}) }}" class="dropdown-item">Export Granted</a>
+
+									</div>
 								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="media mb-3">
+							<div class="media-body align-self-center text-truncate ms-3">
+								<h4 class="m-0 fw-semibold text-dark font-15">
+									<a href="{{ path('call__details', {'id': call_for_proposal.id }) }}" class='text-primary'>
+										{{ call_for_proposal.subject |raw }}
+									</a>
+								</h4>
+								<p class="text-muted  mb-0 font-13">
+									<span class="text-dark">Call Type :
+									</span>
+									{{ call_for_proposal.ResearchType |raw }}</p>
+							</div>
+							<!--end media-body-->
+						</div>
+						<hr class="hr-dashed">
+						<div class="d-flex justify-content-between mb-3">
+							<h6 class="fw-semibold m-0">Start :
+								<span class="text-muted fw-normal">
+									{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('M d Y  h:s') : '' }}</span>
+							</h6>
+							<h6 class="fw-semibold m-0">Deadline :
+								<span class="text-muted fw-normal">
+									{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('M d Y  h:s') : '' }}</span>
+							</h6>
+						</div>
+
+
+						<div>
+							<p class="text-muted mt-2 mb-1">
+								{{ call_for_proposal.heading|raw}}
+							</p>
+							<div class="d-flex justify-content-between">
+								<h6 class="fw-semibold">All submissions :
+									<span class="text-muted fw-normal">
+										{{call_for_proposal.submissions|length}}
+										Submission{% if call_for_proposal.submissions|length >1 %}s
+										{% endif %}
+									</span>
+								</h6>
+								<h6 class="fw-semibold">Time left :
+									 
+									<span class="badge badge-soft-pink fw-semibold ms-2">
+
+										<i class="far fa-fw fa-clock"></i>
+										<p id="{{call_for_proposal.uidentifier}}"></p>
+										time left</span>
+								</h6>
+							</div>
+							{# <p class="text-muted text-end mb-1">15% Complete</p>
+							<div class="progress mb-4" style="height: 4px;">
+								<div class="progress-bar bg-purple" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+							</div> #}
+							<div
+								class="d-flex justify-content-between">
+
 								<!--end img-group-->
 								<ul class="list-inline mb-0 align-self-center">
-									<li class="list-item d-inline-block me-2">
-										<a class="" href="apps-tasks.html#">
-											<i class="mdi mdi-format-list-bulleted text-success font-15"></i>
-											<span class="text-muted fw-bold">15/100</span>
-										</a>
-									</li>
+
 									<li class="list-item d-inline-block">
-										<a class="" href="apps-tasks.html#">
-											<i class="mdi mdi-comment-outline text-primary font-15"></i>
-											<span class="text-muted fw-bold">3</span>
-										</a>
-									</li>
-									<li class="list-item d-inline-block">
-										<a class="ms-2" href="apps-tasks.html#">
+										<a class="ms-2" href="##">
 											<i class="mdi mdi-pencil-outline text-muted font-18"></i>
 										</a>
 									</li>
 									<li class="list-item d-inline-block">
-										<a class="" href="apps-tasks.html#">
+										<a class="" href="##">
 											<i class="mdi mdi-trash-can-outline text-muted font-18"></i>
 										</a>
+									</li>
+
+									<li class="list-item d-inline-block">
+										<a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" class='btn btn-block btn-primary btn-sm'>
+
+											Submissions</a>
+										<a href="{{ path('call_approved_result', {'uidentifier': call_for_proposal.uidentifier }) }}" class='btn btn-info btn-sm'>
+
+											Result</a>
+
+
+										{% if call_for_proposal.researchReportPhase %}{% endif %}
+										<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}" class='btn btn-soft-warning btn-sm'>
+											Reports
+										</a>
+										<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-soft-primary btn-sm">Edit</a>
+
 									</li>
 								</ul>
 							</div>
 						</div>
 						<!--end task-box-->
 					</div>
+					<!--end card-body-->
 				</div>
 			</div>
-		{% else %}
-			No calls
-		{% endfor %} #}
-		<!--end card-body-->
-	</div>
-</div>
 
-<div class="row">
-	<div class="col-lg-12">
-		<div class="card">
-			<div class="card-header">
-				<div class="row align-items-center">
-					<div class="col">
-						<h4 class="card-title">
-							All call for papers
-						</h4>
-						Total: ({{call_for_proposals.totalItemCount}})
+			<script>
+				// var countDownDate = new Date("Jan 5, 2020 15:37:25").getTime();
+var countDownDate = new Date("{% if call_for_proposal.deadline %}{{ call_for_proposal.deadline|date('M d, y h:i ') }}{% endif %}").getTime();
 
-					</div>
-					<!--end col-->
-					<div class="col-auto">
+// Update the count down every 1 second
+var x = setInterval(function () { // Get today's date and time
+var now = new Date().getTime();
 
+// Find the distance between now and the count down date
+var distance = countDownDate - now;
 
-						<a href="{{ path('call_for_proposal_new') }}" class='btn btn-primary btn-sm'>
-							Make a new call for proposal</a>
+// Time calculations for days, hours, minutes and seconds
+var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-					</div>
-					<!--end col-->
-				</div>
+// Output the result in an element with id="{{call_for_proposal.uidentifier}}"
+document.getElementById("{{ call_for_proposal.uidentifier }}").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
-
-				<!--end row-->
-			</div>
-			<!--end card-header-->
-			<div class="card-body">
-				<div class="table-responsive browser_users table-bordered">
-
-					<div class="table-responsive">
-
-						<table class="table table-bordered table-responsive">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Subject</th>
-									<th>Post date</th>
-									<th>Deadline</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for call_for_proposal in call_for_proposals %}
-									<tr>
-										<td>{{ loop.index  }}</td>
-										<td>
-											<a href="{{ path('call__details', {'id': call_for_proposal.id }) }}" class='text-primary'>
-												{{ call_for_proposal.subject |raw }}
-											</a>
-										</td>
-										<td>
-											{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('Y-m-d H:i') : '' }}
-										</td>
-										<td class='text-center'>
-											{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d H:i') : '' }}
-										</td>
-										<td nowrap="nowrap">
-
-											{% if call_for_proposal.researchReportPhase %}
-
-												<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}" class='btn btn-soft-warning btn-sm'>
-													Reports
-												</a>
-											{% endif %}
-											<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-soft-primary btn-sm">Edit</a>
-											<a href="{{ path('allawarded', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-soft-primary btn-sm'>Winners</a>
-											<a href="{{ path('call_export_winner', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-soft-primary btn-sm'>Export Granted</a>
-										</td>
-
-									</tr>
-								{% else %}
-									<tr>
-										<td colspan="8">no records found</td>
-									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					</div>
-
-					<div class="navigation">
-						{{ knp_pagination_render(call_for_proposals) }}
-					</div>
-
-					<!--end table-->
-				</div>
-				<!--end /div-->
-			</div>
-			<!--end card-body-->
-		</div>
-		<!--end card-->
-
-	</div>
-{% endblock %}
+// If the count down is over, write some text
+if (distance < 0) {
+clearInterval(x);
+document.getElementById("{{ call_for_proposal.uidentifier }}").innerHTML = "<span class='text-danger'>Call  expired</span>";
+}
+}, 1000);
+</script> 
+			{% else %} 
+				No records found
+			{% endfor %}
+		{% endblock %}

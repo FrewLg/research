@@ -85,6 +85,7 @@ class SubmissionType extends AbstractType
                 ],
             ])
 
+ 
             // ->add('budget_and_time_schedule',   CKEditorType::class, [
             //     'attr' => [
             //         'placeholder' => 'Budget and time schedule',
@@ -103,6 +104,7 @@ class SubmissionType extends AbstractType
                    application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                ]
             ])
+ 
             ->add(
                 'GeneralObjective',
                 TextareaType::class,

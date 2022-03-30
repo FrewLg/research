@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -54,7 +55,8 @@ class CallForProposalController extends AbstractController {
     public function allCalls(CallForProposalRepository $callForProposalRepository, PaginatorInterface $paginator, Request $request): Response {
         $em = $this->getDoctrine()->getManager();
         //$callForProposals = array_reverse($em->getRepository(CallForProposal::class)->findAll());
-        $callForProposals = $callForProposalRepository->getCalls(array('approved' => 1));
+        // $date = new (\date (''));
+        $callForProposals = $callForProposalRepository->getCalls(['approved' => 1, ]);
         // Paginate the results of the query
         $AllcallForProposal = $paginator->paginate(
             // Doctrine Query, not results
@@ -98,7 +100,7 @@ class CallForProposalController extends AbstractController {
             if (!$attachement) {
                 echo 'File not uploaded';
             } else {
-                $attachement = $form->get('evaluationfrom')->getData();
+                $attachement = $form->get('attachement')->getData();
                 $file_name = 'Call For Proposal Attachement ' . md5(uniqid()) . '.' . $attachement->guessExtension();
                 $attachement->move($this->getParameter('college_guidelines'), $file_name);
                 $callForProposal->setAttachement($file_name);
