@@ -134,6 +134,8 @@ class SubmissionController extends AbstractController
     #[Route('/{id}/call-reports', name: 'call_research_reports', methods: ['GET',"POST"])]
     public function submissionReports(CallForProposal $callForProposal,PaginatorInterface $paginator, Request $request, SubmissionRepository  $submissionRepository): Response
     {
+        $this->denyAccessUnlessGranted('mng_rprts');
+        
         if(!$callForProposal->getResearchReportPhase()){
            $this->addFlash("warning","this call has no report settings");
            return $this->redirect( $request->headers->get('referer'));
@@ -761,8 +763,8 @@ class SubmissionController extends AbstractController
         $research_report_form = $this->createForm(ResearchReportType::class, $researchReport);
 
       
+      
         if ($submission_report_schedule_count == count($submission->getResearchReports())+1) {
-        
             $research_report_form->add('manuscript',FileType::class,[
                 "label"=>"Manuscript",
                 "help"=>"Upload Financial clearance",
@@ -1021,8 +1023,7 @@ class SubmissionController extends AbstractController
             return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
         }
 
-
-
+     
 
         ################ Admin Revision#########################
         return $this->render('submission/submission_details.html.twig', [

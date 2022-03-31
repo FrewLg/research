@@ -75,8 +75,9 @@ class CallForProposalController extends AbstractController {
     /**
      * @Route("/new", name="call_for_proposal_new", methods={"GET","POST"})
      */
-    public function new (Request $request, MailerInterface $mailer): Response {
-        $this->denyAccessUnlessGranted('vw_cll_fr_prop');
+    public function new(Request $request, MailerInterface $mailer): Response
+    {
+        $this->denyAccessUnlessGranted('modify_call_pr');
         $callForProposal = new CallForProposal();
         $form = $this->createForm(CallForProposalType::class, $callForProposal);
         $form->handleRequest($request);
@@ -107,6 +108,25 @@ class CallForProposalController extends AbstractController {
             }
 
             $entityManager->persist($callForProposal);
+            $entityManager->flush();
+            ///////////////Email for those who subscribed to website/////////
+
+            ///////////// Let us email subscribed users to announcements
+
+            $em = $this->getDoctrine()->getManager();
+            $query = $entityManager->createQuery(
+                'SELECT u.email , u.first_name, u.username 
+	    FROM App:Subscription s
+	    JOIN s.user u
+	    WHERE s.calls = :subscribed'
+            )
+                ->setParameter('subscribed', '1');
+
+
+            $this->addFlash("success", "Call for proposal created suucessflly and will be approved later!");
+            //////////////////////////// end emailing ///////////////////////
+
+            // return $this->redirectToRoute('all_calls' );
             $entityManager->flush(); 
             return $this->redirectToRoute('call__details', array('id' => $callForProposal->getid()));
         }
@@ -117,12 +137,14 @@ class CallForProposalController extends AbstractController {
         ]);
     }
 
+
     #[Route('/{id}/research_report_phase_show', name:'call_research_report_phase', methods:['GET', "POST"])]
 public function show(CallForProposal $call_for_proposal, EntityManagerInterface $entityManager, Request $request): Response {
 
-    $researchReportPhase = $call_for_proposal->getResearchReportPhase() ?: new ResearchReportPhase();
-    $form = $this->createForm(ResearchReportPhaseType::class, $researchReportPhase)->handleRequest($request);
 
+    $researchReportPhase = $call_for_proposal->getResearchReportPhase() ?: new ResearchReportPhase();
+    
+    $form = $this->createForm(ResearchReportPhaseType::class, $researchReportPhase)->handleRequest($request);
     if ($form->isSubmitted() && $form->isValid()) {
 
         $request_data = $request->request->get("research_report_phase");

@@ -31,7 +31,7 @@ class ResearchReportType extends AbstractType
             ->add('financial_clearance', FileType::class, [
                 "label" => "Financial clearance",
                 "help" => "Upload Financial clearance",
-                "required" => false,
+               
                 "mapped" => false,
 
             ])

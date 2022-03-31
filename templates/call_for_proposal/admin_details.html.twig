@@ -18,11 +18,14 @@
  <br>
                             </div>
                             <div>
-                         {% if call_for_proposal.approved=='1'%}
+                         {% if is_granted('modify_call_pr') and call_for_proposal.approved=='1' %}
   <a href="{{ path('call_approve_undo', {'id': call_for_proposal.id }) }}
-  " class='btn btn-danger btn-xs'> Unpublish </a> 
-  <a href="{{ path('call_research_report_phase', {'id': call_for_proposal.id }) }}" class='btn btn-info btn-xs'> Report Setting </a> 
-  <a href="{{ path('template_and_form_index', {'id': call_for_proposal.id }) }}" class='btn btn-primary btn-xs'> Templates and forms </a> 
+  " class='btn btn-success btn-xs'> Unpublish </a> 
+  {% if is_granted('mng_rprts') %}
+  
+  <a href="{{ path('call_research_report_phase', {'id': call_for_proposal.id }) }}" class='btn btn-success btn-xs'> Report Setting </a> 
+  {% endif %}
+  <a href="{{ path('template_and_form_index', {'id': call_for_proposal.id }) }}" class='btn btn-secondary btn-xs'> Templates and forms </a> 
 
                            {% else %}                         
                           <a href="{{ path('call__approve', {'id': call_for_proposal.id }) }}" class='btn btn-warning btn-xs'> Approve and publish</a>                          

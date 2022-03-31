@@ -1,14 +1,14 @@
 
 
-INSERT INTO `permission` (`id`, `name`, `code`, `description`) VALUES
+INSERT IGNORE INTO `permission` (`id`, `name`, `code`, `description`) VALUES
 (NULL, 'Permission add', 'perm_act', 'perm_act'),
 (NULL, 'usrgrp_act', 'usrgrp_act', 'usrgrp_act'),
-(NULL, 'ad_prmsn_to_grp', NULL, 'ad_prmsn_to_grp'),
-(NULL, 'usr_edt', NULL, 'usr_edt'),
-(NULL, 'assn_clg_cntr', NULL, 'assn_clg_cntr'),
-(NULL, 'rmv_usr', NULL, 'rmv_usr'),
-(NULL, 'assn_drctr', NULL, 'assn_drctr'),
-(NULL, 'ad_usr_to_grp', NULL, 'ad_usr_to_grp'),
+(NULL, 'ad_prmsn_to_grp', 'ad_prmsn_to_grp'),
+(NULL, 'usr_edt', 'usr_edt', ''),
+(NULL, 'assn_clg_cntr', 'assn_clg_cntr', ''),
+(NULL, 'rmv_usr', 'rmv_usr', ''),
+(NULL, 'assn_drctr', 'assn_drctr', ''),
+(NULL, 'ad_usr_to_grp', 'ad_usr_to_grp', ''),
 (NULL, 'perm_act', 'perm_act', 'perm_act'),
 (NULL, 'Manage board members', 'mng_brd_mbr', 'Manage board members'),
 (NULL, 'View main dashboard', 'view_dashboard', ''),
@@ -56,4 +56,7 @@ INSERT INTO `permission` (`id`, `name`, `code`, `description`) VALUES
 (NULL, 'view Subscription', 'vw_sbsc', ''),
 (NULL, 'view Email messages', 'vw_em_msg', ''),
 (NULL, 'Reports nav tree', 'rprts_nv_tr', ''),
-(NULL, 'View Application submission Report', 'vw_app_sb_rp', '') ;
+(NULL, 'View Application submission Report', 'vw_app_sb_rp', ''),
+(NULL, 'Create call for proposal', 'modify_call_pr', ''),
+(NULL, 'Manage research reports', 'mng_rprts', ''),
+ ;

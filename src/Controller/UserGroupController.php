@@ -8,6 +8,7 @@ use App\Repository\PermissionRepository;
 use App\Repository\UserGroupRepository;
 use App\Repository\UserRepository;
 use DateTime;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,16 +22,22 @@ class UserGroupController extends AbstractController
     /**
      * @Route("/", name="user_group_index", methods={"GET"})
      */
-    public function index(UserGroupRepository $userGroupRepository): Response
+    public function index(UserGroupRepository $userGroupRepository, PaginatorInterface $paginator, Request $request): Response
     {
 
          
-#        $this->denyAccessUnlessGranted('vw_usr_grp');
+$queryBuilder = $userGroupRepository->getData(['name' => $request->query->get('search')]);
+          $data = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+
+            $request->query->getInt('limit', 10)
+        );
 
 
         
         return $this->render('user_group/index.html.twig', [
-            'user_groups' => $userGroupRepository->findAll(),
+            'user_groups' => $data,
         ]);
     }
 
