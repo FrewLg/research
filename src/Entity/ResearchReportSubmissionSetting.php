@@ -34,7 +34,7 @@ class ResearchReportSubmissionSetting
     private $submissionDate;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean" , nullable=true)
      */
     private $isSubmitted;
 

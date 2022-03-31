@@ -85,8 +85,8 @@ $entityManager = $this->getDoctrine()->getManager();
 
         #######################
         $query3 = $entityManager->createQuery(
-        'SELECT    b.id , ass.invitation_sent_at as InvitationSentAt,     ass.Declined as Declined,  b.title , s.createdAt  , ass.duedate  as dueDate
-        FROM App\Entity\IRB\IRBReview s 
+        'SELECT    b.id , ass.invitation_sent_at as InvitationSentAt,     ass.Declined as Declined,  b.title , s.createdAt  , ass.duedate  as dueDate 
+        FROM App\Entity\IRB\IRBReview s  
         JOIN s.application b     
         JOIN s.iRBReviewAssignment ass      
         WHERE   s.reviewed_by=:irbreviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed
@@ -213,18 +213,18 @@ $entityManager = $this->getDoctrine()->getManager();
         $form->handleRequest($request); 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $reviewfile = $form->get('attachment')->getData();
-            if ($reviewfile == "") {
-                $this->addFlash(
-                    'danger',
-                    'Review file  not uploaded!'
-                );
-            } else {
-                $reviewfile = $form->get('attachment')->getData();
-                $Areviewfile = md5(uniqid()) . '.' . $reviewfile->guessExtension();
-                $reviewfile->move($this->getParameter('review_files'), $Areviewfile);
-                $review->setAttachment($Areviewfile);
-            }
+            // $reviewfile = $form->get('attachment')->getData();
+            // if ($reviewfile == "") {
+            //     $this->addFlash(
+            //         'danger',
+            //         'Review file  not uploaded!'
+            //     );
+            // } else {
+            //     $reviewfile = $form->get('attachment')->getData();
+            //     $Areviewfile = md5(uniqid()) . '.' . $reviewfile->guessExtension();
+            //     $reviewfile->move($this->getParameter('review_files'), $Areviewfile);
+            //     $review->setAttachment($Areviewfile);
+            // }
             ##########
             $reviewfile2 = $form->get('evaluation_attachment')->getData();
             if ($reviewfile2 == "") {

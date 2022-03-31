@@ -49,7 +49,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
 /**
- * @Route("/irb-review")
+ * @Route("/subm-review")
  */
 class IRBReviewController extends AbstractController
 {
@@ -277,11 +277,8 @@ $entityManager = $this->getDoctrine()->getManager();
                 'You have been re-assigned!'
             );
             return $this->redirectToRoute('rereviewsubmission', array('id' => $reviewAssignment->getId()));
-        }
-
-
-
-        $review = new Review();
+        } 
+         $review = new Review();
         $review->setReviewAssignment($reviewAssignment);
         $review->setSubmission($reviewAssignment->getSubmission());
         $review->setReviewedBy($measareviewer);
@@ -513,8 +510,8 @@ $entityManager = $this->getDoctrine()->getManager();
 
         $entityManager = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery(
-            "SELECT u.email , s.id ,  u.username,   s.title  
-                      , pi.first_name  , ui.alternative_email 
+            "SELECT u.email , s.id ,  u.username,   s.title   
+                      , pi.first_name  , ui.alternative_email  
                     FROM App:CoAuthor c
                     JOIN c.researcher u
                     JOIN u.userInfo ui

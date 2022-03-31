@@ -26,16 +26,22 @@
 						<div class="col-md-6">
 
 							<div class="card-header ">
+								
 								<h5 class="font-18 m-0 fw-bold">{% trans %}Reviewers{% endtrans %}
-									({{application.IRBreviewAssignments|length}})
+									 
+
+										<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+										 {{application.IRBreviewAssignments|length}}
+										</span>
+									</a>
+
+									{% if   is_granted("vw_irb_dbrd") %}
 									<a href="{{ path('irb_review_assignment_new', {'id': application.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
 										{% trans %}Add  Reviewer{% endtrans %}</a>
-									{# <button type="button" class="m-1 btn btn-outline-primary -right" data-bs-toggle="modal" data-bs-target="#assign-reviewer">{% trans %}Add Reviewer{% endtrans %}</button> #}
+											{% endif %}
 
-<a href="{{ path('decisions_application', {'id': application.id}) }}" class='font-16 m-0   btn btn-sm btn-soft-primary btn-xs mb-1 align-right'>
-										{% trans %}Revision details{% endtrans %}</a>
-
-								</h5>
+   </h5>
 							</div>
 
 							<ul class="list-inline mb-0 contact-detail float-end">
@@ -61,7 +67,11 @@
 										</p>
 
 										<p class="">{% trans %}Status{% endtrans %}:
-											<span class="badge bg-{{  application.status.type }}">{{  application.status }}</span>
+										{% if application.status.type is defined  %}
+<span class="badge bg-{{  application.status.type }}">{{  application.status }}</span>
+											{% endif %}
+
+											
 										</p>
 
 									</div>
@@ -120,6 +130,54 @@
 						<!--end col-->
 
 						<div class="col-md-12 col-lg-9 mt-2">
+
+						{% if review %}
+
+		<div class="card">
+		<div class="row no-gutters">
+
+			<div class="col-md-12">
+				<div class="card-header">
+					<div class="row align-items-center">
+						<div class="col">
+							<h4 class="card-title">{% trans %}Review Decision{% endtrans %}</h4>
+						</div>
+						<!--end col-->
+						<div class="col-auto">
+
+							<span class="badge badge-outline-light">{{ review.createdAt|date('Y-m-d') }}</span>
+						</div>
+						<!--end col-->
+					</div>
+					<!--end row-->
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+					 
+					<p class="card-text">
+						<b>{% trans %}IRB Decision{% endtrans %}:</b>
+
+						<span class="badge bg-{{ review.remarkColor }}">{{ review.remarkText }}</span></p>
+					<p class="card-text">
+						
+					</p>
+					{% if review and app.user == application.submittedBy and review.remark == 2 %}
+						<button type="button" class="m-1 btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#revision-modal">
+							<span class="fa fa-paper-plane m-1"></span>
+							{% trans %}Please Send Revision{% endtrans %}</button>
+					{% endif %}
+
+				</div>
+				<!--end card-body-->
+				<div class="card-footer"></div>
+			</div>
+			<!--end col-->
+
+		</div>
+		</div>
+
+	{% endif %}
+
 							<div class="card">
 								<div class="card-header">
 									<h4 class="card-title">{% trans %}Details{% endtrans %}</h4>
@@ -158,7 +216,13 @@
 									<!-- Tab panes -->
 									<div class="tab-content">
 										<div class="tab-pane p-3 active" id="members" role="tabpanel">
-											<h4 class='text-'>{% trans %}Research team{% endtrans %}({{  application.members|length +1}})</h4>
+											<h4 class='text-'>{% trans %}Research team{% endtrans %}
+											<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+										 {{ application.members|length +1}}
+										</span>
+									</a>
+											 </h4>
 											<div class="row">
 												{% set co_author = application.pi ? application.pi : application.submittedBy  %}
 												<div class="col-lg-4">
@@ -186,29 +250,36 @@
 													</div>
 												</div>
 												{% for co_author in  application.members %}
+													
 													<div class="col-lg-4">
 
-														<div class="card">
+													<div class="card">
 
-															<div class="card-body text-center">
+														<div class="card-body text-center">
 
 
-																<h5 class="fw-bold mt-3 mb-1">{{ co_author.title }} {{ co_author.name}}
-																</h5>
+															<h5 class="fw-bold mt-3 mb-1">{{ co_author.Name}}{{ co_author.MidleName}}
+															 {{ co_author.LastName  }}
+																<span class="text-muted mb-0">({{ co_author.title }})</span>
+															</h5>
+															<p class="text-muted mb-0">{{ co_author.affiliation  }}</p>
 															<p class="text-muted mb-0">{{ co_author.department }}</p>
-																<p class="text-muted mb-0">{{ co_author.email }}</p>
-																<div class="mb-3">
-																	<a href="apps-tasks.html#" class="me-3 text-warning">
-																		{{ co_author.role }}</a>
-																	{# {{ co_author.researcher|length}} #}
-																	{# <a href="apps-tasks.html#" class=" text-warning">295 Coauthorship</a> #}
-																</div>
-
-																{# <a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">{% trans %}More details{% endtrans %}</a> #}
+															<p class="text-muted mb-0">{{ co_author.email }}</p>
+															<div class="mb-3">
+																<a href="apps-tasks.html#" class="me-3 text-warning">
+																	{{ co_author.role }}</a>
 
 															</div>
+
+															<a href='#' class="btn btn-sm btn-soft-primary">{% trans %}More details{% endtrans %}</a>
+
 														</div>
 													</div>
+												</div>
+												
+												
+												
+												 
 
 												{% endfor %}
 
@@ -322,11 +393,16 @@
 																			{{loop.index }}
 																		</div>
 																		<div class="card-body">
+																		<ul>
 																			{% for attachment in revision.revisionAttachments %}
+																		<li>
 																				<a href='{{ asset('/uploads/application/' ~ attachment.file) }}' class="btn btn-sm btn-soft-primary m-1">{{ attachment.type }}
 																					<span class="fa fa-download m-1"></span>
 																				</a>
+																		</li>
+
 																			{% endfor %}
+																		</ul>
 
 																		</div>
 																	</div>
@@ -383,27 +459,31 @@
 										</div>
 
 										<div class="tab-pane p-3 " id="attachments" role="tabpanel">
+
+										<ol>
+ 																		
+
 											{% for attachment in application.applicationAttachments %}
-												<a style="margin-top:3px;" href="{{ asset('/uploads/application/'~ attachment.file ) }}" class="mx-1 btn btn-info btn-xs float-right">
+												
+												<li  class="text-info   pt-2">
+												<a style="margin-top:3px;" href="{{ asset('/uploads/application/'~ attachment.file ) }}" class="text-info    pt-3 mt-2">
 													{{attachment}}
 													<i class="fa fa-download material-icons warning"></i>
 												</a>
+												</li>
 											{% else %}
 												<span class="label label-danger">
 													{% trans %}No attachment found{% endtrans %}</span>
 											{% endfor %}
+											<ol>
 										</div>
 									</div>
 								</div>
 								<!--end card-body-->
 							</div>
 							<!--end card-->
-						</div>
-
-					</div>
-					<!--end row-->
-
-
+						</div> 
+					</div> 
 				</div>
 				<!--end row-->
 			</div>
@@ -411,52 +491,7 @@
 		</div>
 		<!--end card-->
 	</div>
-	{% if review %}
-
-		<div class="row no-gutters">
-
-			<div class="col-md-9">
-				<div class="card-header">
-					<div class="row align-items-center">
-						<div class="col">
-							<h4 class="card-title">{% trans %}Review Decision{% endtrans %}</h4>
-						</div>
-						<!--end col-->
-						<div class="col-auto">
-
-							<span class="badge badge-outline-light">{{ review.createdAt|date('Y-m-d') }}</span>
-						</div>
-						<!--end col-->
-					</div>
-					<!--end row-->
-				</div>
-				<!--end card-header-->
-				<div class="card-body">
-					<p class="card-text">
-						<b>{% trans %}Comment{% endtrans %}:</b>
-						{{ review.comment }}</p>
-					<p class="card-text">
-						<b>{% trans %}IRB Decision{% endtrans %}:</b>
-
-						<span class="badge bg-{{ review.remarkColor }}">{{ review.remarkText }}</span></p>
-					<p class="card-text">
-						
-					</p>
-					{% if review and app.user == application.submittedBy and review.remark == 2 %}
-						<button type="button" class="m-1 btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#revision-modal">
-							<span class="fa fa-paper-plane m-1"></span>
-							{% trans %}Please Send Revision{% endtrans %}</button>
-					{% endif %}
-
-				</div>
-				<!--end card-body-->
-				<div class="card-footer"></div>
-			</div>
-			<!--end col-->
-
-		</div>
-
-	{% endif %}
+	
 
 
 	<br>

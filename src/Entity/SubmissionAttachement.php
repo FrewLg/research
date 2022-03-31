@@ -82,11 +82,11 @@ class SubmissionAttachement
         return $this->name;
     }
 
-    public function setName(?AttachementType $name): self
+    public function setName(?AttachementType $name) 
     {
         $this->name = $name;
 
-        return $this;
+        return md5(uniqid($name));
     }
 
     public function getFile(): ?string
@@ -97,6 +97,7 @@ class SubmissionAttachement
     public function setFile(string $file): self
     {
         $this->file = $file;
+
 
         return $this;
     }

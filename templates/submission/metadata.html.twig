@@ -6,7 +6,10 @@
 {% block container_title %}New submission
 {% endblock %}
 
+{% block help_right %}
+	{% include "helps/submission_help.html.twig" %}
 
+{% endblock %}
 {% block pagehead %}New submission
 {% endblock %}
 {% block breadcrumb %}
@@ -49,7 +52,7 @@
 	<div class="col-md-1">
 		<div class="form-group">
 
-			<button type="button" class=" btn btn-danger btn-sm close  remove-collection-widget mt-4   bgc-h-danger-l2 radius-round ">
+			<button type="button" data-limit="1" class=" btn btn-danger btn-sm close  remove-collection-widget mt-4   bgc-h-danger-l2 radius-round ">
 				<span aria-hidden="true">×</span>
 
 			</button>
@@ -79,7 +82,7 @@
 	</div>
 	<div class="col-md-1">
 		<div class="form-group">
-			<button type="button" class=" btn btn-danger btn-sm close  remove-collection-widget mt-4   bgc-h-danger-l2 radius-round ">
+			<button type="button" data-limit="1" class=" btn btn-danger btn-sm close  remove-collection-widget mt-4   bgc-h-danger-l2 radius-round ">
 				<span aria-hidden="true">×</span>
 			</button>
 		</div>
@@ -231,7 +234,7 @@
 			<div class="card-header">
 				<h4 class="card-title">Response to call:
 					{{ call.subject| raw }}</h4>
-			 
+			 <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Help</button>
 			</div>
 			<!--end card-header-->
 			<div class="card-body">
@@ -421,7 +424,7 @@
 										<h4 class="font-20 fw-bold d-block mt-2"> 
 								Add Budget Expense and Time schedules </h4>
 								
-								{{form_widget(submissionform.actionplan)}}
+								 
 							</div>
 
 							<div class="col-12">
@@ -475,11 +478,28 @@
 					<h3>Attachement</h3>
 					<fieldset>
 						<div class="row">
-							{% if form_errors(submissionform.submissionAttachements) %}
+							{% if form_errors(submissionform.submissionAttachements) or form_errors(submissionform.proposalFile) %}
 								{% do submission.setStep(4) %}
 							{% endif %}
 							<div class="col-md-12">
 								{{form_errors(submissionform.submissionAttachements)}}
+								{{form_errors(submissionform.proposalFile)}}
+							</div>
+							
+							<div class="col-md-12">
+							<div class="input-group mb-3">
+							
+							
+                                        <label >Upload proposal</label>
+                                   {% if submission.proposal %}
+								{{form_widget(submissionform.proposalFile)}}
+							
+							{% else %}
+								{{form_widget(submissionform.proposalFile,{"attr":{"required":true}})}}
+								
+							{% endif %}
+                                      </div>
+							
 							</div>
 							<div class="col-12">
 								<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#attachement-fields-list">
@@ -621,6 +641,22 @@
 									<!--end card-header-->
 									<div class="card-body">
 										<ul class="list-group custom-list-group">
+											<li class="list-group-item align-items-center d-flex justify-content-between">
+													<div class="media">
+														<span class="me-3 align-self-center rounded fa fa-file-pdf"></span>
+														<div class="media-body align-self-center">
+															<h6 class="m-0">Proposal</h6>
+															<a href="{{ asset('uploads/submission/' ~ submission.proposal ) }}" class="font-12 text-primary">Download</a>
+														</div>
+														<!--end media body-->
+													</div>
+													<div class="align-self-center">
+														<span class="text-muted mb-n2"> </span>
+														<div class="apexchart-wrapper w-30 align-self-center">
+															<div id="dash_spark_1" class="chart-gutters"></div>
+														</div>
+													</div>
+												</li>
 											{% for attachment in submission.submissionAttachements %}
 
 												<li class="list-group-item align-items-center d-flex justify-content-between">
@@ -845,8 +881,7 @@
 	
 	{% endblock%}
 {% block script %}
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
-	integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+	<script src="{{ asset('plugins/jquery.validate.min.js')}}">
 	</script>
 	<script src="{{ asset('plugins/jquery-steps/jquery.steps.min.js')}}"></script>
 	<script src="{{ asset('plugins/select2/select2.min.js')}}"></script>
@@ -856,7 +891,29 @@
 		jQuery(document).ready(function () {
 
 $(document).on('click', '.remove-collection-widget', function (e) {
-$(this).closest('.row').fadeOut().remove();
+var row=$(this).closest('.row')
+
+	if($(this).attr("data-limit") == 1){
+		if($(this).closest('ul').children('div').length == 1){
+	$(this).closest('ul').find('.remove-collection-widget').parent().parent().remove()
+
+			
+		}
+		else if($(this).closest('ul').children('div').length == 2){
+			var ul=$(this).closest('ul');
+			$(row).fadeOut().remove();
+			$(ul).find('.remove-collection-widget').parent().parent().remove()
+
+
+
+		}else 
+$(row).fadeOut().remove();
+
+	}else {
+
+$(row).fadeOut().remove();
+	}
+
 $(".select2").select2();
 																																																																																																																		
 
@@ -902,6 +959,7 @@ return form.valid();
 },
 onStepChanged: function (event, currentIndex, priorIndex) {
 
+
 if ({{ submission.step }} < currentIndex) {
 $("#submission_step").val(currentIndex)
 if (currentIndex == 5) 
@@ -909,6 +967,18 @@ form.submit();
 
 
 
+}
+if(currentIndex == 3){
+
+	if($("#research-schedule-list div").length < 1){
+	$("#research-schedule-list").siblings('.add-another-collection-widget').click()
+	$("#research-schedule-list").find('.remove-collection-widget').parent().parent().remove()
+	}
+	if($("#budget-fields-list div").length < 1){
+	$("#budget-fields-list").siblings('.add-another-collection-widget').click()
+	$("#budget-fields-list").find('.remove-collection-widget').parent().parent().remove()
+
+	}
 }
 },
 onFinishing: function (event, currentIndex) {
@@ -957,9 +1027,16 @@ var $input = $('<button class="btn btn-success" type="submit">Save</button>');
 $input.appendTo($('ul[aria-label=Pagination]'));
 	</script>
 	<script>
+
 		$(function () {
 $(".select2").select2();
 
 })
+
+window.onload = function() {
+  init();
+$(".select2").select2();
+};
+
 	</script>
 {% endblock %}

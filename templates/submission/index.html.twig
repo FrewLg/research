@@ -14,10 +14,10 @@
 
 
 	<div class="row">
-		<div class="col-lg-12 row">
+		<div class="col-lg-12  mb-2">
 			<div class="accordion" id="accordionExample">
 				<div class="accordion-item active">
-					<h5 class="accordion-header m-0" id="headingOne">
+					<h5 class="accordion-header m-0 " id="headingOne">
 						<button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
 							Filter
 						</button>
@@ -34,7 +34,7 @@
 									{% endif %}
 								{% endfor %}
 								<button class="btn  col-3 float-right btn-warning my-3  schedule-submit-button" type="reset">Clear</button>
-								<button class="btn mx-1  col-3 float-right btn-success my-3  schedule-submit-button" type="submit">Filter</button>
+								<button class="btn mx-1  col-3 float-right btn-info my-3  schedule-submit-button" type="submit">Filter</button>
 
 								{{ form_end(sumissionFilterForm) }}
 
@@ -67,16 +67,37 @@
 									<th>Title</th>
 									<th>Researcher(PI)</th>
 									<th>Submission Date</th>
+									<th>Progress</th>
 									<th>Status</th>
-									<th>Action</th>
+									 
 								</tr>
 							</thead>
 							<tbody>
 								{% for submission in submissions %}
 									<tr {% if submission.complete=='completed' %} class='text-' {% elseif submission.complete==''%} class='text-danger' {% endif %}>
 										<td>{{ loop.index  }}</td>
-										<td>{{ submission.title }}</td>
+										<td>
+										
+										
+										{% if app.user.id==submission.author.id  %}
+ 												<a href="{{ path('submission_status', {'id': submission.id}) }}" class='text-info '>
+													{{ submission.title }}  </a>
+											</a>
+											 
+
+										{% else %}
+											 <a href="{{ path('submission_show', {'id': submission.id}) }}" class="text-info">
+										{{ submission.title }} </a>
+										{% endif %}
+
+										</td>
 										<td>{{ submission.author.userInfo }}
+
+										{% if app.user.id==submission.author.id  %}
+												<span class="badge bg-success">Thi is you</span>
+											 
+										{% endif %}
+
 											<a href="#" class="avatar-box thumb-xxs align-self-center">
 												<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
 													+{{ submission.coAuthors|length   }}
@@ -112,6 +133,12 @@
 
 											{% endfor %}
 
+<a class="btn btn-block btn-info btn-xs "
+						 href="{{ path('short_list_findone', {'id': submission.id }) }}">
+							Check name 
+							 
+						</a>
+
 										</td>
 
 
@@ -120,18 +147,31 @@
 												{{ submission.sentAt|date('d-m-y h:s a') }}
 											{% endif %}
 										</td>
+										<td>
+													{{ include('submission/includes/progress.html.twig') }}
+
+										</td>
 										<td nowrap="nowrap">
 
-											{% if   submission.reviewAssignments|length>0  %}
+											{% if submission.awardgranted ==1  %}
 
-												<a href="#" class="avatar-box thumb-xxs align-self-center">
-													<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-														{{submission.reviewAssignments|length}}R
-													</span>
-
+												<a   class='badge bg-soft-success mt-2 bg-xs btn-block'>Winner
+													{# <i class="fa fa-check text-success"></i> #}
 												</a>
+												{% elseif   submission.reviewAssignments|length>0  %}
 
+													<a href="#" class="avatar-box thumb-xxs align-self-center">
+														<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+															{{submission.reviewAssignments|length}}R
+														</span>
+
+													</a>
+												{% else   %}
+												<a   class='badge bg-soft-danger mt-2 bg-xs btn-block'>Not Assigned
+ 												</a>
+												  
 											{% endif %}
+
 
 											{% set count = 0 %}
 											{% for  confirmation in submission.reviewAssignments('closed') %}
@@ -160,35 +200,14 @@
 												{% endif %}
 											{% endfor %}
 										</td>
-										<td nowrap="nowrap">
-											{% if app.user.id==submission.author.id  %}
-												<span class="badge bg-success">You are the author</span>
-												<a href="{{ path('submission_status', {'id': submission.id}) }}" class='btn btn-primary btn-xs '>
-													Status</a>
-											</a>
-										{% else %}
-											{% if   submission.complete=='' %}
-												<a href="{{ path('submission_show', {'id': submission.id}) }}" class='badge bg-danger   '>Incomplete
-												</a>
-											{% else %}
-												<a href="{{ path('submission_show', {'id': submission.id}) }}" class='btn btn-info btn-xs '>Show</a>
-											{% endif %}
-										{% endif %}
-										{% if app.user.id==submission.author.id and submission.complete=='' %}
-											<a href="{{ path('submission_firststep_edit', {'id': submission.id}) }}" class='btn btn-primary btn-xs '>Finish
-											</a>
-										{% endif %}
-                                        {# <small class="float-end ms-2 pt-1 font-10">92%</small>
-                                                        <div class="progress mt-2" style="height:3px;">
-                                                            <div class="progress-bar bg-success" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div> #}
+ </tr>
 									{% else %}
 
 										<td colspan="8">no records found</td>
 
 									{% endfor %}
-									
-								</td>
+
+								
 							</tbody>
 						</table>
 					</div>

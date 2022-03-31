@@ -184,10 +184,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
       $this->flashBag->add("warning", "Please Complete Your profile!!");
 
-      return new RedirectResponse($this->urlGenerator->generate('myprofile'));
+      return new RedirectResponse($this->urlGenerator->generate('researchworks'));
     }
 
-    return new RedirectResponse($this->urlGenerator->generate('homepage'));
+    return new RedirectResponse($this->urlGenerator->generate('myreviews'));
   }
 
   protected function getLoginUrl()

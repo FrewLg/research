@@ -1,17 +1,16 @@
-{% if is_granted('ROLE_ADMIN') or is_granted("vw_irb_dbrd") or is_granted("vw_irb_rqst") or
-is_granted("ROLE_SECRETARY") or is_granted("vw_all_irb_assgn") or is_granted("vw_brd_mmbr") or is_granted("mng_brd_mtng") or 
- is_granted('mng_irb_pr_typ') or is_granted('mng_irb_app_typ') or is_granted('mng_irb_atch_typ') or is_granted('mng_irb_rsub_cat') or
-is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc') 
-  %}
+
 
 	<li>
 		<a href="javascript: void(0);">
 			<i class="fas fa-check-circle align-self-center menu-icon"></i>
-			<span>IRB</span>
+			<span>IRB Ethical Clearance</span>
 			<span class="menu-arrow">
 				<i class="mdi mdi-chevron-right"></i>
 			</span>
-		</a>
+		</a> 
+		
+	 
+
 		<ul class="nav-second-level" aria-expanded="false">
 			{% if is_granted("vw_irb_dbrd") %}
 				<li class="nav-item">
@@ -21,28 +20,44 @@ is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc')
 
 			{% endif %}
 
+ 	{# {% if is_granted('ROLE_ADMIN') or is_granted("vw_irb_dbrd") or is_granted("vw_irb_rqst") or
+is_granted("ROLE_SECRETARY") or is_granted("vw_all_irb_assgn") or is_granted("vw_brd_mmbr") or is_granted("mng_brd_mtng") or 
+ is_granted('mng_irb_pr_typ') or is_granted('mng_irb_app_typ') or is_granted('mng_irb_atch_typ') or is_granted('mng_irb_rsub_cat') or
+is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc') 
+  %} #}
 				<li class="nav-item">
+					
+						{% if   is_granted("vw_irb_dbrd") %}
 					<a class="nav-link" href="{{ path('application_index') }}">
 						<i class="ti-control-record"></i>
-						{% if   is_granted("ROLE_ADMIN") %}
-							All Applications
-						{% else %}
-							My Applications
+							All Applications</a>
+						{% elseif  is_granted("ROLE_USER")%} 
+						<a class="nav-link" href="{{ path('myapplication') }}">
+						<i class="ti-control-record"></i> My Applications</a>
+
+
+
 						{% endif %}
 					</a>
 				</li>
-			
-
-			{% if is_granted("ROLE_SECRETARY") or is_granted("vw_all_irb_assgn")   %}
+				
 				<li class="nav-item">
+					<a class="nav-link" href="{{ path('application_new') }}">
+						<i class="ti-control-record"></i> New  IRB Application   
+
+					</a>
+				</li>
+
+				{% if is_granted("ROLE_SECRETARY") or is_granted("vw_all_irb_assgn")   %}
+				{# <li class="nav-item">
 					<a class="nav-link" href="{{ path('irb_myassigned') }}">
 						<i class="ti-control-record"></i>
 
 						All Review Assignments
 
 					</a>
-				</li>
-			{% else %}
+				</li> #}
+		 
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('irb_myassigned') }}">
 						<i class="ti-control-record"></i>
@@ -68,6 +83,9 @@ is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc')
 				</li>
 
 			{% endif %}
+					{% if is_granted('mng_irb_setting') %}
+
+
 			<li>
 				<a href="javascript: void(0);">
 					<i class="fas fa-cog align-self-center menu-icon"></i>
@@ -142,6 +160,8 @@ is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc')
 
 				</ul>
 			</li>
+			{% endif %}
+
 		</ul>
 	</li>
-{% endif %}
+ 

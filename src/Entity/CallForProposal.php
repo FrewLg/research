@@ -95,6 +95,10 @@ class CallForProposal
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $funding_source;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $attachement;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -159,6 +163,11 @@ class CallForProposal
      * @ORM\OneToMany(targetEntity=TemplateAndForm::class, mappedBy="callFor")
      */
     private $templateAndForms;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=CallCategory::class, inversedBy="callForProposals")
+     */
+    private $callType;
 
  
 
@@ -353,6 +362,17 @@ class CallForProposal
 
         return $this;
     }
+    public function getAttachement(): ?string
+    {
+        return $this->attachement;
+    }
+
+    public function setAttachement(?string $attachement): self
+    {
+        $this->attachement = $attachement;
+
+        return $this;
+    }
 
     public function getCommitmentFromOtherResearch(): ?bool
     {
@@ -536,6 +556,18 @@ class CallForProposal
                 $templateAndForm->setCallFor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCallType(): ?CallCategory
+    {
+        return $this->callType;
+    }
+
+    public function setCallType(?CallCategory $callType): self
+    {
+        $this->callType = $callType;
 
         return $this;
     }

@@ -26,6 +26,7 @@
         "lexik/form-filter-bundle": "^7.0",
         "lexik/translation-bundle": "^5.2",
         "phpdocumentor/reflection-docblock": "^5.2",
+        "phpoffice/phpspreadsheet": "^1.22",
         "scottharwell/google-charts": "^2.1",
         "sensio/framework-extra-bundle": "^5.1",
         "swiftmailer/swiftmailer": "^6.0",
@@ -62,6 +63,7 @@
         "symfony/yaml": "5.2.*",
         "symfonycasts/reset-password-bundle": "^1.8",
         "symfonycasts/verify-email-bundle": "^1.5",
+        "twig/extensions": "^1.5",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
         "vich/uploader-bundle": "^1.18"

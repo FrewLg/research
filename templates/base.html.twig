@@ -27,8 +27,7 @@
 
 		</head>
 
-		<body
-			class="dark-sidenav">
+		<body>
 			<!-- Left Sidenav -->
 			{% include "includes/sidenav.html.twig" %}
 			<div class="page-wrapper">
@@ -41,10 +40,19 @@
 						<div class="col-auto align-self-center"></div>
 
 						{% block body %}{% endblock %}
+						
 						<br>
 					</div>
 					<!-- container -->
-
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+							<div class="offcanvas-header">
+								<h5 id="offcanvasRightLabel" class="m-0">Help</h5>
+								<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+							</div>
+							<div class="offcanvas-body">
+							{% block help_right %}{% endblock %}
+							</div>
+						</div>
 					<footer class="footer text-center text-sm-start">
 						&copy;
 						<script>

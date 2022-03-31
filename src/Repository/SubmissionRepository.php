@@ -60,7 +60,7 @@ class SubmissionRepository extends ServiceEntityRepository
     // sET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY','')); 
     // select submission_id from review where remark in ('Accepted','Declined') group by submission_id having count(remark) >1; 
 
-    public function getSubmissions($filter = [])
+    public function getSubmissions($filter = []  )
     {
         $qb = $this->createQueryBuilder('s');
         if (isset($filter['status']) and sizeof($filter['status']) > 0) {
@@ -90,7 +90,7 @@ class SubmissionRepository extends ServiceEntityRepository
             
             ->join("s.coAuthors","c","With","c.submission=s.id")
             ->join("c.researcher","uu","With","c.researcher=uu.id")
-            ->andWhere("uu in  (:coAuthor)")
+             ->andWhere("uu in  (:coAuthor)")
                 ->setParameter("coAuthor", $filter['coAuthor']);
         }
         if (isset($filter['thematic_area']) and sizeof($filter['thematic_area']) > 0) {
@@ -99,11 +99,11 @@ class SubmissionRepository extends ServiceEntityRepository
             $qb->andWhere("s.thematic_area in  (:thematic_area)")
                 ->setParameter("thematic_area", $filter['thematic_area']);
         }
-        if (isset($filter['submission_type'])) {
+        // if (isset($filter['submission_type'])) {
 
-            $qb->andWhere("s.submission_type =  :submission_type")
-                ->setParameter("submission_type", $filter['submission_type']);
-        }
+        //     $qb->andWhere("s.submission_type =  :submission_type")
+        //         ->setParameter("submission_type", $filter['submission_type']);
+        // }
         if (isset($filter['complete'])) {
             $qb->andWhere("s.complete =  :complete")
                 ->setParameter("complete", $filter['complete']);
@@ -188,16 +188,20 @@ class SubmissionRepository extends ServiceEntityRepository
         return  $qb->orderBy('s.id', 'ASC')
             ->getQuery();;
     }
-    public function filterApproved(CallForProposal $callForProposal)
+    public function filterApproved(CallForProposal $callForProposal,$isGranted=false)
     {
         $qb = $this->createQueryBuilder('s');
 
         $qb->andWhere("s.callForProposal = :callForProposal")->setParameter('callForProposal', $callForProposal);
 
         $qb->leftJoin("App:Review", "r", "with", "s.id=r.submission");
-        $qb->andWhere("r.remark = 4")
+        $qb
+            ->andWhere("r.remark = 4")
             ->andWhere("r.from_director = 1");
 
+            if($isGranted){
+                $qb->andWhere("s.awardgranted = 1");
+            }
 
 
         // dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());

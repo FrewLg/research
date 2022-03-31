@@ -25,9 +25,13 @@
 
 <div class="card">
 								<div class="card-body">
-									<div class="ribbon2 rib2-primary">
-										<span class="ribbon4-band ribbon4-band-success text-white text-center">New </span>
+									{% if submission.awardgranted %} 
+									<div class="ribbon2 rib2-success">
+										<span class="ribbon4-band ribbon4-band-primary text-white text-center">
+									<i class="fas fa-badge-check"></i>
+										  </span>
 									</div>
+									{% endif %}
 									<!--end ribbon-->
 									<div class="row">
 										<div class="col-auto">

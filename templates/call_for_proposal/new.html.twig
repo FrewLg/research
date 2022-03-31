@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New CallForProposal
+{% block title %}New CallFor Proposal
 {% endblock %}
 
 {% block container_title %}Create new call
@@ -16,10 +16,11 @@
 {% endblock %}
 
 {% block body %}
+
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	{{ include('call_for_proposal/_form.html.twig') }}
 
-	<a href="{{ path('call_for_proposal_all') }}">back to list</a>
+	 
 	<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
 
 

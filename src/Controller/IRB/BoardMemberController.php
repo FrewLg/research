@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/board-member')]
+#[Route('/irb/board-member')]
 class BoardMemberController extends AbstractController
 {
     #[Route('/', name: 'board_member_index', methods: ['GET', "POST"])]

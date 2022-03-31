@@ -17,7 +17,7 @@
 						<a class="nav-link " data-bs-toggle="tab" href="#home" role="tab" aria-selected="true">Research detail</a>
 					</li>
 					{% if is_granted('ROLE_SECRETARY') %}
-
+ 
 					<li class="nav-item  waves-effect waves-light">
 						<a class="nav-link " data-bs-toggle="tab" href="#profile" role="tab" aria-selected="false">Decision</a>
 					</li>
@@ -194,7 +194,7 @@
 						{% for Attachment in review_assignment.application.applicationAttachments %}
 
 							<li>
-								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
+								<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ Attachment.file ) }}">
 									{{Attachment.type|striptags|slice(0, 33)|raw}}
 									<i class="fa fa-download"></i>
 								</a>

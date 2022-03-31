@@ -8,11 +8,14 @@ use Doctrine\Common\Collections\Collection;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
 /**
  * @ORM\Entity(repositoryClass=SubmissionRepository::class)
+ * @Vich\Uploadable
  *
  */
 class Submission
@@ -126,10 +129,7 @@ class Submission
      */
     private $project_end_at;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $progress;
+   
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -157,6 +157,11 @@ class Submission
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $published;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $ShortListed;
 
 
 
@@ -205,12 +210,7 @@ class Submission
      * @ORM\OneToOne(targetEntity=PublishedResearch::class, mappedBy="submission", cascade={"persist", "remove"})
      */
     private $publishedResearch;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $budget_and_time_schedule;
-
+ 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
@@ -237,6 +237,24 @@ class Submission
      * @ORM\Column(type="text", nullable=true)
      */
     private $manuscript;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $proposal;
+
+     /**
+     * 
+     * @Vich\UploadableField(mapping="proposal_file", fileNameProperty="proposal")
+     *  @Assert\File(
+     *     maxSize = "10m",
+     *     mimeTypes = {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"},
+     *     mimeTypesMessage = "Please upload a valid Docx or Doc file"
+     * )
+     * 
+     * @var File|null
+     */
+    public $proposalFile;
 
     public function __construct()
     {
@@ -265,6 +283,11 @@ class Submission
     public function __toString(): string
     {
         return $this->title;
+    }
+
+    public function getProposalFile(): ?File
+    {
+        return $this->proposalFile;
     }
 
     public function getAbstract(): ?string
@@ -316,10 +339,7 @@ class Submission
         return $this;
     }
 
-
-
-
-
+ 
     public function getCallForProposal(): ?CallForProposal
     {
         return $this->callForProposal;
@@ -546,18 +566,7 @@ class Submission
         return $this;
     }
 
-    public function getProgress(): ?int
-    {
-        return $this->progress;
-    }
-
-    public function setProgress(?int $progress): self
-    {
-        $this->progress = $progress;
-
-        return $this;
-    }
-
+    
     public function getIsAuthorPi(): ?bool
     {
         return $this->is_author_pi;
@@ -600,17 +609,7 @@ class Submission
         return $this;
     }
 
-    public function getCopyedit(): ?string
-    {
-        return $this->copyedit;
-    }
-
-    public function setCopyedit(?string $copyedit): self
-    {
-        $this->copyedit = $copyedit;
-
-        return $this;
-    }
+   
 
     public function getTerminalreport(): ?string
     {
@@ -632,6 +631,17 @@ class Submission
     public function setPublished(?string $published): self
     {
         $this->published = $published;
+
+        return $this;
+    }
+    public function getShortListed(): ?string
+    {
+        return $this->ShortListed;
+    }
+
+    public function setShortListed(?string $ShortListed): self
+    {
+        $this->ShortListed = $ShortListed;
 
         return $this;
     }
@@ -878,17 +888,7 @@ class Submission
         return $this;
     }
 
-    public function getBudgetAndTimeSchedule(): ?string
-    {
-        return $this->budget_and_time_schedule;
-    }
-
-    public function setBudgetAndTimeSchedule(?string $budget_and_time_schedule): self
-    {
-        $this->budget_and_time_schedule = $budget_and_time_schedule;
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection|ResearchReport[]
@@ -971,6 +971,18 @@ class Submission
     public function setManuscript(?string $manuscript): self
     {
         $this->manuscript = $manuscript;
+
+        return $this;
+    }
+
+    public function getProposal(): ?string
+    {
+        return $this->proposal;
+    }
+
+    public function setProposal(string $proposal): self
+    {
+        $this->proposal = $proposal;
 
         return $this;
     }

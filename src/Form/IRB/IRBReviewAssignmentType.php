@@ -64,6 +64,7 @@ class IRBReviewAssignmentType extends AbstractType
                     'choice_label' => function (User $user) {
                         return $user . "-(" . count($user->getIRBReviewAssignments()) . ")";
                     },
+                    
 
                 ]
             )

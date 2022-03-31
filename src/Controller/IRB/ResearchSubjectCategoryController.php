@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/irb-setting/research-subject-category')]
+#[Route('/irb/setting/research-subject-category')]
 class ResearchSubjectCategoryController extends AbstractController
 {
     #[Route('/', name: 'i_r_b_research_subject_category_index', methods: ['GET'])]

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/irb-setting/review-checklist')]
+#[Route('/irb/setting/review-checklist')]
 class ReviewChecklistController extends AbstractController
 {
     #[Route('/', name: 'i_r_b_review_checklist_index', methods: ['GET'])]

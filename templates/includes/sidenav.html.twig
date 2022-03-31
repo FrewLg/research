@@ -1,7 +1,7 @@
 <div
 	class="left-sidenav">
 	<!-- LOGO -->
-	<div class="brand">
+	<div class="brand" style="background-color:#527dcc;">
 		<a href="{{ path('homepage') }}" class="logo">
 			<span>
 				<img src="{{ asset('files/site_setting/'~site_logo ) }}" alt="" class="logo-sm">
@@ -31,6 +31,7 @@
 				{% include "includes/menus/researchs.html.twig" %}
 				{% include "includes/menus/irb.html.twig" %}
 				{% include "includes/menus/oportunities.html.twig" %}
+				{% include "includes/menus/training.html.twig" %}
 				{% include "includes/menus/user.html.twig" %}
 				{% include "includes/menus/workunit.html.twig" %}
 				{% include "includes/menus/services.html.twig" %}
@@ -45,8 +46,7 @@
 					<i class="mdi mdi-close"></i>
 				</a>
 				<h5 class="mt-3">{{ app_name|raw}}</h5>
-				<p class="mb-3">
-					{{ app_description|raw}}</p>
+			 
 				<a href="{{path('homepage')}}" class="btn btn-outline-primary btn-sm">Homepage</a>
 			</div>
 		</div>

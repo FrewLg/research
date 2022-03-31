@@ -39,6 +39,10 @@ class College
      * @ORM\OneToMany(targetEntity=CallForProposal::class, mappedBy="college")
      */
     private $callForProposals;
+    /**
+     * @ORM\OneToMany(targetEntity=CallForProposal::class, mappedBy="college")
+     */
+    private $applications;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
@@ -106,6 +110,11 @@ class College
      */
     private $irbReviewAtachements;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CallCategory::class, mappedBy="college")
+     */
+    private $callCategories;
+
 
  
    
@@ -115,6 +124,7 @@ class College
         $this->collegeCoordinators = new ArrayCollection();
         $this->departments = new ArrayCollection();
         $this->callForProposals = new ArrayCollection();
+        $this->applications = new ArrayCollection();
         $this->thematicAreas = new ArrayCollection();
         // $this->guidelineForReviewers = new ArrayCollection();
         $this->institutionalReviewersBoards = new ArrayCollection();
@@ -122,6 +132,7 @@ class College
         $this->callForTrainings = new ArrayCollection();
         $this->boardMembers = new ArrayCollection();
         $this->irbReviewAtachements = new ArrayCollection();
+        $this->callCategories = new ArrayCollection();
       }
  
 
@@ -233,6 +244,36 @@ class College
             // set the owning side to null (unless already changed)
             if ($callForProposal->getCollege() === $this) {
                 $callForProposal->setCollege(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CallForProposal[]
+     */
+    public function getApplications(): Collection
+    {
+        return $this->applications;
+    }
+
+    public function addApplication(\App\Entity\IRB\Application $application): self
+    {
+        if (!$this->applications->contains($application)) {
+            $this->applications[] = $application;
+            $application->setCollege($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApplication(\App\Entity\IRB\Application $application): self
+    {
+        if ($this->application->removeElement($application)) {
+            // set the owning side to null (unless already changed)
+            if ($application->getCollege() === $this) {
+                $application->setCollege(null);
             }
         }
 
@@ -509,6 +550,36 @@ class College
             // set the owning side to null (unless already changed)
             if ($irbReviewAtachement->getCollege() === $this) {
                 $irbReviewAtachement->setCollege(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CallCategory>
+     */
+    public function getCallCategories(): Collection
+    {
+        return $this->callCategories;
+    }
+
+    public function addCallCategory(CallCategory $callCategory): self
+    {
+        if (!$this->callCategories->contains($callCategory)) {
+            $this->callCategories[] = $callCategory;
+            $callCategory->setCollege($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCallCategory(CallCategory $callCategory): self
+    {
+        if ($this->callCategories->removeElement($callCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($callCategory->getCollege() === $this) {
+                $callCategory->setCollege(null);
             }
         }
 

@@ -60,7 +60,7 @@ class TrainingParticipantController extends AbstractController
             
             $this->addFlash("danger", "Please complete your profile first before you  register for participation  !");
 
-            return $this->redirectToRoute('myprofile');
+            return $this->redirectToRoute('researchworks');
         }
 
         $ifexists = $entityManager->getRepository('App:TrainingParticipant')->findBy(['participant'=>$user, 'training'=>$callForTraining] );
@@ -134,7 +134,7 @@ class TrainingParticipantController extends AbstractController
         $dompdf->set_option("isPhpEnabled", true);
 
         $html = $this->renderView('training_participant/cert.html.twig', [
-            'name' => $this->getUser(),
+             'name' => $submission->getParticipant()->getUserInfo(),
              'desc' => $submission->getTraining()->getDescription(),
              'type' => $submission->getTraining()->getTrainingType(),
              'date'=> $submission->getTraining()->getCreatedAt(),
