@@ -169,6 +169,8 @@ class CallForProposal
      */
     private $callType;
 
+   
+
  
 
     public function __construct()
@@ -176,6 +178,7 @@ class CallForProposal
         $this->submissions = new ArrayCollection();
         // $this->college = new ArrayCollection();
         $this->templateAndForms = new ArrayCollection();
+      
     }
 
     public function getId(): ?int
@@ -571,6 +574,8 @@ class CallForProposal
 
         return $this;
     }
+
+     
      
      
  

@@ -49,8 +49,8 @@ class DashboardController extends AbstractController
     $entityManager = $this->getDoctrine()->getManager();
              
     $querytwo = $entityManager->createQuery(
-      'SELECT   s.id,  c.confirmed
-                     FROM App:CoAuthor c
+      'SELECT   s.id,  c.confirmed 
+                     FROM App:CoAuthor c 
                          JOIN c.submission s
                        WHERE  
                     c.confirmed =:confirmation and s.complete=:completed and  c.confirmed is NOT NULL
@@ -93,6 +93,26 @@ class DashboardController extends AbstractController
     
     $thiscollege = $this->getUser()->getUserInfo()->getCollege();
     $submissionbytheme = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $thiscollege]);
+ 
+    return $this->render('dashboard/bytheme.html.twig', [
+      'thematic_areas' => $submissionbytheme,
+      'colleges' => $submissionbytheme,
+      // 'sub_by_departments'=>$recepients,
+    ]);
+  }
+
+  /**
+   * @Route("/{id}/theme/bycoll", name="theme_by_coll", methods={"GET","POST"})
+   */
+  public function themeBycoll(CallForProposal $callForProposal): Response
+  {
+    // $this->denyAccessUnlessGranted('view_dashboard');
+
+    $entityManager = $this->getDoctrine()->getManager();
+    
+    $thiscollege = $this->getUser()->getUserInfo()->getCollege();
+    $submissionbytheme = $entityManager->getRepository(ThematicArea::class)->getThematicAreaSubmissions(  $callForProposal,   $thiscollege );
+     dd($submissionbytheme);
  
     return $this->render('dashboard/bytheme.html.twig', [
       'thematic_areas' => $submissionbytheme,

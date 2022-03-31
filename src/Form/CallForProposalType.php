@@ -17,11 +17,27 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
+// use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
 
 class CallForProposalType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    
+    private $security;
+
+    public function __construct(Security $security)
     {
+       $this->security = $security;
+    }
+
+public function buildForm(FormBuilderInterface $builder, array $options )
+    {
+     
+    $user = $this->security->getUser(); // null or UserInterface, if logged in
+       $college=$user->getUserInfo()->getCollege();
+    //    dd( $college);
+
         $builder
 
         ->add('research_type', ResearchType::class)
@@ -42,6 +58,24 @@ class CallForProposalType extends AbstractType
 
                 ]
             ])
+            
+            // ->add('allowedThemes', EntityType::class, array(
+            //     'placeholder' => '---Select Thematic Area  ---',
+            //     'multiple' => true,
+            //     'mapped' => false,
+
+            //     'class' => 'App\Entity\CollegeThematicArea',
+            //     // 'choices' => $college->getCollegeThematicAreas(),
+
+            //     'attr' => array(
+            //         'empty' => 'Thematic Area',
+            //         'required' => true,
+            //     'mapped' => false,
+
+            //         'class' => 'select2 chosen-select form-control',
+            //     )
+            // )) 
+
             ->add('guidelines', CKEditorType::class, [
                 'attr' => [
                     'placeholder' => 'Guideline details',

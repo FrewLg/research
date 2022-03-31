@@ -43,10 +43,11 @@ class ThematicArea
      * @ORM\ManyToOne(targetEntity=College::class, inversedBy="thematicAreas")
      */
     private $college;
-
+ 
     public function __construct()
     {
         $this->submissions = new ArrayCollection();
+        // $this->callForProposals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,8 +115,7 @@ class ThematicArea
         // TODO: Implement __toString() method.
         return $this->getName();
     }  
-    
-    
+     
     public function removeSubmission(Submission $submission): self
     {
         if ($this->submissions->removeElement($submission)) {
@@ -139,4 +139,7 @@ class ThematicArea
 
         return $this;
     }
+ 
+
+     
 }

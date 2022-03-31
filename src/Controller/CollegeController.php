@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\CallForProposal;
 use App\Entity\College;
+use App\Entity\CollegeThematicArea;
 use App\Entity\GuidelineForReviewer;
 use App\Entity\Guidelines;
 use App\Entity\InstitutionalReviewersBoard;
 use App\Entity\IRB\IrbReviewAtachement;
 use App\Entity\ThematicArea;
+use App\Form\CollegeThematicAreaType;
 use App\Form\CollegeType;
 use App\Form\GuidelineForReviewerType;
 use App\Form\InstitutionalReviewersBoardType;
@@ -63,10 +65,10 @@ public function showdetail(Request $request): Response {
     $college = $this->getUser()->getUserInfo()->getCollege();
 
     $entityManager = $this->getDoctrine()->getManager();
-    $thematicAreas = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $college]);
+    $thematicAreas = $entityManager->getRepository(CollegeThematicArea::class)->findBy(['college' => $college]);
     $guidelines = $entityManager->getRepository(Guidelines::class)->findBy(['college' => $college]);
-    $thematicArea = new ThematicArea();
-    $thematicAreaform = $this->createForm(ThematicAreaType::class, $thematicArea);
+    $thematicArea = new CollegeThematicArea();
+    $thematicAreaform = $this->createForm(CollegeThematicAreaType::class, $thematicArea);
     $thematicAreaform->handleRequest($request);
     if ($thematicAreaform->isSubmitted() && $thematicAreaform->isValid()) {
         $entityManager = $this->getDoctrine()->getManager();
@@ -254,10 +256,10 @@ public function irbshowdetail(Request $request): Response {
 public function show(College $college, Request $request, ): Response {
 
     $entityManager = $this->getDoctrine()->getManager();
-    $thematicAreas = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $college]);
+    $thematicAreas = $entityManager->getRepository(CollegeThematicArea::class)->findBy(['college' => $college]);
     $guidelines = $entityManager->getRepository(Guidelines::class)->findBy(['college' => $college]);
-    $thematicArea = new ThematicArea();
-    $thematicAreaform = $this->createForm(ThematicAreaType::class, $thematicArea);
+    $thematicArea = new CollegeThematicArea();
+    $thematicAreaform = $this->createForm(CollegeThematicAreaType::class, $thematicArea);
     $thematicAreaform->handleRequest($request);
     if ($thematicAreaform->isSubmitted() && $thematicAreaform->isValid()) {
         $entityManager = $this->getDoctrine()->getManager();
