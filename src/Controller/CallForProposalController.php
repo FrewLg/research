@@ -82,7 +82,7 @@ class CallForProposalController extends AbstractController
      */
     public function new(Request $request, MailerInterface $mailer): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('modify_call_pr');
         $callForProposal = new CallForProposal();
         $form = $this->createFormBuilder($callForProposal)
             ->add('research_type', ResearchType::class)
@@ -190,7 +190,7 @@ class CallForProposalController extends AbstractController
 	    WHERE s.calls = :subscribed'
             )
                 ->setParameter('subscribed', '1');
-           
+
 
             $this->addFlash("success", "Call for proposal created suucessflly and will be approved later!");
             //////////////////////////// end emailing ///////////////////////
@@ -208,10 +208,11 @@ class CallForProposalController extends AbstractController
     public function show(CallForProposal $call_for_proposal, EntityManagerInterface $entityManager, Request $request): Response
     {
 
+        $this->denyAccessUnlessGranted('mng_rprts');
 
         $researchReportPhase =   $call_for_proposal->getResearchReportPhase() ?:  new ResearchReportPhase();
         $form = $this->createForm(ResearchReportPhaseType::class, $researchReportPhase)->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $request_data = $request->request->get("research_report_phase");
@@ -241,7 +242,7 @@ class CallForProposalController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-   
+
 
     /**
      * @Route("/{id}/undo-approve", name="call_approve_undo", methods={"GET"})
