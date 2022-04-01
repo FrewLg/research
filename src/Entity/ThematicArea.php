@@ -43,6 +43,11 @@ class ThematicArea
      * @ORM\ManyToOne(targetEntity=College::class, inversedBy="thematicAreas")
      */
     private $college;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=CallForProposal::class,mappedBy="thematicArea")
+     */
+    private $callForProposal;
  
     public function __construct()
     {

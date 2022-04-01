@@ -166,7 +166,7 @@ class CallForProposal
     private $callType;
 
     /**
-     * @ORM\ManyToMany(targetEntity=ThematicArea::class)
+     * @ORM\ManyToMany(targetEntity=ThematicArea::class,inversedBy="callForProposal")
      */
     private $thematicArea;
 
