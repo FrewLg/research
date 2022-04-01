@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\CallForProposal;
+use App\Entity\ThematicArea;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -59,22 +60,17 @@ public function buildForm(FormBuilderInterface $builder, array $options )
                 ]
             ])
             
-            // ->add('allowedThemes', EntityType::class, array(
-            //     'placeholder' => '---Select Thematic Area  ---',
-            //     'multiple' => true,
-            //     'mapped' => false,
+            ->add('thematicArea', null, array(
+             
+                'placeholder' => '---Select Thematic Area  ---',
+              "class"=>ThematicArea::class,
+                'attr' => array(
+                    'empty' => 'Thematic Area',
+               
 
-            //     'class' => 'App\Entity\CollegeThematicArea',
-            //     // 'choices' => $college->getCollegeThematicAreas(),
-
-            //     'attr' => array(
-            //         'empty' => 'Thematic Area',
-            //         'required' => true,
-            //     'mapped' => false,
-
-            //         'class' => 'select2 chosen-select form-control',
-            //     )
-            // )) 
+                    'class' => 'select2 chosen-select form-control',
+                )
+            )) 
 
             ->add('guidelines', CKEditorType::class, [
                 'attr' => [

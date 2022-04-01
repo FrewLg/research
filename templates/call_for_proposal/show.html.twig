@@ -65,8 +65,9 @@
 				<h5 class='text-primary'>Thematic areas:</h5>
 	 <h6 style="font-family:arial; text-align:justify;" >
 						<ol >
-							{% if call_for_proposal.college %}
-								{% for themes in call_for_proposal.college.thematicAreas %}
+							{% if call_for_proposal.thematicArea %}
+							
+								{% for themes in call_for_proposal.thematicArea %}
 
 									<li>
 								<p>	{{ themes.name }} 
