@@ -5,7 +5,7 @@
 {% block styles %}
 
 	{# <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}"> #}
-	{# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer"/> #}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
 {% endblock %}
 
@@ -569,7 +569,7 @@
 						{% if submission.awardgranted %} 
 									<div class="ribbon2 rib2-success">
 										<span class="ribbon4-band ribbon4-band-primary text-white text-center">
-										<i class="fas fa-badge-check"></i>
+										<i class="fas fa-sun"></i>
 										  </span>
 									</div>
 									{% endif %}
@@ -660,14 +660,20 @@
 
 				<div class="card">
 					<div class="card-body ">
-						<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
+						<h4 class="font-18 m-0 fw-bold">Attachments</h4><br>
+						<a href="{{ asset('/uploads/submission/'~ submission.proposal ) }}" class="btn btn-info btn-xs float-right"> Proposal
+								<i class="fa fa-download material-icons warning"></i>
+							</a>
+<br>
 						{% for submissionattachment in submission.submissionAttachements %}
 							<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">{{submissionattachment.name}}
 								<i class="fa fa-download material-icons warning"></i>
 							</a>
 						{% else %}
-							<span class="label label-danger">{% trans %}No attachement found{% endtrans %}</span>
-						{% endfor %}<hr>
+							<span class="label label-danger">-</span>
+						{% endfor %}
+						
+						<hr>
 						<a class="badge bg-primary" 
 						href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">PDF<i class="fa fa-download"></i>
 							</a>
@@ -706,7 +712,7 @@
 	{% endblock %}
 	{% block script %}
 		<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-		{# <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> #}
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<script type="text/javascript">
 
 			var isvalid = false;

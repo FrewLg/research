@@ -69,8 +69,8 @@
 	<h6  style="text-align: justify;"><br>{{ call_for_proposal.subject|raw }}</h6>
                              <h5 class='text-info'>Thematic areas <h5>
                                <ol>
-							{% if call_for_proposal.college %}
-								{% for themes in call_for_proposal.college.thematicAreas %}
+							{% if call_for_proposal.thematicArea %}
+								{% for themes in call_for_proposal.thematicArea %}
 
 									<li>
 										<h6>{{ themes.name }}</h6>

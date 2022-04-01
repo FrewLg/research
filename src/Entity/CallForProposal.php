@@ -51,11 +51,7 @@ class CallForProposal
      */
     private $submissions;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=ThematicArea::class, inversedBy="callForProposals")
-     */
-    private $thematic_area;
-
+    
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -169,6 +165,13 @@ class CallForProposal
      */
     private $callType;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=ThematicArea::class,inversedBy="callForProposal")
+     */
+    private $thematicArea;
+
+   
+
  
 
     public function __construct()
@@ -176,6 +179,8 @@ class CallForProposal
         $this->submissions = new ArrayCollection();
         // $this->college = new ArrayCollection();
         $this->templateAndForms = new ArrayCollection();
+        $this->thematicArea = new ArrayCollection();
+      
     }
 
     public function getId(): ?int
@@ -252,18 +257,7 @@ class CallForProposal
     }
 
    
-    public function getThematicArea(): ?ThematicArea
-    {
-        return $this->thematic_area;
-    }
-
-    public function setThematicArea(ThematicArea $thematic_area): self
-    {
-        $this->thematic_area = $thematic_area;
-
-        return $this;
-    }
-
+  
  
  
     
@@ -571,6 +565,31 @@ class CallForProposal
 
         return $this;
     }
+  /**
+     * @return Collection|UserGroup[]
+     */
+    public function getThematicArea(): Collection
+    {
+          return $this->thematicArea;
+        
+    }
+    public function addThematicArea(ThematicArea $thematicArea): self
+    {
+        if (!$this->thematicArea->contains($thematicArea)) {
+            $this->thematicArea[] = $thematicArea;
+        }
+
+        return $this;
+    }
+
+    public function removeThematicArea(ThematicArea $thematicArea): self
+    {
+        $this->thematicArea->removeElement($thematicArea);
+
+        return $this;
+    }
+
+     
      
      
  

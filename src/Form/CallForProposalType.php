@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\CallForProposal;
+use App\Entity\ThematicArea;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,11 +18,27 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
+// use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
 
 class CallForProposalType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    
+    private $security;
+
+    public function __construct(Security $security)
     {
+       $this->security = $security;
+    }
+
+public function buildForm(FormBuilderInterface $builder, array $options )
+    {
+     
+    $user = $this->security->getUser(); // null or UserInterface, if logged in
+       $college=$user->getUserInfo()->getCollege();
+    //    dd( $college);
+
         $builder
 
         ->add('research_type', ResearchType::class)
@@ -42,6 +59,19 @@ class CallForProposalType extends AbstractType
 
                 ]
             ])
+            
+            ->add('thematicArea', null, array(
+             
+                'placeholder' => '---Select Thematic Area  ---',
+              "class"=>ThematicArea::class,
+                'attr' => array(
+                    'empty' => 'Thematic Area',
+               
+
+                    'class' => 'select2 chosen-select form-control',
+                )
+            )) 
+
             ->add('guidelines', CKEditorType::class, [
                 'attr' => [
                     'placeholder' => 'Guideline details',

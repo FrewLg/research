@@ -81,7 +81,7 @@ class CallForProposalController extends AbstractController {
         $callForProposal = new CallForProposal();
         $form = $this->createForm(CallForProposalType::class, $callForProposal);
         $form->handleRequest($request);
-
+// dd($form);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $callForProposal->setPostDate(new \Datetime());

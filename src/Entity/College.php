@@ -115,6 +115,11 @@ class College
      */
     private $callCategories;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CollegeThematicArea::class, mappedBy="college")
+     */
+    private $collegeThematicAreas;
+
 
  
    
@@ -133,6 +138,7 @@ class College
         $this->boardMembers = new ArrayCollection();
         $this->irbReviewAtachements = new ArrayCollection();
         $this->callCategories = new ArrayCollection();
+        $this->collegeThematicAreas = new ArrayCollection();
       }
  
 
@@ -580,6 +586,36 @@ class College
             // set the owning side to null (unless already changed)
             if ($callCategory->getCollege() === $this) {
                 $callCategory->setCollege(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CollegeThematicArea>
+     */
+    public function getCollegeThematicAreas(): Collection
+    {
+        return $this->collegeThematicAreas;
+    }
+
+    public function addCollegeThematicArea(CollegeThematicArea $collegeThematicArea): self
+    {
+        if (!$this->collegeThematicAreas->contains($collegeThematicArea)) {
+            $this->collegeThematicAreas[] = $collegeThematicArea;
+            $collegeThematicArea->setCollege($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCollegeThematicArea(CollegeThematicArea $collegeThematicArea): self
+    {
+        if ($this->collegeThematicAreas->removeElement($collegeThematicArea)) {
+            // set the owning side to null (unless already changed)
+            if ($collegeThematicArea->getCollege() === $this) {
+                $collegeThematicArea->setCollege(null);
             }
         }
 

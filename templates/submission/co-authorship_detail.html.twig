@@ -649,13 +649,18 @@ $("#showEditRequestContent").html("Problem");
 
 				<div class="card">
 					<div class="card-body ">
-						<h4 class="font-18 m-0 fw-bold">Attachments:</h4><br>
+						<h4 class="font-18 m-0 fw-bold">Attachments</h4><br>
+							<a href="{{ asset('/uploads/submission/'~ submission.proposal ) }}" class="btn btn-info btn-xs float-right"> Proposal
+								<i class="fa fa-download material-icons warning"></i>
+							</a>
+<br>
+					
 						{% for submissionattachment in submission.submissionAttachements %}
 							<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">{{submissionattachment.name}}
 								<i class="fa fa-download material-icons warning"></i>
 							</a>
 						{% else %}
-							<span class="label label-danger">{% trans %}No attachement found{% endtrans %}</span>
+							<span class="label label-danger">{% trans %}-{% endtrans %}</span>
 						{% endfor %}
 					</div>
 				</div>

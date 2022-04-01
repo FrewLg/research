@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Submission;
+use Doctrine\ORM\EntityRepository;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,6 +22,7 @@ class SubmissionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $submission=$options["data"];
         $builder
 
             ->add('title', TextType::class, ['attr' => []])
@@ -157,7 +159,18 @@ class SubmissionType extends AbstractType
                     'empty' => 'Thematic Area    ',
                     'required' => true,
                     'class' => 'select2 chosen-select form-control',
-                )
+                ),
+                'query_builder' => function (EntityRepository $entityRepository)use ($submission) {
+                   
+                    return $entityRepository->createQueryBuilder('t')
+                    ->join("t.callForProposal","c")->andWhere("c.id = :call")->setParameter("call",$submission->getCallForProposal()->getId())
+
+
+                  
+                    // ->andWhere("u.id = :themeatic")->setParameter("themeatic",$submission->getCallForProposal()->getThematicArea())
+                       ;
+                }
+
             ))
             ->add('keywords', null, ["attr" => ["data-role" => "tagsinput"]])
             ->add(
