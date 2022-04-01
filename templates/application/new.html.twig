@@ -569,11 +569,11 @@ $(this).parentsUntil(".parent").find(".my-hidden").find('input').prop('required'
 jQuery(document).ready(function () {
 $('input[type=radio][name="application[type]"]').change(function () {
 
-if (this.value == '1')  
+if(this.value == '1') { 
 $("#div-pi").addClass("d-none")
 $('input[type=radio][name="application[type]"]').prop('required', false);
-
-} else if (this.value == '2') {
+}
+ else if (this.value == '2') {
 $("#div-pi").removeClass("d-none")
 $('input[type=radio][name="application[type]"]').prop('required', true);
 

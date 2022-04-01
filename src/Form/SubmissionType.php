@@ -98,9 +98,11 @@ class SubmissionType extends AbstractType
             // ])
             ->add('proposalFile',VichFileType::class,[
                 'allow_delete' => false,
+                'required'=>false,
                 'label'=>"Proposal Attachement",
                 // 'allow_download' => true,
-               'download_label' => 'Download file',
+               'download_label' => false,
+               'row_attr'=>[],
                "attr"=>[
                    "accept"=>"application/msword,
                    application/vnd.openxmlformats-officedocument.wordprocessingml.document"

@@ -487,24 +487,29 @@
 							</div>
 							
 							<div class="col-md-12">
-							<div class="input-group mb-3">
 							
-							
-                                        <label >Upload proposal</label>
-                                   {% if submission.proposal %}
-								{{form_widget(submissionform.proposalFile)}}
-							
+							<div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Upload Proposal</h4>
+                                    <p class="text-muted mb-0"
+                                    </p>
+                                </div><!--end card-header-->
+                                <div class="card-body">
+								
+                                    <div class="">
+                                        {# <label class="input-group-text" for="inputGroupFile01">Upload</label> #}
+                                             {% if submission.proposal %}
+								{{form_row(submissionform.proposalFile.children.file)}}
+
+								{# {{form_widget(submissionform.proposalFile.children.file)}} #}
 							{% else %}
 								{{form_widget(submissionform.proposalFile,{"attr":{"required":true}})}}
 								
 							{% endif %}
                                       </div>
-							
-							</div>
-							<div class="col-12">
-								<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#attachement-fields-list">
+<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#attachement-fields-list">
 									<span aria-hidden="true">+</span>
-									Add Attachement 
+								Add additional Attachement 
 								</button>
 								<ul id="attachement-fields-list" class="m-t-5" data-prototype="{{_self.displayAttachement(submissionform.submissionAttachements.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ submissionform.submissionAttachements|length }}">
 									{% for attachement in submissionform.submissionAttachements %}
@@ -513,10 +518,14 @@
 										</div>
 									{% endfor %}
 								</ul>
+                            </div>
+
+							</div>
+							<div class="col-12">
+								
 								{# {{form_widget(submissionform.submissionAttachements)}} #}
 								{{form_widget(submissionform.step)}}
 								{{form_widget(submissionform._token,{'attr':{'hidden':true}})}}
-
 							</div>
 							<!--end row-->
 						</div>
