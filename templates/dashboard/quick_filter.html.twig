@@ -1,6 +1,7 @@
-<a href="{{ path('theme') }}" class='btn btn-primary btn-sm   btn-block'>
+{#<a href="{{ path('theme') }}" class='btn btn-primary btn-sm   btn-block'>
 	All by theme
-</a>
+</a>#}
+   <a href="{{ path('theme_by_coll', {'id': call.id }) }}"  class='btn btn-primary btn-sm btn-block'> All by theme</a>
 <hr>
 <a href="{{ path('research_theams') }}" class='btn btn-warning  btn-sm btn-block'>
 	Researchers </a>
