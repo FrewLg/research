@@ -35,9 +35,9 @@ class CallForProposalType extends AbstractType
 public function buildForm(FormBuilderInterface $builder, array $options )
     {
      
-    $user = $this->security->getUser(); // null or UserInterface, if logged in
+    $user = $this->security->getUser(); 
        $college=$user->getUserInfo()->getCollege();
-    //    dd( $college);
+   
 
         $builder
 

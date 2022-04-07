@@ -745,13 +745,6 @@ class SubmissionController extends AbstractController
         }
 
 
-        /**
-         * co pi responses to report
-         */
-        if ($request->request->get('copi_response') || $request->request->get('pi_response')) {
-
-            return $submissionHelper->copiReportResponse($request, $submission);
-        }
 
         if ($request->request->get('approve_research_report')) {
             return   $submissionHelper->approveResearchReport($request, $submission);
@@ -922,9 +915,10 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/{id}/details", name="submission_show",  methods={"GET","POST"})
      */
-    public function directorshow(Request $request,  Submission $submission, ReviewRepository $reviewRepository, MailerInterface $mailer): Response
+    public function directorshow(Request $request,  Submission $submission, ReviewRepository $reviewRepository,SubmissionHelper $submissionHelper, MailerInterface $mailer): Response
     {
-        $this->denyAccessUnlessGranted('vw_all_sub');
+       
+        // $this->denyAccessUnlessGranted('vw_all_sub');
         $entityManager = $this->getDoctrine()->getManager();
         ################### Are you the one? #################################
         $thisUser = $this->getUser();
@@ -959,6 +953,15 @@ class SubmissionController extends AbstractController
         $review = new Review();
         $review->setSubmission($submission);
         $review->setReviewedBy($this->getUser());
+
+
+        /**
+         * co pi responses to report
+         */
+        if ($request->request->get('copi_response') || $request->request->get('pi_response')) {
+
+            return $submissionHelper->copiReportResponse($request, $submission);
+        }
 
         //////allow reviewer if he is only assigned to this submission
         // $form = $this->createFormBuilder($review)

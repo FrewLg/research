@@ -28,8 +28,9 @@ class CoAuthorRepository extends ServiceEntityRepository
     //  * @return CoAuthor[] Returns an array of CoAuthor objects
     //  */
 
-    public function isCoPI($submission, ?User $user)
+    public function isCoPI($submission, ?User $user=null)
     {
+       
         $user ??= $this->user;
         return $this->createQueryBuilder('c')
             ->andWhere('c.submission = :submission')
