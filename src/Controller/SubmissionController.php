@@ -127,7 +127,7 @@ class SubmissionController extends AbstractController
         );
         return $this->render('submission/index.html.twig', [
             'submissions' => $submissions,
-            'info' => $info,
+            'info' => $info, 'call' => $call,
         ]);
     }
 

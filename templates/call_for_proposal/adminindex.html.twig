@@ -118,7 +118,12 @@
 												<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-xs btn-primary">Edit</a>
 												<a href="{{ path('allawarded', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-primary btn-xs'>Winners</a>
 												{% endif %}
-											</td>
+
+                                                                                <a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" class='btn btn-info btn-xs'>
+
+                                                                                        Submissions ({{call_for_proposal.submissions|length}})</a>
+										
+	</td>
 
 										</tr>
 									{% else %}

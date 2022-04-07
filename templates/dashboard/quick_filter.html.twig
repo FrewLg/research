@@ -1,6 +1,4 @@
-<a href="{{ path('theme') }}" class='btn btn-primary btn-sm   btn-block'>
-	All by theme
-</a>
+<a href="{{ path('theme_by_coll', {'id': call.id }) }}"  class='btn btn-primary btn-sm btn-block'> All by theme</a>
 <hr>
 <a href="{{ path('research_theams') }}" class='btn btn-warning  btn-sm btn-block'>
 	Researchers </a>
@@ -31,26 +29,5 @@
 <a href="{{ path('allaccepted') }}" class='btn btn-success btn-xs  btn-block'>Review decisions filter 
 </a>
 <hr> 
-{# 
-<a href="{{ path('submission_filter', {'filter': 'al'}) }}" class='btn btn-primary btn-xs  btn-block'>All
-</a>
-<hr>
-<a href="{{ path('submission_filter', {'filter': 'cp'}) }}" class='btn btn-primary btn-xs  btn-block'>Complete
-</a>
-<hr>
-<a href="{{ path('submission_filter', {'filter': 'mg'}) }}" class='btn btn-warning btn-xs  btn-block'>Mega</a>
-<hr>
-<a href="{{ path('submission_filter', {'filter': 'cs'}) }}" class='btn btn-primary btn-xs  btn-block'>Community
-</a>
-
-<hr>
-<a href="{{ path('submission_filter', {'filter': 'gr'}) }}" class='btn btn-primary btn-xs  btn-block'>Grant
-</a>
-<hr>
-<a href="{{ path('submission_filter', {'filter': 'tt'}) }}" class='btn btn-primary btn-xs  btn-block'>TT
-</a>
-<hr>
-<a href="{{ path('submission_filter', {'filter': 'ps'}) }}" class='btn btn-primary btn-xs  btn-block'>Published
-</a>
-<hr> #}
+ 
 {# <a href="{{ path('submission_filter', {'filter': 'rv'}) }}" class='btn btn-warning btn-xs  btn-block'>Review assigned</a> #}

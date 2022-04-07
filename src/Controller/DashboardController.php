@@ -106,18 +106,12 @@ class DashboardController extends AbstractController
    */
   public function themeBycoll(CallForProposal $callForProposal): Response
   {
-    // $this->denyAccessUnlessGranted('view_dashboard');
+    $this->denyAccessUnlessGranted('view_dashboard');
 
-    $entityManager = $this->getDoctrine()->getManager();
     
-    $thiscollege = $this->getUser()->getUserInfo()->getCollege();
-    $submissionbytheme = $entityManager->getRepository(ThematicArea::class)->getThematicAreaSubmissions(  $callForProposal,   $thiscollege );
-     dd($submissionbytheme);
- 
     return $this->render('dashboard/bytheme.html.twig', [
-      'thematic_areas' => $submissionbytheme,
-      'colleges' => $submissionbytheme,
-      // 'sub_by_departments'=>$recepients,
+      'thematic_areas' => $callForProposal->getThematicArea(),
+       
     ]);
   }
 

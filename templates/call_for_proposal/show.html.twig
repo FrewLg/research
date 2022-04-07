@@ -13,29 +13,49 @@
 <div class='col col-12'>
 	<div class="card-body content-area    " style="font-family:arial; text-align:justify;">
 		<div class="widget-area sidebar-right">
-			<div class="float-right ">
+			
+			<div class="row">
+
+									<div class="col-md-9">
+									<div class="float-right ">
 
 
 				Date: 
 					{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('Y-M-d h:i:s') : '' }}
 				<br>
-				{# <small class='text-mued'>
-			  Deadline :
-			</small>
-
-
-			<small class='text-danger'>
-
-				{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d h:i A') : '' }}
-
-			</small> #}
+				 
 			</div>
+
+									</div>
+
+
+									<div class="col-md-3">
+										<div class="small text-right"> 
+									
+										{% if call_for_proposal.attachement %}
+							 
+ 										<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ call_for_proposal.attachement) }}">
+										 Download PDF
+										<i class="fa fa-download"></i>
+												</a> 
+								 
+								 
+										{% else %}
+								 		 
+										{% endif %}
+
+									
+									</div>
+							 	 </div>
+							 </div>
+
 			<p>
 				<div class="text-center  ">
 					<br>
-					<h5 style="font-family:arial; text-align:justify;">
+					<h5 style="font-family:arial; text-align:center;">
 						<b>
-							{{ call_for_proposal.subject |raw}}</b>
+							{{ call_for_proposal.heading |raw}}
+							</b>
 					</h5>
 
 				</div>
@@ -61,7 +81,7 @@
 				{% endfor %} #}
 				</small>
 				<h6 style="font-family:arial; text-align:justify;"> 
-				<p class='text-default'>{{ call_for_proposal.heading|raw }}</h6></p>
+				<p class='text-default'>{{ call_for_proposal.subject|raw }}</h6></p>
 				<h5 class='text-primary'>Thematic areas:</h5>
 	 <h6 style="font-family:arial; text-align:justify;" >
 						<ol >
@@ -86,21 +106,21 @@
 							<ul class="cul-list checkmark-heavy list-green">
 								<li>
 									Submission Deadline :
-									{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d H:i:s') : '' }}
+									{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-M-d h:i:s') : '' }}
 								</li> 
 								<li>
 									Review process: starts at
-			{{ call_for_proposal.reviewProcessStart ? call_for_proposal.reviewProcessStart|date('Y-m-d H:i:s') : '' }}
+			{{ call_for_proposal.reviewProcessStart ? call_for_proposal.reviewProcessStart|date('Y-M-d h:i:s') : '' }}
 									and ends at
-			{{ call_for_proposal.reviewProcessEnd ? call_for_proposal.reviewProcessEnd|date('Y-m-d H:i:s') : '' }}
+			{{ call_for_proposal.reviewProcessEnd ? call_for_proposal.reviewProcessEnd|date('Y-M-d h:i:s') : ''}}
 								</li>
 								<li>
 									Reviewers decision will be communicated starting
-									{{ call_for_proposal.reviewersDecisionWillBeCommunicatedAt ? call_for_proposal.reviewersDecisionWillBeCommunicatedAt|date('Y-m-d H:i:s') : '' }}
+									{{ call_for_proposal.reviewersDecisionWillBeCommunicatedAt ? call_for_proposal.reviewersDecisionWillBeCommunicatedAt|date('Y-M-d h:i:s') : '' }}
 								</li>
 								<li>
 									Project starts on:
-									{{ call_for_proposal.ProjectStartsOn ? call_for_proposal.ProjectStartsOn|date('Y-m-d H:i:s') : '' }}
+									{{ call_for_proposal.ProjectStartsOn ? call_for_proposal.ProjectStartsOn|date('Y-M-d h:i:s') : '' }}
 								</li>
 
 							</ul>
@@ -119,30 +139,15 @@
 								{{ call_for_proposal.approvedBy.userInfo.firstName}}
 								<hr>
 							{% endif %}
+								
+
 							<div class="row">
 								<div class="col-md-6">
 
 									<a href="{{ path('submission_firststepold', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-primary btn-xs'>Submit proposal</a>
 
 								</div>
-								<div class="col-md-6">
-									<div class="small text-right"> 
-									
-									{% if call_for_proposal.attachement %}
-							 
- <a class="badge bg-primary" href="{{ asset('files/guidelines/'~ call_for_proposal.attachement) }}">
-							 Download PDF
-							<i class="fa fa-download"></i>
-						</a> 
-								 
-								 
-							{% else %}
-								 
-							{% endif %}
-
-									
-									</div>
-								</div>
+								
 							</div>
 
 
