@@ -23,7 +23,10 @@ class FileUploader
        $fileName = uniqid().'.'.$file->guessExtension();
 
         try {
-            $file->move($this->getTargetDirectory().$location?"/".$location:"", $fileName);
+
+ 
+	//dd("public".$location?"/".$location:"");
+           $file->move($this->getTargetDirectory().($location?"/".$location:""), $fileName);
         } catch (FileException $e) {
             dd($e);
          }
@@ -33,6 +36,7 @@ class FileUploader
 
     public function getTargetDirectory()
     {
-        return $this->targetDirectory;
+ //return 'public/files/proposals';        
+return $this->targetDirectory;
     }
 }

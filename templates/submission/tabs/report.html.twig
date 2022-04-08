@@ -142,19 +142,19 @@
 
 						{% if loop.last and schedule_count==loop.index %}
 
-							<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.file}}">Full Progress report</a>
+							<a class="btn btn-bd-download btn-info" href="{{asset('files/uploads/research-report/')~report.file}}">Full Progress report</a>
 						{% else %}
-							<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.file}}">Progress report</a>
+							<a class="btn btn-bd-download btn-info" href="{{asset('files/uploads/research-report/')~report.file}}">Progress report</a>
 
 						{% endif %}
 
 						{% if report.financialClearance %}
-							<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.financialClearance}}">Financial clearance</a>
+							<a class="btn btn-bd-download btn-info" href="{{asset('files/uploads/research-report/')~report.financialClearance}}">Financial clearance</a>
 						{% endif %}
 
 
 						{% if schedule_count==loop.index and submission.manuscript %}
-							<a class="btn btn-bd-download btn-secondary" href="{{asset('uploads/research-report/')~submission.manuscript}}">Manuscript</a>
+							<a class="btn btn-bd-download btn-secondary" href="{{asset('files/uploads/research-report/')~submission.manuscript}}">Manuscript</a>
 						{% endif %}
 
 

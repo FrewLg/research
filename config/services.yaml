@@ -19,6 +19,7 @@ parameters:
     collaborators_cv: '%kernel.project_dir%/public/files/collaborators_cv'
     grant_winners_award: '%kernel.project_dir%/public/files/grant_winners_award' 
     datasets: '%kernel.project_dir%/public/files/proposals/datasets'
+    research_report: '%kernel.project_dir%/public/files/uploads'
     env(DATABASE_URL): "mysql://root:r00tme@127.0.0.1:3306/juresearch?serverVersion=5.7"
     # env(MAILER_DSN): "gmail://firewlegese74@gmail.com:PassMaDick1212@localhost?encryption=tls&auth_mode=oauth"
     # env(MAILER_URL): "gmail://firewlegese74@gmail.com:PassMaDick1212@localhost?encryption=tls&auth_mode=oauth"
@@ -83,7 +84,7 @@ services:
             $ldapSearchDnString:  '%env(LDAP_SEARCH_DN_STRING)%'
     App\Service\FileUploader:
         arguments:
-            $targetDirectory: '%uploads_folder%'
+            $targetDirectory: '%research_report%'
     # App\EventListener\ExceptionListener:
     #     tags:
     #         - { name: kernel.event_listener, event: kernel.exception }
