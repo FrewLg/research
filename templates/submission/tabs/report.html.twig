@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-8">
 			{% set schedule_count  = submission.researchReportSubmissionSettings|length %}
-			{% if schedule_count > 0 %}
+			{% if schedule_count > 0 and (submission.researchReportSetting and submission.researchReportSetting.status!=2) %}
 
 
 				{% if  research_reports|length  < phase.numberOfPhases   %}
@@ -306,10 +306,29 @@
 
 			</div>
 			<div class="col-3">
+			{% if submission.researchReportSetting  %}
+			
+		
+			<form>
+			<input type="hidden" name="action-on-setting" value="true"/>
+		{% if submission.researchReportSetting.status==3 or submission.researchReportSetting.status==1 %}
+			<input type="hidden" name="report-action" value="2"/>
+			
+						<input class="btn btn-bd-download btn-info" name="allow-edit" type="submit" value="Allow to edit" />
+		{% elseif submission.researchReportSetting.status==2  %}
+			<input type="hidden" name="report-action" value="3"/>
+						<input class="btn btn-bd-download btn-info" name="close" type="submit" value="close edit" />
+		{% elseif submission.researchReportSetting.status==0 or submission.researchReportSetting.status==3   %}
+			<input type="hidden" name="report-action" value="1"/>
+						<input class="btn btn-bd-download btn-info" name="approve" type="submit" value="Approve" />
+		{% endif %}
+			</form>
+			{% endif %}
+				
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Phase</th>
+							<th>Phase(<span class="badge d-inline badge-soft-info">{{submission.researchReportSetting?submission.researchReportSetting.isAltered?"Updated":"Original"}}</span>)</th>
 							<th>Submission Date</th>
 						</tr>
 					</thead>
