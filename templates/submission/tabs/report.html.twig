@@ -306,7 +306,7 @@
 
 			</div>
 			<div class="col-3">
-			{% if submission.researchReportSetting  %}
+			{% if submission.researchReportSetting and is_granted('approve_re_re')  %}
 			
 		
 			<form>
