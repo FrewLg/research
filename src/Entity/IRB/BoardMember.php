@@ -27,6 +27,7 @@ class BoardMember
     const ROLE_CHAIR = 'ROLE_CHAIR';
     const ROLE_VICE_CHAIR = 'ROLE_VICE_CHAIR';
     const ROLE_SECRETARY = 'ROLE_SECRETARY';
+    const ROLE_COORDINATOR = 'ROLE_COORDINATOR';
     const ROLE_MEMBER = 'ROLE_MEMBER';
 
 

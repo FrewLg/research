@@ -29,8 +29,8 @@ class BoardMemberType extends AbstractType
                     "Chair" => BoardMember::ROLE_CHAIR,
                     "Vice Chair" => BoardMember::ROLE_VICE_CHAIR,
                     "Secretary" => BoardMember::ROLE_SECRETARY,
+                    "Coordinator" => BoardMember::ROLE_COORDINATOR, 
                     "Member" => BoardMember::ROLE_MEMBER,
-                    "Coordinator" => 'ROLE_COORDINATOR',
                 ],
                 "attr" => [
                     "class" => "select2 form-control col-4"
