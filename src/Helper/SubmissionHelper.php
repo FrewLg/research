@@ -49,6 +49,13 @@ class SubmissionHelper
         foreach ($researchReport->getResearchReportChallenges() as $key => $value) {
             $value->setReport($researchReport);
         }
+       $query = $this->em->createQuery(
+            'UPDATE  App:ResearchReportSubmissionSetting r SET  r.isSubmitted=1 WHERE r.submission = :submission and r.phase =:phase'
+         )
+         ->setParameter('submission', $submission->getId())
+         ->setParameter('phase', $submission->getResearchReports()?$submission->getResearchReports()->count()+1:1)
+         ->execute();
+
         $uploadedFile = $research_report_form['file']->getData();
         $newFilename =   $this->fileUploader->upload($uploadedFile, "research-report");
 

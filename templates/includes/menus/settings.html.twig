@@ -63,6 +63,15 @@
 					</a>
 				</li>
 			{% endif %}
+			{% if is_granted("vw_sb_bdgt_cat") %}
+
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('research_report_challenges_category_index') }}">
+
+						<i class="ti-control-record"></i>Research Challenges category
+					</a>
+				</li>
+			{% endif %}
 			{% if is_granted("vw_ev_frm_o") %}
 
 				<li class="nav-item">

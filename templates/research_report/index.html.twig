@@ -46,12 +46,12 @@
 							<td>
 								{% if schedule.wasAllCOPIComfirmed %}
 									<span class="badge badge-soft-primary">{{schedule.submissionDate|date('F d,Y')}}</span>
-									<p>Submitted</p>
-								{% elseif schedule.isSubmitted %}
-									<span class="badge badge-soft-primary">{{schedule.submissionDate|date('F d,Y')}}</span>
 									<p>
 										<span class="badge badge-soft-success">Confirmed</span>
 									</p>
+								{% elseif schedule.isSubmitted %}
+									<span class="badge badge-soft-primary">{{schedule.submissionDate|date('F d,Y')}}</span>
+									<p>Submitted</p>
 								{% else %}
 
 									<span class="badge badge-soft-info">{{schedule.submissionDate|date('F d,Y')}}</span>
@@ -70,7 +70,7 @@
 						{# <td>{{ research_report.submittedAt ? research_report.submittedAt|date('Y-m-d H:i:s') : '' }}</td> #}
 
 						<td>
-							{% if submission.researchReportSubmissionSettings|length > 0 %}
+							{% if submission.researchReportSetting %}
 
 								<a class="btn btn-secondary btn-sm" href="#">Allow Edit</a>
 							{% else %}
