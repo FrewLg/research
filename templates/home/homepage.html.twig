@@ -17,50 +17,51 @@
 	<meta property="og:image" content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
 
 
-	<h4>
-		Recent call for proposals</h4>
+	<h2 class="entry-title">
+		Recent call for proposals</h2>
 
-	{% for call_for_proposal in call_for_proposals %}
+ {% for call_for_proposal in call_for_proposals %}
 
-		<article class="col-lg-11">
+        <div class="col-lg-12 features-text wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
 
-			<small>
-				{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('Y-m-d H:s') : '' }}
-			</small>
-			<h6 class="">
+{# <article class="entry"> #}
 
-				<a href="{{ path('call_for_proposal_show', {'uidentifier': call_for_proposal.uidentifier }) }}">
+              {# <div class="entry-img">
+                <img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
+              </div> #}
+
+              <h2 class="entry-title">
+                <a href="{{ path('call_for_proposal_show', {'uidentifier': call_for_proposal.uidentifier }) }}">
+                                {{ call_for_proposal.heading|striptags|slice(0, 170)|raw }}  </a>
+              </h2>
+
+              <div class="entry-meta">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="fa fa-house"></i> <a href="#">{{ call_for_proposal.college.prefix }}  </a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="#"><time datetime="2020-01-01">
+                                  {{ call_for_proposal.postDate ? call_for_proposal.postDate|date('M d Y  h:s') : '' }}</time></a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="#">{{ call_for_proposal.submissions|length }}</a></li>
+{%if call_for_proposal.ResearchType.name is defined %}
+         <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="#">{{ call_for_proposal.ResearchType.name }}</a></li>
+{% endif%}
+                </ul>
+              </div>
+
+              <div class="entry-content">
+                <p>
+                  {{ call_for_proposal.subject|striptags|slice(0, 170)|raw }}  </p>
+              </div>
 
 
-					<p style="font-family:arial; text-align:justify;">
-						{{ call_for_proposal.heading|striptags|slice(0, 170)|raw }}</p>
-				</a>
-			</h6>
+</div>
+                {% else %}
 
-			<small class='text-mued'>
-			Submission Deadline :
-			</small>
+                        <td colspan="7">No calls made yet</td>
 
+                {% endfor %}
 
-			<small class='text-danger'>
-
-				{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d h:i A') : '' }}
-
-			</small>
-			<br>
-			<br>
-			{# <a href="{{ path('call_for_proposal_show', {'uidentifier': call_for_proposal.uidentifier }) }}" class='btn btn-primary btn-sm'>Click to see details</a> #}
-
-		</article>
-
-
-	{% else %}
-
-		<td colspan="7">No calls made yet</td>
-
-	{% endfor %}
-
-<br>
+<br><h4  class="esntry-title" >
+<a href="{{path('call_for_proposal_all')}}" > See all call for proposals <i class='fa fa-arrow-right'></i></a>
 <br>
 	 
 			{% block pagination%}

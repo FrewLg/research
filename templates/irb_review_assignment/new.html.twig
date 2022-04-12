@@ -109,7 +109,7 @@
 
 	<div class="col-lg-12">
 		<h4 class="text-d">
-			Assigned   reviewers
+			Assigned   reviewers {{  irb_review_assignment|filter(r=> r.irbreviewer) |length}}
 			{% if is_granted('mng_brd_mbr') %}
 
 				<a class="btn btn-link" href="{{path('board_member_index')}}">View Board Members</a>

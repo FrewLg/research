@@ -4,6 +4,7 @@ namespace App\Helper;
 
 use App\Entity\ResearchReport;
 use App\Entity\ResearchReportComment;
+use App\Entity\ResearchReportSetting;
 use App\Entity\ResearchReportSubmissionSetting;
 use App\Entity\Submission;
 use App\Entity\SubmissionFinalReport;
@@ -128,6 +129,31 @@ class SubmissionHelper
     }
     public function createSubmissionReportSchedule(Request $request, Submission $submission)
     {
+        $query = $this->em->createQuery(
+            'DELETE FROM App:ResearchReportSubmissionSetting r WHERE r.submission = :submission'
+         )->setParameter('submission', $submission->getId())->execute();
+
+        if ($submission->getResearchReportSetting()) {
+
+            $reportSetting = $submission->getResearchReportSetting();
+            $reportSetting->setIsAltered(true);
+            $reportSetting->setUpdatedAt(new \DateTime());
+            $reportSetting->setUpdatedAt(new \DateTime());
+        } else {
+
+            $reportSetting = new ResearchReportSetting();
+            $reportSetting->setSubmission($submission);
+            $reportSetting->setIsAltered(false);
+            $reportSetting->setIsApproved(false);
+            $reportSetting->setCreatedAt(new \DateTime());
+            $reportSetting->setCreatedBy($this->user);
+        }
+        $reportSetting->setStatus(ResearchReportSetting::UNEDITABLE);
+        $this->em->persist($reportSetting);
+
+        $this->em->flush();
+
+
         foreach ($request->request->get('research_report_submission_setting') as $key => $value) {
 
             if ($key != "_token") {
@@ -136,14 +162,15 @@ class SubmissionHelper
                 $submission_report_schedule->setSubmission($submission);
                 $submission_report_schedule->setPhase(explode("_", $key)[1]);
                 $submission_report_schedule->setSubmissionDate(new \DateTime($value));
-                 $submission_report_schedule->setIsSubmitted(1);
+                $submission_report_schedule->setIsSubmitted(1);
+                $submission_report_schedule->setSetting($reportSetting);
 
                 $this->em->persist($submission_report_schedule);
 
                 $this->em->flush();
             }
         }
-        $this->flashBagInterface->add("success", "Report submitted successfully!!");
+        $this->flashBagInterface->add("success", "Report Schedule submitted successfully!!");
         return $this->redirectBack($submission);
     }
 
@@ -251,6 +278,7 @@ class SubmissionHelper
             return $this->redirectBack($submission);
         }
     }
+
 
 
     public function redirectBack(Submission $submission)

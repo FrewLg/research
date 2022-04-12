@@ -23,16 +23,20 @@ class FileUploader
        $fileName = uniqid().'.'.$file->guessExtension();
 
         try {
-            $file->move($this->getTargetDirectory().$location?"/".$location:"", $fileName);
+
+ 
+	//dd("public".$location?"/".$location:"");
+           $file->move($this->getTargetDirectory().($location?"/".$location:""), $fileName);
         } catch (FileException $e) {
-            // ... handle exception if something happens during file upload
-        }
+            dd($e);
+         }
 
         return $fileName;
     }
 
     public function getTargetDirectory()
     {
-        return $this->targetDirectory;
+ //return 'public/files/proposals';        
+return $this->targetDirectory;
     }
 }

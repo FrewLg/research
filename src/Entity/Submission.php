@@ -256,6 +256,11 @@ class Submission
      */
     public $proposalFile;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ResearchReportSetting::class, mappedBy="submission", cascade={"persist", "remove"})
+     */
+    private $researchReportSetting;
+
     public function __construct()
     {
 
@@ -983,6 +988,23 @@ class Submission
     public function setProposal(string $proposal): self
     {
         $this->proposal = $proposal;
+
+        return $this;
+    }
+
+    public function getResearchReportSetting(): ?ResearchReportSetting
+    {
+        return $this->researchReportSetting;
+    }
+
+    public function setResearchReportSetting(ResearchReportSetting $researchReportSetting): self
+    {
+        // set the owning side of the relation if necessary
+        if ($researchReportSetting->getSubmission() !== $this) {
+            $researchReportSetting->setSubmission($this);
+        }
+
+        $this->researchReportSetting = $researchReportSetting;
 
         return $this;
     }

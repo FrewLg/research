@@ -43,7 +43,13 @@ class ResearchReportSubmissionSetting
      */
     private $wasAllCOPIComfirmed;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ResearchReportSetting::class, inversedBy="submissionSettings")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $setting;
 
+   
 
     public function getId(): ?int
     {
@@ -109,6 +115,20 @@ class ResearchReportSubmissionSetting
 
         return $this;
     }
+
+    public function getSetting(): ?ResearchReportSetting
+    {
+        return $this->setting;
+    }
+
+    public function setSetting(?ResearchReportSetting $setting): self
+    {
+        $this->setting = $setting;
+
+        return $this;
+    }
+
+   
 
    
 }

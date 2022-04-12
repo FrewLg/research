@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-8">
 			{% set schedule_count  = submission.researchReportSubmissionSettings|length %}
-			{% if schedule_count > 0 %}
+			{% if schedule_count > 0 and (submission.researchReportSetting and submission.researchReportSetting.status!=2) %}
 
 
 				{% if  research_reports|length  < phase.numberOfPhases   %}
@@ -142,19 +142,19 @@
 
 						{% if loop.last and schedule_count==loop.index %}
 
-							<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.file}}">Full Progress report</a>
+							<a class="btn btn-bd-download btn-info" href="{{asset('files/uploads/research-report/')~report.file}}">Full Progress report</a>
 						{% else %}
-							<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.file}}">Progress report</a>
+							<a class="btn btn-bd-download btn-info" href="{{asset('files/uploads/research-report/')~report.file}}">Progress report</a>
 
 						{% endif %}
 
 						{% if report.financialClearance %}
-							<a class="btn btn-bd-download btn-info" href="{{asset('uploads/research-report/')~report.financialClearance}}">Financial clearance</a>
+							<a class="btn btn-bd-download btn-info" href="{{asset('files/uploads/research-report/')~report.financialClearance}}">Financial clearance</a>
 						{% endif %}
 
 
 						{% if schedule_count==loop.index and submission.manuscript %}
-							<a class="btn btn-bd-download btn-secondary" href="{{asset('uploads/research-report/')~submission.manuscript}}">Manuscript</a>
+							<a class="btn btn-bd-download btn-secondary" href="{{asset('files/uploads/research-report/')~submission.manuscript}}">Manuscript</a>
 						{% endif %}
 
 
@@ -306,10 +306,29 @@
 
 			</div>
 			<div class="col-3">
+			{% if submission.researchReportSetting and is_granted('approve_re_re')  %}
+			
+		
+			<form>
+			<input type="hidden" name="action-on-setting" value="true"/>
+		{% if submission.researchReportSetting.status==3 or submission.researchReportSetting.status==1 %}
+			<input type="hidden" name="report-action" value="2"/>
+			
+						<input class="btn btn-bd-download btn-info" name="allow-edit" type="submit" value="Allow to edit" />
+		{% elseif submission.researchReportSetting.status==2  %}
+			<input type="hidden" name="report-action" value="3"/>
+						<input class="btn btn-bd-download btn-info" name="close" type="submit" value="close edit" />
+		{% elseif submission.researchReportSetting.status==0 or submission.researchReportSetting.status==3   %}
+			<input type="hidden" name="report-action" value="1"/>
+						<input class="btn btn-bd-download btn-info" name="approve" type="submit" value="Approve" />
+		{% endif %}
+			</form>
+			{% endif %}
+				
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Phase</th>
+							<th>Phase(<span class="badge d-inline badge-soft-info">{{submission.researchReportSetting?submission.researchReportSetting.isAltered?"Updated":"Original"}}</span>)</th>
 							<th>Submission Date</th>
 						</tr>
 					</thead>
