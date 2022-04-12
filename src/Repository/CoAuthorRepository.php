@@ -26,7 +26,7 @@ class CoAuthorRepository extends ServiceEntityRepository
 
     // /**
     //  * @return CoAuthor[] Returns an array of CoAuthor objects
-    //  */
+    //  */ 
 
     public function isCoPI($submission, ?User $user=null)
     {

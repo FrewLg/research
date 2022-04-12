@@ -167,11 +167,13 @@
 																<input hidden name="board_member" value="{{board_member.id}}"/>
 																<select name="roles" class="form-control" onchange="if(confirm('Are you sure you want to save member role changes?')){this.form.submit()}">
 																	<optgroup label="Role">
-
+																		<option value="Chair" {{board_member.role=='Chair'?"selected":""}}>Chair</option> 
+																		<option value="Vice Chair" {{board_member.role=='Vice Chair'?"selected":""}}>Vice Chair</option> 
+																		<option value="Secretary" {{board_member.role=='Secretary'?"selected":""}}> Secretary</option>
+																		
+																		<option value="Coordinator" {{board_member.role=='Coordinator'?"selected":""}}>Coordinator</option> 
 																		<option value="Member" {{board_member.role=='Member'?"selected":""}}>Member</option>
-																		<option value="Secretary" {{board_member.role=='Secretary'?"selected":""}}>
-																			Secretary</option>
-																		<option value="Chair" {{board_member.role=='Chair'?"selected":""}}>Chair</option>
+
 																	</optgroup>
 
 																</select>

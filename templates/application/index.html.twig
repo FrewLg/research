@@ -58,6 +58,8 @@
 
 
 					<div class="table-responsive">
+			 {% if is_granted("ROLE_VICE_CHAIR") or is_granted("ROLE_CHAIR")    or is_granted("ROLE_SECRETARY")   or is_granted("ROLE_COORDINATOR")   %}
+
 						<table class="table table-striped table-bordered">
 							<thead>
 								<tr>
@@ -75,7 +77,12 @@
 										<td>{{ loop.index }}</td>
 										<td>
 										
+										 {% if is_granted("ROLE_VICE_CHAIR") or is_granted("ROLE_CHAIR")   or is_granted("ROLE_SECRETARY")     %}
+
 											<a class="text-primary" href="{{ path('application_show', {'id': application.id}) }}">{{ application.title }}</a>
+								{% else %}
+						{{ application.title }}
+								{% endif %}
 										
 										
 										
@@ -102,6 +109,11 @@
 								{% endfor %}
 							</tbody>
 						</table>
+
+						{% else %}
+						<h4 class='text-danger'>You need higher privilage to view the content!</h4>
+		
+		{% endif %}
 					</div>
 				</div>
 			</div>

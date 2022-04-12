@@ -27,7 +27,8 @@ is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc')
   %} #}
 				<li class="nav-item">
 					
-						{% if   is_granted("vw_irb_dbrd") %}
+			 {% if is_granted("ROLE_VICE_CHAIR") or is_granted("ROLE_CHAIR")    or is_granted("ROLE_SECRETARY")   or is_granted("ROLE_COORDINATOR")   %}
+
 					<a class="nav-link" href="{{ path('application_index') }}">
 						<i class="ti-control-record"></i>
 							All Applications</a>
@@ -48,15 +49,8 @@ is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc')
 					</a>
 				</li>
 
-				{% if is_granted("ROLE_SECRETARY") or is_granted("vw_all_irb_assgn")   %}
-				{# <li class="nav-item">
-					<a class="nav-link" href="{{ path('irb_myassigned') }}">
-						<i class="ti-control-record"></i>
-
-						All Review Assignments
-
-					</a>
-				</li> #}
+				{% if is_granted("ROLE_VICE_CHAIR") or is_granted("ROLE_CHAIR")    or is_granted("ROLE_MEMBER")   %}
+				 
 		 
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('irb_myassigned') }}">
