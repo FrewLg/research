@@ -35,29 +35,8 @@
               <div class="entry-content">
                 <p>
                   {{ call_for_proposal.subject|striptags|slice(0, 170)|raw }}  </p>
-                {# <div class="read-more">
-                  <a href="#">Read More</a>
-                </div> #}
               </div>
 
-            {# </article> #}
-{# 
-
-		<article class=""> 
-							 
-							<small>
-							{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('Y-M-d h:s') : '' }}
-							</small> 
-							<h6 class="">
-
-								<a href="{{ path('call_for_proposal_show', {'uidentifier': call_for_proposal.uidentifier }) }}">
- 
-								<p  style="font-family:arial; text-align:justify;">	{{ call_for_proposal.subject|striptags|slice(0, 170)|raw }}</p>
-								</a>
-							</h6> 
-				 
-					 
-				 </article> #}
 
 </div>
 		{% else %}
