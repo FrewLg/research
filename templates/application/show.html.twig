@@ -10,7 +10,11 @@
 	</h4>
 	{# <a href="{{ path('application_index') }}" class="btn btn-primary">back to list</a> #}
 
+ {% if is_granted("ROLE_VICE_CHAIR") or is_granted("ROLE_CHAIR")   or is_granted("ROLE_SECRETARY")     %}
 
+											 
+								 
+							 
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card">
@@ -486,7 +490,13 @@
 						</div> 
 					</div> 
 				</div>
-				<!--end row-->
+		
+		
+			{% else %}
+						<h4 class='text-danger'>You need higher privilage to view the content!</h4>
+		
+		{% endif %}
+
 			</div>
 			<!--end card-body-->
 		</div>
