@@ -171,16 +171,20 @@ class Application
      */
     private $irbCertificates;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Meeting::class, inversedBy="applications")
-     */
-    private $meeting;
+    
 
 
      /**
      * @ORM\ManyToOne(targetEntity=\App\Entity\College::class, inversedBy="applications")
      */
     private $college;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Meeting::class, inversedBy="applications")
+     */
+    private $meeting;
+
+   
 
 
     public function __construct()
@@ -748,4 +752,6 @@ class Application
 
         return $this;
     }
+
+   
 }

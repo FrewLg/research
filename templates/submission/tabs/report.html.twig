@@ -186,8 +186,7 @@
 										<input type="hidden" name="approve_research_generate" value="true"/>
 										<button class="btn btn-secondary mx-3" type="submit">Approve and Generate Certificate</button>
 										{% else %}
-										{# <button class="btn btn-secondary" type="submit">Approve
-																																																																						</button> #}
+										 <button class="btn btn-secondary" type="submit">Approve	</button>
 
 									{% endif %}
 
@@ -200,7 +199,7 @@
 							Submission Date:-
 							{{report.submittedAt|date('Y-m-d')}}
 
-							{# <span class="badge  {{report.submissionStatus == 4 ? " badge-soft-success":" badge-soft-warning"}}">{{report.submissionStatus == 4 ? "Approved":"pending approval"}}</span> #}
+							<span class="badge  {{report.submissionStatus == 4 ? " badge-soft-success":" badge-soft-warning"}}">{{report.submissionStatus == 4 ? "Approved":"pending approval"}}</span>
 
 						</div>
 						<div class=" text-bold text-info my-3">Co-PI confirmation</div>
@@ -306,7 +305,8 @@
 
 			</div>
 			<div class="col-3">
-			{% if submission.researchReportSetting and is_granted('approve_re_re')  %}
+			
+			{% if app.request.get('_route')=="submission_show" and  submission.researchReportSetting and is_granted('approve_re_re')  %}
 			
 		
 			<form>
