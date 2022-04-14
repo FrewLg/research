@@ -2,6 +2,8 @@
 
 namespace App\Controller\IRB;
 
+use App\Entity\IRB\Application;
+use App\Entity\IRB\BoardMember;
 use App\Entity\IRB\Meeting;
 use App\Form\IRB\MeetingType;
 use App\Repository\IRB\MeetingRepository;
@@ -19,7 +21,7 @@ class MeetingController extends AbstractController
     public function index(MeetingRepository $meetingRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $this->denyAccessUnlessGranted('mng_brd_mtng');
-        
+
         $query = $meetingRepository->getData();
         $meetings = $paginator->paginate(
             $query,
@@ -41,11 +43,45 @@ class MeetingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $meeting->setCreatedBy($this->getUser());
             $meeting->setCollege($this->getUser()->getUserInfo()?->getCollege());
+            $meeting->setStatus(Meeting::STATUS_ACTIVE);
+            /**
+             * close meeting
+             */
+            $query = $entityManager->createQuery(
+                'UPDATE  App:IRB\Meeting m SET  m.status=2 where m.status=1'
+            )
+                ->execute();
+
+            /**
+             * send email
+             */
+
+            // foreach ($entityManager->getRepository(BoardMember::class)->findAll()  as $key => $value) {
+
+
+
+            //     $this->mailHelper->sendEmail(
+            //         $value->getUser()->getEmail(),
+            //         "New board meeting is scheduled",
+            //         "emails/general.html.twig",
+            //         [
+            //             "info" => "New board meeting is scheduled",
+            //             "subject" => "New board meeting is scheduled",
+            //             "body" => "
+            //             the meeting will held at <b>" . $meeting->getHeldAt()->format('Y-m-d H:iA') . "</b>
+            //             <hr/>
+            //             the meeting code <b>".$meeting->getNumber()."</b>
+            //             ",
+            //         ]
+            //     );
+            // }
+
             $entityManager->persist($meeting);
             $entityManager->flush();
             $this->addFlash("success", "Meeting Created");
 
-            return $this->redirectToRoute('i_r_b_meeting_index', [], Response::HTTP_SEE_OTHER);
+
+            return $this->redirectToRoute('i_r_b_meeting_show', ["id" => $meeting->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('irb/meeting/new.html.twig', [
@@ -54,9 +90,62 @@ class MeetingController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/take-minute', name: 'i_r_b_meeting_minute', methods: ['GET', 'POST'])]
+    public function minute(Meeting $meeting, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(MeetingType::class, $meeting);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $meeting->setCreatedBy($this->getUser());
+            $meeting->setCollege($this->getUser()->getUserInfo()?->getCollege());
+            $meeting->setStatus(Meeting::STATUS_CLOSED);
+            $meeting->setMinuteTakenBy($this->getUser());
+            $meeting->setMinuteTakenAt($meeting->getMinuteTakenAt()?:new \DateTime());
+
+
+            /**
+             * send email
+             */
+
+            // foreach ($entityManager->getRepository(BoardMember::class)->findAll()  as $key => $value) {
+
+
+
+            //     $this->mailHelper->sendEmail(
+            //         $value->getUser()->getEmail(),
+            //         "New board meeting is scheduled",
+            //         "emails/general.html.twig",
+            //         [
+            //             "info" => "New board meeting is scheduled",
+            //             "subject" => "New board meeting is scheduled",
+            //             "body" => "
+            //             the meeting will held at <b>" . $meeting->getHeldAt()->format('Y-m-d H:iA') . "</b>
+            //             <hr/>
+            //             the meeting code <b>".$meeting->getNumber()."</b>
+            //             ",
+            //         ]
+            //     );
+            // }
+
+            $entityManager->flush();
+            $this->addFlash("success", "Meeting Minute taken");
+            
+           return $this->redirectToRoute('i_r_b_meeting_show', ["id" => $meeting->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('irb/meeting/minute.html.twig', [
+            'meeting' => $meeting,
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/{id}', name: 'i_r_b_meeting_show', methods: ['GET'])]
     public function show(Meeting $meeting): Response
     {
+        // dd($meeting->getApplications()->toArray());
+
         return $this->render('irb/meeting/show.html.twig', [
             'meeting' => $meeting,
         ]);
@@ -69,10 +158,10 @@ class MeetingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $entityManager->flush();
             $meeting->getApplications()->map(function ($app) use ($meeting) {
-                
+
                 $app->setMeeting($meeting);
             });
             $entityManager->flush();
