@@ -92,6 +92,7 @@ class ApplicationType extends AbstractType
             'allow_delete' => true,
         ])
         ->add('college', EntityType::class, [
+  'placeholder' => '-- Select College/ Institute --',
             'class' => \App\Entity\College::class,
             'attr' => ['label' => 'Application  to Institute/College'
         ,'class'=>'select2 chosen-select form-control'
