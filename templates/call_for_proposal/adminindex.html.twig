@@ -86,7 +86,7 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Subject</th>
+										<th>Call name</th>
 										<th>Post date</th>
 										<th>Deadline</th>
 										<th>Action</th>
@@ -96,7 +96,7 @@
 									{% for call_for_proposal in call_for_proposals %}
 										<tr>
 											<td>{{ loop.index  }}</td>
-											<td>{{ call_for_proposal.subject |raw }}</td>
+											<td>{{ call_for_proposal.heading |raw }}</td>
 											<td>
 												{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('Y-m-d H:i') : '' }}
 											</td>

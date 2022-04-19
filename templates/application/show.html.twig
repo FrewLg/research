@@ -10,7 +10,7 @@
 	</h4>
 	{# <a href="{{ path('application_index') }}" class="btn btn-primary">back to list</a> #}
 
- {% if is_granted("ROLE_VICE_CHAIR") or is_granted("ROLE_CHAIR")   or is_granted("ROLE_SECRETARY")     %}
+ {% if is_granted("ROLE_VICE_CHAIR") or is_granted("ROLE_CHAIR")   or is_granted("ROLE_SECRETARY") or   application.submittedBy ==app.user  %}
 
 											 
 								 
