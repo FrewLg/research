@@ -14,9 +14,20 @@
 				<td>{{ meeting.number }}</td>
 			</tr>
 			<tr>
-				<th>meeting date</th>
+				<th>Meeting schedule date</th>
 				<td>{{ meeting.heldAt ? meeting.heldAt|date('Y-m-d H:i:s') : '' }}</td>
 			</tr>
+			{% if meeting.minuteTakenAt %}
+				
+			<tr>
+				<th>Meeting minute taken at</th>
+				<td>{{ meeting.minuteTakenAt ? meeting.minuteTakenAt|date('Y-m-d H:i:s') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Meeting minute taken by</th>
+				<td>{{ meeting.minuteTakenBy }}</td>
+			</tr>
+			{% endif %}
 		</tbody>
 	</table>
 
@@ -62,7 +73,8 @@
 
 	<a class="btn btn-primary" href="{{ path('i_r_b_meeting_index') }}">back to list</a>
 
-	{# <a class="btn btn-warning" href="{{ path('i_r_b_meeting_edit', {'id': meeting.id}) }}">edit</a> #}
+	<a class="btn btn-warning" href="{{ path('i_r_b_meeting_edit', {'id': meeting.id}) }}">Edit</a>
+	<a class="btn btn-warning" href="{{ path('i_r_b_meeting_minute', {'id': meeting.id}) }}">Take Minute</a>
 
 	{{ include('irb/meeting/_delete_form.html.twig') }}
 {% endblock %}

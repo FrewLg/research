@@ -14,6 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Meeting
 {
+    const STATUS_ACTIVE=1;
+    const STATUS_CLOSED=2;
+    const STATUS_SCHEDULED=3;
+    const messages=[
+        self::STATUS_ACTIVE=>"Active",
+        self::STATUS_CLOSED=>"Closed",
+        self::STATUS_SCHEDULED=>"Scheduled",
+    ];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -48,15 +56,41 @@ class Meeting
      */
     private $attendee;
 
+    
+
     /**
-     * @ORM\OneToMany(targetEntity=Application::class, mappedBy="meeting", cascade={"persist"})
+     * @ORM\Column(type="integer")
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $note;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $minuteTakenAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $minuteTakenBy;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Application::class, mappedBy="meeting")
      */
     private $applications;
+
+
+   
 
     public function __construct()
     {
         $this->attendee = new ArrayCollection();
         $this->applications = new ArrayCollection();
+      
     }
 
     public function getId(): ?int
@@ -64,6 +98,10 @@ class Meeting
         return $this->id;
     }
 
+    public function getStatusText(): ?string
+    {
+        return self::messages[$this->status];
+    }
     public function getNumber(): ?string
     {
         return $this->number;
@@ -138,8 +176,62 @@ class Meeting
         return $this;
     }
 
+    
+
+    
+
+    
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): self
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    public function getMinuteTakenAt(): ?\DateTimeInterface
+    {
+        return $this->minuteTakenAt;
+    }
+
+    public function setMinuteTakenAt(?\DateTimeInterface $minuteTakenAt): self
+    {
+        $this->minuteTakenAt = $minuteTakenAt;
+
+        return $this;
+    }
+
+    public function getMinuteTakenBy(): ?User
+    {
+        return $this->minuteTakenBy;
+    }
+
+    public function setMinuteTakenBy(?User $minuteTakenBy): self
+    {
+        $this->minuteTakenBy = $minuteTakenBy;
+
+        return $this;
+    }
+
     /**
-     * @return Collection|Application[]
+     * @return Collection<int, Application>
      */
     public function getApplications(): Collection
     {
@@ -149,7 +241,6 @@ class Meeting
     public function addApplication(Application $application): self
     {
         if (!$this->applications->contains($application)) {
-         
             $this->applications[] = $application;
             $application->setMeeting($this);
         }
@@ -168,4 +259,8 @@ class Meeting
 
         return $this;
     }
+
+   
+
+  
 }

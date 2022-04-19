@@ -10,22 +10,20 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 
 class MeetingType extends AbstractType
 {
-    private $user;
-    public function __construct(Security $security)
-    {
-        $this->user = $security->getUser();
-    }
+   
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('number', null, [
-                "data" => "JU-" . rand(1000, 100000),
+                "data" =>$options['data']->getNumber()?$options['data']->getNumber(): "JU-" . rand(1000, 100000),
                 "attr" => [
 
                     "readonly" => true
@@ -36,22 +34,39 @@ class MeetingType extends AbstractType
                 "html5" => true,
                 "widget" => "single_text",
                 // "min" => new \DateTime(),
-            ])
-            ->add('attendee', null, [
-                "expanded"=>true,
-               
-               
-              
-            ])
-            ->add('applications', null, [
-                "expanded"=>true,
-               "label"=>"",
-                'choice_label' => function (Application $application) {
-                    return "".$application . "==>" . $application->getSubmittedBy() . "";
-                },
-  
-               
             ]);
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                $meeting = $event->getData();
+                $form = $event->getForm();
+        
+                // checks if the Product object is "new"
+                // If no data is passed to the form, the data is "null".
+                // This should be considered a new "Product"
+                if (!$meeting || null != $meeting->getId()) {
+                    $form  ->add('attendee', null, [
+                        "expanded" => true,
+        
+        
+        
+                    ])
+                    ->add('minuteTakenAt', DateTimeType::class, [
+                        "html5" => true,
+                        "widget" => "single_text",
+                        "required" => false,
+                        // "min" => new \DateTime(),
+                    ])
+                    ->add('applications', null, [
+                        "expanded" => true,
+                        "label" => "",
+                        'choice_label' => function (Application $application) {
+                            return "" . $application . "==>" . $application->getSubmittedBy() . "";
+                        },
+        
+        
+                    ]);
+                }
+            });
+         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
