@@ -1,6 +1,6 @@
 {% extends 'emailbase.html.twig' %}
 
-{% block title %}Training
+{% block title %}{{info|raw}}
 {% endblock %}
 
 {% block body %}
@@ -62,7 +62,7 @@
 														</tr>
 														<tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 															<td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; padding-top: 5px; vertical-align: top; margin: 0; text-align: right;" valign="top">
-																<b>{{app_name}} , {{app_description}}</b>
+																<b>{{app_name}} , {{app_description|raw}}</b>
 
 															</td>
 														</tr>

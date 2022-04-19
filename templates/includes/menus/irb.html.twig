@@ -27,7 +27,7 @@ is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc')
   %} #}
 				<li class="nav-item">
 					
-			 {% if is_granted("ROLE_VICE_CHAIR") or is_granted("ROLE_CHAIR")    or is_granted("ROLE_SECRETARY")   or is_granted("ROLE_COORDINATOR")   %}
+			 {% if is_granted("ROLE_CHAIR") or is_granted("ROLE_VICE_CHAIR")    or is_granted("ROLE_SECRETARY")   or is_granted("ROLE_COORDINATOR")   %}
 
 					<a class="nav-link" href="{{ path('application_index') }}">
 						<i class="ti-control-record"></i>

@@ -79,7 +79,7 @@ class ApplicationController extends AbstractController
             $request->query->getInt('page', 1),
             10
         );
-        return $this->render('application/index.html.twig', [
+        return $this->render('application/my_application.html.twig', [
             'applications' => $data,
          ]); 
     }
