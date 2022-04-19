@@ -7,29 +7,30 @@
 {% block header_contenttwo %}Profile
 {% endblock %}
 
-{% macro displayContent(researches) %}
+{% macro displayObjective(objective) %}
+	 
 
 	<div class="col-md-4">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">Title</label>
-			{{form_widget(researches.title)}}
+			{{form_widget(objective.title)}}
 		</div>
 	</div>
 	<div class="col-md-2">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">Allotted budget</label>
-			{{form_widget(researches.allotted_budget)}}
+			{{form_widget(objective.allotted_budget)}}
 		</div>
 	</div>
 	<div class="col-md-2">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">Year</label>
-			{{form_widget(researches.year)}}
+			{{form_widget(objective.year)}}
 		</div>
 	</div>
 	<div class="col-md-2">
 		<div class="form-group select-wizard">
-			{{form_widget(researches.successfully_completed )}}
+			{{form_widget(objective.successfully_completed )}}
 
 		</div>
 	</div>
@@ -619,10 +620,20 @@
 											<input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck" required='required'><br>
 											<div id="ifYes" style="display:none">
 												If yes, add and insert titles below:<hr>
-												<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#contact-fields-list">
+									<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#objective-fields-list">
 													<span aria-hidden="true">+</span>
 													Add research Titles
 												</button>
+ 
+								<ul id="objective-fields-list" class="m-t-5" data-prototype="{{_self.displayObjective(submissionform.researches.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ submissionform.researches|length }}">
+										{% for research in submissionform.researches %}
+											<div class="row ">
+												{{ _self.displayObjective(research) }}
+											</div>
+										{% endfor %}
+									</ul>
+
+
 												<br>
 												<br>
 												<br>
@@ -684,15 +695,28 @@
 	</div>
 {% endblock %}
 {% block script %}
+	{# <script src="{{ asset('plugins/jquery.validate.min.js')}}"> #}
+
 	<script src="{{ asset('plugins/select2/select2.min.js')}}"></script>
-	{# <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="{{ asset('assets/pages/jquery.form-wizard.init.js')}}"></script> #}
+	 
+	 <script>
+ 
+ $(window).on('load', function() {
+   $(".select2").select2();
+
+})
+
+</script>
 	<script>
-		jQuery(document).ready(function () {
+		 jQuery(document).ready(function () {
 
 $(document).on('click', '.remove-collection-widget', function (e) {
 $(this).closest('.row').fadeOut().remove();
-});
+} 
+);
 $(document).on('click', '.add-another-collection-widget', function (e) {
+$(".select2").select2();
+
 var list = jQuery(jQuery(this).attr('data-list-selector'));
 
 var counter = list.data('widget-counter') || list.children().length;
@@ -705,42 +729,15 @@ newElem.appendTo(list);
 $(".select").select2("destroy").select2();
 });
 });
-
 var form = $("#form-horizontal");
-	</script>
+
+ 	</script>
 	<script>
 		$(function () {
 $(".select2").select2();
 
 })
 	</script>
-	<script>
-		$(() => {
-$('.college').trigger('change')
-})
-$('.college').change(function () { // $('.choose').prop('disabled', true);
-var college = $('.college').val()
-// console.log(college)
-var select = $('.dep')
-$.ajax({
-url:"{{ path('department_fetch') }}",
-method: "POST",
-data: {
-college: college
-},
-dataType: "json",
-success: function (data) {
-$('.dep').children().remove()
-{% if user.userInfo.department=="" %}
-select.append('<option  id="dep" name="department"    value=""  >' + '-- Select department -- ' + '</option>');
-{% else %}select.append('<option  id="dep" name="department"    value="   {{ user.userInfo.department }}"  >' + '{{ user.userInfo.department }}' + '</option>');
-{% endif %}
-for (let [key, value] of Object.entries(data)) {
-select.append('<option>' + value.name + '</option>');
-$("#dep").prop("required", true)
-}
-}
-});
-})
-	</script>
+ 	{% include "user/departmentfetchjs.html.twig" %}
+
 {% endblock %}
