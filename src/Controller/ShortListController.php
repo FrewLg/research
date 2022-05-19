@@ -70,7 +70,8 @@ $fileName = $entityManager->getRepository(SubmissionAttachement::class)->
 }
 
         $filePath = $this->getParameter('upload_destination') . '/' . $submission->getProposal();
-
+#$found = NULL; 
+#$result=NULL;
         if (!$filePath) {
             $this->addFlash(
                 'danger',
@@ -176,7 +177,7 @@ $fileName = $entityManager->getRepository(SubmissionAttachement::class)->
                 ) {
                      $striped_content = str_replace($patternsc, $replacementsc, $striped_content, $count);
                     $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
-                     $result = "Name of the research team members has been found in   proposal file  <a href='#' class='avatar-box thumb-xxs align-self-center'>  <span class='avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal'>  ".$count."   </span>  </a> times !";
+                     $result = "Name(s) of the research team members has appeared in a  proposal file  <a href='#' class='avatar-box thumb-xxs align-self-center'>  <span class='avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal'>  ".$count."   </span>  </a> times !";
 
                     $found = 1;
 
@@ -201,17 +202,17 @@ $fileName = $entityManager->getRepository(SubmissionAttachement::class)->
 
             ) {
                 $striped_content = str_replace($patterns, $replacements, $striped_content, $count);
-                $result = "Name of the research team members has been found in   proposal file  <a href='#' class='avatar-box thumb-xxs align-self-center'>  <span class='avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal'>  ".$count."   </span>  </a> times !";
+                $result = "Name(s) of the research team members has appeared  in a  proposal file  <a href='#' class='avatar-box thumb-xxs align-self-center'>  <span class='avatar-title bg-soft-danger rounded-circle font-13 font-weight-normal'>  ".$count."   </span>  </a> times !";
 
                 $found = 1;
 
             }
         }
 
-        if ($found) {
+        if (!$found ==NULL) {
             $this->addFlash(
                 'danger',
-                "Name of the research team members has been found in   proposal file!"
+                "Some of the name(s) of the research team members has been found in a  proposal file! Hence the submission violates the  guideline!"
             );
         } else {
 

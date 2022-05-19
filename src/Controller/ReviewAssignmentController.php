@@ -154,7 +154,7 @@ class ReviewAssignmentController extends AbstractController
                     'warning',
                     'You can not assign yourself as a reviewer to   this submission. Assign others instead!'
                 );
-                return $this->redirectToRoute('review_assignment_new', array('id' => $submission->getId()));
+                #return $this->redirectToRoute('review_assignment_new', array('id' => $submission->getId()));
             }
 
             if ($theassigned_reviewer == $the_submission_author) {

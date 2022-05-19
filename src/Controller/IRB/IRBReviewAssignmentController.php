@@ -123,7 +123,7 @@ class IRBReviewAssignmentController extends AbstractController
                     'name' => $theFirstName,
                     'Authoremail' => $theEmail,
                 ]);
-            //    $mailer->send($email);
+                $mailer->send($email);
 
             return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
         }
