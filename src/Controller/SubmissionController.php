@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\CallForProposal;
+use App\Entity\Chat;
 use App\Entity\CoAuthor;
 use App\Entity\CollaboratingInstitution;
+use App\Entity\Discussion;
 use App\Entity\EditorialDecision;
 use App\Entity\Expense;
 use App\Entity\PublishedSubmission;
@@ -20,6 +22,7 @@ use App\Entity\SubmissionBudget;
 use App\Entity\SubmissionFinalReport;
 use App\Filter\Type\FilterFunctions;
 use App\Filter\Type\SubmissionFilterType;
+use App\Form\ChatType;
 use App\Form\EditorialDecisionType;
 use App\Form\ResearchReportSubmissionSettingType;
 use App\Form\ResearchReportType;
@@ -32,6 +35,7 @@ use App\Helper\SmsHelper;
 use App\Helper\SubmissionHelper;
 use App\Message\SendEmailMessage;
 use App\Repository\CallForProposalRepository;
+use App\Repository\ChatRepository;
 use App\Repository\EvaluationFormRepository;
 use App\Repository\ReviewRepository;
 use App\Repository\SubmissionRepository;
@@ -600,10 +604,39 @@ class SubmissionController extends AbstractController
             'call' => $callForProposal,
         ]);
     }
+
+    /**
+     * @Route("/{id}/opendiscussion", name="opendiscussion", methods={"GET","POST"})
+     */
+     public function new(    Submission $submission) 
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $opendiscussuion = $entityManager->getRepository(Discussion::class)->findBy(['submission'=>$submission, 'status'=>0]);
+        if($opendiscussuion){
+            $opendiscussuion;
+            $this->addFlash("danger", "Sorry you have to close the open discussion first to start the new one!");
+            return $this->redirectToRoute('submission_status', array('id' => $submission->getId()));
+        }
+        else{
+            $discussion = new Discussion(); 
+            $discussion -> setSubmission($submission);
+            $discussion -> setStatus(0);
+            $discussion -> setCreatedAt(new \Datetime());
+            $entityManager->persist($discussion);
+            $entityManager->flush();
+            $this->addFlash("success", "A new discussion has been opened you can make a conversation now!");
+
+        }
+
+        return $this->redirectToRoute('submission_status', array('id' => $submission->getId()));
+      
+    }
+
     /**
      * @Route("/{id}/status", name="submission_status", methods={"GET","POST"})
      */
-    public function statusubmission(Request $request, Submission $submission, SubmissionHelper $submissionHelper): Response
+    public function statusubmission(Request $request, Submission $submission, SubmissionHelper $submissionHelper , ChatRepository $chatRepository): Response
     {
         ////Ultimate reviewers page
 
@@ -730,12 +763,10 @@ class SubmissionController extends AbstractController
 
 
         $submission_report_schedule_count = sizeof($submission->getResearchReportSubmissionSettings());
+         $researchReportPhase = $submission->getCallForProposal()?->getResearchReportPhase();
 
 
-        $researchReportPhase = $submission->getCallForProposal()?->getResearchReportPhase();
-
-
-        $submission_report_schedule_form =  $this->createForm(ResearchReportSubmissionSettingType::class, null, ["researchReportPhase" => $researchReportPhase]);
+            $submission_report_schedule_form =  $this->createForm(ResearchReportSubmissionSettingType::class, null, ["researchReportPhase" => $researchReportPhase]);
         $submission_report_schedule_form->handleRequest($request);
 
         if ($submission_report_schedule_form->isSubmitted()) {
@@ -785,6 +816,20 @@ class SubmissionController extends AbstractController
         $reviewsatge = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submission], ["id" => "DESC"]);
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $submission, 'allow_to_view' => 1]);
         $contributors = $entityManager->getRepository(CoAuthor::class)->find($submission);
+        ######################Discuussion
+        $chat = new Chat();
+        $chatform = $this->createForm(ChatType::class, $chat);
+        $chatform->handleRequest($request);
+
+        if ($chatform->isSubmitted() && $chatform->isValid()) {
+            $chatRepository->add($chat);
+            $chat -> setDiscussion(1);
+            $chat -> setSentFrom($this->getUser());
+            $chat -> setSentAt(new \Datetime());
+            return $this->redirectToRoute('app_chat_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        ######################Discuussion
         return $this->render('submission/status.html.twig', [
             'co_authors' => $contributors,
             'expenses' => $Expenses,
@@ -796,6 +841,7 @@ class SubmissionController extends AbstractController
             'editorialDecisions' => $editorialDecisions,
             'finalreportform' => $finalreportform->createView(),
             'form' => $form->createView(),
+            'chatform' => $chatform->createView(),
             'research_report_form' => $research_report_form->createView(),
             'submission_report_schedule_form' => $submission_report_schedule_form->createView(),
             'submission_report_schedule_count' => $submission_report_schedule_count,

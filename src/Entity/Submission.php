@@ -261,6 +261,11 @@ class Submission
      */
     private $researchReportSetting;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Discussion::class, mappedBy="submission")
+     */
+    private $discussions;
+
     public function __construct()
     {
 
@@ -274,6 +279,7 @@ class Submission
         $this->reviews = new ArrayCollection();
         $this->researchReports = new ArrayCollection();
         $this->researchReportSubmissionSettings = new ArrayCollection();
+        $this->discussions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1005,6 +1011,36 @@ class Submission
         }
 
         $this->researchReportSetting = $researchReportSetting;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Discussion>
+     */
+    public function getDiscussions(): Collection
+    {
+        return $this->discussions;
+    }
+
+    public function addDiscussion(Discussion $discussion): self
+    {
+        if (!$this->discussions->contains($discussion)) {
+            $this->discussions[] = $discussion;
+            $discussion->setSubmission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiscussion(Discussion $discussion): self
+    {
+        if ($this->discussions->removeElement($discussion)) {
+            // set the owning side to null (unless already changed)
+            if ($discussion->getSubmission() === $this) {
+                $discussion->setSubmission(null);
+            }
+        }
 
         return $this;
     }

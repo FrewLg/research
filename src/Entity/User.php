@@ -181,6 +181,16 @@ class User implements UserInterface
      */
     private $publications;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Chat::class, mappedBy="sentFrom", orphanRemoval=true)
+     */
+    private $chats;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Chat::class, mappedBy="sentTo", orphanRemoval=true)
+     */
+    private $chatsTos;
+
 
      
     public function __construct()
@@ -206,6 +216,8 @@ class User implements UserInterface
         $this->userFeedback = new ArrayCollection();
         $this->trainingParticipants = new ArrayCollection();
         $this->publications = new ArrayCollection();
+        $this->chats = new ArrayCollection();
+        $this->chatsTos = new ArrayCollection();
      }
   
 
@@ -991,6 +1003,66 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($publication->getAuthor() === $this) {
                 $publication->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Chat>
+     */
+    public function getChats(): Collection
+    {
+        return $this->chats;
+    }
+
+    public function addChat(Chat $chat): self
+    {
+        if (!$this->chats->contains($chat)) {
+            $this->chats[] = $chat;
+            $chat->setSentFrom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChat(Chat $chat): self
+    {
+        if ($this->chats->removeElement($chat)) {
+            // set the owning side to null (unless already changed)
+            if ($chat->getSentFrom() === $this) {
+                $chat->setSentFrom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Chat>
+     */
+    public function getChatsTos(): Collection
+    {
+        return $this->chatsTos;
+    }
+
+    public function addChatsTo(Chat $chatsTo): self
+    {
+        if (!$this->chatsTos->contains($chatsTo)) {
+            $this->chatsTos[] = $chatsTo;
+            $chatsTo->setSentTo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChatsTo(Chat $chatsTo): self
+    {
+        if ($this->chatsTos->removeElement($chatsTo)) {
+            // set the owning side to null (unless already changed)
+            if ($chatsTo->getSentTo() === $this) {
+                $chatsTo->setSentTo(null);
             }
         }
 

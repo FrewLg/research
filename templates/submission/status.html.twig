@@ -34,8 +34,15 @@
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
 									</li> 
 									<li>
-										<a class="nav-link active" href="#progress-report" data-bs-toggle="tab">Progress report</a>
+										<a class="nav-link" href="#conversation" data-bs-toggle="tab">Discussion</a>
 									</li> 
+									{% if submission.awardgranted  %}
+
+									<li>
+										<a class="nav-link active" href="#progress-report" data-bs-toggle="tab">Progress report</a>
+									</li>  
+									{% endif %}
+
 									{% if submission.terminalreport is  not  empty %}
 										<li>
 											<a class="nav-link" href="#terminal-report" data-bs-toggle="tab">Publication</a>
@@ -46,6 +53,7 @@
 											<a class="nav-link" href="#publication" data-bs-toggle="tab">Publication</a>
 										</li>
 									{% endif %}
+									
 								</ul>
 							</div>
 						</div>
@@ -481,6 +489,7 @@
 
 
 							{% include "submission/tabs/report.html.twig" %}
+							{% include "submission/tabs/conversation.html.twig" %}
 
 							<div class="tab-pane" id="terminal-report">
 								<strong class='text-success'>Final report datails</strong>
