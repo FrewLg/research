@@ -338,19 +338,19 @@ class SubmissionController extends AbstractController
                 $entityManager->persist($submission);
             }
 
-            foreach ($submission->getSubmissionAttachements() as $key => $author) {
+            // foreach ($submission->getSubmissionAttachements() as $key => $author) {
 
-                // $file = $form->get('file')->getData();
-                $files = $author->getFile('file');
+            //     // $file = $form->get('file')->getData();
+            //     $files = $author->getFile('file');
 
-                if ($files == NULL) {
+            //     if ($files == NULL) {
 
-                    $this->addFlash('danger', "Please upload a file with only valid word file format! Allowed file formats are  .doc , .docx , .odp ,
-                ");
+            //         $this->addFlash('danger', "Please upload a file with only valid word file format! Allowed file formats are  .doc , .docx , .odp ,
+            //     ");
 
-                    return $this->redirectToRoute('submission_firststepold', ["uidentifier" => $callForProposal->getUidentifier()]);
-                }
-            }
+            //         return $this->redirectToRoute('submission_firststepold', ["uidentifier" => $callForProposal->getUidentifier()]);
+            //     }
+            // }
 
             if ($submission->getStep() == 10) {
                 $submission->setSentAt(new \DateTime());
