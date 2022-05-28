@@ -112,7 +112,7 @@
 			Assigned   reviewers {{  irb_review_assignment|filter(r=> r.irbreviewer) |length}}
 			{% if is_granted('mng_brd_mbr') %}
 
-				<a class="btn btn-link" href="{{path('board_member_index')}}">View Board Members</a>
+				<a class="btn btn-link" href="{{path('board_member_index')}}" class="btn  float-end btn-primary   schedule-submit-button">View Board Members</a>
 			{% endif %}
 		</h4>
 

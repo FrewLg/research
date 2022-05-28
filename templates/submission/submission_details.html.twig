@@ -396,15 +396,15 @@
 												Responses   and revisions
 											</a>
 										</h3>
+{% set  form_off="" %}
 
 										{% for review in reviews %}
 
 
 											<div class="card team-card">
 												<div class="card-body">
-
 													{% if review.fromDirector %}
-
+{% set form_off=1%}
 														<div class="ribbon1 rib1-secondary">
 															<span class="text-white text-center rib1-secondary">Director</span>
 														</div>
@@ -579,11 +579,17 @@
 											<h5 class="text-secondary">Director decision</h5>
 										</div>
 										<div class="card-body">
+ {% if submission.awardgranted==1 %}
+<h4 class='text-success'>Grant Awarded</h4>
 
+{% elseif  form_off==1  %}
+<h4 class='text-success'>Decision made </h4>
+{% else %}
 											{{ form_start(adminvevisionform) }}
 											{{ form_widget(adminvevisionform) }}
 											<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
 											{{ form_end(adminvevisionform) }}
+{% endif %}
 										</div>
 									</div>
 
