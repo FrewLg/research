@@ -322,6 +322,7 @@
 																						</div>
 																						<a href='{{path('researcher',{'id':submission.author.id})}}' class="btn btn-sm btn-soft-primary">
 																							More Detail</a>
+
 																					</div>
 																				</div>
 																				<!--end card-body-->
@@ -609,7 +610,9 @@
 								<p class="text-muted font-12 mb-0">Research PI</p>
 							</div>
 						</div>
-						<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{submission.CallForProposal.ResearchType}}
+						<h4 class="m-0 mt-4 font-14 font-weight-semibold">
+{{ include('submission/includes/researchtype.html.twig') }}
+
 							Team</h4>
 						<p class="text-muted mb-0">
 							{{submission.title}}</p>
@@ -650,7 +653,15 @@
 								</a>
 							</div>
 
+
 						</div>
+<br>
+{% if submission.complete ==''%} <h4 class='text-danger'> Your Submission is Incomplete Hence </h4>
+<a href='{{path('submission_firststepold',{'uidentifier':submission.callForProposal.uidentifier})}}' class="btn btn-soft-danger btnblock"> Edit here </a>
+
+{% endif %}
+<a href='{{path('submission_firststepold',{'uidentifier':submission.callForProposal.uidentifier})}}' class="btn btn-soft-danger btnblock"> Modify here </a>
+
 						<hr class="hr-dashed my-4">
 													{{ include('submission/includes/progress.html.twig') }}
 

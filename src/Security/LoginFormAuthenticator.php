@@ -170,7 +170,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     $roles = $token->getUser()->getRoles();
     if ($user->getIsSuperAdmin() || in_array("vw_all_sub", $roles)) { 
 
-      return new RedirectResponse($this->urlGenerator->generate('submission_index'));
+      return new RedirectResponse($this->urlGenerator->generate('all_calls'));
     }
     
     if (   in_array("ROLE_BOARD_MEMBER", $roles)) { 

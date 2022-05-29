@@ -305,7 +305,7 @@ class SubmissionController extends AbstractController
 
         //     return $this->redirectToRoute('myreviews');
         // }
-        ##########################End Check submission exists #######################
+        ########################## End Check submission exists #######################
 
         $entityManager = $this->getDoctrine()->getManager();
         $new = false;
@@ -334,19 +334,22 @@ class SubmissionController extends AbstractController
                 $entityManager->persist($submission);
             }
 
-            foreach ($submission->getSubmissionAttachements() as $key => $author) {
+#####################Check if  proposalfile is there"#################
+#####################Check if  proposalfile is there"#################
 
-                // $file = $form->get('file')->getData();
-                $files = $author->getFile('file');
-
-                if ($files == NULL) {
-
-                    $this->addFlash('danger', "Please upload a file with only valid word file format! Allowed file formats are  .doc , .docx , .odp ,
-                ");
-
-                    return $this->redirectToRoute('submission_firststepold', ["uidentifier" => $callForProposal->getUidentifier()]);
-                }
-            }
+         #   foreach ($submission->getSubmissionAttachements() as $key => $author) {
+#
+ #               // $file = $form->get('file')->getData();
+  #              $files = $author->getFile('file');
+#
+ #               if ($files == NULL) {
+#
+ #                   $this->addFlash('danger', "Please upload a file with only valid word file format! Allowed file formats are  .doc , .docx , .odp ,
+  #              ");
+#
+ #                   return $this->redirectToRoute('submission_firststepold', ["uidentifier" => $callForProposal->getUidentifier()]);
+  #              }
+   #         }
 
             if ($submission->getStep() == 10) {
                 $submission->setSentAt(new \DateTime());
@@ -1160,10 +1163,9 @@ class SubmissionController extends AbstractController
     public function myresearches(Request $request, PaginatorInterface $paginator): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $me = $this->getUser()->getId();
+        $me = $this->getUser();
         $this_is_me = $this->getUser();
         $myresearches = $entityManager->getRepository(Submission::class)->findBy(['author' => $me], ["id" => "DESC"]);
-        $Assignment_id = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me]);
         ////// if no throw exception
         $Allmyresearches = $paginator->paginate(
             // Doctrine Query, not results
@@ -1176,7 +1178,6 @@ class SubmissionController extends AbstractController
 
         return $this->render('submission/my_submission_review.html.twig', [
             'submissions' => $Allmyresearches,
-            'myreviews' => $Assignment_id,
         ]);
     }
     /**
