@@ -37,6 +37,32 @@ class CallForProposalRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findActiveApproved()
+    {
+
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.deadline  > :date')
+            ->andWhere('c.approved = :approved')
+            ->setParameter('date', new \DateTime())
+            ->setParameter('approved', 1)
+            ->orderBy('c.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllByTheme($call,$college)
+    {
+
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.deadline  > :date')
+            ->andWhere('c.approved = :approved')
+            ->setParameter('date', new \DateTime())
+            ->setParameter('approved', 1)
+            ->orderBy('c.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
 
 
 

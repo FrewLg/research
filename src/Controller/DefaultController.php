@@ -45,20 +45,18 @@ class DefaultController extends AbstractController
         ->getQuery()
         ->getSingleScalarResult();
    $newss= $paginator->paginate($news, $request->query->getInt('page', 1), 3  ); 
+    $em = $this->getDoctrine()->getManager();
  
  
+    $callForProposals = array_reverse($em->getRepository(CallForProposal::class)->findActiveApproved());     
  
-$em = $this->getDoctrine()->getManager();
-    //$callForProposals = array_reverse($em->getRepository(CallForProposal::class)->findAll());   
-    $callForProposals = array_reverse($em->getRepository(CallForProposal::class)->findBy(  array('approved'=>1)));      
-        // Paginate the results of the query
         $AllcallForProposal = $paginator->paginate(
             // Doctrine Query, not results
             $callForProposals,
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            3
+            5
         ); 
         
         $error = $authenticationUtils->getLastAuthenticationError();

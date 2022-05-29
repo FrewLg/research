@@ -447,8 +447,7 @@
 																	{{ review.review }}
 																</label>
 															</div>
-														{% else %}
-
+															{% else %} 
 															<p>No research subject specified</p>
 
 														{% endfor %}
@@ -458,9 +457,7 @@
 
 											<div class="tab-pane p-3 " id="attachments" role="tabpanel">
 
-												<ol>
-
-
+												<ol> 
 													{% for attachment in application.applicationAttachments %}
 
 														<li class="text-info   pt-2">
@@ -484,7 +481,7 @@
 							</div>
 
 
-						{% else %}
+						 {% else %}
 							<h4 class='text-danger'>You need higher privilage to view the content!</h4>
 
 						{% endif %}

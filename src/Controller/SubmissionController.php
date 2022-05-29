@@ -1168,12 +1168,14 @@ class SubmissionController extends AbstractController
     /**
      * @Route("/my-membership-details/{id}", name="membershipdetails" ,  methods={"GET","POST"})
      */
-    public function mymembershipdetails(Submission $submission): Response
+    public function mymembershipdetails(CoAuthor $membership): Response
     {
 
 
         $entityManager = $this->getDoctrine()->getManager();
-        $member = $entityManager->getRepository(CoAuthor::class)->findBy(['submission' => $submission, 'researcher' => $this->getUser()]);
+        $member = $entityManager->getRepository(CoAuthor::class)->findBy(['id' => $membership ]);
+        
+        $submission = $membership->getSubmission();
 
 
         if (!$member) {
@@ -1195,7 +1197,7 @@ class SubmissionController extends AbstractController
             'comments' => $reviews,
             'review_assignments' => $reviewsatge,
             'publicationstatus' => $publicationstatus,
-            'submission' => $submission,
+            'cosubmission' => $membership,
 
         ]);
     }

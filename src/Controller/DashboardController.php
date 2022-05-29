@@ -56,20 +56,9 @@ class DashboardController extends AbstractController
                     c.confirmed =:confirmation and s.complete=:completed and  c.confirmed is NOT NULL
                     and s.id=c.submissionid
                       GROUP BY s.id
-         
-                    -- UNION 
-
-                    -- SELECT   s.id  
-                    --  FROM App:CoAuthor c
-                    --      JOIN c.submission s
-                    --    WHERE  
-                    -- c.confirmed =:confirmation and s.complete=:completed and  c.confirmed is NOT NULL  GROUP BY s.id
-                   
-
-
-                    '
-
-    )
+             ' 
+ 
+    ) 
       ->setParameter('confirmation', 1)
       ->setParameter('completed', 'completed');
     $recepients = $querytwo->getResult();

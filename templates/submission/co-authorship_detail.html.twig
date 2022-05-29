@@ -12,8 +12,8 @@
 			<h4>Project progress
 			</h4>
 
-			{{ include('submission/progress.html.twig') }}
-<br>
+			{# {{ include('submission/progress.html.twig') }} #}
+			<br>
 			<div class="row m-t-sm">
 				<div class="col-lg-12">
 					<div class="panel blank-panel">
@@ -26,12 +26,8 @@
 									<li>
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
 									</li>
-								 
-									 
 
 
-									 
-									 
 								</ul>
 							</div>
 						</div>
@@ -72,12 +68,12 @@
 																	</h3>
 																	<p class="medium">
 
-																		{{ submission.abstract |raw}}
+																		{{ cosubmission.submission.abstract |raw}}
 																	</p>
 																	<div class="m-t-sm">
 																		<a href="#" class="text-muted">Keywords:
 																		</a>
-																		{{ submission.keywords}}
+																		{{ cosubmission.submission.keywords}}
 																	</div>
 
 
@@ -93,13 +89,13 @@
 															<div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 																<div class="accordion-body">
 
-																	{{ submission.BackgroundAndRationale |raw}}
+																	{{ cosubmission.submission.BackgroundAndRationale |raw}}
 
 																</div>
 															</div>
 														</div>
 
- 
+
 														<div class="accordion-item">
 															<h5 class="accordion-header m-0" id="Objectives">
 																<button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoo" aria-expanded="false" aria-controls="collapseTwoo">
@@ -111,12 +107,12 @@
 
 																	<h5 class="font-20 fw-bold d-block mt-2">General objective:</h5>
 																	<p>
-																		{{ submission.GeneralObjective }}
+																		{{ cosubmission.submission.GeneralObjective }}
 																	</p>
 																	<h5 class="font-20 fw-bold d-block mt-2">Specific Objectives:</h5>
 
 																	<ul class="list-unstyled mb-0 row">
-																		{% for objective in submission.specificObjectives %}
+																		{% for objective in cosubmission.submission.specificObjectives %}
 																			<li class="col-12 my-1 p-1 list-unstyled">
 
 																				{{ loop.index }}
@@ -142,7 +138,7 @@
 															<div id="collapseOther" class="accordion-collapse collapse" aria-labelledby="headingSpn" data-bs-parent="#accordionExample" style="">
 																<div class="accordion-body">
 
-																	{{ submission.methodology |raw}}
+																	{{ cosubmission.submission.methodology |raw}}
 
 																</div>
 															</div>
@@ -156,7 +152,7 @@
 															<div id="collepaselast" class="accordion-collapse collapse" aria-labelledby="headingLastTwo" data-bs-parent="#accordionExample" style="">
 																<div class="accordion-body">
 																	<div class="table table-responsive">
-																		{{  submission.actionplan |raw }}
+																		{{  cosubmission.submission.actionplan |raw }}
 																	</div>
 																	<h5 class='text-'>Budget breakdown</h5>
 																	<table class="table table-bordered">
@@ -212,7 +208,7 @@
 																			</tr>
 																		</tbody>
 																	</table>{#{% endif %}#}<div class="table-responsive">
-																		{% if submission.researchTimeTables|length >0 %}
+																		{% if cosubmission.submission.researchTimeTables|length >0 %}
 
 																			<h4>Time table :
 																			</h4>
@@ -230,7 +226,7 @@
 																					</tr>
 																				</thead>
 																				<tbody>
-																					{% for schedule in submission.researchTimeTables %}
+																					{% for schedule in cosubmission.submission.researchTimeTables %}
 																						<tr>
 																							<td>{{ schedule.task }}</td>
 																							<td>
@@ -261,7 +257,7 @@
 																<button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collepaselastsyn" aria-expanded="false" aria-controls="collepaselastsyn">References</button>
 															</h5>
 															<div id="collepaselastsyn" class="accordion-collapse collapse" aria-labelledby="headingLastFTwo" data-bs-parent="#accordionExample" style="">
-																<div class="accordion-body">{{ submission.Reference |raw}}</div>
+																<div class="accordion-body">{{ cosubmission.submission.Reference |raw}}</div>
 															</div>
 														</div>
 														<div class="accordion-item">
@@ -269,7 +265,7 @@
 																<button class="accordion-button fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ResearchOutcome" aria-expanded="false" aria-controls="ResearchOutcome">Research  Outcome</button>
 															</h5>
 															<div id="ResearchOutcome" class="accordion-collapse collapse" aria-labelledby="headingLastFThree" data-bs-parent="#accordionExample" style="">
-																<div class="accordion-body">{{ submission.ResearchOutcome |raw}}</div>
+																<div class="accordion-body">{{ cosubmission.submission.ResearchOutcome |raw}}</div>
 															</div>
 														</div>
 														<div class="accordion-item">
@@ -280,7 +276,7 @@
 																<div class="accordion-body">
 
 
-																	<h4 class='text-'>Research team({{  submission.coAuthors|length +1}})</h4>
+																	<h4 class='text-'>Research team({{  cosubmission.submission.coAuthors|length +1}})</h4>
 
 
 																	<div class="row">
@@ -292,28 +288,28 @@
 																						class="text-center">
 																						{# <img class="me-3 rounded-circle thumb-xl" src="assets/images/users/user-4.jpg" alt=""> #}
 
-																						{% if submission.author.userInfo.image   %}
-																							<img src="{{ asset('files/profile_pictures/'~ submission.author.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+																						{% if cosubmission.submission.author.userInfo.image   %}
+																							<img src="{{ asset('files/profile_pictures/'~ cosubmission.submission.author.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
 																						{% else %}
 																							<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
 																						{% endif %}
 
 																						<div class="">
 																							<h5 class="mb-0">
-																								{{ submission.author.userInfo}}</h5>
+																								{{ cosubmission.submission.author.userInfo}}</h5>
 																							<small class="text-muted">
-																								{{ submission.author.userInfo.college}}</small>
+																								{{ cosubmission.submission.author.userInfo.college}}</small>
 
 																						</div>
 																						<p class="text-muted px-2">
-																							{{ submission.author.userInfo.department}}
+																							{{ cosubmission.submission.author.userInfo.department}}
 																						</p>
 
-																						<p class="text-muted mb-2">{{ submission.author.userInfo.academicRank }}</p>
+																						<p class="text-muted mb-2">{{ cosubmission.submission.author.userInfo.academicRank }}</p>
 																						<div class="mb-3">
 																							<span class='me-3  text-success'>Principal Investigtor</span>
 																						</div>
-																						<a href='{{path('researcher',{'id':submission.author.id})}}' class="btn btn-sm btn-soft-primary">
+																						<a href='{{path('researcher',{'id':cosubmission.submission.author.id})}}' class="btn btn-sm btn-soft-primary">
 																							More Detail</a>
 																					</div>
 																				</div>
@@ -322,7 +318,7 @@
 																			<!--end card-->
 																		</div>
 
-																		{% for co_author in  submission.coAuthors %}
+																		{% for co_author in  cosubmission.submission.coAuthors %}
 																			<div class="col-lg-4">
 
 																				<div class="card">
@@ -403,11 +399,11 @@
 
 														{% if review.attachment %}
 															<a href="{{ asset('/files/proposals/review_files/'~ review.attachment ) }}" class="btn btn-info btn-xs float-right">
-																Download evaluation  report 
+																Download evaluation  report
 																<i class="fa fa-download material-icons warning"></i>
 															</a>
-														{% else %}
-														 
+															{% else %}
+
 														{% endif %}
 													</div>
 												</td>
@@ -417,122 +413,126 @@
 
 														{% if review.ReviewedBy.isReviewer %}
 															<span class="badge badge-boxed  badge-outline-primary">
-																		External reviewer</span>
-															{% else %}
+																External reviewer</span>
+														{% else %}
+															<span class="badge badge-boxed  badge-outline-success">
+																Internal reviewer
+															</span>
+															{% if review.fromDirector %}
 																<span class="badge badge-boxed  badge-outline-success">
-																		Internal reviewer
-																		</span>
-														{% if review.fromDirector %}
-														<span class="badge badge-boxed  badge-outline-success">
-																		Research co-ordinator
-																		</span>
+																	Research co-ordinator
+																</span>
 															{% endif %}
-																{% endif %}
+														{% endif %}
 
-														</h4>
-														 
-														
-														<h4 class='text-'>
-														 {% if   review.remark==1 %}
-											<span class="text-danger">
-											Declined</span>
+													</h4>
 
-											{% elseif   review.remark==2 %}
-											<span class="text-warning">
-											Accepted with major revision</span>
-											{% elseif   review.remark==3 %}
-	<span class="text-warning">
-	Accepted with minor revision </span>
-											{% elseif   review.remark==4 %}
 
- 	<span class="text-success">
-	Accepted   </span>
- {% endif   %}
+													<h4 class='text-'>
+														{% if   review.remark==1 %}
+															<span class="text-danger">
+																Declined</span>
 
-														</h4>
+														{% elseif   review.remark==2 %}
+															<span class="text-warning">
+																Accepted with major revision</span>
+														{% elseif   review.remark==3 %}
+															<span class="text-warning">
+																Accepted with minor revision
+															</span>
+														{% elseif   review.remark==4 %}
 
-														<hr></td>
-												</td>
+															<span class="text-success">
+																Accepted
+															</span>
+														{% endif   %}
+
+													</h4>
+
+													<hr></td>
 											</tr>
 										</tbody>
-									</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 
-								{% else %}
-									Revision not sent
+					{% else %}
+						Revision not sent
 
-								{% endfor %}
-								 <hr>
-								 
-							</div>
-						 
-							<div class="tab-pane" id="terminal-report">
-								<strong class='text-success'>Final report datails</strong>
+					{% endfor %}
+					<hr>
+
+				</div>
+
+				<div class="tab-pane" id="terminal-report">
+					<strong class='text-success'>Final report datails</strong>
+					<p>
+						{% if cosubmission.submission.published==''%}
+							{% for publicationstatus in publicationstatus %}
+								<strong class='text-info'>Messagemfrom director</strong>
 								<p>
-									{% if submission.published==''%}
-										{% for publicationstatus in publicationstatus %}
-											<strong class='text-info'>Messagemfrom director</strong>
-											<p>
-												{{ publicationstatus.id}}</p>
-											{{publicationstatus.submission.id}}
-											<a href="{{ path('publication_datasets', {'id':publicationstatus.id}) }}">
-												Dataset</a>
+									{{ publicationstatus.id}}</p>
+								{{publicationstatus.submission.id}}
+								<a href="{{ path('publication_datasets', {'id':publicationstatus.id}) }}">
+									Dataset</a>
 
-											<div id="TheModal" class="modal" tabindex="-1" role="dialog">
-												<div class="modal-dialog modal-lg" role="document">
-													<div class="modal-content">
-														<div class="modal-header">
-															<h5 class="modal-title">{% trans %}Dataset attachment{% endtrans %}</h5>
-															<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																<span aria-hidden="true">&times;</span>
-															</button>
-														</div>
-														<div class="modal-body" id="showEditRequestContent">
-															sd
-														</div>
-														<div class="modal-footer text-success text-left">
-															{%block modal_footer%}
-															{% endblock%}
-														</div>
-													</div>
-												</div>
+								<div id="TheModal" class="modal" tabindex="-1" role="dialog">
+									<div class="modal-dialog modal-lg" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title">{% trans %}Dataset attachment{% endtrans %}</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body" id="showEditRequestContent">
+												sd
+											</div>
+											<div class="modal-footer text-success text-left">
+												{%block modal_footer%}
+												{% endblock%}
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="modal inmodal fade" id="modal{{publicationstatus.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">
+													<span aria-hidden="true">&times;</span>
+													<span class="sr-only">Close</span>
+												</button>
+												<h4 class="modal-title">Modal title</h4>
+												<small class="font-bold">S.</small>
+											</div>
+											<div class="modal-body">
+												<strong>Lorem
+												</strong>
+
 											</div>
 
-											<div class="modal inmodal fade" id="modal{{publicationstatus.id}}" tabindex="-1" role="dialog" aria-hidden="true">
-												<div class="modal-dialog modal-lg">
-													<div class="modal-content">
-														<div class="modal-header">
-															<button type="button" class="close" data-dismiss="modal">
-																<span aria-hidden="true">&times;</span>
-																<span class="sr-only">Close</span>
-															</button>
-															<h4 class="modal-title">Modal title</h4>
-															<small class="font-bold">S.</small>
-														</div>
-														<div class="modal-body">
-															<strong>Lorem
-															</strong>
-
-														</div>
-
-														<div class="modal-footer">
-															<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-															<button type="button" class="btn btn-primary">Save changes</button>
-														</div>
-													</div>
-												</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+												<button type="button" class="btn btn-primary">Save changes</button>
 											</div>
-											<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-target="#modal{{publicationstatus.id}}">
-												Show Dataset
-											</button>
+										</div>
+									</div>
+								</div>
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-target="#modal{{publicationstatus.id}}">
+									Show Dataset
+								</button>
 
-											<a title="Show" class="btn btn-success  btn-xs" data-bs-toggle="modal" data-target="#TheModal" id="showRequestDetail4{{publicationstatus.id}}">
-												<i class="glyphicon glyphicon-stat text-success">Datasets</i>
-											</a>
-											<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
-											<script>
-												$(document).ready(function () {
+								<a title="Show" class="btn btn-success  btn-xs" data-bs-toggle="modal" data-target="#TheModal" id="showRequestDetail4{{publicationstatus.id}}">
+									<i class="glyphicon glyphicon-stat text-success">Datasets</i>
+								</a>
+								<script src="{{ asset('ui/js/jquery.min.js') }}"></script>
+								<script>
+									$(document).ready(function () {
 
-$("#showRequestDetail4                               {{ publicationstatus.id }}").click(function () {
+$("#showRequestDetail4                                {{ publicationstatus.id }}").click(function () {
 $.ajax({
 url: "{{ path('publication_datasets', {'id':publicationstatus.id}) }}",
 success: function (result) {
@@ -546,153 +546,166 @@ $("#showEditRequestContent").html("Problem");
 });
 });
 });
-											</script>
+								</script>
 
-										{% endfor %}
-										<p>
- 											
-											{% endif%}
-										</p>
-									</div>
-									<div class="tab-pane" id="publication">
+							{% endfor %}
+							<p>
 
-										{{ submission.subtitle }}</div>
-								</p>
-							</div>
+								{% endif%}
+							</p>
 						</div>
-					</div>
-				</div>
-			</div>
+						<div class="tab-pane" id="publication">
 
-
-			<div class="col-lg-3">
-				<div class="card team-card">
-					<div class="card-body">
-					{% if submission.awardgranted %} 
-									<div class="ribbon2 rib2-success">
-										<span class="ribbon4-band ribbon4-band-primary text-white text-center">
-										<i class="fas fa-badge-check"></i>
-										  </span>
-									</div>
-									{% endif %}
-						<div class="float-end">
-							<div
-								class="dropdown d-inline-block"> 
-</div>
-						</div>
-						<div class="media align-items-center">
-
-							{% if submission.author.userInfo and submission.author.userInfo.image %}
-
-
-								<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="" class="rounded-circle user-img">
-							{% else %}
-
-								<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle user-img">
-
-
-							{% endif %}
-
-
-							<div class="online-circle">
-								<i class="fa fa-circle text-success"></i>
-							</div>
-							<div class="media-body ms-3 align-self-center">
-								<h4 class="team-leader m-0">{{submission.author.userInfo}}</h4>
-								<p class="text-muted font-12 mb-0">Research PI</p>
-							</div>
-						</div>
-						<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{submission.CallForProposal.ResearchType}}
-							Team</h4>
-						<p class="text-muted mb-0">
-							{{submission.title}}</p>
-
-						<div class="mt-4 d-flex justify-content-between">
-							<div class="img-group">
-
-
-								<a class="user-avatar user-avatar-group" href="#">
-									<img src="{{ asset('files/profile_pictures/'~submission.author.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
-								</a>
-
-								{% for member in submission.coAuthors %}
-
-
-									{% if member.researcher.userInfo and member.researcher.userInfo.image %}
-
-										<a class="user-avatar user-avatar-group" href="#">
-											<img src="{{ asset('files/profile_pictures/'~member.researcher.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
-										</a>
- 	{% else %}
-										<a class="user-avatar user-avatar-group" href="#">
-											<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
-										</a>
-									{% endif %}
-
-									{% else %}No Co-PI has been involved
-								{% endfor %}
-
-
-								<a href="#{{submission.id}}" class="avatar-box thumb-xxs align-self-center">
-									<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-										+{{ submission.coAuthors|length   }}
-									</span>
-								</a>
-							</div>
-
-						</div>
-						<hr class="hr-dashed my-4">
-
-					</div>
-					<!--end card-body-->
-				</div>
-
-				<div class="card">
-					<div class="card-body ">
-						<h4 class="font-18 m-0 fw-bold">Attachments</h4><br>
-							<a href="{{ asset('/uploads/submission/'~ submission.proposal ) }}" class="btn btn-info btn-xs float-right"> Proposal
-								<i class="fa fa-download material-icons warning"></i>
-							</a>
-<br>
-					
-						{% for submissionattachment in submission.submissionAttachements %}
-							<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">{{submissionattachment.name}}
-								<i class="fa fa-download material-icons warning"></i>
-							</a>
-						{% else %}
-							<span class="label label-danger">{% trans %}-{% endtrans %}</span>
-						{% endfor %}
-					</div>
-				</div>
-				<div class="card">
-					<div class="card-body ">
-						<h5 class="font-18 m-0 fw-bold">Submission Status</h5>
-						<div class="row mt-4 d-flex align-items-center">
-							{% if review_assignments|length >0 %}
-								<p class="btn btn-info btn-xs float-right">Sent to review</p>
-								{% else %}
-							{% endif %}
-							<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': submission.uidentifier }) }}">PDF<i class="fa fa-download"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="card">
-					<div class="card-body ">
-						<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
-						{% for member in submission.coAuthors %}
-							{{loop.index}}{{member.researcher.userInfo}}
-							{% if member.confirmed=='1' %}
-								<i class="fa fa-check text-success"></i>
-							{% elseif member.confirmed==''    %}
-								<i class="fa fa-times-circle text-danger"></i>
-								{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
-							{% else  %}
-								<i class="fa fa-close text-danger"></i>
-							{% endif %}<br>{% else %}No Co-PI has been involved
-						{% endfor %}
-					</div>
+							{{ cosubmission.submission.subtitle }}</div>
+					</p>
 				</div>
 			</div>
 		</div>
-	{% endblock %}
+	</div>
+</div>
+
+
+<div class="col-lg-3">
+	<div class="card team-card">
+		<div class="card-body">
+			{% if cosubmission.submission.awardgranted %}
+				<div class="ribbon2 rib2-success">
+					<span class="ribbon4-band ribbon4-band-primary text-white text-center">
+						<i class="fas fa-badge-check"></i>
+					</span>
+				</div>
+			{% endif %}
+			<div class="float-end">
+				<div class="dropdown d-inline-block"></div>
+			</div>
+			<div class="media align-items-center">
+
+				{% if cosubmission.submission.author.userInfo and cosubmission.submission.author.userInfo.image %}
+
+
+					<img src="{{ asset('files/profile_pictures/'~cosubmission.submission.author.userInfo.image ) }}" alt="" class="rounded-circle user-img">
+				{% else %}
+
+					<img src="{{ asset('/img/defaultuser.png') }}" alt="" class="rounded-circle user-img">
+
+
+				{% endif %}
+
+
+				<div class="online-circle">
+					<i class="fa fa-circle text-success"></i>
+				</div>
+				<div class="media-body ms-3 align-self-center">
+					<h4 class="team-leader m-0">{{cosubmission.submission.author.userInfo}}</h4>
+					<p class="text-muted font-12 mb-0">Research PI</p>
+				</div>
+			</div>
+			<h4 class="m-0 mt-4 font-14 font-weight-semibold">{{cosubmission.submission.CallForProposal.ResearchType}}
+				Team</h4>
+			<p class="text-muted mb-0">
+				{{cosubmission.submission.title}}</p>
+
+			<div class="mt-4 d-flex justify-content-between">
+				<div class="img-group">
+
+
+					<a class="user-avatar user-avatar-group" href="#">
+						<img src="{{ asset('files/profile_pictures/'~cosubmission.submission.author.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+					</a>
+
+					{% for member in cosubmission.submission.coAuthors %}
+
+
+						{% if member.researcher.userInfo and member.researcher.userInfo.image %}
+
+							<a class="user-avatar user-avatar-group" href="#">
+								<img src="{{ asset('files/profile_pictures/'~member.researcher.userInfo.image ) }}" alt="user" class="rounded-circle thumb-xxs">
+							</a>
+						{% else %}
+							<a class="user-avatar user-avatar-group" href="#">
+								<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
+							</a>
+						{% endif %}
+
+						{% else %}No Co-PI has been involved
+					{% endfor %}
+
+
+					<a href="#{{cosubmission.submission.id}}" class="avatar-box thumb-xxs align-self-center">
+						<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+							+{{ cosubmission.submission.coAuthors|length   }}
+						</span>
+					</a>
+				</div>
+
+			</div>
+			<hr class="hr-dashed my-4">
+
+		</div>
+		<!--end card-body-->
+	</div>
+
+	<div class="card">
+		<div class="card-body ">
+			<h4 class="font-18 m-0 fw-bold">Attachments</h4><br>
+			<a href="{{ asset('/uploads/submission/'~ cosubmission.submission.proposal ) }}" class="btn btn-info btn-xs float-right">
+				Proposal
+				<i class="fa fa-download material-icons warning"></i>
+			</a>
+			<br>
+
+			{% for submissionattachment in cosubmission.submission.submissionAttachements %}
+				<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">{{submissionattachment.name}}
+					<i class="fa fa-download material-icons warning"></i>
+				</a>
+			{% else %}
+				<span class="label label-danger">{% trans %}-{% endtrans %}</span>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-body ">
+			<h5 class="font-18 m-0 fw-bold">Submission Status</h5>
+			<div class="row mt-4 d-flex align-items-center">
+				{% if review_assignments|length >0 %}
+					<p class="btn btn-info btn-xs float-right">Sent to review</p>
+					{% else %}
+				{% endif %}
+				<a class="badge bg-primary" href="{{ path('research_sumary', {'uid': cosubmission.submission.uidentifier }) }}">PDF<i class="fa fa-download"></i>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-body ">
+			<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
+			{% for member in cosubmission.submission.coAuthors %}
+				{{loop.index}}{{member.researcher.userInfo}}
+				{% if member.confirmed=='1' %}
+					<i class="fa fa-check text-success"></i>
+				{% elseif member.confirmed==''    %}
+					<i class="fa fa-times-circle text-danger"></i>
+					{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
+				{% else  %}
+					<i class="fa fa-close text-danger"></i>
+				{% endif %}<br>{% else %}No Co-PI has been involved
+			{% endfor %}
+			{% if cosubmission.confirmed ==0 or cosubmission.confirmed =='' %}
+			Not confirmed
+			<a class="btn btn-xs btn-primary" href="{{ path('accept_involvemet', {'id': cosubmission.id, 'sub': cosubmission.submission.id}) }}">
+						<i class="fa fa-check"></i>
+					</a>
+			{% elseif cosubmission.confirmed ==1%}
+				Confirmed
+				{%endif%}
+
+				<div>
+					
+
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>{% endblock %}
