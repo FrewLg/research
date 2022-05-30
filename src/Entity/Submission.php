@@ -187,7 +187,7 @@ class Submission
 
 
     /**
-     * @ORM\OneToMany(targetEntity=SubmissionAttachement::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=SubmissionAttachement::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"} )
      */
     private $submissionAttachements;
 

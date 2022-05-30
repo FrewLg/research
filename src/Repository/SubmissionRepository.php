@@ -35,7 +35,7 @@ class SubmissionRepository extends ServiceEntityRepository
             $qb->andWhere('s.author = :author')
                 ->setParameter('author', $filter["author"]);
 
-        return  $qb->orderBy('s.id', 'ASC')
+        return  $qb->orderBy('s.sent_at', 'DESC')
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -164,7 +164,7 @@ class SubmissionRepository extends ServiceEntityRepository
         }
 
         //    dd($qb->orderBy('s.id', 'ASC')->getQuery()->getSQL());
-        return  $qb->orderBy('s.id', 'ASC')
+        return  $qb->orderBy('s.sent_at', 'DESC')
             ->getQuery();
     }
 

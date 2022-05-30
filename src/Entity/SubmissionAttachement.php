@@ -22,20 +22,20 @@ class SubmissionAttachement
 
      /**
      * 
-     * @Vich\UploadableField(mapping="submission_file", fileNameProperty="file")
-     * 
+     * @Vich\UploadableField(mapping="submission_file", fileNameProperty="file" )
+     *      @throws \Exception
      * @var File|null
      */
     private $imageFile;
 
     /**
      * @ORM\ManyToOne(targetEntity=AttachementType::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $file;
 
@@ -60,16 +60,21 @@ class SubmissionAttachement
      * during Doctrine hydration.
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     * @throws \Exception
      */
     public function setImageFile(?File $imageFile = null): void
     {
-        $this->imageFile = $imageFile;
+        // $this->imageFile = $imageFile;
 
         // if (null !== $imageFile) {
         //     // It is required that at least one field changes if you are using doctrine
         //     // otherwise the event listeners won't be called and the file is lost
         //     $this->updatedAt = new \DateTimeImmutable();
         // }
+        $this->imageFile = $imageFile;
+        if ($imageFile){
+            $this->attachmentUploadedAt = new \DateTime();
+        }
     }
 
     public function getImageFile(): ?File

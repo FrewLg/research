@@ -15,8 +15,9 @@ class SubmissionAttachementType extends AbstractType
     {
         $builder
             ->add('imageFile',VichFileType::class,[
-                'allow_delete' => false,
-                // 'delete_label' => 'Remove file',
+                'allow_delete' => true
+                ,
+                'delete_label' => 'Remove file',
            //     'download_uri' => '...',
                'download_label' => 'Download file',
             ])

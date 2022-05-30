@@ -427,24 +427,22 @@ datasets: [
 
 
 backgroundColor: [
+"#2ac2f5",
+"#8dadf7",
+"#ccbad6",
+"#e8c3b9",
+"#51c1c9",
 "#3e95cd",
-"#8e5ea2",
+"#8dadf7",
+"#3cba9f",
+"#ccbad6",
+"#3e95cd",
+"#c99551",
 "#3cba9f",
 "#e8c3b9",
-"#c45850",
+"#ccbad6",
 "#3e95cd",
-"#8e5ea2",
-"#3cba9f",
-"#e8c3b9",
-"#c45850",
-"#3e95cd",
-"#8e5ea2",
-"#3cba9f",
-"#e8c3b9",
-"#c45850",
-"#3e95cd",
-"#8e5ea2",
-"#3cba9f"
+"#ccbad6"
 ],
 data: [{% for theanswer in bythemes %}'{{ theanswer.submissions|length }}',{% endfor %}]
 }
@@ -479,24 +477,23 @@ datasets: [
 {
 label: "  completion status",
 backgroundColor: [
+"#2ac2f5",
+"#8dadf7",
+"#ccbad6",
+"#e8c3b9",
+"#51c1c9",
 "#3e95cd",
-"#8e5ea2",
+"#8dadf7",
+"#3cba9f",
+"#ccbad6",
+"#3e95cd",
+"#c99551",
 "#3cba9f",
 "#e8c3b9",
-"#c45850",
+"#ccbad6",
 "#3e95cd",
-"#8e5ea2",
-"#3cba9f",
-"#e8c3b9",
-"#c45850",
-"#3e95cd",
-"#8e5ea2",
-"#3cba9f",
-"#e8c3b9",
-"#c45850",
-"#3e95cd",
-"#8e5ea2",
-"#3cba9f"
+"#ccbad6"
+
 ],
 data: [{% for theanswer in bythemes %}'{{ theanswer.submissions|length }}',{% endfor %}]
 }
@@ -537,20 +534,15 @@ datasets: [
 {
 label: "  completion status",
 backgroundColor: [
-"#3e95cd",
-"#8e5ea2",
-"#c45850",
-"#3cba9f",
-"#c45850",
-"#3e95cd",
-"#8e5ea2",
-"#3cba9f",
-"#e8c3b9"
+"#8abfdb",
+"#a787ab",
+"#e8c3b9",
+"#3cba9f"
 ],
 data: [{% for theanswer in desision %}'{{ theanswer.proposals }}',{% endfor %}]
 }
 ]
-},
+}	,
 options: {
 legend: {
 display: false
@@ -572,7 +564,7 @@ datasets: [
 label: "  Gender distribution",
 backgroundColor: [
 
-"#3cba9f", "#e8c3b9", "#c45850", "#3e95cd",
+"#5499d6", "#e082f5"  
 ],
 data: [{% for theanswer in gender_distribution %}'{{ theanswer.Proposals }}',{% endfor %}]
 }
@@ -616,12 +608,10 @@ datasets: [
 
 
 backgroundColor: [
-
-"#3e95cd",
-"#8e5ea2",
-"#c45850",
-"#3cba9f",
-"#c45850",
+"#8dadf7",
+"#a787ab",
+"#e8c3b9",
+"#3cba9f"
 ],
 data: [{% for theanswer in desision %}'{{ theanswer.proposals }}',{% endfor %}]
 }
@@ -661,7 +651,7 @@ datasets: [
 label: "  Reviewer distribution",
 backgroundColor: [
 
-"#3cba9f", "#c45850", "#3e95cd",
+"#3cba9f", "#8dadf7",
 ],
 data: [{{ all }}, {{ allext }}]
 }
