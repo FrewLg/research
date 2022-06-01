@@ -83,7 +83,11 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "psr-4": {

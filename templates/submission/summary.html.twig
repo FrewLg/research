@@ -1,3 +1,4 @@
+
 {# <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" /> #}
 <style>
 	body {
@@ -8,6 +9,9 @@
 	.text-secondary-d1 {
 		color: #728299 !important;
 	}
+.page_break {
+    page-break-after:always;
+}
 	#footer {
 		position: fixed;
 		right: 0;
@@ -171,47 +175,48 @@
 {# <h3>Summary</h3> #}
 
 
-<h5 class="font-20 fw-bold d-block mt-2">Title: 
-	{{ submission.title }} :
-	{{ submission.subtitle ? submission.subtitle : "no subtitle"  }}</h5>
+<h2 class="font-30 fw-bold d-block mt-4"><center>
+	{{ submission.title }} {% if submission.subtitle%}:
+	{{ submission.subtitle ? submission.subtitle : ""  }} {% endif%}</center></h2>
 
 <div class="col-md-12">
 
-	{# <div class="card">
-		<div class="card-header">
-			<div class="row align-items-center">
-				<div class="col">
-					<h4 class="card-title">Research Members:</h4>
-				</div>
-				<!--end col-->
+<h3>Abstract</h3>
+<p style="font-family:arial; text-align:justify;">
+        {{ submission.abstract ? submission.abstract |raw: "no executive summary" }}
 
-			</div>
-			<!--end row-->
-		</div>
-		<!--end card-header-->
-		<div class="card-body border-bottom-dashed">
-			{% for author in submission.coAuthors %}
-				<div class="row ml-2">
-					{{ loop.index }}
-					{{ author.name}}
+</p>
 
-					{{ author.email}}
 
-					{{ author.department}}
+ <hr>
+                <h3>Keywords:</h3>
 
-				</div>
-			</div>
-		{% endfor %}
+{% set foo = submission.keywords |split(',', 3) %}
+               {# {% for row in submission.keywords | split(',') %}
+                        <span class="badge bg-soft-dark px-3 py-2 fw-semibold">{{row}}</span>
 
-	</div> #}
+                {% else %}
+                        <span class="badge bg-soft-dark px-3 py-2 fw-semibold">No keywords</span>
+
+                {% endfor %}#}
+ {{ submission.keywords }}
 </div>
+   <div class="card-header">
 
+<div class="row align-items-center">
+                                <div class="col page_break">
+                                        <h4 class="card-title">Background and Rationale </h4>
+                                <p>{{ submission.BackgroundAndRationale ? submission.BackgroundAndRationale |raw: "No background found" }}</p>
 
-<h5 class="font-20 fw-bold d-block mt-2">General objective:</h5>
+                                </div>
+
+                        </div
+ </div>
+<h4 class="font-20 fw-bold d-block mt-2">General objective:</h4>
 <p>
 	{{ submission.GeneralObjective }}
 </p>
-<h5 class="font-20 fw-bold d-block mt-2">Specific Objectives:</h5>
+<h4 class="font-20 fw-bold d-block mt-2">Specific Objectives:</h4>
 
 <ul class="list-unstyled mb-0 " style="list-style-type:codepen">
 	{% for objective in submission.specificObjectives %}
@@ -226,25 +231,10 @@
 </ul>
 
 
-<h3>Executive summary/ abstract:</h3>
-<h6 style="font-family:arial; text-align:justify;">
-	{{ submission.abstract ? submission.abstract |raw: "no executive summary" }}
-
-</h6>
 
 <div class="row">
 	<div class="card-body pt-0">
-		<hr>
-		<h3>Keywords:</h3>
 
-
-		{% for row in submission.keywords | split(',') %}
-			<span class="badge bg-soft-dark px-3 py-2 fw-semibold">{{row}}</span>
-
-		{% else %}
-			<span class="badge bg-soft-dark px-3 py-2 fw-semibold">No keywords</span>
-
-		{% endfor %}
 
 
 		<div class="card-header">
@@ -259,16 +249,6 @@
 			<!--end row-->
 		</div>
 
-		<div class="card-header">
-			<div class="row align-items-center">
-				<div class="col">
-					<h4 class="card-title">Background and Rationale of Research</h4>
-				</div>
-
-				<p>{{ submission.BackgroundAndRationale ? submission.BackgroundAndRationale |raw: "No background found" }}</p>
-			</div>
-			<!--end row-->
-		</div>
 
 
 		<div class="card-header">
@@ -277,7 +257,7 @@
 					<h4 class="card-title">Methodology</h4>
 				</div>
 
-				{{ submission.methodology ? submission.methodology |raw: "No methodology found" }}
+<p>				{{ submission.methodology ? submission.methodology |raw: "No methodology found" }}</p>
 			</div>
 			<!--end row-->
 		</div>
@@ -447,10 +427,8 @@
 
 			</div>
 			<div class="card-header">
-				<div class="row align-items-center">
-					<div class="col">
+				<div class="row align-items-center page_break">
 						<h4 class="card-title">References</h4>
-					</div>
 
 					<p>{{ submission.Reference ? submission.Reference |raw: "No Reference found" }}</p>
 				</div>
