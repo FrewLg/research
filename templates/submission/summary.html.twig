@@ -11,6 +11,7 @@
 	}
 .page_break {
     page-break-after:always;
+    page-break-before: always; 
 }
 	#footer {
 		position: fixed;
@@ -251,7 +252,7 @@
 
 
 
-		<div class="card-header">
+		<div class="card-header page_break">
 			<div class="row align-items-center">
 				<div class="col">
 					<h4 class="card-title">Methodology</h4>
@@ -262,44 +263,6 @@
 			<!--end row-->
 		</div>
 
-		{# 
-						<div class="col-md-12">
-							<div class="card">
-								<div class="card-header">
-									<div class="row align-items-center">
-										<div class="col">
-											<h4 class="card-title">Attachments</h4>
-										</div>
-										<!--end col-->
-				
-									</div>
-									<!--end row-->
-								</div>
-								<!--end card-header-->
-								<div class="card-body">
-									<ul class="list-group custom-list-group">
-										{% for attachment in submission.submissionAttachements %}
-				
-											<li class="list-group-item align-items-center d-flex justify-content-between">
-												<div class="media">
-													<span class="me-3 align-self-center rounded fa fa-file-pdf"></span>
-													<div class="media-body align-self-center">
-														<a href="{{ asset('uploads/submission/' ~ attachment.file ) }}" class="font-12 text-primary">Download
-															{{attachment.name }}</a>
-													</div>
-													<!--end media body-->
-												</div>
-				
-											</li>
-				
-										{% endfor %}
-				
-									</ul>
-								</div>
-								<!--end card-body-->
-							</div>
-							<!--end card-->
-						</div> #}
 
 
 		<h4>Action plan
@@ -376,7 +339,7 @@
 
 					 
 
-		<div class="col-12">
+		<div class="col-12 ">
 			<div class="table-responsive">
 
 					<h5>Time table :
@@ -426,8 +389,8 @@
 			 
 
 			</div>
-			<div class="card-header">
-				<div class="row align-items-center page_break">
+			<div class="card-header page_break" style="page-break-before: always; page-break-after: always; width: 100%; height: 500px;">
+				<div class="row align-items-center ">
 						<h4 class="card-title">References</h4>
 
 					<p>{{ submission.Reference ? submission.Reference |raw: "No Reference found" }}</p>

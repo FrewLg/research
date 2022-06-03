@@ -81,7 +81,11 @@
 							<tbody>
 								{% for submission in submissions %}
 									<tr {% if submission.complete=='completed' %} class='text-' {% elseif submission.complete==''%} class='text-danger' {% endif %}>
-										<td>{{ loop.index  }}</td>
+										<td>
+<a href="{{ path('submission_show', {'id': submission.id}) }}" class="text-info">
+                                                                                {{ loop.index }} </a>
+
+</td>
 										<td>
 										
 										
@@ -92,7 +96,7 @@
 											 
 
 										{% else %}
-											 <a href="{{ path('submission_show', {'id': submission.id}) }}" class="text-info">
+					 <a href="{{ path('submission_show', {'id': submission.id}) }}" class="text-info">
 										{{ submission.title }} </a>
 										{% endif %}
 
