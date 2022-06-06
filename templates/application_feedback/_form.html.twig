@@ -1,0 +1,29 @@
+<div class="card col-md-11 m-3">
+	<div class="card-header">
+		<h4 class="card-title">{% trans %}Feedbacks{% endtrans %}</h4>
+
+	</div>
+	<!--end card-header-->
+	<div class="card-body">
+		<div class="">
+
+			{% for feedback in application.applicationFeedback %}
+				<h6 class='text-'>
+					{{ feedback.feedbackFrom}}
+				</h6>
+				<span class="text-muted mb-0">{{feedback.createdAt | date('Y-m-d h:i a')}}</span>
+
+				<p>
+					{{feedback.description|raw}}</p>
+			{% endfor %}
+			{{ form_start(appfeedbfrom) }}
+			{{ form_widget(appfeedbfrom) }}
+			<button class="btn btn-soft-primary">{{ button_label|default('Send feedback') }}</button>
+			{{ form_end(appfeedbfrom) }}
+
+		</div>
+		<!--end /tableresponsive-->
+	</div>
+
+</div>
+			{# {{ include('application_feedback/keydown.html.twig') }} #}

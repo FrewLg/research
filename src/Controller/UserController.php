@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Controller; 
+namespace App\Controller;
+
+use App\Entity\CoAuthor;
 use App\Entity\CollegeCoordinator;
 use App\Entity\Department;
 use App\Entity\DirectorateOfficeUser;
@@ -261,6 +263,20 @@ class UserController extends AbstractController
         $this->denyAccessUnlessGranted("ROLE_USER");  
         return $this->render('user/resercher.html.twig', [
             'user' => $user, 
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/memberships", name="memberships", methods={"GET","POST"})
+     */
+    public function memberships(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+ 
+        $this->denyAccessUnlessGranted("ROLE_USER");  
+        $review=$entityManager->getRepository(CoAuthor::class)->findBy(['researcher'=>$user ]);
+
+        return $this->render('submission/researcher_co_authorship.html.twig', [
+            'coAuthors' => $review, 
         ]);
     }
 

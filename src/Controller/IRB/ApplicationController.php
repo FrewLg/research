@@ -6,6 +6,7 @@ use App\Entity\IRB\Amendment;
 use App\Entity\IRB\AmendmentAttachment;
 use App\Entity\IRB\Application;
 use App\Entity\IRB\ApplicationAttachment;
+use App\Entity\IRB\ApplicationFeedback;
 use App\Entity\IRB\ApplicationMitigationStrategy;
 use App\Entity\IRB\ApplicationResearchSubject;
 use App\Entity\IRB\ApplicationReview;
@@ -25,8 +26,10 @@ use App\Entity\IRB\RevisionAttachment;
 use App\Entity\IrbCertificate;
 use App\Form\IRB\ApplicationFilterType;
 use App\Form\IRB\AmendmentType;
+use App\Form\IRB\ApplicationFeedbackType;
 use App\Form\IRB\ApplicationType;
 use App\Form\IRB\RevisionType;
+use App\Repository\ApplicationFeedbackRepository;
 use App\Repository\IRB\ApplicationRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -182,7 +185,7 @@ class ApplicationController extends AbstractController
     }
 
     #[Route('/{id}', name: 'application_show')]
-    public function show(Application $application,Request $request,EntityManagerInterface $entityManager): Response
+    public function show(Application $application,Request $request,EntityManagerInterface $entityManager, ApplicationFeedbackRepository $appferepo): Response
     {
 
         if ($request->request->get('renewal')) {
@@ -245,12 +248,27 @@ class ApplicationController extends AbstractController
                  ["id"=>$application->getId()], Response::HTTP_SEE_OTHER);
             }
 
+#################Feedback
+$applicationFeedback = new ApplicationFeedback();
+$feedbackForm = $this->createForm(ApplicationFeedbackType::class, $applicationFeedback);
+$feedbackForm->handleRequest($request);
 
+if ($feedbackForm->isSubmitted() && $feedbackForm->isValid()) {
+    $applicationFeedback-> setApplication($application);
+    $applicationFeedback-> setCreatedAt(new \DateTime());
+    $applicationFeedback-> setFeedbackFrom($this->getUser());
+    $appferepo->add($applicationFeedback);
+    return $this->redirectToRoute('application_show',
+    ["id"=>$application->getId()], Response::HTTP_SEE_OTHER);
+ }
+
+#################Feedback
 
 
 
        
         return $this->render('application/show.html.twig', [
+            'appfeedbfrom' => $feedbackForm->createView(),
           
            'application' => $application,
            'amendment' => $amendment,

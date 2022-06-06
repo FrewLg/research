@@ -526,10 +526,17 @@
 
 											</h5>
 											{# {{ submission.callForProposal.college }} #}
+<h6 class='text-muted'>PI: {{submission.submission.author}}</h6>  
 
 											<small class="mb-0   text-muted">{{ submission.submission.sentAt|date('d M Y ') }}</small>
-
 										{% endfor %}
+
+										{%if user.coAuthors|length > 2%}
+<h6 class='text-muted'> <a href='{{ path('memberships', {'id': user.id}) }}'>See all proposal membership of {{user.userInfo}}</a>
+</h6>
+										
+												{% endif %}
+
 									</div>
 								</div>
 

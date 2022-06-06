@@ -158,7 +158,7 @@ class SubmissionType extends AbstractType
 
                 'class' => 'App\Entity\ThematicArea',
                 'attr' => array(
-                    'empty' => 'Thematic Area    ',
+                    'empty' => 'Thematic Area',
                     'required' => true,
                     'class' => 'select2 chosen-select form-control',
                 ),
@@ -166,10 +166,7 @@ class SubmissionType extends AbstractType
                    
                     return $entityRepository->createQueryBuilder('t')
                     ->join("t.callForProposal","c")->andWhere("c.id = :call")->setParameter("call",$submission->getCallForProposal()->getId())
-
-
-                  
-                    // ->andWhere("u.id = :themeatic")->setParameter("themeatic",$submission->getCallForProposal()->getThematicArea())
+     // ->andWhere("u.id = :themeatic")->setParameter("themeatic",$submission->getCallForProposal()->getThematicArea())
                        ;
                 }
 

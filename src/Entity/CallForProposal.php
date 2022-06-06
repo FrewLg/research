@@ -191,7 +191,7 @@ class CallForProposal
     public function __toString()
     {
         
-   return $this->subject;
+   return $this->research_type;
     }
     
  

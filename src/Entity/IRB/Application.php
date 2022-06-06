@@ -2,6 +2,7 @@
 
 namespace App\Entity\IRB;
 
+use App\Entity\IRB\ApplicationFeedback;
 use App\Entity\IRB\Amendment;
 use App\Entity\IrbCertificate;
 use App\Entity\User;
@@ -184,6 +185,13 @@ class Application
      */
     private $meeting;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ApplicationFeedback::class, mappedBy="application", orphanRemoval=true)
+     */
+    private $applicationFeedback;
+
+   
+    
    
 
 
@@ -201,6 +209,7 @@ class Application
         $this->revisions = new ArrayCollection();
         $this->iRBReviewAssignments = new ArrayCollection();
         $this->irbCertificates = new ArrayCollection();
+        $this->applicationFeedback = new ArrayCollection();
      }
 
     public function setUploadFile(?File $imageFile = null): void
@@ -753,5 +762,37 @@ class Application
         return $this;
     }
 
+    /**
+     * @return Collection<int, ApplicationFeedback>
+     */
+    public function getApplicationFeedback(): Collection
+    {
+        return $this->applicationFeedback;
+    }
+
+    public function addApplicationFeedback(ApplicationFeedback $applicationFeedback): self
+    {
+        if (!$this->applicationFeedback->contains($applicationFeedback)) {
+            $this->applicationFeedback[] = $applicationFeedback;
+            $applicationFeedback->setApplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApplicationFeedback(ApplicationFeedback $applicationFeedback): self
+    {
+        if ($this->applicationFeedback->removeElement($applicationFeedback)) {
+            // set the owning side to null (unless already changed)
+            if ($applicationFeedback->getApplication() === $this) {
+                $applicationFeedback->setApplication(null);
+            }
+        }
+
+        return $this;
+    }
+
+     
+ 
    
 }

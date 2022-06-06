@@ -24,11 +24,11 @@ class ThematicAreaRepository extends ServiceEntityRepository
 // /**
 //  * @return ThematicArea[] Returns an array of ThematicArea objects
 //  */
-    
+
     public function findByExampleField($call, $college)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.college = :college') 
+            ->andWhere('t.college = :college')
             ->setParameter('call', $call)
             ->setParameter('college',  $college)
             ->orderBy('t.id', 'ASC')
@@ -36,16 +36,30 @@ class ThematicAreaRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-    } 
+    }
+    /////////New rep
+    public function findByCall($call)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.call = :call')
+            ->leftJoin("App:CallForProposal",  "t.id=call")
+            ->setParameter('call', $call)
+            ->setParameter('submission',  $call)
+            ->orderBy('t.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    ///
     public function getThematicAreaSubmissions(CallForProposal $callForProposal, College $college )
     {
-        return $this->createQueryBuilder('t') 
+        return $this->createQueryBuilder('t')
 
-        ->andWhere("t.college = :college") 
+        ->andWhere("t.college = :college")
         ->leftJoin("App:CallForProposal",  "c.id=call")
         ->leftJoin("App:College",  "c.submission")
         ->setParameter('call', $callForProposal)
-        ->setParameter('college', $college)  
+        ->setParameter('college', $college)
         ->getQuery()->getResult();
     }
 

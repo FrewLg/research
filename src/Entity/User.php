@@ -191,6 +191,11 @@ class User implements UserInterface
      */
     private $chatsTos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=\App\Entity\IRB\ApplicationFeedback::class, mappedBy="feedbackFrom")
+     */
+    private $applicationFeedback;
+
 
      
     public function __construct()
@@ -218,6 +223,7 @@ class User implements UserInterface
         $this->publications = new ArrayCollection();
         $this->chats = new ArrayCollection();
         $this->chatsTos = new ArrayCollection();
+        $this->applicationFeedback = new ArrayCollection();
      }
   
 
@@ -1063,6 +1069,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($chatsTo->getSentTo() === $this) {
                 $chatsTo->setSentTo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ApplicationFeedback>
+     */
+    public function getApplicationFeedback(): Collection
+    {
+        return $this->applicationFeedback;
+    }
+
+    public function addApplicationFeedback(\App\Entity\IRB\ApplicationFeedback $applicationFeedback): self
+    {
+        if (!$this->applicationFeedback->contains($applicationFeedback)) {
+            $this->applicationFeedback[] = $applicationFeedback;
+            $applicationFeedback->setFeedbackFrom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApplicationFeedback(\App\Entity\IRB\ApplicationFeedback $applicationFeedback): self
+    {
+        if ($this->applicationFeedback->removeElement($applicationFeedback)) {
+            // set the owning side to null (unless already changed)
+            if ($applicationFeedback->getFeedbackFrom() === $this) {
+                $applicationFeedback->setFeedbackFrom(null);
             }
         }
 
