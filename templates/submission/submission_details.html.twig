@@ -197,6 +197,7 @@
 																			<td>{{ expense.description }}</td>
 																			<td>
 																				{{ expense.cost * expense.quantity }}
+
 																			</td>
 																			{% set total = total + (expense.cost * expense.quantity)  %}
 																		</tr>
@@ -213,8 +214,8 @@
 																		</td>
 																		<td class="border-0 font-14"></td>
 																		<td class="border-0 font-14">
-																			<b>{{ total }}
-																				ETB</b>
+																			<b>  
+{{ total|format_currency('ETB', {fraction_digit: 2}) }}																				</b>
 																		</td>
 																	</tr>
 																</tbody>

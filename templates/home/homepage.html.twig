@@ -10,17 +10,65 @@
 
 	{#% include 'page_includes/header_report.html.twig'%#}
 
-	<meta property="og:url" content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
+	<meta property="og:url" content="https://research.ju.edu.et/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
 	<meta property="og:type" content="JU"/>
-	<meta property="og:title" content="RMS Announcemen ts"/>
-	<meta property="og:description" content="Your description"/>
-	<meta property="og:image" content="http://127.0.0.1:8000/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
+	<meta property="og:title" content="RMS Announcements"/>
+	<meta property="og:description" content=" Research and IRB Portal"/>
+	<meta property="og:image" content="https://research.ju.edu.et/call-for-proposals/45c6511210cb942387708990398a8bf9/details"/>
 
 
 	<h2 class="entry-title">
 		Recent call for proposals</h2>
 
-	{% for call_for_proposal in call_for_proposals %}
+ {% for call_for_proposal in call_for_proposals %}
+
+        <div class="col-lg-12 features-text wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+
+{# <article class="entry"> #}
+
+              {# <div class="entry-img">
+                <img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
+              </div> #}
+
+              <h2 class="entry-title">
+                <a href="{{ path('call_for_proposal_show', {'uidentifier': call_for_proposal.uidentifier }) }}">
+                                {{ call_for_proposal.heading|striptags|slice(0, 170)|raw }}  </a>
+              </h2>
+
+              <div class="entry-meta">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="fa fa-house"></i> <a href="#">{{ call_for_proposal.college.prefix }}  </a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="#"><time datetime="2020-01-01">
+                                  {{ call_for_proposal.postDate ? call_for_proposal.postDate|date('M d Y  h:s') : '' }}</time></a></li>
+                  <li class="d-flex align-items-center"> <a href="#"></a></li>
+{%if call_for_proposal.ResearchType.name is defined %}
+         <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="#">{{ call_for_proposal.ResearchType.name }}</a></li>
+{% endif%}
+                </ul>
+              </div>
+
+              <div class="entry-content">
+                <p>
+                  {{ call_for_proposal.subject|striptags|slice(0, 170)|raw }}  </p>
+              </div>
+
+
+</div>
+                {% else %}
+
+                        <td colspan="7">No calls made yet</td>
+
+                {% endfor %}
+
+<br><h4  class="esntry-title" >
+<a href="{{path('call_for_proposal_all')}}" > See all call for proposals <i class='fa fa-arrow-right'></i></a>
+<br>
+	 
+			{% block pagination%}
+<div class="pagination-block">
+		<div class="navigation">
+			{{ knp_pagination_render(call_for_proposals) }}
+		</div>
 
 		<div class="col-lg-12 features-text wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
 

@@ -296,7 +296,8 @@
 						<table class="main" width="100%" cellpadding="0" cellspacing="0">
 							<tr>
 								<td class="alert alert-good">
-									{{ subject|raw }}
+									Dear
+									{{ name }},
 								</td>
 							</tr>
 							<tr>
@@ -304,8 +305,6 @@
 									<table width="100%" cellpadding="0" cellspacing="0">
 										<tr>
 											<td class="content-block">
-												Dear
-												{{ name }},
 												<strong></strong>
 											</td>
 										</tr>
@@ -313,7 +312,7 @@
 											<td class="content-block">
 												{{ body|raw }}<br>
 												Invitation  URL:
-												<a href="{{app_url}}/{{submission_url}}" target="_blank">
+												<a href="{{app_url}}/{{submission_url}}" target>
 													{{ title}}
 												</a>
 											</td>
@@ -354,6 +353,9 @@
 																						<small>Unsubscribe</small>
 																					</a>
 
+																					<a href="{{ path('user_feedback_new')}}" style="text-decoration:none" target="_blank">
+																						<small>Send us feedback here</small>
+																					</a>
 																					<span style="color:#0a66c2;font-weight:400;font-size:12px;line-height:1.333" style="text-decoration:none">Help</span>
 																				</td>
 																			</tr>
@@ -392,8 +394,7 @@
 															<tr>
 																<td style="padding:0;color:#6a6c6d;text-align:center" align="center">
 																	<p style="margin:0;word-wrap:break-word;color:#6a6c6d;word-break:break-word;font-weight:400;font-size:12px;line-height:1.333">This email was intended for
-																		<small>{{ Authoremail }}
-																		</small>
+																		{{ Authoremail }}
 																		If you are not happy this notification reaches you, you can manage your subscription
 																		<a href="{{app_url}}/subscription/setting" style="text-decoration:none" target="_blank">here</a>
 																	</p>
@@ -441,12 +442,11 @@
 											<tr>
 												<td style="padding:0;color:#6a6c6d;text-align:center" align="center">
 													<p style="margin:0;color:#6a6c6d;font-weight:400;font-size:12px;line-height:1.333">
-													
-													 &copy;<script>
-																		document.write(new Date().getFullYear())
-																	</script> 
-														{{ app_name}}, All rights reserved.<br>
-														Jimma,  Ethiopia.
+														&copy;<script>
+															document.write(new Date().getFullYear())
+														</script>
+														{{app_name|raw}}, All rights reserved.<br>
+														Jimma,  Ethiopia
 
 
 													</p>
@@ -490,4 +490,4 @@
 			</tr>
 		</tbody>
 	</body>
-</html></table></td></tr></table></div></td><td></td></tr></table></body> </html>
+</html>

@@ -341,7 +341,7 @@ class SubmissionController extends AbstractController
 #####################Check if  proposalfile is there"#################
 #####################Check if  proposalfile is there"#################
 
-         #   foreach ($submission->getSubmissionAttachements() as $key => $author) {
+ #   foreach ($submission->getSubmissionAttachements() as $key => $author) {
 #
  #               // $file = $form->get('file')->getData();
   #              $files = $author->getFile('file');

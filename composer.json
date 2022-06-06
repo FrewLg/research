@@ -65,6 +65,7 @@
         "symfonycasts/verify-email-bundle": "^1.5",
         "twig/extensions": "^1.5",
         "twig/extra-bundle": "^2.12|^3.0",
+        "twig/intl-extra": "^3.4",
         "twig/twig": "^2.12|^3.0",
         "vich/uploader-bundle": "^1.18"
     },
@@ -83,7 +84,11 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "psr-4": {
