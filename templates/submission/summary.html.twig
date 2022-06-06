@@ -328,8 +328,9 @@
 							<b>Total</b>
 						</td>
 						<td class="border-0 font-14">
-							<b>{{ total }}
-								ETB</b>
+							<b>
+{{ total|format_currency('ETB', {fraction_digit: 2}) }}
+								</b>
 						</td>
 					</tr>
 
