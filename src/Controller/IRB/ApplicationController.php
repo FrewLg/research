@@ -21,7 +21,7 @@ use App\Entity\IRB\ReviewStatus;
 use App\Entity\IRB\ReviewStatusGroup;
 use App\Entity\IRB\Revision;
 use App\Entity\IRB\IrbReviewAtachement;
-
+use App\Entity\IRB\ReviewChecklistGroup;
 use App\Entity\IRB\RevisionAttachment;
 use App\Entity\IrbCertificate;
 use App\Form\IRB\ApplicationFilterType;
@@ -29,6 +29,8 @@ use App\Form\IRB\AmendmentType;
 use App\Form\IRB\ApplicationFeedbackType;
 use App\Form\IRB\ApplicationType;
 use App\Form\IRB\RevisionType;
+use App\Entity\IRB\IRBReviewAssignment;
+
 use App\Repository\ApplicationFeedbackRepository;
 use App\Repository\IRB\ApplicationRepository;
 use DateTime;
@@ -265,11 +267,16 @@ if ($feedbackForm->isSubmitted() && $feedbackForm->isValid()) {
 #################Feedback
 
 
+$irb_review_checklist_group = $entityManager->getRepository(ReviewChecklistGroup::class)->findAll();
+$reviewAssignment = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['application' => $application, 'closed'=>1]);
 
+$reviews = $entityManager->getRepository(IRBReview::class)->findBy(['application' => $application, 'reviewed_by' => $this->getUser()]);
        
         return $this->render('application/show.html.twig', [
             'appfeedbfrom' => $feedbackForm->createView(),
-          
+            'irb_review_checklist_group' => $irb_review_checklist_group,
+            'review_assignment'=>$reviewAssignment,
+           'reviews' => $reviews,
            'application' => $application,
            'amendment' => $amendment,
             'form' => $form->createView(),

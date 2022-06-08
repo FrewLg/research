@@ -5,13 +5,22 @@
 	</div>
 	<!--end card-header-->
 	<div class="card-body">
-		<div class="">
-
+		<div class="profile">
+<p>
 			{% for feedback in application.applicationFeedback %}
-				<h6 class='text-'>
+
+
+				{% if feedback.feedbackFrom.userInfo.image   %}
+					<img src="{{ asset('files/profile_pictures/'~ feedback.feedbackFrom.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+				{% else %}
+					<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+				{% endif %}
+
+				<span class='text-'>
 					{{ feedback.feedbackFrom}}
-				</h6>
-				<span class="text-muted mb-0">{{feedback.createdAt | date('Y-m-d h:i a')}}</span>
+				</span>
+			
+			</p>	<span class="text-muted mb-0">{{feedback.createdAt | date('Y-m-d h:i a')}}</span>
 
 				<p>
 					{{feedback.description|raw}}</p>
@@ -26,4 +35,4 @@
 	</div>
 
 </div>
-			{# {{ include('application_feedback/keydown.html.twig') }} #}
+{# {{ include('application_feedback/keydown.html.twig') }} #}

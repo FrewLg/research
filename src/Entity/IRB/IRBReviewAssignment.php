@@ -107,6 +107,11 @@ class IRBReviewAssignment
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
+    private $allowToView;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
     private $inactive_assignment;
 
     /**
@@ -348,6 +353,17 @@ class IRBReviewAssignment
     public function setClosed(?bool $closed): self
     {
         $this->closed = $closed;
+
+        return $this;
+    }
+    public function getAllowToView(): ?bool
+    {
+        return $this->allowToView;
+    }
+
+    public function setAllowToView(?bool $allowToView): self
+    {
+        $this->allowToView = $allowToView;
 
         return $this;
     }

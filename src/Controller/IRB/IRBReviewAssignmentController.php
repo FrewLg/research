@@ -189,6 +189,7 @@ class IRBReviewAssignmentController extends AbstractController
         // else{
 
             $myassigned = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => NULL], ["id" => "DESC"]);
+            $all = $entityManager->getRepository(IRBReviewAssignment::class)->findBy(['irbreviewer' => $this_is_me, 'closed' => 1], ["id" => "DESC"]);
         // }
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
@@ -226,7 +227,7 @@ class IRBReviewAssignmentController extends AbstractController
         #################################################
 
         return $this->render('application/myassigned.html.twig', [
-            'closeds' => $closeds,
+            'closeds' => $all,
             'myreviews' => $myassigneds,
         ]);
     }
@@ -395,4 +396,52 @@ class IRBReviewAssignmentController extends AbstractController
 
         return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
     }
+    /**
+     * @Route("/{id}/sendcomment", name="send_comment", methods={"POST"})
+     * 
+     **/
+    public function sedncomment(IRBReviewAssignment $reviewAssignment,        MailerInterface $mailer ): Response
+    {
+        $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $entityManager = $this->getDoctrine()->getManager();
+        // dd($reviewAssignment );
+        
+        #########
+        $reviewAssignment->setAllowToView(1);
+ 
+        $entityManager->persist($reviewAssignment);
+        $entityManager->flush();
+ 
+        $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'REVIEW_RESULT_SENT']);
+        $subject = $messages->getSubject();
+        $body = $messages->getBody();
+        $title = $reviewAssignment->getApplication()->getTitle();
+        $theFirstName = $reviewAssignment->getApplication()->getSubmittedBy()->getUserInfo()->getFirstName();
+        $app_url = "irb/application/".$reviewAssignment->getApplication()->getId();
+        $theEmail = $reviewAssignment->getApplication()->getSubmittedBy()->getEmail();
+        $email = (new TemplatedEmail())
+            ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+            ->to(new Address($reviewAssignment->getApplication()->getSubmittedBy()->getEmail(), $reviewAssignment->getApplication()->getSubmittedBy()->getUserInfo()))
+            // ->cc(new Address($alternative_email[$i], $theFirstNames[$i]))
+            ->subject($subject)
+            ->htmlTemplate('emails/irb_reviewer_response.html.twig')
+            ->context([
+                'subject' => $subject,
+                'suffix' => $reviewAssignment->getApplication()->getSubmittedBy()->getUserInfo()->getSuffix(),
+                'body' => $body,
+                'title' => $title,
+                'submission_url' => $app_url,
+                'name' => $theFirstName,
+                'Authoremail' => $theEmail,
+            ]);
+            // dd($reviewAssignment->getApplication());
+        $mailer->send($email);
+ 
+
+    #########
+        $entityManager->flush();
+        $this->addFlash("success", "Reviewer comment sent successfully ! Thank you!");
+        return $this->redirectToRoute('application_show', ["id"=>$reviewAssignment->getApplication()->getId()], Response::HTTP_SEE_OTHER);
+
+     }
 }

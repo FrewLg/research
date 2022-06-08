@@ -175,7 +175,7 @@ class SubmissionController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery(
             'SELECT u.email , s.id ,  u.username,  s.complete, s.title 
-                      , pi.first_name ,pi.gender, ui.alternative_email
+                                  , pi.first_name ,pi.gender, ui.alternative_email
                     FROM App:CoAuthor c
                     JOIN c.researcher u
                     JOIN u.userInfo ui

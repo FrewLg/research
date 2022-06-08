@@ -56,7 +56,8 @@ is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc')
 					<a class="nav-link" href="{{ path('irb_myassigned') }}">
 						<i class="ti-control-record"></i>
 
-						My Assigned
+						My Assigned 
+						({{app.user.iRBReviewAssignments|length  }})
 
 					</a>
 				</li>

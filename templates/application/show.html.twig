@@ -206,11 +206,10 @@
 													<a class="nav-link" data-bs-toggle="tab" href="#amendment" role="tab" aria-selected="false">{% trans %}Amendment{% endtrans %}</a>
 												</li>
 											{% endif %}
-											{# {% if application.revisions | length > 0 %} #}
+
 											<li class="nav-item">
 												<a class="nav-link" data-bs-toggle="tab" href="#revisions" role="tab" aria-selected="false">{% trans %}Revisions{% endtrans %}</a>
 											</li>
-											{# {% endif %} #}
 										</ul>
 
 										<!-- Tab panes -->
@@ -405,15 +404,10 @@
 																		</div>
 																	</div>
 																{% endfor %}
-																{# {% include "application/tabs/checklist_responseallowed.html.twig" %} #}
+																{% include "application/tabs/checklist_responseallowed.html.twig" %}
 
 
-																{# ss
-																																																{% for revision in application.iRBReviewAssignment %}
-																																																	{{ revision.id }}
-																																																	ff
-																																																{% endfor %} #}
-															</div>
+ </div>
 															<!--end /tableresponsive-->
 														</div>
 														<!--end card-body-->
@@ -495,7 +489,7 @@
 						{% endif %}
 
 						 
-									{{ include('application_feedback/_form.html.twig') }}
+									{{ include('application_feedback/chatbox.html.twig') }}
 
  
 					</div>

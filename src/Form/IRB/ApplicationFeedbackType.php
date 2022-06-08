@@ -4,6 +4,7 @@ namespace App\Form\IRB;
 
 use App\Entity\IRB\ApplicationFeedback;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +14,13 @@ class ApplicationFeedbackType extends AbstractType
     {
         $builder
             // ->add('application')
-            ->add('description')
+            ->add('description' , TextareaType::class, array(
+                'label'=>false,
+                'attr' => array(
+                    'placeholder' => 'Feedback  for the author',
+                    'required' => true,
+                    'class' => 'form-control',
+                )))
             // ->add('createdAt')
             // ->add('feedbackFrom')
         ;

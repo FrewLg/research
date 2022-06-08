@@ -88,13 +88,14 @@ class SubmissionHelper
 
             $this->mailHelper->sendEmail(
                 $value->getResearcher()->getEmail(),
-                "new research report submitted",
+                "New research report submitted",
                 "emails/general.html.twig",
                 [
-                    "info" => "new research report submitted",
-                    "subject" => "new research report submitted",
+                    "info" => "Dear ".  $value->getResearcher()->getUserInfo()->getFirstName(),
+                    "subject" => "New research report submitted",
                     "body" => "
-                    The project titled as <b>" . $submission->getTitle() . "</b> you assigned as a CO-PI submitted new report on <b>" . ((new \DateTime())->format('Y-m-d H:iA')) . "</b> date. Please confirm that you are aware and agree on the report
+                    The project titled as <b>'" . $submission->getTitle() . "'</b> you assigned as a CO-PI submitted a new report on <b>" . ((new \DateTime())->format('Y-m-d H:iA')) . "</b> .
+                    <br> Please confirm that you are aware and agree on the report
                     following the link below <a href='" . $this->urlGenerator->generate("submission_status", ['id' => $submission->getId()], UrlGeneratorInterface::ABSOLUTE_URL) . "'>Click here to get the report</a>
                     ",
                 ]
