@@ -38,9 +38,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Knp\Component\Pager\PaginatorInterface;
+use PhpOffice\PhpSpreadsheet\Calculation\LookupRef\Address;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/irb/application')]
@@ -257,6 +260,22 @@ $feedbackForm->handleRequest($request);
 
 if ($feedbackForm->isSubmitted() && $feedbackForm->isValid()) {
     $applicationFeedback-> setApplication($application);
+    
+    // if($feedbackForm->get('sendMail')->getData()==1 ){
+    //  $applicationFeedback=$this->validateandreturnmessage($applicationFeedback );
+   
+    // }
+    ######Attachment###
+    if($feedbackForm->get('attachement')->getData()){
+        $attachement = $feedbackForm->get('attachement')->getData();
+      
+             $file_name = 'Feedback' . md5(uniqid()) . '.' . $attachement->guessExtension();
+            $attachement->move($this->getParameter('uploads_folder'), $file_name);
+            $applicationFeedback->setAttachment($file_name);
+        
+    }
+
+    ######Attachment###
     $applicationFeedback-> setCreatedAt(new \DateTime());
     $applicationFeedback-> setFeedbackFrom($this->getUser());
     $appferepo->add($applicationFeedback);
@@ -306,6 +325,52 @@ $reviews = $entityManager->getRepository(IRBReview::class)->findBy(['application
             }
         }
         return $application;
+
+    }
+    public function validateandreturnmessage(      ApplicationFeedback $applicationf )
+    {
+        if($applicationf->getSendMail()){
+
+            $this->addFlash("success","Revision sent successfully");
+            // dd($applicationf);
+
+            // $subject = "Response given to your Application";
+            // $body = $applicationf->getDescription();
+            // $title = $applicationf->getApplication()->getTitle();
+            // $theFirstName = $applicationf->getApplication()->getSubmittedBy()->getUserInfo()->getFirstName();
+            // $app_url = "irb/application/".$applicationf->getApplication()->getId();
+            // $theEmail = $applicationf->getApplication()->getSubmittedBy()->getEmail();
+            // $email = (new TemplatedEmail())
+            //     ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+            //     ->to(new Address($applicationf->getApplication()->getSubmittedBy()->getEmail(), $applicationf->getApplication()->getSubmittedBy()->getUserInfo()))
+            //     // ->cc(new Address($alternative_email[$i], $theFirstNames[$i]))
+            //     ->subject($subject)
+            //     ->htmlTemplate('emails/irb_reviewer_response.html.twig')
+            //     ->context([
+            //         'subject' => $subject,
+            //         'suffix' => $applicationf->getApplication()->getSubmittedBy()->getUserInfo()->getSuffix(),
+            //         'body' => $body,
+            //         'title' => $title,
+            //         'submission_url' => $app_url,
+            //         'name' => $theFirstName,
+            //         'Authoremail' => $theEmail,
+            //     ]);
+            //     // dd($reviewAssignment->getApplication());
+            // $mailer->send($email);
+
+    // return $this->redirectToRoute('application_show',     ["id"=>$applicationf->getApplication()->getId()]);
+
+        }
+
+        if($applicationf->getAttachment() ){
+            $attachement = $applicationf->getAttachment();
+          
+                 $file_name = 'Feedback' . md5(uniqid()) . '.' . $attachement->guessExtension();
+                $attachement->move($this->getParameter('application_file'), $file_name);
+                $$applicationf->setAttachment($file_name);
+            
+        }
+        return $applicationf;
 
     }
 

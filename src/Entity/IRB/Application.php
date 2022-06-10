@@ -185,10 +185,16 @@ class Application
      */
     private $meeting;
 
+    // /**
+    //  * @ORM\OneToMany(targetEntity=ApplicationFeedback::class, mappedBy="application", orphanRemoval=true)
+    //  * @ORM\JoinColumn(nullable=true)
+    //    */
+    // private $applicationFeedback;
+
     /**
-     * @ORM\OneToMany(targetEntity=ApplicationFeedback::class, mappedBy="application", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=ApplicationFeedback::class, mappedBy="application")
      */
-    private $applicationFeedback;
+    private $applicationFeedbacks;
 
    
     
@@ -209,7 +215,8 @@ class Application
         $this->revisions = new ArrayCollection();
         $this->iRBReviewAssignments = new ArrayCollection();
         $this->irbCertificates = new ArrayCollection();
-        $this->applicationFeedback = new ArrayCollection();
+        // $this->applicationFeedback = new ArrayCollection();
+        $this->applicationFeedbacks = new ArrayCollection();
      }
 
     public function setUploadFile(?File $imageFile = null): void
@@ -790,6 +797,14 @@ class Application
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, ApplicationFeedback>
+     */
+    public function getApplicationFeedbacks(): Collection
+    {
+        return $this->applicationFeedbacks;
     }
 
      

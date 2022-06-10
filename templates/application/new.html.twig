@@ -145,7 +145,7 @@
 
 		</div>
 	</div>
-	<div class="col-md-3">
+	<div class="col-md-2">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">{% trans %}Email{% endtrans %} </label>
 			{{form_widget(coAuthor.email)}}
@@ -163,7 +163,7 @@
 				</div>
 			</div> #}
 
-	<div class="col-md-2">
+	<div class="col-md-1">
 		<div class="form-group">
 
 			<button type="button" class=" btn btn-danger btn-sm close  remove-collection-widget mt-4   bgc-h-danger-l2 radius-round ">
@@ -589,7 +589,7 @@ $(".select2").select2();
 
 });
 $(document).on('click', '.add-another-collection-widget', function (e) {
-$(".select2").select2();
+//{# $(".select2").select2(); #}
 
 var list = jQuery(jQuery(this).attr('data-list-selector'));
 
@@ -609,6 +609,7 @@ $(".select").select2("destroy").select2();
 
 $(document).ready(function () {
 
+$(".select2").select2();
 	
 
 	

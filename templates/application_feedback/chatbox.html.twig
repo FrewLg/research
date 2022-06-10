@@ -2,14 +2,16 @@
 
 	<div class="chat-header">
 		<a href="#" class="media">
-			<div class="media-left">
-				{# <img src="assets/images/users/user-4.jpg" alt="user" class="rounded-circle thumb-md"> #}
+			<div
+				class="media-left">{# <img src="assets/images/users/user-4.jpg" alt="user" class="rounded-circle thumb-md"> #}
 			</div>
 			<!-- media-left -->
 			<div class="media-body">
 				<div>
 					<h6 class="m-0">Discussion and feedbacks</h6>
-					<p class="mb-0"> {{ application.SubmittedBy.lastLogin|date('Y-m-d h:i a')}} </p>
+					<p class="mb-0">
+						{# {{ application.SubmittedBy.lastLogin|date('Y-m-d h:i a')}} #}
+					</p>
 				</div>
 			</div>
 			<!-- end media-body -->
@@ -44,7 +46,7 @@
 					<div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll;">
 						<div class="simplebar-content" style="padding: 16px;">
 							<div class="chat-detail mb-4">
-								{% for discussions in application.applicationFeedback  %}
+								{% for discussions in application.applicationFeedbacks  %}
 
 
 									<div class="media mb-4">
@@ -61,19 +63,47 @@
 											<div class="media-body ">
 
 												<div class="chat-msg">
-													<p>{{ discussions.description}}</p>
+													<p>{{ discussions.description}}
+
+														<br>
+														{% if discussions.attachment %}
+															<a class='text-primary' href="{{ asset('/files/uploads/'~discussions.attachment)}}">
+																{{discussions.attachment}}
+																<i class="fas fa-paperclip"></i>
+															</a>
+														{% endif  %}
+														<br>
+														<span class='text-muted '>
+															<small>{{discussions.createdAt | date('M d h:i a')}}</small>
+														</span>
+													</p>
+													{# {{discussions.createdAt | date('M d h:i a')}} #}
+
+
 												</div>
 
-												<div class="chat-time">{{discussions.createdAt | date('Y-m-d h:i a')}}</div>
+												{# <div class="chat-time">{{discussions.createdAt | date('M d h:i a')}}</div> #}
 											</div>
 
 										{% else %}
 
 											<div class="media-body reverse">
 												<div class="chat-msg">
-													<p>{{ discussions.description}}</p>
+													<p>{{ discussions.description}}
+														<br>
+														{% if discussions.attachment %}
+															<a class='text-primary' href="{{ asset('/files/uploads/'~discussions.attachment)}}">
+																{{discussions.attachment}}
+																<i class="fas fa-paperclip"></i>
+															</a>
+														{% endif  %}
+															
+														<span class='text-muted '>
+															<small>{{discussions.createdAt | date('M d h:i a')}}</small>
+														</span>
+													</p>
 												</div>
-												<div class="chat-time">{{discussions.createdAt | date('Y-m-d h:i a')}}</div>
+												{# <div class="chat-time">{{discussions.createdAt | date('M d h:i a')}}</div> #}
 
 											</div>
 											<!--end media-body-->
@@ -89,10 +119,12 @@
 									</div>
 
 								{% endfor %}
-                                <br>
-                                <br>
-                                <br>
-                                <br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
 							</div>
 							<!-- end chat-detail -->
 						</div>
@@ -112,40 +144,46 @@
 	<div class="chat-footer ">
 		<div class="row">
 			<div class="col-12 col-md-9">
-				<span class="chat-admin">
-                {# <img src="assets/images/users/user-8.jpg" alt="user" class="rounded-circle thumb-sm"> #}
+				<span
+					class="chat-admin">
+					{# <img src="assets/images/users/user-8.jpg" alt="user" class="rounded-circle thumb-sm"> #}
 
-{% if app.user.userInfo and app.user.userInfo.image %}
-													<img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" 
-                                                    class="rounded-circle thumb-sm">
-												{% else %}
-													<img src="{{ asset('/img/defaultuser.png') }}" class="rounded-circle thumb-sm ">
-												{% endif %}
-                </span>
-				 
+					{% if app.user.userInfo and app.user.userInfo.image %}
+						<img src="{{ asset('files/profile_pictures/'~app.user.userInfo.image ) }}" alt="" class="rounded-circle thumb-sm">
+					{% else %}
+						<img src="{{ asset('/img/defaultuser.png') }}" class="rounded-circle thumb-sm ">
+					{% endif %}
+				</span>
 
-				{{ form_start(appfeedbfrom) }}
-				{{ form_widget(appfeedbfrom) }}
-				<button class="btn btn-soft-primary form-group">{{ button_label|default('Send feedback') }}</button>
-				{{ form_end(appfeedbfrom) }}
+				<div class='card p-3'>
+					{{ form_start(appfeedbfrom) }}
+
+
+					{{ form_widget(appfeedbfrom.description) }}
+					{{ form_label(appfeedbfrom.attachement|raw ) }}
+					{{ form_widget(appfeedbfrom.attachement ,{'attr': {'class': 'form-control'}}) }}
+					<br>
+				</div>
 			</div>
 
 
 			<!-- col-8 -->
 			<div class="col-3 text-right">
 				<div class="d-none d-sm-inline-block chat-features">
-					<a href="#">
-						<i class="fas fa-camera"></i>
-					</a>
-					<a href="#">
-						<i class="fas fa-paperclip"></i>
-					</a>
-					<a href="#">
-						<i class="fas fa-microphone"></i>
-					</a>
+					<button class="btn btn-soft-primary form-group">{{ button_label|default('Send feedback') }}</button>
+
+					{# <a href="#" >
+																<i class="fas fa-camera"></i>
+															</a>
+										                    
+															<a href="#">
+																<i class="fas fa-microphone"></i>
+															</a> #}
 				</div>
 			</div>
-			<!-- end col -->
+			{# </form>	 #}
+			{{ form_end(appfeedbfrom) }}
+
 		</div>
 		<!-- end row -->
 	</div>

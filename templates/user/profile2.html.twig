@@ -46,7 +46,14 @@
 
 {% block body %}
 
+	 <script>
+ 
+ $(window).on('load', function() {
+   $(".select2").select2();
 
+})
+
+</script>
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
@@ -529,16 +536,7 @@
 												</div>
 											</div>
 
-											{# <div class="row">
-																																										
-																																																						<div class="col-md-3">
-																																																							<div class="form-group">
-																																																								{{ form_label(submissionform.image  ) }}
-																																																								{{ form_widget(submissionform.image  ) }}
-																																																							</div>
-																																																						</div>
-																																																						</div> #}
-
+ 
 											<div class="row">
 
 												<div class="col-md-3">
@@ -551,7 +549,7 @@
 													<div class="form-group">
 
 														<label class="form-controll">Department</label><br>
-														<select id="dep" name="department" style="width: 100%;" value="{{user.userInfo.department}}" class="dep m-5 select2" required="required"></select>
+														<select id="dep" name="department" style="width: 100%;" value="{{user.userInfo.department}}" class="dep   select2" required="required"></select>
 													</div>
 												</div>
 
@@ -695,27 +693,19 @@
 	</div>
 {% endblock %}
 {% block script %}
-	{# <script src="{{ asset('plugins/jquery.validate.min.js')}}"> #}
+	<script src="{{ asset('plugins/jquery.validate.min.js')}}">
 
 	<script src="{{ asset('plugins/select2/select2.min.js')}}"></script>
 	 
-	 <script>
- 
- $(window).on('load', function() {
-   $(".select2").select2();
 
-})
-
-</script>
-	<script>
-		 jQuery(document).ready(function () {
+	<script>  jQuery(document).ready(function () {
 
 $(document).on('click', '.remove-collection-widget', function (e) {
 $(this).closest('.row').fadeOut().remove();
 } 
 );
 $(document).on('click', '.add-another-collection-widget', function (e) {
-$(".select2").select2();
+{# $(".select2").select2(); #}
 
 var list = jQuery(jQuery(this).attr('data-list-selector'));
 

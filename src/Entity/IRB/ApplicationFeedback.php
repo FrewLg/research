@@ -19,9 +19,7 @@ class ApplicationFeedback
      * @ORM\Column(type="integer")
      */
     private $id;
-
  
-
     /**
      * @ORM\ManyToOne(targetEntity=\App\Entity\User::class, inversedBy="applicationFeedback")
      */
@@ -37,7 +35,14 @@ class ApplicationFeedback
      */
     private $createdAt;
 
-     
+      /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $sendMail;
+      /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $allowWrite;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -45,20 +50,51 @@ class ApplicationFeedback
     private $attachment;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="applicationFeedback")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="applicationFeedbacks")
      */
     private $application;
 
-    public function __construct()
-    {
-        $this->application = new ArrayCollection();
-    }
+    // /**
+    //  * @ORM\ManyToOne(targetEntity=Application::class, inversedBy="applicationFeedback")
+    //  * @ORM\JoinColumn(nullable=false)
+    //  */
+    // private $application;
+
+    // public function __construct()
+    // {
+    //     $this->application = new ArrayCollection();
+    // }
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
+
+    public function getSendMail(): ?bool
+    {
+        return $this->sendMail;
+    }
+
+    public function setSendMail(?bool $sendMail): self
+    {
+        $this->sendMail = $sendMail;
+
+        return $this;
+    }
+
+    public function getAllowWrite(): ?bool
+    {
+        return $this->allowWrite;
+    }
+
+    public function setAllowWrite(?bool $allowWrite): self
+    {
+        $this->allowWrite = $allowWrite;
+
+        return $this;
+    }
+
 
     
     public function getFeedbackFrom(): ?\App\Entity\User
@@ -110,6 +146,18 @@ class ApplicationFeedback
 
         return $this;
     }
+
+    // public function getApplication(): ?\App\Entity\IRB\Application
+    // {
+    //     return $this->application;
+    // }
+
+    // public function setApplication(?Application $application): self
+    // {
+    //     $this->application = $application;
+
+    //     return $this;
+    // }
 
     public function getApplication(): ?Application
     {
