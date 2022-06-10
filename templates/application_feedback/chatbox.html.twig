@@ -18,21 +18,21 @@
 		</a>
 		<!--end media-->
 	{# <div class="chat-features">
-				<div class="d-none d-sm-inline-block">
-					<a href="#">
-						<i class="fas fa-phone"></i>
-					</a>
-					<a href="#">
-						<i class="fas fa-video"></i>
-					</a>
-					<a href="#">
-						<i class="fas fa-trash-alt"></i>
-					</a>
-					<a href="#">
-						<i class="fas fa-ellipsis-v"></i>
-					</a>
-				</div>
-			</div> #}
+					<div class="d-none d-sm-inline-block">
+						<a href="#">
+							<i class="fas fa-phone"></i>
+						</a>
+						<a href="#">
+							<i class="fas fa-video"></i>
+						</a>
+						<a href="#">
+							<i class="fas fa-trash-alt"></i>
+						</a>
+						<a href="#">
+							<i class="fas fa-ellipsis-v"></i>
+						</a>
+					</div>
+				</div> #}
 		<!-- end chat-features -->
 	</div>
 	<!-- end chat-header -->
@@ -65,8 +65,9 @@
 												<div class="chat-msg">
 													<p>{{ discussions.description}}
 
-														<br>
+														 
 														{% if discussions.attachment %}
+														<br>
 															<a class='text-primary' href="{{ asset('/files/uploads/'~discussions.attachment)}}">
 																{{discussions.attachment}}
 																<i class="fas fa-paperclip"></i>
@@ -90,14 +91,15 @@
 											<div class="media-body reverse">
 												<div class="chat-msg">
 													<p>{{ discussions.description}}
-														<br>
+														
 														{% if discussions.attachment %}
+														<br>
 															<a class='text-primary' href="{{ asset('/files/uploads/'~discussions.attachment)}}">
 																{{discussions.attachment}}
 																<i class="fas fa-paperclip"></i>
 															</a>
 														{% endif  %}
-
+														<br>
 														<span class='text-muted '>
 															<small>{{discussions.createdAt | date('M d h:i a')}}</small>
 														</span>
@@ -160,18 +162,18 @@
 
 
 					{{ form_widget(appfeedbfrom.description) }}
-				
 
-			<a href="#">Attachment
-																					<i class="fas fa-paperclip"></i>
-																				</a>  
 
-<input type="checkbox" class='form-check-input' onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck"  >
- 
- <div id="ifYes" style="display:none">
-					{{ form_widget(appfeedbfrom.attachement ,{'attr': {'class': 'form-control'}}) }}
+					<a href="#">Attachment
+						<i class="fas fa-paperclip"></i>
+					</a>
 
-</div>
+					<input type="checkbox" class='form-check-input' onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck">
+
+					<div id="ifYes" style="display:none">
+						{{ form_widget(appfeedbfrom.attachement ,{'attr': {'class': 'form-control'}}) }}
+
+					</div>
 
 
 					<br>
@@ -185,12 +187,12 @@
 					<button class="btn btn-soft-primary form-group">{{ button_label|default('Send feedback') }}</button>
 
 					{# <a href="#" >
-																					<i class="fas fa-camera"></i>
-																				</a>
-															                    
-																				<a href="#">
-																					<i class="fas fa-microphone"></i>
-																				</a> #}
+																										<i class="fas fa-camera"></i>
+																									</a>
+																				                    
+																									<a href="#">
+																										<i class="fas fa-microphone"></i>
+																									</a> #}
 				</div>
 			</div>
 			{# </form>	 #}
