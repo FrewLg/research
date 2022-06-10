@@ -182,9 +182,9 @@
 
 
 			<!-- col-8 -->
-			<div class="col-3 text-right">
-				<div class="d-none d-sm-inline-block chat-features">
-					<button class="btn btn-soft-primary form-group">{{ button_label|default('Send feedback') }}</button>
+			<div class="col-sm-12 col-md-3 text-right">
+				{# <div class="d-sm-inline-block chat-features"> #}
+					<button class="btn btn-soft-primary form-group">{{ button_label|default('Send feedback') }} <i class="fas fa-paper-plane"></i> </button>
 
 					{# <a href="#" >
 																										<i class="fas fa-camera"></i>
@@ -193,7 +193,7 @@
 																									<a href="#">
 																										<i class="fas fa-microphone"></i>
 																									</a> #}
-				</div>
+				{# </div> #}
 			</div>
 			{# </form>	 #}
 			{{ form_end(appfeedbfrom) }}
