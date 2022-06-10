@@ -4,7 +4,8 @@
 git add .
 git commit -m "Changes has been made $(date +'%d-%m-%Y %H:%M:%S')"
 git pull
-#./bin/console doctrine:schema:update --force 
+
+git push #./bin/console doctrine:schema:update --force 
 #rm -r var/cache/*
 #rm -r var/*
 #mkdir var
