@@ -69,7 +69,7 @@
 														{% if discussions.attachment %}
 														<br>
 															<a class='text-primary' href="{{ asset('/files/uploads/'~discussions.attachment)}}">
-																{{discussions.attachment}}
+																{{discussions.attachment|slice(0,30)}}
 																<i class="fas fa-paperclip"></i>
 															</a>
 														{% endif  %}
@@ -95,7 +95,7 @@
 														{% if discussions.attachment %}
 														<br>
 															<a class='text-primary' href="{{ asset('/files/uploads/'~discussions.attachment)}}">
-																{{discussions.attachment}}
+																{{discussions.attachment|slice(0,  20, 30)}}
 																<i class="fas fa-paperclip"></i>
 															</a>
 														{% endif  %}
