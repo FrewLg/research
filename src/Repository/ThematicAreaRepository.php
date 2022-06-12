@@ -42,7 +42,9 @@ class ThematicAreaRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.call = :call')
-            ->leftJoin("App:CallForProposal",  "t.id=call")
+            ->leftJoin("App:Submission",  "s")
+            ->andWhere('s.call =: call  ')
+
             ->setParameter('call', $call)
             ->setParameter('submission',  $call)
             ->orderBy('t.id', 'ASC')

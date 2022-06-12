@@ -8,7 +8,7 @@ use App\Entity\CoAuthor;
 use App\Entity\CollaboratingInstitution;
 use App\Entity\Discussion;
 use App\Entity\EditorialDecision;
-use App\Entity\Expense;
+use App\Entity\ThematicArea;
 use App\Entity\PublishedSubmission;
 use App\Entity\PublishedSubmissionAttachment;
 use App\Entity\ResearchReport;
@@ -862,6 +862,20 @@ class SubmissionController extends AbstractController
         return $this->render('submission_includes/dataset_used.html.twig', [
 
             'datasets' => $attachements,
+
+        ]);
+    }
+    /**
+     * @Route("/{id}/test", name="test_ta", methods={"GET","POST"})
+     */
+    public function tcallsubs(Request $request, CallForProposal $call): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $test = $entityManager->getRepository(CallForProposal::class)->getThematicAreaSubmissions($call);
+dd($test);
+        return $this->render('submission_includes/dataset_used.html.twig', [
+
+            'datasets' => $test,
 
         ]);
     }

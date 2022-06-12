@@ -54,8 +54,8 @@ class CallForProposalRepository extends ServiceEntityRepository
     {
 
         return $this->createQueryBuilder('c')
-            ->andWhere('c.deadline  > :date')
-            ->andWhere('c.approved = :approved')
+            ->andWhere('c.college = :college')
+            ->andWhere('c.thematic_area = :approved')
             ->setParameter('date', new \DateTime())
             ->setParameter('approved', 1)
             ->orderBy('c.id', 'ASC')

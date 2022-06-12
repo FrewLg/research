@@ -2,10 +2,10 @@
 	<nav class="navbar-custom" style="background-color:#ebf2ff;">
 		<ul class="list-unstyled topbar-nav float-end mb-0">
 			<li class="dropdown hide-phone">
-				<a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+				{# <a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 					<i class="fas fa-search topbar-icon"></i>
-				</a>
-				<div class="dropdown-menu dropdown-menu-end dropdown-lg p-0">
+				</a> #}
+				{# <div class="dropdown-menu dropdown-menu-end dropdown-lg p-0">
 					<div class="app-search-topbar">
 						<form action="#" method="get">
 							<input type="search" name="search" class="from-control top-search mb-0" placeholder="Type text...">
@@ -14,12 +14,12 @@
 							</button>
 						</form>
 					</div>
-				</div>
+				</div> #}
 			</li>
  
 			<li class="dropdown">
 				<a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-					<span class="ms-1 nav-user-name hidden-sm">{{ app.user.email }}</span>
+					<span class="ms-1 nav-user-name hidden-sm text-upercase" ><span class="text-upercase">{{ app.user.email |raw }}</span></span>
 					{# <img src="{{ asset('assets/images/users/user-5.jpg')}}" alt="profile-user" class="rounded-circle thumb-xs"/> #}
 
 					{% if app.user.userInfo and app.user.userInfo.image %}
@@ -44,7 +44,7 @@
 
 					<div class="dropdown-divider mb-0"></div>
 					<a class="dropdown-item" href="{{path('app_logout')}}">
-						<i data-feather="user" class="fa fa-lock  icon-xs icon-dual me-1"></i>
+						<i data-feather="user" class="fas fa-sign-out-alt  icon-xs icon-dual me-1"></i>
 						Logout</a>
 				</div>
 			</li>
@@ -61,10 +61,15 @@
 				</button>
 			</li>
 
-			<li class="creat-btn">
+			<li class=" n">
 				<div class="nav-link">
 					<a class=" btn btn-sm btn-soft-primary" href="{{path('homepage')}}" role="button">
 						<i class="fas fa-arrow-right me-2"></i>Homepage</a>
+				</div>
+			</li>
+			<li class=" n">
+				<div class="nav-link">
+					{# {{ app.user.userInfo.college}} #}
 				</div>
 			</li>
 		</ul>

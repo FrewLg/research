@@ -72,7 +72,7 @@
 						<!--end col-->
 					</div>
 
-										{# <a href="{{ path('submission_firststepold', {'uidentifier': call_for_proposal.uidentifier}) }}"  class="dropdown-item">[test]Submit proposal</a> #}
+					{# <a href="{{ path('submission_firststepold', {'uidentifier': call_for_proposal.uidentifier}) }}"  class="dropdown-item">[test]Submit proposal</a> #}
 
 					<!--end row-->
 				</div>
@@ -82,7 +82,7 @@
 
 						<div class="table-responsive">
 
-							<table class="table table-bordered table-responsive">
+							<table class="table table-bordered table-striped table-responsive">
 								<thead>
 									<tr>
 										<th>#</th>
@@ -104,26 +104,36 @@
 												{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d H:i') : '' }}
 											</td>
 											<td nowrap="nowrap">
-												<a href="{{ path('call__details', {'id': call_for_proposal.id }) }}" class='btn btn-success btn-xs'>
+												<a href="{{ path('call__details', {'id': call_for_proposal.id }) }}" class='btn btn-success btn-sm'>
 													Details
 												</a>
 												{% if is_granted('mng_rprts') and call_for_proposal.researchReportPhase %}
 
-													<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}" class='btn btn-secondary btn-xs'>
+													<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}" class='btn btn-secondary btn-sm'>
 														Reports
 													</a>
 												{% endif %}
 												{% if is_granted('modify_call_pr') %}
 
-												<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-xs btn-primary">Edit</a>
-												<a href="{{ path('allawarded', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-primary btn-xs'>Winners</a>
+													<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-sm btn-primary">Edit</a>
+													<a href="{{ path('allawarded', {'uidentifier': call_for_proposal.uidentifier}) }}" class='btn btn-primary btn-sm'>Winners</a>
 												{% endif %}
 
-                                                                                <a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" class='btn btn-info btn-xs'>
+												{# <a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" class='btn btn-info btn-xs'>
+												
+												                                                                                        Submissions ({{call_for_proposal.submissions|length}})</a> #}
+												<a href="{{ path('theme_by_coll', {'id': call_for_proposal.id }) }}" class='btn btn-soft-primary btn-xs btn-block'>
+													All by theme
 
-                                                                                        Submissions ({{call_for_proposal.submissions|length}})</a>
-										
-	</td>
+													<span  class="avatar-box thumb-xxs align-self-center">
+														<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+															{{call_for_proposal.submissions|length}}
+														</span>
+
+													</span>
+												</a>
+
+											</td>
 
 										</tr>
 									{% else %}

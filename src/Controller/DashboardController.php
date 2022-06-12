@@ -100,7 +100,7 @@ class DashboardController extends AbstractController
     
     return $this->render('dashboard/bytheme.html.twig', [
       'thematic_areas' => $callForProposal->getThematicArea(),
-       
+       'allowedCall'=>$callForProposal,
     ]);
   }
 
