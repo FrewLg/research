@@ -53,18 +53,51 @@ class ThematicAreaRepository extends ServiceEntityRepository
         ;
     }
     ///
-    public function getThematicAreaSubmissions(CallForProposal $callForProposal, College $college )
+    public function getThematicAreaSubmissions(CallForProposal $call   )
     {
         return $this->createQueryBuilder('t')
 
         ->andWhere("t.college = :college")
         ->leftJoin("App:CallForProposal",  "c.id=call")
-        ->leftJoin("App:College",  "c.submission")
-        ->setParameter('call', $callForProposal)
-        ->setParameter('college', $college)
-        ->getQuery()->getResult();
+         ->setParameter('call', $call)
+         ->getQuery()->getResult();
     }
 
+    public function submissionByCall($value)
+    {
+       return $this->createQueryBuilder('a')
+                ->innerJoin('a.submissions', 's')
+                ->innerJoin('s.callForProposal', 'd')
+                // ->innerJoin('d.thematicArea', 't')
+                 ->andWhere('d.id = :e') 
+                //  ->andWhere('t.id = :ta') 
+                ->setParameter('e', $value)
+                // ->setParameter('ta', [$value->getThematicArea() ])
+                // ->orderBy('a.id', 'ASC') 
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+
+        public function submissionByThemeCall($value) 
+        {
+           return $this->createQueryBuilder('a')
+                    ->innerJoin('a.callForProposal', 'd')
+                    ->innerJoin('a.submissions', 's')
+                    ->innerJoin('d.thematicArea', 't') 
+                    ->andWhere('d.id = :e') 
+                    ->andWhere('s.callForProposal = :call') 
+                    ->setParameter('e', $value)
+                    ->setParameter('call', $value)
+                     ->orderBy('a.id', 'ASC') 
+                // ->groupBy('t.id')
+
+                    ->getQuery()
+                    
+                    ->getArrayResult()
+                ;
+            }
+    
     /*
     public function findOneBySomeField($value): ?ThematicArea
     {

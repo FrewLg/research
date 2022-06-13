@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CallForProposal;
 use App\Entity\ReviewAssignment;
 use App\Form\ReviewAssignmentType;
 use App\Repository\ReviewAssignmentRepository;
@@ -340,9 +341,9 @@ class ReviewAssignmentController extends AbstractController
 
 
     /**
-     * @Route("/all", name="allreviewers", methods={"GET","POST"})
+     * @Route("/{id}/all", name="allreviewers", methods={"GET","POST"})
      */
-    public function allreviewers(Request $request, PaginatorInterface $paginator): Response
+    public function allreviewers(Request $request, CallForProposal $call, PaginatorInterface $paginator): Response
     {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
@@ -356,9 +357,13 @@ class ReviewAssignmentController extends AbstractController
                 JOIN s.reviewer u 
                 JOIN u.userInfo pi 
                 JOIN s.submission b 
-              where  u.is_reviewer  is NULL  GROUP BY u.id
+                JOIN b.callForProposal c 
+
+              where  u.is_reviewer  is NULL and c.id=:call  GROUP BY u.id
             '
-        );
+        )
+        ->setParameter('call', $call);
+
         $recepients = $query->getResult();
 
         #######################
@@ -368,9 +373,11 @@ class ReviewAssignmentController extends AbstractController
                         JOIN s.reviewer u 
                         JOIN u.userInfo pi 
                         JOIN s.submission b 
-                      where  u.is_reviewer =:external   GROUP BY u.id
+                        JOIN b.callForProposal c 
+                      where  u.is_reviewer =:external and c.id=:call  GROUP BY u.id
                     '
         )
+            ->setParameter('call', $call)
             ->setParameter('external', 1);
         $recepientextrnal = $query2->getResult();
         ################################
@@ -405,6 +412,7 @@ class ReviewAssignmentController extends AbstractController
             'review_assignmentsext' => $recepientextrnalpa,
             'all' =>  $all,
             'info' => $info,
+            'call' => $call,
 
             'allext' =>  $allext
         ]);
@@ -415,9 +423,9 @@ class ReviewAssignmentController extends AbstractController
 
 
     /**
-     * @Route("/external", name="alexternalreviewers", methods={"GET","POST"})
+     * @Route("/{id}/external", name="alexternalreviewers", methods={"GET","POST"})
      */
-    public function externalreviewers(Request $request, PaginatorInterface $paginator): Response
+    public function externalreviewers(Request $request, CallForProposal $call, PaginatorInterface $paginator): Response
     {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
@@ -430,10 +438,13 @@ class ReviewAssignmentController extends AbstractController
                         FROM App:ReviewAssignment s 
                         JOIN s.reviewer u 
                         JOIN u.userInfo pi 
-                        JOIN s.submission b 
-                      where  u.is_reviewer =:external    GROUP BY u.id
+                        JOIN s.submission b
+                        JOIN b.callForProposal c 
+                        
+                      where  u.is_reviewer =:external and c.id=:call GROUP BY u.id
                     '
         )
+            ->setParameter('call', $call)
             ->setParameter('external', 1);
         $recepientextrnal = $query2->getResult();
         ################################
@@ -454,7 +465,8 @@ class ReviewAssignmentController extends AbstractController
         return $this->render('review_assignment/show.html.twig', [
             'review_assignments' => $recepientextrnalpa,
             'info' => $info,
-            'all' =>  $allext
+            'all' =>  $allext,
+            'call' =>  $call
 
         ]);
     }

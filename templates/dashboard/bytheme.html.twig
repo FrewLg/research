@@ -24,10 +24,10 @@
 					<div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
 						<div class="row">
 							<div class="col-sm-12 col-md-6">
-								<a href="{{ path('allbythemeex') }}" class='btn btn-soft-info  btn-xs mb-1 btn-block'>Export all  in Excel
+								<a href="{{ path('allbythemeex', {'id': allowedCall.id}) }}" class='btn btn-soft-info  btn-xs mb-1 btn-block'>Export all  in Excel
 								</a>
 
-								<a href="{{ path('review_result') }}" class='btn btn-soft-purple  btn-xs mb-1 btn-block'>Export result in  Excel
+							   <a href="{{ path('review_result', {'id': allowedCall.id}) }}" class='btn btn-soft-purple  btn-xs mb-1 btn-block'>Export result in  Excel
 								</a>
 							</div>
 							<div class="col-sm-12 col-md-6">

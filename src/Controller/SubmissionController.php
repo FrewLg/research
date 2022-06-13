@@ -1140,15 +1140,15 @@ dd($test);
 
 
     /**
-     * @Route("/all-grant-winners/", name="allawarded", methods={"GET","POST"})
+     * @Route("/{id}/all-grant-winners/", name="allawarded", methods={"GET","POST"})
      */
 
-    public function allawarded(Request $request,  PaginatorInterface $paginator): Response
+    public function allawarded(Request $request, CallForProposal $call,  PaginatorInterface $paginator): Response
     {
 
         $this->denyAccessUnlessGranted('vw_all_sub');
         $entityManager = $this->getDoctrine()->getManager();
-        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['awardgranted' => 1]);
+        $allawarded = $entityManager->getRepository(Submission::class)->findBy(['awardgranted' => 1 ,'callForProposal'=>$call]);
         $Allmyresearches = $paginator->paginate(
             $allawarded,
             $request->query->getInt('page', 1),
@@ -1158,6 +1158,7 @@ dd($test);
         return $this->render('submission/index.html.twig', [
             'info' => 'All grant winners ',
             'submissions' => $Allmyresearches,
+            'call' => $call,
         ]);
     }
     /**

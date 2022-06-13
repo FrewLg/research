@@ -18,13 +18,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/dashboard")
+ * @Route("/call/dashboard")
  */
 
-class DashboardController extends AbstractController {
+class CallDashboardController extends AbstractController {
 
     /**
-     * @Route("/all/", name="aadashboard", methods={"GET","POST"})
+     * @Route("/{id}/all/", name="aadashboard", methods={"GET","POST"})
      */
     public function dashboard(): Response {
         // $this->denyAccessUnlessGranted('assn_clg_cntr');
@@ -52,9 +52,9 @@ class DashboardController extends AbstractController {
     }
 
     /**
-     * @Route("/theme/", name="theme", methods={"GET","POST"})
+     * @Route("/{id}/theme/", name="theme", methods={"GET","POST"})
      */
-    public function theme(): Response {
+    public function theme(CallForProposal $call): Response {
         $this->denyAccessUnlessGranted('view_dashboard');
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -82,16 +82,16 @@ class DashboardController extends AbstractController {
     }
 
     /**
-     * @Route("/", name="dashboard", methods={"GET","POST"})
+     * @Route("/{id}/", name="call_dashboard", methods={"GET","POST"})
      */
-    public function index(Request $request, SubmissionRepository $submissionRepository, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
-        $this->denyAccessUnlessGranted('view_dashboard');
-         $formFilter = $this->createForm(SubmissionFilterType::class);
-        $formFilter->handleRequest($request);
-         $Allsubmissions = $submissionRepository->getSubmissions();
+    public function index(Request $request, SubmissionRepository $submissionRepository, PaginatorInterface $paginator, CallForProposal $call): Response {
+        $this->denyAccessUnlessGranted('view_dashboard'); 
+        $formFilter = $this->createForm(SubmissionFilterType::class);
+        $formFilter->handleRequest($request); 
+        $Allsubmissions = $submissionRepository->getSubmissions();
 
         $entityManager = $this->getDoctrine()->getManager();
-        
+       
 
         $submissions = $entityManager->getRepository(Submission::class)->findAll();
         $submissionbytheme = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $this->getUser()->getUserInfo()->getCollege()]);
@@ -113,9 +113,13 @@ class DashboardController extends AbstractController {
             JOIN s.reviewer u
             JOIN u.userInfo pi
             JOIN s.submission b
-          where  u.is_reviewer  is NULL  GROUP BY u.id
+            JOIN b.callForProposal c
+
+          where  u.is_reviewer  is NULL and   c.id=:call  GROUP BY u.id
         '
-        );
+        )
+        ->setParameter('call', $call);
+
         $recepients = $query->getResult();
 
         #######################
@@ -125,9 +129,12 @@ class DashboardController extends AbstractController {
                     JOIN s.reviewer u
                     JOIN u.userInfo pi
                     JOIN s.submission b
-                  where  u.is_reviewer =:external   GROUP BY u.id
+                    JOIN b.callForProposal c
+
+                  where  u.is_reviewer =:external and c.id=:call  GROUP BY u.id
                 '
         )
+        ->setParameter('call', $call)
             ->setParameter('external', 1);
         $recepientextrnal = $query2->getResult();
         ################################
@@ -141,9 +148,14 @@ class DashboardController extends AbstractController {
             'SELECT DISTINCT s.remark as decision, count(b.id)  as proposals
                     FROM App:Review s
 
-                    JOIN s.submission b    GROUP BY s.remark
+                    JOIN s.submission b 
+                    JOIN b.callForProposal c
+
+                    WHERE c.id=:call   GROUP BY s.remark
                 '
-        );
+        )
+        ->setParameter('call', $call);
+
         $remark = $query3->getScalarResult();
         ################################
         #######################
@@ -151,14 +163,18 @@ class DashboardController extends AbstractController {
             'SELECT  i.gender as Gender, count(s.id)  as Proposals
                     FROM App:User u
                     JOIN u.submissions s
-                    JOIN u.userInfo i
+                    JOIN s.callForProposal c
 
+                    JOIN u.userInfo i
+WHERE c.id=:call
                       GROUP BY i.gender
                 '
-        );
+        )
+        ->setParameter('call', $call);
+
         $remark2 = $query4->getScalarResult();
 
-        return $this->render('dashboard/dashboard.html.twig', [
+        return $this->render('dashboard/call-dashboard.html.twig', [
             'formFilter' => $formFilter->createView(),
             'submissions' => $Allsubmissions,
             'bythemes' => $submissionbytheme,
@@ -168,6 +184,7 @@ class DashboardController extends AbstractController {
             'desision' => $remark,
             'gender_distribution' => $remark2,
             'all' => $all,
+            'allowedCall' => $call,
             'allext' => $allext,
         ]);
     }
@@ -374,14 +391,14 @@ class DashboardController extends AbstractController {
     }
 
     /**
-     * @Route("/research-theams", name="research_theams", methods={"GET","POST"})
+     * @Route("/{id}/research-theams", name="callresearch_theams", methods={"GET","POST"})
      */
-    public function allresearchers(Request $request, PaginatorInterface $paginator) {
+    public function allresearchers(Request $request, CallForProposal $call, PaginatorInterface $paginator) {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $em = $this->getDoctrine()->getManager();
 
-        $submission = $em->getRepository('App:Submission')->getSubmissions();
+        $submission = $em->getRepository('App:Submission')->getSubmissions(['callForProposal'=>$call]);
         $Allsubmissions = $paginator->paginate(
             // Doctrine Query, not results
             $submission,
@@ -393,6 +410,7 @@ class DashboardController extends AbstractController {
 
         return $this->render('dashboard/test.html.twig', [
             'submissions' => $Allsubmissions,
+            'call' => $call,
         ]);
     }
 }

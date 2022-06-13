@@ -1,32 +1,32 @@
-<a href="{{ path('theme_by_coll', {'id': call.id }) }}"  class='btn btn-primary btn-sm btn-block'> All by theme</a>
+{# <a href="{{ path('theme_by_coll', {'id': call.id }) }}"  class='btn btn-primary btn-sm btn-block'> All by theme</a> #}
 <hr>
-<a href="{{ path('research_theams') }}" class='btn btn-warning  btn-sm btn-block'>
+<a href="{{ path('callresearch_theams' , {'id': call.id }) }}  " class='btn btn-warning  btn-sm btn-block'>
 	Researchers </a>
 <hr>
 
-<a href="{{ path('allreviewers') }}" class='btn btn-info  btn-sm btn-block'>
+<a href="{{ path('allreviewers', {'id': call.id }) }}" class='btn btn-info  btn-sm btn-block'>
 	 Internal Reviewers
 
 </a>
 <hr>
 
-<a href="{{ path('alexternalreviewers') }}" class='btn btn-info  btn-sm btn-block'>
+<a href="{{ path('alexternalreviewers', {'id': call.id }) }}" class='btn btn-info  btn-sm btn-block'>
 	External  Reviewers
 
 </a>
 <hr>
 
-<a href="{{ path('allawarded') }}" class='btn btn-success  btn-sm btn-block'>
+<a href="{{ path('allawarded', {'id': call.id }) }}" class='btn btn-success  btn-sm btn-block'>
 	All winners
 
 </a>
  
 <hr>
-<a href="{{ path('alert') }}" class='btn btn-warning btn-sm btn-block' onclick="return confirm('Are you sure you want to submit message ?');">
+<a href="{{ path('alert', {'id': call.id }) }}" class='btn btn-warning btn-sm btn-block' onclick="return confirm('Are you sure you want to submit message ?');">
 	Co-PI Reminder</a>
 <hr>
 
-<a href="{{ path('allaccepted') }}" class='btn btn-success btn-xs  btn-block'>Review decisions filter 
+<a href="{{ path('allaccepted', {'id': call.id }) }}" class='btn btn-success btn-xs  btn-block'>Review decisions filter 
 </a>
 <hr> 
  

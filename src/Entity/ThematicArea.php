@@ -101,7 +101,14 @@ class ThematicArea
      */
     public function getSubmissions(): Collection
     {
-        return $this->submissions;
+        return $this->submissions ;
+    }
+    /**
+     * @return Collection|Submission[]
+     */
+    public function getTemeSubmissions(CallForProposal $call): Collection
+    {
+        return $this->submissions->call->$call;
     }
 
     public function addSubmission(Submission $submission): self

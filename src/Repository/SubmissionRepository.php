@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\CallForProposal;
 use App\Entity\Submission;
+use App\Entity\ThematicArea;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -226,18 +227,39 @@ class SubmissionRepository extends ServiceEntityRepository
     //     ;
     // }  
     #################
-    // public function findBySubmissionByDepartment($value): ?Submission
-    // {
-    //    return $this->createQueryBuilder('a')
-    //             ->innerJoin('a.department', 'd')
-    //             ->innerJoin('d.college', 'c') 
-    //             ->andWhere('c.id = :e') 
-    //             ->setParameter('e', $value)
-    //             ->orderBy('a.id', 'ASC') 
-    //             ->getQuery()
-    //             ->getResult()
-    //         ;
-    //     }
+    public function submissionByCall($value)
+    {
+       return $this->createQueryBuilder('a')
+                ->innerJoin('a.callForProposal', 'd')
+                // ->innerJoin('a.reviews', 'c') 
+                ->andWhere('d.id = :e') 
+                ->setParameter('e', $value)
+                ->orderBy('a.id', 'ASC') 
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+  
+            
+    public function submissionByThemeCall($value)
+    {
+        $qb= $this->createQueryBuilder('s');
+        // ->select("count(s.id)");
+        $userpublication = $qb
+        ->select('t.name as name , s.title as title ,  u.username')
+        // ->from('App\Entity\Submission' ,'t')
+        ->innerJoin('s.callForProposal', 'c')
+        ->innerJoin('s.author', 'u')
+        ->innerJoin('s.thematic_area', 't')
+        ->andWhere('c.id = :call')
+        ->setParameter('call', $value)
+        // ->groupBy('t.id')
+        ->getQuery()->getScalarResult();
+
+        return   $userpublication 
+        ;
+    }  
+
 
     // public function findBySStatus(): ?Submission
     //     {

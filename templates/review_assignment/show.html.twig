@@ -10,22 +10,22 @@
 
 			<h4>{{info}}
 				 ({{all}})</h4>
-	<a href="{{ path('alexternalreviewers') }}" class='btn btn-info  btn-xs btn-block'>
+	<a href="{{ path('alexternalreviewers', {'id': call.id }) }}" class='btn btn-info  btn-xs btn-block'>
 	External  Reviewers
 
 </a>
-<a href="{{ path('alexternal_rev') }}"  class="btn btn-soft-success btn-sm">Export
+<a href="{{ path('alexternal_rev', {'id': call.id }) }}"  class="btn btn-soft-success btn-sm">Export
 									<i class="fa fa-download material-icons  "></i>
 </a>
 
-<a href="{{ path('allreviewers') }}" class='btn btn-info  btn-xs btn-block'>
+<a href="{{ path('allreviewers', {'id': call.id }) }}" class='btn btn-info  btn-xs btn-block'>
 	 Internal Reviewers
 
 </a>
 
 	
 
-<a href="{{ path('internal_rev') }}"  class="btn btn-soft-success btn-sm">Export
+<a href="{{ path('internal_rev', {'id': call.id }) }}"  class="btn btn-soft-success btn-sm">Export
 									<i class="fa fa-download material-icons  "></i>
 </a>
 
