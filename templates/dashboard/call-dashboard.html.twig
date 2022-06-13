@@ -19,11 +19,11 @@
 							<div class="row d-flex justify-content-center">
 								<div class="col">
 									<p class="text-dark mb-0 fw-semibold">Calls</p>
-									<h3 class="m-0">{{allcalls|length}}</h3>
+									<h3 class="m-0">This call </h3>
 									<p class="mb-0 text-truncate text-muted">
 										<span class="text-success">
 
-											{{submissions|length}}
+											{{ submissions|filter(call =>  call.callForProposal.id == allowedCall.id ) |length}}
 										</span>
 										Response</p>
 								</div>
@@ -50,11 +50,11 @@
 							<div class="row d-flex justify-content-center">
 								<div class="col">
 									<p class="text-dark mb-0 fw-semibold">Involvements</p>
-									<h3 class="m-0">{{ submissions|length}}
+									<h3 class="m-0">{{ submissions|filter(call =>  call.callForProposal.id == allowedCall.id ) |length}}
 										PIs</h3>
 									<p class="mb-0 text-truncate text-muted">
 										<span class="text-success">
-											{{copis|length}}
+											{{copis|filter(call =>  call.submission.callForProposal.id == allowedCall.id ) |length}}
 											Co-PIs</span>
 									</p>
 								</div>
@@ -109,7 +109,7 @@
 								<div class="col">
 									<p class="text-dark mb-0 fw-semibold">Gender
 									</p>
-									<h3 class="m-0">{{ submissions|length}}</h3>
+									<h3 class="m-0">{{ submissions|filter(call =>  call.callForProposal.id == allowedCall.id ) |length}}</h3>
 									<p class="mb-0 text-truncate text-muted">
 										<span class="text-success">
 
@@ -353,7 +353,7 @@
 													<td>
 														<a href="#" class="avatar-box thumb-xxs align-self-center">
 															<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-																{{ submissions|length}}
+																{{ submissions|filter(call =>  call.callForProposal.id == allowedCall.id ) |length}}
 															</span>
 														</a>
 													</td>
@@ -365,7 +365,7 @@
 													<td>
 														<a href="#" class="avatar-box thumb-xxs align-self-center">
 															<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-																{{ copis|length}}
+																{{ copis|filter(call =>  call.submission.callForProposal.id == allowedCall.id ) |length}}
 															</span>
 														</a>
 

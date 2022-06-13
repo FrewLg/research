@@ -9,64 +9,7 @@
 	<li class="breadcrumb-item active">Call For Proposal</li>
 {% endblock %}
 {% block body %}
-	<div class="card">
 
-
-		<div class="card-body ">
-			<div class="row ">
-				<div class="col-md-6 col-lg-3">
-					<div class="card report-card">
-						<div class="card-body">
-							<div class="row d-flex justify-content-center">
-								<div class="col">
-									<p class="text-dark mb-0 fw-semibold">Submissions</p>
-									<h3 class="m-0">{{ call_for_proposal.submissions|length}}
-										PIs</h3>
-									<p class="mb-0 text-truncate text-muted">
-										<span class="text-success">
-											{{0}}
-											Co-PIs</span>
-									</p>
-								</div>
-								<div class="col-auto align-self-center">
-									<div class="report-main-icon bg-light-alt">
-										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-self-center text-muted icon-sm">
-											<circle cx="12" cy="12" r="10"></circle>
-											<polyline points="12 6 12 12 16 14"></polyline>
-										</svg>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!--end card-body-->
-					</div>
-					<!--end card-->
-				</div>
-			</div>
-            	<div class="row align-items-center">
-						<div class="col">
-							<h4 class="card-title">Proposals destribution by thematic areas
-								<button id="btn-theme" class="btn btn-soft-success btn-sm">
-									<i class="fa fa-download material-icons  "></i>
-								</h4>
-							</div>
-							<!--end col-->
-						{# ds #}
-							<!--end col-->
-						</div>
-					</div>
-					<!--end card-header-->
-					<div class="card-body">
-						<div class="" style="position: relative;">
-							<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
-							<canvas id="bar-chart" width="400" height="200"></canvas>
-
-
-						</div>
-					</div>
-				</div>
-		</div>
-	</div>
 	<div class="card">
 
 

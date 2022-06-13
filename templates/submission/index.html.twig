@@ -51,23 +51,23 @@
 		<div class="col-lg-10">
 
 			<div class="card ">
-				<div class="card-header container">
+				<div class="card-header  ">
 					Submissions
-<a href="#" class="avatar-box thumb-xxs align-self-center">
-												<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-													{{submissions.totalItemCount}}
-												</span>
-											</a>
+					<a href="#" class="avatar-box thumb-xxs align-self-center">
+						<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+							{{submissions.totalItemCount}}
+						</span>
+					</a>
 
 				</div>
 
-				<div class="card-body container ">
+				<div class="card-body   ">
 
 
 					<div class="table-responsive">
 
-						<table class="table  table-bordered  table-responsive">
-							<thead>
+						<table class="table   table-bordered table-striped table-responsive">
+							<thead class='thead-light'>
 								<tr>
 									<th>#</th>
 									<th>Title</th>
@@ -75,38 +75,39 @@
 									<th>Submission Date</th>
 									<th>Progress</th>
 									<th>Status</th>
-									 
+
 								</tr>
 							</thead>
 							<tbody>
 								{% for submission in submissions %}
 									<tr {% if submission.complete=='completed' %} class='text-' {% elseif submission.complete==''%} class='text-danger' {% endif %}>
 										<td>
-<a href="{{ path('submission_show', {'id': submission.id}) }}" class="text-info">
-                                                                                {{ loop.index }} </a>
-
-</td>
-										<td>
-										
-										
-										{% if app.user.id==submission.author.id  %}
- 												<a href="{{ path('submission_status', {'id': submission.id}) }}" class='text-info '>
-													{{ submission.title }}  </a>
+											<a href="{{ path('submission_show', {'id': submission.id}) }}" class="text-info">
+												{{ loop.index }}
 											</a>
-											 
-
-										{% else %}
-					 <a href="{{ path('submission_show', {'id': submission.id}) }}" class="text-info">
-										{{ submission.title }} </a>
-										{% endif %}
 
 										</td>
-										<td>{{ submission.author.userInfo }}
+										<td>
+											{% if app.user.id==submission.author.id  %}
+												<a href="{{ path('submission_status', {'id': submission.id}) }}" class='text-info '>
+													{{ submission.title }}
+												</a>
 
-										{% if app.user.id==submission.author.id  %}
+
+											{% else %}
+												<a href="{{ path('submission_show', {'id': submission.id}) }}" class="text-info">
+													{{ submission.title }}
+												</a>
+											{% endif %}
+
+										</td>
+										<td>
+											{{ submission.author.userInfo }}
+
+											{% if app.user.id==submission.author.id  %}
 												<span class="badge bg-success">Thi is you</span>
-											 
-										{% endif %}
+
+											{% endif %}
 
 											<a href="#" class="avatar-box thumb-xxs align-self-center">
 												<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
@@ -153,28 +154,28 @@
 											{% endif %}
 										</td>
 										<td>
-													{{ include('submission/includes/progress.html.twig') }}
+											{{ include('submission/includes/progress.html.twig') }}
 
 										</td>
 										<td nowrap="nowrap">
 
 											{% if submission.awardgranted ==1  %}
 
-												<a   class='badge bg-soft-success mt-2 bg-xs btn-block'>Winner
+												<a class='badge bg-soft-success mt-2 bg-xs btn-block'>Winner
 													{# <i class="fa fa-check text-success"></i> #}
 												</a>
-												{% elseif   submission.reviewAssignments|length>0  %}
+											{% elseif   submission.reviewAssignments|length>0  %}
 
-													<a href="#" class="avatar-box thumb-xxs align-self-center">
-														<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-															{{submission.reviewAssignments|length}}R
-														</span>
+												<a href="#" class="avatar-box thumb-xxs align-self-center">
+													<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+														{{submission.reviewAssignments|length}}R
+													</span>
 
-													</a>
-												{% else   %}
-												<a   class='badge bg-soft-danger mt-2 bg-xs btn-block'>Not Assigned
- 												</a>
-												  
+												</a>
+											{% else   %}
+												<a class='badge bg-soft-danger mt-2 bg-xs btn-block'>Not Assigned
+												</a>
+
 											{% endif %}
 
 
@@ -205,21 +206,24 @@
 												{% endif %}
 											{% endfor %}
 										</td>
- </tr>
-									{% else %}
+									</tr>
 
-										<td colspan="8">no records found</td>
+								{% else %}
 
-									{% endfor %}
+									<td colspan="8">no records found</td>
 
-								
+								{% endfor %}
+
+
 							</tbody>
 						</table>
+						<div class="navigation">{{ knp_pagination_render(submissions) }}</div>
 					</div>
-					<div class="navigation">{{ knp_pagination_render(submissions) }}</div>
 				</div>
 			</div>
 		</div>
+
+
 		<div class="col-lg-2">
 			<div class="card ">
 				<div class="card-header  ">
@@ -229,12 +233,14 @@
 					<div class="row ">{{ include('dashboard/quick_filter.html.twig') }}</div>
 				</div>
 			</div>
+
 		</div>
-	{% endblock %}
-	{% block script %}
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-		<script type="text/javascript">
-			$(function () {
+	</div>
+{% endblock %}
+{% block script %}
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<script type="text/javascript">
+		$(function () {
 
 $('.daterangerpicker').daterangepicker({
 autoUpdateInput: false,
@@ -252,5 +258,5 @@ $(this).val('');
 });
 
 });
-		</script>
-	{% endblock %}
+	</script>
+{% endblock %}

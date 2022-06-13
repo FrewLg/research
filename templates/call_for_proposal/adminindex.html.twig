@@ -104,28 +104,28 @@
 												{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d H:i') : '' }}
 											</td>
 											<td nowrap="nowrap">
-												<a href="{{ path('call__details', {'id': call_for_proposal.id }) }}" class='btn btn-success btn-sm'>
-													Details
+												<a href="{{ path('call__details', {'id': call_for_proposal.id }) }}" title='Show details' class='btn btn-soft-success btn-sm'>
+													<i class='fas fa-eye '></i>
 												</a>
 												{% if is_granted('mng_rprts') and call_for_proposal.researchReportPhase %}
 
-													<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}" class='btn btn-secondary btn-sm'>
-														Reports
+													<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}"  title='Reports' class='btn btn-soft-secondary btn-sm'>
+													<i class='fas fa-chart-line '></i>	Reports 
 													</a>
 												{% endif %}
 												{% if is_granted('modify_call_pr') %}
 
-													<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" class="btn btn-sm btn-primary">Edit</a>
-													<a href="{{ path('allawarded', {'id': call_for_proposal.id}) }}" class='btn btn-primary btn-sm'>Winners</a>
+													<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" title='Edit call' class="btn btn-sm btn-soft-primary"><i class='fas fa-pen '></i></a>
+													<a href="{{ path('allawarded', {'id': call_for_proposal.id}) }}" class='btn btn-soft-primary btn-sm' title='Winners'>  <i class='fas fa-certificate '></i> </a>
 												{% endif %}
 
-												<a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" class='btn btn-info btn-xs'>
+												<a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" title='Call response' class='btn btn-soft-info btn-sm'>
 												
-												                                                                                        Submissions ({{call_for_proposal.submissions|length}})</a>
-													<a href="{{ path('call_dashboard', {'id': call_for_proposal.id}) }}" class='btn btn-soft-primary btn-sm'>Dashboard</a>
+												                                                                                        <i class='fas fa-paper-plane '></i> ({{call_for_proposal.submissions|length}})</a>
+													<a href="{{ path('call_dashboard', {'id': call_for_proposal.id}) }}" class='btn btn-soft-primary btn-sm' title='Call Dashbord'><i class='fas fa-chart-bar '></i> </a>
 
-<a href="{{ path('theme_by_coll', {'id': call_for_proposal.id }) }}" class='btn btn-soft-primary btn-xs btn-block'>
-													All by theme
+<a href="{{ path('theme_by_coll', {'id': call_for_proposal.id }) }}" class='btn btn-soft-primary btn-xs btn-block' title='Show submissions by theme'>
+													<i class='fas fa-chart-pie '></i> All by theme
 
 													<span  class="avatar-box thumb-xxs align-self-center">
 														<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
