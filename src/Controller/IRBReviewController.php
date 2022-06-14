@@ -2,70 +2,45 @@
 
 namespace App\Controller;
 
-use App\Entity\CallForProposal;
 use App\Entity\EditorialDecision;
-use App\Entity\ReviewAssignment;
-use App\Form\ReviewAssignmentType;
-use App\Repository\ReviewAssignmentRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\Review;
 use App\Entity\GuidelineForReviewer;
-use App\Form\GuidelineForReviewerType;
-use App\Repository\GuidelineForReviewerRepository;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
-use App\Form\ReviewType;
-use Symfony\Component\Form\Extension\Core\Type\DateType; 
-use Symfony\Component\Form\Extension\Core\Type\CoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use App\Entity\Submission; 
-use App\Repository\SubmissionRepository;
-use App\Repository\InstitutionalReviewersBoardRepository;
-use App\Repository\ReviewRepository;
+use App\Entity\Review;
+use App\Entity\ReviewAssignment;
+use App\Entity\Submission;
 use App\Entity\User;
-use App\Form\UserType;
-use App\Repository\UserRepository;
-use App\Entity\InstitutionalReviewersBoard;
-use App\Helper\ReviewHelper;
+use App\Form\ReviewType;
 use App\Repository\EvaluationFormRepository;
+use App\Repository\SubmissionRepository;
 use App\Utils\Constants;
 use DateTime;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Knp\Component\Pager\PaginatorInterface;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface;
 use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\Annotation\Route;
 // use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Csrf\CsrfToken;
 
 /**
  * @Route("/subm-review")
  */
-class IRBReviewController extends AbstractController
-{
+class IRBReviewController extends AbstractController {
     use CsrfCheckerTrait;
-  
 
     /**
      * @Route("/myassigned", name="myassigned", methods={"GET"})
      */
     public function myassigned(Request $request, PaginatorInterface $paginator): Response {
-        
-       
+
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $this_is_me = $this->getUser();
-        $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => NULL , 'Declined' => NULL ],["id"=>"DESC"]);
+        $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => NULL, 'Declined' => NULL], ["id" => "DESC"]);
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results
@@ -77,7 +52,7 @@ class IRBReviewController extends AbstractController
         );
 #################################################
 
-$all = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me],["id"=>"DESC"]);
+        $all = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me], ["id" => "DESC"]);
 // $closedones = array_reverse($entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $this_is_me, 'closed' => 1 , 'inactive_assignment' => NULL ]));
 // ////// if no throw exception
 // $closeds = $paginator->paginate(
@@ -89,32 +64,30 @@ $all = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer
 //     10
 // );
 
-
 #################################################
 
-$entityManager = $this->getDoctrine()->getManager();  
+        $entityManager = $this->getDoctrine()->getManager();
 #######################
 
         #######################
         $query3 = $entityManager->createQuery(
-        'SELECT    b.id , ass.invitation_sent_at as InvitationSentAt,     ass.Declined as Declined,  b.title , s.createdAt  , ass.duedate  as dueDate
-        FROM App:Review s 
-        JOIN s.submission b     
-        JOIN s.reviewAssignment ass      
-        WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed 
-')  
-        ->setParameter('closed', 1 )  
-        ->setParameter('reviewer', $this_is_me   ) 
+            'SELECT    b.id , ass.invitation_sent_at as InvitationSentAt,     ass.Declined as Declined,  b.title , s.createdAt  , ass.duedate  as dueDate
+        FROM App:Review s
+        JOIN s.submission b
+        JOIN s.reviewAssignment ass
+        WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed
+')
+            ->setParameter('closed', 1)
+            ->setParameter('reviewer', $this_is_me)
         ;
 
         $closeds = $query3->getResult();
-
 
 #################################################
 
         return $this->render('submission/myassigned.html.twig', [
             'closeds' => $closeds,
-            'all'=>$all,
+            'all' => $all,
             'myreviews' => $myassigneds,
         ]);
     }
@@ -144,12 +117,12 @@ $entityManager = $this->getDoctrine()->getManager();
             $info = 'Community service';
             break;
         case 'mg':
-         
+
             $submissionRepository = $submissionRepository->getSubmissions(['submission_type' => Constants::RESEARCH_TYPE_MEGA]);
             $info = 'Technology transfer';
             break;
         case 'tt':
-            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' =>Constants::RESEARCH_TYPE_TECHNOLOGY_TRANSFER]);
+            $submissionRepository = $submissionRepository->getSubmissions(['submission_type' => Constants::RESEARCH_TYPE_TECHNOLOGY_TRANSFER]);
             $info = 'Technology transfer';
             break;
         case 'ps':
@@ -167,7 +140,7 @@ $entityManager = $this->getDoctrine()->getManager();
             break;
         default:
             return $this->redirectToRoute('submission_index');
-     }
+        }
 
         // Paginate the results of the query
         $Allsubmissions = $paginator->paginate(
@@ -184,15 +157,14 @@ $entityManager = $this->getDoctrine()->getManager();
         ]);
     }
 
-
     /**
      * @Route("/{id}/assigned", name="his_assignment", methods={"GET"})
      */
     public function allassigned(Request $request, User $user, PaginatorInterface $paginator): Response {
-        
+
         $entityManager = $this->getDoctrine()->getManager();
-         
-        $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $user  ],["id"=>"DESC"]);
+
+        $myassigned = $entityManager->getRepository(ReviewAssignment::class)->findBy(['reviewer' => $user], ["id" => "DESC"]);
         ////// if no throw exception
         $myassigneds = $paginator->paginate(
             // Doctrine Query, not results
@@ -212,13 +184,12 @@ $entityManager = $this->getDoctrine()->getManager();
         ]);
     }
 
-
     /**
      * @Route("/{id}/revise", name="reviewsubmission", methods={"GET","POST"})
      */
     public function revise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
         ////Ultimate reviewers page
-        
+
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         $submissionOfreviewer = $entityManager->getRepository(ReviewAssignment::class)->find($reviewAssignment);
@@ -270,22 +241,22 @@ $entityManager = $this->getDoctrine()->getManager();
             return $this->redirectToRoute('myreviews');
         }
 
-        if ($reviewAssignment->getReassigned()==1 ) {
+        if ($reviewAssignment->getReassigned() == 1) {
             ////if you are the author then you can't review it///////
             $this->addFlash(
                 'warining',
                 'You have been re-assigned!'
             );
             return $this->redirectToRoute('rereviewsubmission', array('id' => $reviewAssignment->getId()));
-        } 
-         $review = new Review();
+        }
+        $review = new Review();
         $review->setReviewAssignment($reviewAssignment);
         $review->setSubmission($reviewAssignment->getSubmission());
         $review->setReviewedBy($measareviewer);
 
         // $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
-        $form->handleRequest($request); 
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $reviewfile = $form->get('attachment')->getData();
@@ -329,7 +300,7 @@ $entityManager = $this->getDoctrine()->getManager();
 
         $editorialDecision = new EditorialDecision();
         $editorialDecisionform = $this->createFormBuilder($editorialDecision)
-      
+
             ->add('feedback', TextareaType::class, array(
                 'attr' => array(
                     'placeholder' => 'Feedback  for the author',
@@ -339,7 +310,6 @@ $entityManager = $this->getDoctrine()->getManager();
             ->getForm();
         $editorialDecisionform->handleRequest($request);
 
- 
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $reviewAssignment->getSubmission(), 'reviewed_by' => $measareviewer]);
 
         return $this->render('submission/review_byreviewer.html.twig', [
@@ -353,20 +323,16 @@ $entityManager = $this->getDoctrine()->getManager();
         ]);
     }
 
-
-
-
     /**
      * @Route("/{id}/rerevise", name="rereviewsubmission", methods={"GET","POST"})
      */
     public function rerevise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
         ////Ultimate reviewers page
-        
+
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         // $id=  $review->getReviewAssignment()->getId();
-        
- 
+
         $submissionOfreviewer = $entityManager->getRepository(ReviewAssignment::class)->find($reviewAssignment);
         $metoo = $this->getUser();
         $me_as_a_reviewer = $submissionOfreviewer->getReviewer()->getId();
@@ -416,8 +382,8 @@ $entityManager = $this->getDoctrine()->getManager();
             return $this->redirectToRoute('myreviews');
         }
         // $review = new Review();
-         
-        $reviewid = $entityManager->getRepository(Review::class)->findOneBy(['reviewAssignment'=>$reviewAssignment->getId(), 'reviewed_by'=> $this->getUser()]);
+
+        $reviewid = $entityManager->getRepository(Review::class)->findOneBy(['reviewAssignment' => $reviewAssignment->getId(), 'reviewed_by' => $this->getUser()]);
         $review = $entityManager->getRepository(Review::class)->find($reviewid);
 
         $review->setReviewAssignment($reviewAssignment);
@@ -428,7 +394,6 @@ $entityManager = $this->getDoctrine()->getManager();
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
 
- 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $reviewfile = $form->get('attachment')->getData();
@@ -444,20 +409,20 @@ $entityManager = $this->getDoctrine()->getManager();
                 $review->setAttachment($Areviewfile);
             }
 
-              ##########
-              $reviewfile2 = $form->get('evaluation_attachment')->getData();
-              if ($reviewfile2 == "") {
-                  $this->addFlash(
-                      'danger',
-                      'Evaluation  file  not uploaded!'
-                  );
-              } else {
-                  $reviewfile2 = $form->get('evaluation_attachment')->getData();
-                  $Areviewfile2 = md5(uniqid()) . '.' . $reviewfile2->guessExtension();
-                  $reviewfile2->move($this->getParameter('review_files'), $Areviewfile2);
-                  $review->setEvaluationAttachment($Areviewfile2);
-              }
-              ###############
+            ##########
+            $reviewfile2 = $form->get('evaluation_attachment')->getData();
+            if ($reviewfile2 == "") {
+                $this->addFlash(
+                    'danger',
+                    'Evaluation  file  not uploaded!'
+                );
+            } else {
+                $reviewfile2 = $form->get('evaluation_attachment')->getData();
+                $Areviewfile2 = md5(uniqid()) . '.' . $reviewfile2->guessExtension();
+                $reviewfile2->move($this->getParameter('review_files'), $Areviewfile2);
+                $review->setEvaluationAttachment($Areviewfile2);
+            }
+            ###############
 
             $review->setCreatedAt(new \DateTime());
             $review->setReviewedBy($this->getUser());
@@ -474,7 +439,7 @@ $entityManager = $this->getDoctrine()->getManager();
 
         $editorialDecision = new EditorialDecision();
         $editorialDecisionform = $this->createFormBuilder($editorialDecision)
-      
+
             ->add('feedback', TextareaType::class, array(
                 'attr' => array(
                     'placeholder' => 'Feedback  for the author',
@@ -484,8 +449,6 @@ $entityManager = $this->getDoctrine()->getManager();
             ->getForm();
         $editorialDecisionform->handleRequest($request);
 
-
-       
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $reviewAssignment->getSubmission(), 'reviewed_by' => $measareviewer]);
 
         return $this->render('submission/review_byreviewer.html.twig', [
@@ -498,30 +461,29 @@ $entityManager = $this->getDoctrine()->getManager();
             'evaluationForms' => $evaluationFormRepository->findBy(['parent' => null]),
         ]);
     }
- 
+
     /**
      * @Route("/{id}/granted", name="grant_winner", methods={"GET","POST"})
      */
-    public function grantwinner(Submission $submission,  MailerInterface $mailer ): Response {
-     
+    public function grantwinner(Submission $submission, MailerInterface $mailer): Response {
+
         $submission->setAwardgranted(1);
         $this->getDoctrine()->getManager()->flush();
-        
 
         $entityManager = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery(
-            "SELECT u.email , s.id ,  u.username,   s.title   
-                      , pi.first_name  , ui.alternative_email  
+            "SELECT u.email , s.id ,  u.username,   s.title
+                      , pi.first_name  , ui.alternative_email
                     FROM App:CoAuthor c
                     JOIN c.researcher u
                     JOIN u.userInfo ui
                     JOIN c.submission s
                     JOIN s.author p
-                    JOIN p.userInfo pi 
-                    WHERE   s.awardgranted=:awardgranted  and 
-        c.submission = :submission "   )
-         ->setParameter('submission', $submission)  
-        ->setParameter('awardgranted', 1);
+                    JOIN p.userInfo pi
+                    WHERE   s.awardgranted=:awardgranted  and
+        c.submission = :submission ")
+            ->setParameter('submission', $submission)
+            ->setParameter('awardgranted', 1);
         $recepients = $query->getResult();
         // dd($recepients);
 
@@ -530,7 +492,7 @@ $entityManager = $this->getDoctrine()->getManager();
         $body = $messages->getBody();
 
         foreach ($recepients as $row) {
-            $theEmails[]             = $row['email'] . ' ';
+            $theEmails[] = $row['email'] . ' ';
             $theNames[] = $row['username'] . ' ';
             $theFirstNames[] = $row['username'] . ' ';
             $pi_name[] = $row['first_name'] . ' ';
@@ -555,7 +517,7 @@ $entityManager = $this->getDoctrine()->getManager();
             $pi_name = $theEmails[$i];
             $theEmail = $theEmails[$i];
             // $titles = $titles[$i];
-             
+
             $invitation_url = 'submission/my-membership-details/' . $copi_id[$i];
             $email = (new TemplatedEmail())
                 ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
@@ -578,7 +540,7 @@ $entityManager = $this->getDoctrine()->getManager();
         ########### For PI##############
         $applicantmessages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_GRANTED_AWARDED_PI']);
         $applicantsubject = $applicantmessages->getSubject();
-        $applicantbody = $applicantmessages->getBody(); 
+        $applicantbody = $applicantmessages->getBody();
         $submission_url = 'submission/' . $submission->getId() . '/status';
         $applicant = $submission->getAuthor()->getEmail();
         $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
@@ -595,163 +557,145 @@ $entityManager = $this->getDoctrine()->getManager();
                 'college' => $submission->getCallForProposal()->getCollege()->getPrincipalContact(),
 
                 'name' => $applicantname,
-                'Authoremail' => $applicant
+                'Authoremail' => $applicant,
             ]);
 
         $mailer->send($emailtwo);
         ##########
 // dd();
-$this->addFlash( 
-    'success',
-    'You announced this submission as a winner successfully!'
-); 
+        $this->addFlash(
+            'success',
+            'You announced this submission as a winner successfully!'
+        );
         return $this->redirectToRoute('submission_show', array('id' => $submission->getId()));
 
     }
 
-
-      
-  /**
+    /**
      * @Route("/{id}/decline/", name="decline_invitation", methods={"GET","POST"})
      */
-    public function declineinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
-    {
-        
+    public function declineinvitation(Request $request, ReviewAssignment $reviewAssignment): Response {
 
-	$entityManager = $this->getDoctrine()->getManager();
-    $mew= $this->getUser()->getId();
-	$deadline= $reviewAssignment->getDuedate();
-	$today= new \DateTime();
-	$message='';
- 	if ($deadline<=$today){
- 	$message="Overdue!";
-#	echo $day;
-	}
-	////if he is not the one he has been assigned to this proposal then redirect the page to the list of the submission he hasd been assigned to
-	$reviewAssignment->setDeclined(1);
-	$this->getDoctrine()->getManager()->flush();
-	$this->addFlash( 
+        $entityManager = $this->getDoctrine()->getManager();
+        $mew = $this->getUser()->getId();
+        $deadline = $reviewAssignment->getDuedate();
+        $today = new \DateTime();
+        $message = '';
+        if ($deadline <= $today) {
+            $message = "Overdue!";
+#    echo $day;
+        }
+        ////if he is not the one he has been assigned to this proposal then redirect the page to the list of the submission he hasd been assigned to
+        $reviewAssignment->setDeclined(1);
+        $this->getDoctrine()->getManager()->flush();
+        $this->addFlash(
             'danger',
             'You declined your review invitation. The process will not be undone!'
-        ); 
-	return $this->redirectToRoute('myreviews');
-}
+        );
+        return $this->redirectToRoute('myreviews');
+    }
     /**
      * @Route("/{id}", name="unassign", methods={"DELETE", "GET","POST"})
      */
-    public function unassign(Request $request, ReviewAssignment $reviewAssignment  ): Response
-    {
+    public function unassign(Request $request, ReviewAssignment $reviewAssignment): Response {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
-        if ($this->isCsrfTokenValid('delete'.$reviewAssignment->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $reviewAssignment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             // $entityManager->remove($reviewAssignment);
             $reviewAssignment->setInactiveAssignment(1);
-              $this->addFlash(
-            'success',
-            'Reviewer unassigned!'
-        ); 
+            $this->addFlash(
+                'success',
+                'Reviewer unassigned!'
+            );
             $entityManager->flush();
         }
-            return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
- 
-    }
+        return $this->redirectToRoute('review_assignment_new', array('id' => $reviewAssignment->getSubmission()->getId()));
 
+    }
 
     /**
      * @Route("/{id}", name="reassign", methods={"DELETE", "GET","POST"})
      */
-    public function reassign( ReviewAssignment $reviewAssignment  ): Response
-    {
+    public function reassign(ReviewAssignment $reviewAssignment): Response {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
-             $entityManager = $this->getDoctrine()->getManager();
-            // $entityManager->remove($reviewAssignment);
-            $reviewAssignment->setInactiveAssignment(NULL);
-            $reviewAssignment->setClosed(NULL);
-            $reviewAssignment->setReassigned(1);
-            
-              $this->addFlash(
+        $entityManager = $this->getDoctrine()->getManager();
+        // $entityManager->remove($reviewAssignment);
+        $reviewAssignment->setInactiveAssignment(NULL);
+        $reviewAssignment->setClosed(NULL);
+        $reviewAssignment->setReassigned(1);
+
+        $this->addFlash(
             'success',
             'Reviewer allowed to edit the review  successfully!'
-        ); 
-            $entityManager->flush();
-        
-            return $this->redirectToRoute('review_assignment_new', array('id'=>$reviewAssignment->getSubmission()->getId()));
- 
+        );
+        $entityManager->flush();
+
+        return $this->redirectToRoute('review_assignment_new', array('id' => $reviewAssignment->getSubmission()->getId()));
+
     }
 
-
-  
-
-  /**
+    /**
      * @Route("/{id}/accept/", name="accept_invitation", methods={"GET","POST"})
      */
-    public function acceptinvitation(Request $request, ReviewAssignment $reviewAssignment): Response
-    {
-        
+    public function acceptinvitation(Request $request, ReviewAssignment $reviewAssignment): Response {
 
-    $entityManager = $this->getDoctrine()->getManager();
-    if($this->getUser() != $reviewAssignment->getReviewer()){
-        
-        $this->addFlash("danger", "Sorry you are not allowed for this service !" );
-        return $this->redirectToRoute('myassigned');
-    }
-   
-    if(  $reviewAssignment->getDeclined()==1){
-       
-        
-        $this->addFlash("danger", "Sorry invitation has declined !" );
+        $entityManager = $this->getDoctrine()->getManager();
+        if ($this->getUser() != $reviewAssignment->getReviewer()) {
 
-        return $this->redirectToRoute('myassigned');
-    }
-    
-    if ($reviewAssignment->getIsAccepted()){
-        return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
-}
-    if ($reviewAssignment->getIsRejected()){
-        // echo"'dsada'";
-        // dd();
-        return $this->redirectToRoute('myassigned');
-}
+            $this->addFlash("danger", "Sorry you are not allowed for this service !");
+            return $this->redirectToRoute('myassigned');
+        }
 
-if ($reviewAssignment->getIsRejected()){
-    // echo"'dsada'";
-    // dd();
-    return $this->redirectToRoute('rereviewsubmission' );
-}
+        if ($reviewAssignment->getDeclined() == 1) {
 
+            $this->addFlash("danger", "Sorry invitation has declined !");
 
-        $submission=$reviewAssignment->getSubmission();
-                 $workunit=$reviewAssignment->getSubmission();
-	 $guideline_for_reviewers = $entityManager->getRepository(GuidelineForReviewer::class)->findAll()[0];
-	$Allsubmission = $entityManager->getRepository(Submission::class)->findBy(['id' => $submission ] );
-	$deadline= $reviewAssignment->getDuedate();
-	$today= new \DateTime();
-	$message='';
- 	if ($deadline<=$today){
-        
-        $this->addFlash("danger", "Sorry Invitation overdue !" );
+            return $this->redirectToRoute('myassigned');
+        }
 
-        //  $this->addFlash('error',"!!");
-        return $this->redirectToRoute('myassigned');
-}
- 
+        if ($reviewAssignment->getIsAccepted()) {
+            return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
+        }
+        if ($reviewAssignment->getIsRejected()) {
+            // echo"'dsada'";
+            // dd();
+            return $this->redirectToRoute('myassigned');
+        }
+
+        if ($reviewAssignment->getIsRejected()) {
+            // echo"'dsada'";
+            // dd();
+            return $this->redirectToRoute('rereviewsubmission');
+        }
+
+        $submission = $reviewAssignment->getSubmission();
+        $workunit = $reviewAssignment->getSubmission();
+        $guideline_for_reviewers = $entityManager->getRepository(GuidelineForReviewer::class)->findAll()[0];
+        $Allsubmission = $entityManager->getRepository(Submission::class)->findBy(['id' => $submission]);
+        $deadline = $reviewAssignment->getDuedate();
+        $today = new \DateTime();
+        $message = '';
+        if ($deadline <= $today) {
+
+            $this->addFlash("danger", "Sorry Invitation overdue !");
+
+            //  $this->addFlash('error',"!!");
+            return $this->redirectToRoute('myassigned');
+        }
+
         if ($request->request->get('accept-invitation')) {
             $this->checkCsrf('accept-invitation');
             $reviewAssignment->setAcceptedAt(new DateTime());
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('reviewsubmission', array('id' =>$reviewAssignment->getId()));
+            return $this->redirectToRoute('reviewsubmission', array('id' => $reviewAssignment->getId()));
         }
- 
-	return $this->render('review_assignment/accept_invitation.html.twig', [
-	'review_assignment' => $reviewAssignment,
-	'guideline' => $guideline_for_reviewers,
-        ]);
-    }  
 
-    
+        return $this->render('review_assignment/accept_invitation.html.twig', [
+            'review_assignment' => $reviewAssignment,
+            'guideline' => $guideline_for_reviewers,
+        ]);
+    }
 
 }
- 
- 

@@ -29,8 +29,8 @@
 							<a class="nav-link  " data-bs-toggle="tab" href="tab#settings-1" role="tab" aria-selected="true">Guidelines</a>
 						</li>
 						{# <li class="nav-item waves-effect waves-light">
-							<a class="nav-link  " data-bs-toggle="tab" href="tab#manage-1" role="tab" aria-selected="true">Edit</a>
-						</li> #}
+													<a class="nav-link  " data-bs-toggle="tab" href="tab#manage-1" role="tab" aria-selected="true">Edit</a>
+												</li> #}
 						<li class="nav-item waves-effect waves-light">
 							<a class="nav-link active " data-bs-toggle="tab" href="tab#manage-2" role="tab" aria-selected="true">Attachments</a>
 						</li>
@@ -41,10 +41,10 @@
 						<div class="tab-pane   p-3" id="home-1" role="tabpanel">
 							<div class="table-responsive">
 								<table class="table shoping-cart-table">
-<tbody>
+									<tbody>
 										<tr>
 											<td class="desc">
-												 
+
 												<p class="medium">
 													{{ college.description |raw}}
 												</p>
@@ -56,7 +56,8 @@
 														Description:</h4>
 													{{ college.description |raw}}
 												</p>
-												<h4 class='text-default'> Identification  Code</h4>
+												<h4 class='text-default'>
+													Identification  Code</h4>
 												{{ college.identificationCode }}
 												<p>
 													<h4 class='text-default'>
@@ -115,7 +116,7 @@
 										<th>#</th>
 										<th>Name</th>
 
- 									</tr>
+									</tr>
 								</thead>
 								<tbody>
 									{% for thematic_area in college.thematicAreas %}
@@ -123,7 +124,7 @@
 											<td>{{ loop.index }}</td>
 											<td>{{ thematic_area.name }}</td>
 
-											 
+
 										</tr>
 									{% else %}
 										<tr>
@@ -133,7 +134,7 @@
 								</tbody>
 							</table>
 							<hr>
-							 
+
 						</div>
 						<div class="tab-pane p-3  " id="settings-1" role="tabpanel">
 							<h4 class='text-primary'>
@@ -167,34 +168,33 @@
 									{% endfor %}
 								</tbody>
 							</table>
-							 
-							 
+
+
 							<h4 class='text-primary'>
 								Guideline For Reviewers
 							</h4>
-							 
-									
-							 
+
 
 						</div>
 						<div class="tab-pane p-3 active " id="manage-2" role="tabpanel">
- {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-info">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+							{{ form_start(form) }}
+							{{ form_widget(form) }}
+							<button class="btn btn-info">{{ button_label|default('Save') }}</button>
+							{{ form_end(form) }}
 
-<ol>
-{% for guideline_for_reviewer in college.irbReviewAtachements %}
-	<li>									 
-   
-											  <a class="badge bg-primary" href="{{ asset('files/guidelines/'~ guideline_for_reviewer.attachement ) }}">
- {{guideline_for_reviewer.attachmentName}}							<i class="fa fa-download"></i>
-						</a>
-	</li>									 
+							<ol>
+								{% for guideline_for_reviewer in college.irbReviewAtachements %}
+									<li>
 
-					  	{% else %}
- 									{% endfor %} 
-</ol>
+										<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ guideline_for_reviewer.attachement ) }}">
+											{{guideline_for_reviewer.attachmentName}}
+											<i class="fa fa-download"></i>
+										</a>
+									</li>
+
+									{% else %}
+								{% endfor %}
+							</ol>
 
 						</div>
 					</div>
@@ -204,7 +204,7 @@
 			<!--end card-->
 		</div>
 
- 
+
 	</div>
 
 

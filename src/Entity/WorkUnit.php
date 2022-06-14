@@ -70,10 +70,7 @@ class WorkUnit
      */
     private $prefix;
  
-    /**
-     * @ORM\OneToMany(targetEntity=InstitutionalReviewersBoard::class, mappedBy="workunit")
-     */
-    private $institutionalReviewersBoards;
+   
 
     /**
      * @ORM\OneToMany(targetEntity=GuidelineForReviewer::class, mappedBy="workunit")
@@ -86,8 +83,7 @@ class WorkUnit
         $this->guidelines = new ArrayCollection();
         $this->callForProposals = new ArrayCollection();
         $this->thematicAreas = new ArrayCollection();
-        $this->institutionalReviewersBoards = new ArrayCollection();
-        $this->guidelineForReviewers = new ArrayCollection();
+         $this->guidelineForReviewers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -275,36 +271,7 @@ class WorkUnit
 
         return $this;
     }
-
-    /**
-     * @return Collection|InstitutionalReviewersBoard[]
-     */
-    public function getInstitutionalReviewersBoards(): Collection
-    {
-        return $this->institutionalReviewersBoards;
-    }
-
-    public function addInstitutionalReviewersBoard(InstitutionalReviewersBoard $institutionalReviewersBoard): self
-    {
-        if (!$this->institutionalReviewersBoards->contains($institutionalReviewersBoard)) {
-            $this->institutionalReviewersBoards[] = $institutionalReviewersBoard;
-            $institutionalReviewersBoard->setWorkunit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInstitutionalReviewersBoard(InstitutionalReviewersBoard $institutionalReviewersBoard): self
-    {
-        if ($this->institutionalReviewersBoards->removeElement($institutionalReviewersBoard)) {
-            // set the owning side to null (unless already changed)
-            if ($institutionalReviewersBoard->getWorkunit() === $this) {
-                $institutionalReviewersBoard->setWorkunit(null);
-            }
-        }
-
-        return $this;
-    }
+ 
 
     /**
      * @return Collection|GuidelineForReviewer[]

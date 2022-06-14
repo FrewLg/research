@@ -3,51 +3,34 @@
 namespace App\Controller;
 
 use App\Entity\CallForProposal;
-use App\Entity\ReviewAssignment;
-use App\Form\ReviewAssignmentType;
-use App\Repository\ReviewAssignmentRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\Review;
 use App\Entity\CoAuthor;
-
-use App\Entity\GuidelineForReviewer;
-use App\Form\GuidelineForReviewerType;
-use App\Repository\GuidelineForReviewerRepository;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
-use App\Form\ExternalReviewAssignmentType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\CoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Entity\Review;
+use App\Entity\ReviewAssignment;
 use App\Entity\Submission;
-use App\Repository\SubmissionRepository;
-use App\Repository\InstitutionalReviewersBoardRepository;
-use App\Repository\ReviewRepository;
 use App\Entity\User;
-use App\Form\UserType;
-use App\Repository\UserRepository;
-use App\Entity\InstitutionalReviewersBoard;
 use App\Entity\UserInfo;
+use App\Form\ExternalReviewAssignmentType;
+use App\Form\ReviewAssignmentType;
 use App\Helper\ReviewHelper;
+use App\Repository\ReviewAssignmentRepository;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\Annotation\Route;
 // use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/reviewer-assignment")
  */
-class ReviewAssignmentController extends AbstractController
-{
+class ReviewAssignmentController extends AbstractController {
     use CsrfCheckerTrait;
 
     /**
@@ -89,7 +72,10 @@ class ReviewAssignmentController extends AbstractController
                 $entityManager->flush();
 
                 $this->addFlash('success', "$count Reviewer(s) invited successfully");
-            } else $this->addFlash('danger', "Invalid request!");
+            } else {
+                $this->addFlash('danger', "Invalid request!");
+            }
+
             // return $this->redirectToRoute('review_assignment_new',['id'=>$submission->getId()]);
         }
         $user = $this->getUser();
@@ -106,8 +92,8 @@ class ReviewAssignmentController extends AbstractController
         ///// check if the submission is completed or not
         //  $submission=$entityManager->getRepository(Submission::class)->findBy(['id'=>$submission->getId()]);
 
-        ///// check if the submission is completed or not 
-        $allreviewersfrom_i_r_b =  $reviewAssignmentRepository->findBy(['submission' => $submission], ["id" => "DESC"]);
+        ///// check if the submission is completed or not
+        $allreviewersfrom_i_r_b = $reviewAssignmentRepository->findBy(['submission' => $submission], ["id" => "DESC"]);
         $reviewAssignment = new ReviewAssignment();
         $reviewAssignment->setStatus(1);
         $reviewAssignment->setSubmission($submission);
@@ -133,7 +119,6 @@ class ReviewAssignmentController extends AbstractController
                 $file3->move($this->getParameter('review_files'), $fileName3);
                 $reviewAssignment->setFileTobeReviewed($fileName3);
             }
-
 
             ##########################
             $assignedreviewer = $form->get('reviewer')->getData();
@@ -174,7 +159,6 @@ class ReviewAssignmentController extends AbstractController
             );
             // dd($submission->getId());
 
-
             $entityManager->persist($reviewAssignment);
             $entityManager->flush();
             $suffix = $reviewAssignment->getReviewer()->getUserInfo()->getSuffix();
@@ -207,7 +191,7 @@ class ReviewAssignmentController extends AbstractController
             return $this->redirectToRoute('review_assignment_new', array('id' => $submission->getId()));
         }
 
-        ////////////////External reviewer 
+        ////////////////External reviewer
 
         $externalreviewerform = $this->createForm(ExternalReviewAssignmentType::class, $reviewAssignment);
         $externalreviewerform->handleRequest($request);
@@ -232,11 +216,10 @@ class ReviewAssignmentController extends AbstractController
                 $reviewAssignment->setFileTobeReviewed($fileName3ext);
             }
 
-            ##########create account for ecternmal reviewer  
+            ##########create account for ecternmal reviewer
             $parts = explode('@', $reviewAssignment->getExternalReviewerEmail());
             $username = $parts[0]; // username
             $ext_email = $externalreviewerform->get('external_reviewer_email')->getData();
-
 
             $newlyaddedusername = $entityManager->getRepository(User::class)->findBy(['username' => $username]);
             $count = count($newlyaddedusername);
@@ -245,7 +228,7 @@ class ReviewAssignmentController extends AbstractController
                 $username = $parts[0] . $count;
                 $this->addFlash(
                     'warning',
-                    'There is an existing  account    with "' . $ext_email . '" email address.   
+                    'There is an existing  account    with "' . $ext_email . '" email address.
         Hence try with other email address or assign him using  internal reviewer option!'
                 );
                 return $this->redirectToRoute('review_assignment_new', array('id' => $submission->getId()));
@@ -302,14 +285,14 @@ class ReviewAssignmentController extends AbstractController
             $email = (new TemplatedEmail())
                 ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
                 ->to(new Address($ext_email, $external_reviewer_name))
-                ->subject($subject) 
+                ->subject($subject)
                 ->htmlTemplate('emails/review_invitation_external.html.twig')
                 ->context([
                     'subject' => $subject,
                     'suffix' => "",
-                    'body' =>  "<br>" . "Please use your username and password provided below 
+                    'body' => "<br>" . "Please use your username and password provided below
                                  to get  started with our platform.<br> Username:" . $username . "
-                                 <br> Passwrod: " . $pass_to_be_hashed . "<br>Please do not forget to change your password 
+                                 <br> Passwrod: " . $pass_to_be_hashed . "<br>Please do not forget to change your password
                                  after you logged into the system.",
                     'title' => $title,
                     'college' => $submission->getCallForProposal()->getCollege(),
@@ -317,13 +300,13 @@ class ReviewAssignmentController extends AbstractController
                     'name' => $external_reviewer_name,
                     'Authoremail' => $theEmail,
                 ]);
-           // $mailer->send($email);
+            // $mailer->send($email);
 
             ######################
 
             return $this->redirectToRoute('review_assignment_new', array('id' => $submission->getId()));
         }
-        $reviewers  = $entityManager->getRepository(User::class)->findAll();
+        $reviewers = $entityManager->getRepository(User::class)->findAll();
 
         ////////////////External reviewer
         return $this->render('review_assignment/new.html.twig', [
@@ -337,14 +320,10 @@ class ReviewAssignmentController extends AbstractController
         ]);
     }
 
-
-
-
     /**
      * @Route("/{id}/all", name="allreviewers", methods={"GET","POST"})
      */
-    public function allreviewers(Request $request, CallForProposal $call, PaginatorInterface $paginator): Response
-    {
+    public function allreviewers(Request $request, CallForProposal $call, PaginatorInterface $paginator): Response {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -353,27 +332,27 @@ class ReviewAssignmentController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery(
             'SELECT u.email , u.id, pi.last_name , pi.first_name, pi.midle_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
-                FROM App:ReviewAssignment s 
-                JOIN s.reviewer u 
-                JOIN u.userInfo pi 
-                JOIN s.submission b 
-                JOIN b.callForProposal c 
+                FROM App:ReviewAssignment s
+                JOIN s.reviewer u
+                JOIN u.userInfo pi
+                JOIN s.submission b
+                JOIN b.callForProposal c
 
               where  u.is_reviewer  is NULL and c.id=:call  GROUP BY u.id
             '
         )
-        ->setParameter('call', $call);
+            ->setParameter('call', $call);
 
         $recepients = $query->getResult();
 
         #######################
         $query2 = $entityManager->createQuery(
             'SELECT u.email , u.id, pi.last_name ,pi.midle_name , pi.first_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
-                        FROM App:ReviewAssignment s 
-                        JOIN s.reviewer u 
-                        JOIN u.userInfo pi 
-                        JOIN s.submission b 
-                        JOIN b.callForProposal c 
+                        FROM App:ReviewAssignment s
+                        JOIN s.reviewer u
+                        JOIN u.userInfo pi
+                        JOIN s.submission b
+                        JOIN b.callForProposal c
                       where  u.is_reviewer =:external and c.id=:call  GROUP BY u.id
                     '
         )
@@ -410,37 +389,31 @@ class ReviewAssignmentController extends AbstractController
         return $this->render('review_assignment/show.html.twig', [
             'review_assignments' => $review_assignments,
             'review_assignmentsext' => $recepientextrnalpa,
-            'all' =>  $all,
+            'all' => $all,
             'info' => $info,
             'call' => $call,
 
-            'allext' =>  $allext
+            'allext' => $allext,
         ]);
     }
-
-
-
-
 
     /**
      * @Route("/{id}/external", name="alexternalreviewers", methods={"GET","POST"})
      */
-    public function externalreviewers(Request $request, CallForProposal $call, PaginatorInterface $paginator): Response
-    {
+    public function externalreviewers(Request $request, CallForProposal $call, PaginatorInterface $paginator): Response {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
         $entityManager = $this->getDoctrine()->getManager();
 
-
         #######################
         $query2 = $entityManager->createQuery(
             'SELECT  u.email , u.id, pi.last_name , pi.first_name, pi.midle_name,  pi.image, u.is_reviewer,   count(b.id) as subs,  count(u.id) as review_assignment
-                        FROM App:ReviewAssignment s 
-                        JOIN s.reviewer u 
-                        JOIN u.userInfo pi 
+                        FROM App:ReviewAssignment s
+                        JOIN s.reviewer u
+                        JOIN u.userInfo pi
                         JOIN s.submission b
-                        JOIN b.callForProposal c 
-                        
+                        JOIN b.callForProposal c
+
                       where  u.is_reviewer =:external and c.id=:call GROUP BY u.id
                     '
         )
@@ -465,19 +438,16 @@ class ReviewAssignmentController extends AbstractController
         return $this->render('review_assignment/show.html.twig', [
             'review_assignments' => $recepientextrnalpa,
             'info' => $info,
-            'all' =>  $allext,
-            'call' =>  $call
+            'all' => $allext,
+            'call' => $call,
 
         ]);
     }
 
-
-
     /**
      * @Route("/{id}/edit", name="review_assignment_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, ReviewAssignment $reviewAssignment): Response
-    {
+    public function edit(Request $request, ReviewAssignment $reviewAssignment): Response {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -515,16 +485,12 @@ class ReviewAssignmentController extends AbstractController
 
         ]);
     }
-    
-   
 
     /**
      * @Route("/{id}/updatedate", name="updatedate", methods={  "GET","POST"})
      */
-    public function updatedate(Request $request, ReviewAssignment $reviewAssignment): Response
-    {
+    public function updatedate(Request $request, ReviewAssignment $reviewAssignment): Response {
         $this->denyAccessUnlessGranted('assn_clg_cntr');
-
 
         $form = $this->createFormBuilder($reviewAssignment)
             ->add('invitationDueDate', DateType::class, array(
@@ -541,7 +507,7 @@ class ReviewAssignmentController extends AbstractController
 
                     'required' => true,
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('duedate', DateType::class, array(
                 'placeholder' => [
@@ -555,7 +521,7 @@ class ReviewAssignmentController extends AbstractController
                     'max' => $reviewAssignment->getSubmission()->getCallForProposal()->getReviewProcessEnd()->format('Y-m-d'),
                     'required' => true,
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->getForm();
         $form->handleRequest($request);

@@ -96,6 +96,7 @@ class DashboardController extends AbstractController {
         $submissions = $entityManager->getRepository(Submission::class)->findAll();
         $submissionbytheme = $entityManager->getRepository(ThematicArea::class)->findBy(['college' => $this->getUser()->getUserInfo()->getCollege()]);
         $allcalls = $entityManager->getRepository(CallForProposal::class)->getCalls(['college' => $this->getUser()->getUserInfo()->getCollege()]);
+        $allcalls = $entityManager->getRepository(CallForProposal::class)->findAll();
         $copis = $entityManager->getRepository(CoAuthor::class)->findall();
 
         $allcallsp = $paginator->paginate(
@@ -163,6 +164,7 @@ class DashboardController extends AbstractController {
             'submissions' => $Allsubmissions,
             'bythemes' => $submissionbytheme,
             'allcalls' => $allcallsp,
+            'all_calls' => $allcalls,
             'submissions' => $submissions,
             'copis' => $copis,
             'desision' => $remark,

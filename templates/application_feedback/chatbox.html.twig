@@ -54,9 +54,9 @@
 											<div class="media-img">
 
 												{% if discussions.feedbackFrom.userInfo and discussions.feedbackFrom.userInfo.image %}
-													<img src="{{ asset('files/profile_pictures/'~discussions.feedbackFrom.userInfo.image ) }}" alt="" class="rounded-circle thumb-md">
+													<img src="{{ asset('files/profile_pictures/'~discussions.feedbackFrom.userInfo.image ) }}" title='{{discussions.feedbackFrom.userInfo}}' alt="" class="rounded-circle thumb-md">
 												{% else %}
-													<img src="{{ asset('/img/defaultuser.png') }}" class="rounded-circle thumb-md ">
+													<img src="{{ asset('/img/defaultuser.png') }}" title='{{discussions.feedbackFrom.userInfo}}' class="rounded-circle thumb-md ">
 												{% endif %}
 											</div>
 
@@ -111,9 +111,9 @@
 											<!--end media-body-->
 											<div class="media-img">
 												{% if discussions.feedbackFrom.userInfo and discussions.feedbackFrom.userInfo.image %}
-													<img src="{{ asset('files/profile_pictures/'~discussions.feedbackFrom.userInfo.image ) }}" alt="" class="rounded-circle thumb-md">
+													<img src="{{ asset('files/profile_pictures/'~discussions.feedbackFrom.userInfo.image ) }}" title='{{discussions.feedbackFrom.userInfo}}' alt="" class="rounded-circle thumb-md">
 												{% else %}
-													<img src="{{ asset('/img/defaultuser.png') }}" class="rounded-circle thumb-md ">
+													<img src="{{ asset('/img/defaultuser.png') }}" title='{{discussions.feedbackFrom.userInfo}}' class="rounded-circle thumb-md ">
 												{% endif %}
 											</div>
 											<!--end media-->

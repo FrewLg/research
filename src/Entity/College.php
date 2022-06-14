@@ -79,11 +79,7 @@ class College
      */
     private $guidelineForReviewer;
 
-
-    /**
-     * @ORM\OneToMany(targetEntity=InstitutionalReviewersBoard::class, mappedBy="college")
-     */
-    private $institutionalReviewersBoards;
+ 
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -132,8 +128,7 @@ class College
         $this->applications = new ArrayCollection();
         $this->thematicAreas = new ArrayCollection();
         // $this->guidelineForReviewers = new ArrayCollection();
-        $this->institutionalReviewersBoards = new ArrayCollection();
-        $this->guidelines = new ArrayCollection();
+         $this->guidelines = new ArrayCollection();
         $this->callForTrainings = new ArrayCollection();
         $this->boardMembers = new ArrayCollection();
         $this->irbReviewAtachements = new ArrayCollection();
@@ -400,36 +395,6 @@ class College
     }
 
      
-    /**
-     * @return Collection|InstitutionalReviewersBoard[]
-     */
-    public function getInstitutionalReviewersBoards(): Collection
-    {
-        return $this->institutionalReviewersBoards;
-    }
-
-    public function addInstitutionalReviewersBoard(InstitutionalReviewersBoard $institutionalReviewersBoard): self
-    {
-        if (!$this->institutionalReviewersBoards->contains($institutionalReviewersBoard)) {
-            $this->institutionalReviewersBoards[] = $institutionalReviewersBoard;
-            $institutionalReviewersBoard->setCollege($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInstitutionalReviewersBoard(InstitutionalReviewersBoard $institutionalReviewersBoard): self
-    {
-        if ($this->institutionalReviewersBoards->removeElement($institutionalReviewersBoard)) {
-            // set the owning side to null (unless already changed)
-            if ($institutionalReviewersBoard->getCollege() === $this) {
-                $institutionalReviewersBoard->setCollege(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;

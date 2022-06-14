@@ -6,14 +6,12 @@ use App\Entity\CallForProposal;
 use App\Entity\College;
 use App\Entity\CollegeThematicArea;
 use App\Entity\GuidelineForReviewer;
-use App\Entity\Guidelines;
-use App\Entity\InstitutionalReviewersBoard;
+use App\Entity\Guidelines; 
 use App\Entity\IRB\IrbReviewAtachement;
 use App\Entity\ThematicArea;
 use App\Form\CollegeThematicAreaType;
 use App\Form\CollegeType;
-use App\Form\GuidelineForReviewerType;
-use App\Form\InstitutionalReviewersBoardType;
+use App\Form\GuidelineForReviewerType; 
 use App\Form\IrbReviewAtachementType;
 use App\Form\ThematicAreaType;
 use App\Repository\CollegeRepository;
@@ -169,20 +167,7 @@ public function showdetail(Request $request): Response {
         }
 
     }
-    ///////////////institutiona review board members
-    $AllIRBMembers = $entityManager->getRepository(InstitutionalReviewersBoard::class)->findBy(['college' => $college]);
-    $institutionalReviewersBoard = new InstitutionalReviewersBoard();
-    $i_r_b_form = $this->createForm(InstitutionalReviewersBoardType::class, $institutionalReviewersBoard);
-    $i_r_b_form->handleRequest($request);
-
-    if ($i_r_b_form->isSubmitted() && $i_r_b_form->isValid()) {
-        # $this->getDoctrine()->getManager()->flush();
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($institutionalReviewersBoard);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('college_details');
-    }
+    
     //to be changerd later
     $form = $this->createForm(CollegeType::class, $college);
     $form->handleRequest($request);
@@ -198,8 +183,7 @@ public function showdetail(Request $request): Response {
         'guideline_for_reviewers' => $guideline_for_reviewers,
         'formguidelineforReviewer' => $formGuidelineForReviewer->createView(),
         'form' => $form->createView(),
-        'institutional_reviewers_boards' => $AllIRBMembers,
-        'guidelineform' => $guidelineform->createView(),
+         'guidelineform' => $guidelineform->createView(),
         'thematicAreaform' => $thematicAreaform->createView(),
         'thematic_areas' => $thematicAreas,
     ]);
@@ -372,21 +356,7 @@ public function show(College $college, Request $request, ): Response {
         // }
     }
     ///////////////institutiona review board members
-    $AllIRBMembers = $entityManager->getRepository(InstitutionalReviewersBoard::class)->findBy(['college' => $college]);
-#dd($institutionalReviewersBoard);
-    $institutionalReviewersBoard = new InstitutionalReviewersBoard();
-    #$form = $this->createForm(WorkUnitType::class, $workUnit);
-    $i_r_b_form = $this->createForm(InstitutionalReviewersBoardType::class, $institutionalReviewersBoard);
-    $i_r_b_form->handleRequest($request);
-
-    if ($i_r_b_form->isSubmitted() && $i_r_b_form->isValid()) {
-        # $this->getDoctrine()->getManager()->flush();
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($institutionalReviewersBoard);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('college_show', array('id' => $college->getId()));
-    }
+    
     //to be changerd later
     $form = $this->createForm(CollegeType::class, $college);
     $form->handleRequest($request);
@@ -402,8 +372,7 @@ public function show(College $college, Request $request, ): Response {
         'guideline_for_reviewers' => $guideline_for_reviewers,
         'formguidelineforReviewer' => $formGuidelineForReviewer->createView(),
         'form' => $form->createView(),
-        'institutional_reviewers_boards' => $AllIRBMembers,
-        'guidelineform' => $guidelineform->createView(),
+         'guidelineform' => $guidelineform->createView(),
         'thematicAreaform' => $thematicAreaform->createView(),
         'thematic_areas' => $thematicAreas,
     ]);
@@ -415,8 +384,7 @@ public function details(Request $request, College $college, $prefix): Response {
     $entityManager = $this->getDoctrine()->getManager();
     $guidelines = $entityManager->getRepository(Guidelines::class)->findOneBy(['college' => $college]);
 
-    $AllIRBMembers = $entityManager->getRepository(InstitutionalReviewersBoard::class)->findBy(['college' => $college]);
-    $collegeinfo = $entityManager->getRepository(CallForProposal::class)->findBy(['college' => $college]);
+     $collegeinfo = $entityManager->getRepository(CallForProposal::class)->findBy(['college' => $college]);
     //  $collegeinfo='';
     $info = 'All';
     switch ($prefix) {
@@ -464,8 +432,7 @@ public function details(Request $request, College $college, $prefix): Response {
     return $this->render('college/showdetails.html.twig', [
         'college' => $college,
         'guidelines' => $guidelines,
-        'institutional_reviewers_boards' => $AllIRBMembers,
-    ]);
+     ]);
 }
 
 #[Route('/{id}/edit', name:'college_edit', methods:['GET', 'POST'])]

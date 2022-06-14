@@ -66,10 +66,7 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity=Review::class, inversedBy="reviewed_by")
      */
     private $reviews;
-    /**
-     * @ORM\OneToMany(targetEntity=InstitutionalReviewersBoard::class, mappedBy="reviewer")
-     */
-    private $institutionalReviewersBoards;
+   
 
     /**
      * @ORM\OneToMany(targetEntity=ReviewAssignment::class, mappedBy="reviewer")
@@ -83,10 +80,7 @@ class User implements UserInterface
      */
     private $iRBReviewAssignments;
 
-    /**
-     * @ORM\OneToMany(targetEntity=InstitutionalReviewersBoard::class, mappedBy="name")
-     */
-    private $i_r_b_member;
+ 
 
     
    /**
@@ -511,36 +505,7 @@ class User implements UserInterface
     }
  
    
-
-    /**
-     * @return Collection|InstitutionalReviewersBoard[]
-     */
-    public function getInstitutionalReviewersBoards(): Collection
-    {
-        return $this->institutionalReviewersBoards;
-    }
-
-    public function addInstitutionalReviewersBoard(InstitutionalReviewersBoard $institutionalReviewersBoard): self
-    {
-        if (!$this->institutionalReviewersBoards->contains($institutionalReviewersBoard)) {
-            $this->institutionalReviewersBoards[] = $institutionalReviewersBoard;
-            $institutionalReviewersBoard->setReviewer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInstitutionalReviewersBoard(InstitutionalReviewersBoard $institutionalReviewersBoard): self
-    {
-        if ($this->institutionalReviewersBoards->removeElement($institutionalReviewersBoard)) {
-            // set the owning side to null (unless already changed)
-            if ($institutionalReviewersBoard->getReviewer() === $this) {
-                $institutionalReviewersBoard->setReviewer(null);
-            }
-        }
-
-        return $this;
-    }
+ 
 
     /**
      * @return Collection|ReviewAssignment[]
@@ -602,35 +567,7 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|InstitutionalReviewersBoard[]
-     */
-    public function getIRBMember(): Collection
-    {
-        return $this->i_r_b_member;
-    }
-
-    public function addIRBMember(InstitutionalReviewersBoard $iRBMember): self
-    {
-        if (!$this->i_r_b_member->contains($iRBMember)) {
-            $this->i_r_b_member[] = $iRBMember;
-            $iRBMember->setName($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIRBMember(InstitutionalReviewersBoard $iRBMember): self
-    {
-        if ($this->i_r_b_member->removeElement($iRBMember)) {
-            // set the owning side to null (unless already changed)
-            if ($iRBMember->getName() === $this) {
-                $iRBMember->setName(null);
-            }
-        }
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection|EditorialDecision[]

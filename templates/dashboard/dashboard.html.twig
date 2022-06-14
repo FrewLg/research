@@ -118,7 +118,7 @@
 												<span class="text-danger">
 												{% endfor %}
 
- 											</span>
+											</span>
 										</span>
 									</p>
 								</div>
@@ -127,7 +127,7 @@
 										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase align-self-center text-muted icon-sm">
 											<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
 											<path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-										</svg>   
+										</svg>
 									</div>
 								</div>
 							</div>
@@ -148,277 +148,405 @@
 							<h4 class="card-title">Proposals destribution by thematic areas
 								<button id="btn-theme" class="btn btn-soft-success btn-sm">
 									<i class="fa fa-download material-icons  "></i>
-								</h4>
-							</div>
-							<!--end col-->
-						{# ds #}
-							<!--end col-->
+								</button>
+							</h4>
 						</div>
+
 					</div>
-					<!--end card-header-->
-					<div class="card-body">
-						<div class="" style="position: relative;">
-							<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
-							<canvas id="bar-chart" width="400" height="200"></canvas>
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+					<div class="" style="position: relative;">
+						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
+						<canvas id="bar-chart" width="400" height="200"></canvas>
+
+
+					</div>
+				</div>
+			</div>
+			<div class="card shadow ">
+				<div class="card-header">
+					<div class="row align-items-center">
+						<div class="col">
+							<h4 class="card-title">Participation during times by thematic areas
+								<button id="btn-line" class="btn btn-soft-success btn-sm">
+									<i class="fa fa-download material-icons  "></i>
+								</button>
+							</h4>
+						</div>
+
+					</div>
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+					<div class="" style="position: relative;">
+						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
+<canvas id="line-chart" width="800" height="450"></canvas>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="card shadow ">
+				<div class="card-header">
+					<div class="col ">
+						<h4 class="card-title">Proposals destribution by thematic areas
+							<button id="btn-theme" class="btn btn-soft-success btn-sm">
+								<i class="fa fa-download material-icons  "></i>
+							</button>
+						</h4>
+					</div>
+
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+					<div class="" style="position: relative;">
+						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
+						<canvas id="bar-chart" width="400" height="200"></canvas>
+
+
+					</div>
+				</div>
+			</div>
+			<div class="card shadow ">
+				<div class="card-header">
+					<div class="col ">
+						<h4 class="card-title">Review decisions distribution
+							<button id="btn-revdec-bar" class="btn btn-soft-success btn-sm">
+								<i class="fa fa-download material-icons  "></i>
+							</button>
+						</h4>
+					</div>
+
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+					<div class="" style="position: relative;">
+						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
+						<canvas id="bar-chart2" width="100%" height="50%"></canvas>
+
+
+					</div>
+				</div>
+			</div>
+			<div class="card shadow ">
+				<div class="card-header">
+					<div class="col ">
+						<h4 class="card-title">Gender distibution of proposal submission
+							<button id="btn-gender" class="btn btn-soft-success btn-sm">
+								<i class="fa fa-download material-icons  "></i>
+							</button>
+						</h4>
+					</div>
+
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+					<div class="" style="position: relative;">
+						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
+						<canvas id="doughnut-chart3" width="50" height="25"></canvas>
+
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col col-6">
+					<div class="card shadow ">
+						<div class="card-header">
+							<div class="row align-items-center">
+								<div class="col">
+									<h4 class="card-title">Review decisions distribution
+										<button id="btn-revdec-bar" class="btn btn-soft-success btn-sm">
+											<i class="fa fa-download material-icons  "></i>
+										</button>
+
+									</h4>
+								</div>
+
+							</div>
+						</div>
+						<!--end card-header-->
+						<div class="card-body">
+
+							<canvas id="bar-chart2" width="100%" height="50%"></canvas>
 
 
 						</div>
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="col col-6">
-						<div class="card shadow ">
-							<div class="card-header">
-								<div class="row align-items-center">
-									<div class="col">
-										<h4 class="card-title">Review decisions distribution
-											<button id="btn-revdec-bar" class="btn btn-soft-success btn-sm">
-												<i class="fa fa-download material-icons  "></i>
-											</h4>
-										</div>
-										<!--end col-->
-									{# ds #}
-										<!--end col-->
-									</div>
-								</div>
-								<!--end card-header-->
-								<div class="card-body">
+				<div class="col col-6">
 
-									<canvas id="bar-chart2" width="100%" height="50%"></canvas>
+					<div class="card shadow ">
+						<div class="card-header">
+							<div class="row align-items-center">
 
+								<h4 class="card-title">
+									Gender distibution of proposal submission
 
-								</div>
+									<button id="btn-gender" class="btn btn-soft-success btn-sm">
+										<i class="fa fa-download material-icons  "></i>
+									</button>
+
+								</h4>
+
 							</div>
+							<!--end row-->
 						</div>
+						<!--end card-header-->
+						<div class="card-body">
 
-						<div class="col col-6">
-
-							<div class="card shadow ">
-								<div class="card-header">
-									<div class="row align-items-center">
-
-										<h4 class="card-title">
-											Gender distibution of proposal submission
-
-											<button id="btn-gender" class="btn btn-soft-success btn-sm">
-												<i class="fa fa-download material-icons  "></i>
-											</h4>
-
-										</div>
-										<!--end row-->
-									</div>
-									<!--end card-header-->
-									<div class="card-body">
-
-										<canvas id="doughnut-chart3" width="50" height="25"></canvas>
+							<canvas id="doughnut-chart3" width="50" height="25"></canvas>
 
 
-									</div>
-
-								</div>
-							</div>
 						</div>
 
 					</div>
-					<!--end col-->
-					<div class="col-lg-3">
-						<div class="card shadow ">
-							<div class="card-header">
-								<div class="row align-items-center">
+				</div>
+			</div>
 
-									<h4 class="card-title">
-										<b>Call for proposals
-										</b>
-									</h4>
+		</div>
+		<!--end col-->
+		<div class="col-lg-3">
+			<div class="card shadow ">
+				<div class="card-header">
+					<div class="row align-items-center">
 
-								</div>
-								<!--end row-->
-							</div>
-							<!--end card-header-->
-							<div class="card-body">
+						<h4 class="card-title">
+							<b>Call for proposals
+							</b>
+						</h4>
 
-								<div class="table-responsive mt-2">
-									<table class="table border-dashed mb-0">
-										<thead>
-											<tr>
-												<th>Calls</th>
-												<th>Responses</th>
-											</tr>
-										</thead>
-										<tbody>
-											{% for call_for_proposal in allcalls %}
-
-												<tr>
-													<td>
-
-														<a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" class='btn btn-soft-info btn-xs'>
-
-															{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('m-Y ') : '' }}
-														</a>
-													</td>
-													<td>
-
-														<a href="#" class="avatar-box thumb-xxs align-self-center">
-															<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-																{{ call_for_proposal.submissions |length }}
-															</span>
-
-														</a>
-
-													</td>
-												</tr>
-											{% endfor %}
-
-										</tbody>
-									</table>
-									<div class="navigation">
-										{{ knp_pagination_render(allcalls) }}
-									</div>
-								</div>
-
-							</div>
-						</div>
-						<div class="card shadow ">
-							<div class="card-header">
-								<div class="row align-items-center">
-
-									<h4 class="card-title">
-										<b>Call Responses by themes
-										</b>
-										<button id="btn-call" class="btn btn-soft-success btn-sm">
-											<i class="fa fa-download material-icons  "></i>
-										</h4>
-
-									</div>
-									<!--end row-->
-								</div>
-								<!--end card-header-->
-								<div class="card-body">
-
-									<canvas id="doughnut-chart1" width="100" height="100"></canvas>
-
-
-								</div>
-
-							</div>
-
-							<div class="card shadow ">
-								<div class="card-header">
-									<div class="row align-items-center">
-
-										<h4 class="card-title">
-											<b>Review decision
-											</b>
-											<button id="decisions" class="btn btn-soft-success btn-sm">
-												<i class="fa fa-download material-icons  "></i>
-											</button>
-										</h4>
-
-									</div>
-									<!--end row-->
-								</div>
-								<!--end card-header-->
-								<div class="card-body">
-
-									<canvas id="doughnut-chart2" width="100" height="100"></canvas>
-
-
-								</div>
-
-							</div>
-
-
-							<div class="card shadow ">
-								<div class="card-header">
-									<div class="row align-items-center">
-										<div class="col">
-											<h4 class="card-title">Researchers involvement</h4>
-										</div>
-									</div>
-									<!--end row-->
-								</div>
-								<!--end card-header-->
-								<div class="card-body">
-
-									<div class="table-responsive mt-2">
-										<table class="table border-dashed mb-0">
-
-											<tbody>
-
-												<tr>
-													<td>
-														PIs
-													</td>
-													<td>
-														<a href="#" class="avatar-box thumb-xxs align-self-center">
-															<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-																{{ submissions|length}}
-															</span>
-														</a>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														Co-Authorships
-													</td>
-													<td>
-														<a href="#" class="avatar-box thumb-xxs align-self-center">
-															<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
-																{{ copis|length}}
-															</span>
-														</a>
-
-													</td>
-												</tr>
-
-											</tbody>
-										</table>
-
-									</div>
-									<!--end /div-->
-								</div>
-								<!--end card-body-->
-							</div>
-
-							<div class="card shadow ">
-								<div class="card-header">
-									<div class="row align-items-center">
-										<div class="col">
-											<h4 class="card-title">Reviewers assignments
-												<button id="btn-download" class="btn btn-soft-success btn-sm">
-													<i class="fa fa-download material-icons  "></i>
-												</button>
-											</h4>
-										</div>
-									</div>
-									<!--end row-->
-								</div>
-								<!--end card-header-->
-								<div class="card-body">
-
-									<div class="table-responsive mt-2">
-
-										<canvas id="doughnut-reviewer" width="100" height="50"></canvas>
-
-									</div>
-									<!--end /div-->
-								</div>
-								<!--end card-body-->
-							</div>
-
-							<!--end card-->
-						</div>
-
-						<!--end col-->
 					</div>
-					<script src="{{ asset('plugins/chartjs/chart.min.js')}}"></script>
-					{# <script src="{{ asset('assets/pages/jquery.chartjs.init.js')}}"></script> #}
+					<!--end row-->
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+
+					<div class="table-responsive mt-2">
+						<table class="table border-dashed mb-0">
+							<thead>
+								<tr>
+									<th>Calls</th>
+									<th>Responses</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for call_for_proposal in allcalls %}
+
+									<tr>
+										<td>
+
+											<a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" class='btn btn-soft-info btn-xs'>
+
+												{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('m-Y ') : '' }}
+											</a>
+										</td>
+										<td>
+
+											<a href="#" class="avatar-box thumb-xxs align-self-center">
+												<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+													{{ call_for_proposal.submissions |length }}
+												</span>
+
+											</a>
+
+										</td>
+									</tr>
+								{% endfor %}
+
+							</tbody>
+						</table>
+						<div class="navigation">
+							{{ knp_pagination_render(allcalls) }}
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="card shadow ">
+				<div class="card-header">
+					<div class="row align-items-center">
+
+						<h4 class="card-title">
+							<b>Call Responses by themes
+							</b>
+							<button id="btn-call" class="btn btn-soft-success btn-sm">
+								<i class="fa fa-download material-icons  "></i>
+							</button>
+
+						</h4>
+
+					</div>
+					<!--end row-->
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+
+					<canvas id="doughnut-chart1" width="100" height="100"></canvas>
 
 
-					<script type="text/javascript">
+				</div>
 
-						const myBarChart = new Chart(document.getElementById("bar-chart"), {
+			</div>
+
+			<div class="card shadow ">
+				<div class="card-header">
+					<div class="row align-items-center">
+
+						<h4 class="card-title">
+							<b>Review decision
+							</b>
+							<button id="decisions" class="btn btn-soft-success btn-sm">
+								<i class="fa fa-download material-icons  "></i>
+							</button>
+
+						</button>
+					</h4>
+
+				</div>
+				<!--end row-->
+			</div>
+			<!--end card-header-->
+			<div class="card-body">
+
+				<canvas id="doughnut-chart2" width="100" height="100"></canvas>
+
+
+			</div>
+
+		</div>
+
+
+		<div class="card shadow ">
+			<div class="card-header">
+				<div class="row align-items-center">
+					<div class="col">
+						<h4 class="card-title">Researchers involvement</h4>
+					</div>
+				</div>
+				<!--end row-->
+			</div>
+			<!--end card-header-->
+			<div class="card-body">
+
+				<div class="table-responsive mt-2">
+					<table class="table border-dashed mb-0">
+
+						<tbody>
+
+							<tr>
+								<td>
+									PIs
+								</td>
+								<td>
+									<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+											{{ submissions|length}}
+										</span>
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Co-Authorships
+								</td>
+								<td>
+									<a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-success rounded-circle font-13 font-weight-normal">
+											{{ copis|length}}
+										</span>
+									</a>
+
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+
+				</div>
+				<!--end /div-->
+			</div>
+			<!--end card-body-->
+		</div>
+
+		<div class="card shadow ">
+			<div class="card-header">
+				<div class="row align-items-center">
+					<div class="col">
+						<h4 class="card-title">Reviewers assignments
+							<button id="btn-download" class="btn btn-soft-success btn-sm">
+								<i class="fa fa-download material-icons  "></i>
+							</button>
+						</h4>
+					</div>
+				</div>
+				<!--end row-->
+			</div>
+			<!--end card-header-->
+			<div class="card-body">
+
+				<div class="table-responsive mt-2">
+
+					<canvas id="doughnut-reviewer" width="100" height="50"></canvas>
+
+				</div>
+				<!--end /div-->
+			</div>
+			<!--end card-body-->
+		</div>
+
+		<!--end card-->
+	</div>
+ {% for call in allcalls %}
+    labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+	    datasets: [{ 
+        data: [86,114,106,106,107,111,133,221,783,2478],
+        label: "{{call.researchType}}",
+        borderColor: "#{{call.id}}e95c",
+        fill: false
+      },
+	  {% endfor  %}
+	<!--end col-->
+</div>
+<script src="{{ asset('plugins/chartjs/chart.min.js')}}"></script>
+{# <script src="{{ asset('assets/pages/jquery.chartjs.init.js')}}"></script> #}
+ 
+<script type="text/javascript">
+{# const labels = Utils.months({count: 10}); #}
+ const linechart = new Chart(document.getElementById("line-chart"), {
+  type: 'line',
+  data: {
+    labels: [{% for call in all_calls %} {{call.PostDate|date('m')}}, {% endfor  %} ],
+	    datasets: [
+			 {% for call in all_calls %}
+
+			{ 
+        data: [{% for call in all_calls %} {{call.submissions|length}}, {% endfor  %}],
+        label: "{{ call.researchType}}",
+        borderColor: "#c4585{{call.id}}",
+        fill: false
+      }, 
+	  
+	  {% endfor  %}
+	   
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Proposal submisisons in years'
+    }
+  }
+});
+
+
+</script>
+<script type="text/javascript">
+
+	const myBarChart = new Chart(document.getElementById("bar-chart"), {
 type: 'bar',
 data: {
 labels: [{% for theanswer in bythemes %}'{{ (theanswer.name|raw |length > 25 ? theanswer.name |raw |slice(0,  25) ~ '..' : theanswer.name |raw ) }}',{% endfor %}],
@@ -513,36 +641,28 @@ text: "Responses "
 const myDon2Chart = new Chart(document.getElementById("doughnut-chart2"), {
 type: 'doughnut',
 data: {
-labels: [{% for theanswer in desision %}
+labels: [{% for theanswer in desision %}{% if  theanswer.decision == 1 %}'Declined'
+{% elseif  theanswer.decision==2 %}
 
+'Accepted with major revision '
+{% elseif   theanswer.decision==3 %}
 
-{% if  theanswer.decision == 1 %}
-											 'Declined'
-											{% elseif  theanswer.decision==2 %}
-										 
-											'Accepted with major revision '
-											{% elseif   theanswer.decision==3 %}
- 
-	'Accepted with minor revision'  
-											{% elseif  theanswer.decision==4 %}
- 
-	'Accepted'   
-										 
-									{% endif   %}
-,{% endfor %}],
+'Accepted with minor revision'
+{% elseif  theanswer.decision==4 %}
+
+'Accepted'
+
+{% endif %},{% endfor %}],
 datasets: [
 {
 label: "  completion status",
 backgroundColor: [
-"#8abfdb",
-"#a787ab",
-"#e8c3b9",
-"#3cba9f"
+"#8abfdb", "#a787ab", "#e8c3b9", "#3cba9f"
 ],
 data: [{% for theanswer in desision %}'{{ theanswer.proposals }}',{% endfor %}]
 }
 ]
-}	,
+},
 options: {
 legend: {
 display: false
@@ -564,7 +684,7 @@ datasets: [
 label: "  Gender distribution",
 backgroundColor: [
 
-"#5499d6", "#e082f5"  
+"#5499d6", "#e082f5"
 ],
 data: [{% for theanswer in gender_distribution %}'{{ theanswer.Proposals }}',{% endfor %}]
 }
@@ -585,33 +705,24 @@ text: "Responses by Gender "
 const myBar2Chart = new Chart(document.getElementById("bar-chart2"), {
 type: 'bar',
 data: {
-labels: [{% for theanswer in desision %}
+labels: [{% for theanswer in desision %}{% if  theanswer.decision==1 %}'Declined'
+{% elseif  theanswer.decision==2 %}
 
-{% if  theanswer.decision==1 %}
-											 'Declined'
-											{% elseif  theanswer.decision==2 %}
-										 
-											'Accepted with major revision '
-											{% elseif   theanswer.decision==3 %}
- 
-	'Accepted with minor revision'  
-											{% elseif  theanswer.decision==4 %}
- 
-	'Accepted'   
-										 
-									{% endif   %}
+'Accepted with major revision '
+{% elseif   theanswer.decision==3 %}
 
+'Accepted with minor revision'
+{% elseif  theanswer.decision==4 %}
 
-,{% endfor %}],
+'Accepted'
+
+{% endif %},{% endfor %}],
 datasets: [
 {
 
 
 backgroundColor: [
-"#8dadf7",
-"#a787ab",
-"#e8c3b9",
-"#3cba9f"
+"#8dadf7", "#a787ab", "#e8c3b9", "#3cba9f"
 ],
 data: [{% for theanswer in desision %}'{{ theanswer.proposals }}',{% endfor %}]
 }
@@ -667,6 +778,18 @@ text: " Reviewer distribution "
 }
 }
 });
+
+// Get the chart's base64 image string
+var image = linechart.toBase64Image();
+console.log(image);
+
+document.getElementById('btn-line').onclick = function () { // Trigger the download
+var a = document.createElement('a');
+a.href = linechart.toBase64Image();
+a.download = 'line-submissions.png';
+a.click();
+}
+
 
 // Get the chart's base64 image string
 var image = myBarChart.toBase64Image();
@@ -737,8 +860,4 @@ a.href = myDonChart.toBase64Image();
 a.download = 'call response-s.png';
 a.click();
 }
-					</script>
-
-
-				{% endblock %}
-				{% block javascript %}{% endblock %}
+</script>{% endblock %}{% block javascript %}{% endblock %}

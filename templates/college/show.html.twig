@@ -5,7 +5,8 @@
 
 {% block body %}
 
-<a href="{{path('college_index')}}"> All colleges</a>
+	<a href="{{path('college_index')}}" class="btn btn-soft-primary">
+		All colleges</a>
 	<h1>{{college.name}}</h1>
 	<div class="row">
 		<div class="col-lg-12">
@@ -44,7 +45,7 @@
 									<tbody>
 										<tr>
 											<td class="desc">
-												 
+
 												<p class="medium">
 													{{ college.description |raw}}
 												</p>
@@ -56,45 +57,16 @@
 														Description:</h4>
 													{{ college.description |raw}}
 												</p>
-												<h4 class='text-default'> Identification  Code</h4>
+												<h4 class='text-default'>
+													Identification  Code</h4>
 												{{ college.identificationCode }}
 												<p>
 													<h4 class='text-default'>
 														Objective</h4>
 													{{ college.Objective }}
 
-													<h4 class='text-default'>
-														Institutional Reviewers Board
-													</h4>
 
-													<div class='profiles'>
-														<table class='table table-striped text-left'>
-															<thead>
-																<tr>
-																	<th>#</th>
-																	<th>Specialization</th>
-																	<th>Affiliation</th>
-
-																</tr>
-															</thead>
-															<tbody>
-																{% for institutional_reviewers_board in institutional_reviewers_boards %}
-																	<tr style="text-align:left">
-																		<td>{{ institutional_reviewers_board.id }}</td>
-																		<td style="text-align:left">{{ institutional_reviewers_board.specialization }}</td>
-																		<td style="text-align:left" nowrap="nowrap">{{ institutional_reviewers_board.affiliation }}</td>
-
-																	</tr>
-																{% else %}
-																	<tr>
-																		<td colspan="4">no records found</td>
-																	</tr>
-																{% endfor %}
-															</tbody>
-														</table>
-													</div>
-
-													<h4 class='text-success'>
+													<h4 class=''>
 														Mission</h4>
 													{{ college.mission|raw }}
 													<div class="m-t-sm">
@@ -125,8 +97,8 @@
 											<td>{{ thematic_area.name }}</td>
 
 											<td nowrap="nowrap">
-												<a href="{{ path('thematic_area_show', {'id': thematic_area.id}) }}">show</a>
-												<a href="{{ path('thematic_area_edit', {'id': thematic_area.id}) }}">edit</a>
+												<a href="{{ path('thematic_area_show', {'id': thematic_area.id}) }}" class="btn btn-soft-primary">show</a>
+												<a href="{{ path('thematic_area_edit', {'id': thematic_area.id}) }}" class="btn btn-soft-warning">edit</a>
 											</td>
 										</tr>
 									{% else %}
@@ -164,8 +136,8 @@
 											<td>{{ loop.index }}</td>
 											<td>{{ guideline.guideline|raw }}</td>
 											<td>
-												<a href="{{ path('guidelines_show', {'id': guideline.id}) }}">show</a>
-												<a href="{{ path('guidelines_edit', {'id': guideline.id}) }}">edit</a>
+												<a href="{{ path('guidelines_show', {'id': guideline.id}) }}" class="btn btn-soft-primary">show</a>
+												<a href="{{ path('guidelines_edit', {'id': guideline.id}) }}" class="btn btn-soft-warning">edit</a>
 											</td>
 										</tr>
 									{% else %}
@@ -175,9 +147,9 @@
 									{% endfor %}
 								</tbody>
 							</table>
-							<
+
 							<h4 class='text-primary'>
-								  Guideline For PI
+								Guideline For PI
 							</h4>
 							{{ form_start(guidelineform) }}
 							{{ form_widget(guidelineform) }}
@@ -187,41 +159,41 @@
 							<h4 class='text-primary'>
 								Guideline For Reviewers
 							</h4>
-							 
-									{% for guideline_for_reviewer in guideline_for_reviewers %}
-										 
-											<b>{{ guideline_for_reviewer.name }}</b>
-											 <br>{{ guideline_for_reviewer.theGuidelline |raw }} 
 
-											  <br>
-											  <a class="badge bg-primary" href="{{ asset('files/guidelines/'~ college.guidelineForReviewer.attachment ) }}">
-							Assessment Guideline   PDF
-							<i class="fa fa-download"></i>
-						</a>
+							{% for guideline_for_reviewer in guideline_for_reviewers %}
 
-						<br>
-						<br>
+								<b>{{ guideline_for_reviewer.name }}</b>
+								<br>{{ guideline_for_reviewer.theGuidelline |raw }}
 
-						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~  college.guidelineForReviewer.evaluationfrom ) }}">
-							Grading Form PDF
-							<i class="fa fa-download"></i>
-						</a>
-	<br>
-<br>
+								<br>
+								<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ college.guidelineForReviewer.attachment ) }}">
+									Assessment Guideline   PDF
+									<i class="fa fa-download"></i>
+								</a>
 
-						<a class="badge bg-primary" href="{{ asset('files/guidelines/'~  college.guidelineForReviewer.commentfrom ) }}">
-							Evaluation Report Form PDF
-							<i class="fa fa-download"></i>
-						</a>
+								<br>
+								<br>
 
-									{% else %}
-										 no records found 
-									{% endfor %} 
-							<h4 class='text-primary'>New  Guideline For reviewers
+								<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ college.guidelineForReviewer.evaluationfrom ) }}">
+									Grading Form PDF
+									<i class="fa fa-download"></i>
+								</a>
+								<br>
+								<br>
+
+								<a class="badge bg-primary" href="{{ asset('files/guidelines/'~ college.guidelineForReviewer.commentfrom ) }}">
+									Evaluation Report Form PDF
+									<i class="fa fa-download"></i>
+								</a>
+
+							{% else %}
+								no records found
+							{% endfor %}
+							<h4 class='text-primary'>   Guideline For reviewers
 							</h4>
 							{{ form_start(formguidelineforReviewer) }}
 							{{ form_widget(formguidelineforReviewer) }}
-							<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+							<button class="btn btn-soft-primary">{{ button_label|default('Save') }}</button>
 							{{ form_end(formguidelineforReviewer) }}
 
 						</div>
@@ -239,7 +211,7 @@
 			<!--end card-->
 		</div>
 
- 
+
 	</div>
 
 
