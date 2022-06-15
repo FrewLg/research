@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Entity\CallForProposal;
 use App\Entity\Submission;
+use App\Entity\ThematicArea;
 use App\Entity\TrainingParticipant;
 use App\Utils\Constants;
 use Knp\Component\Pager\PaginatorInterface;
@@ -249,8 +250,8 @@ class ExportController extends AbstractController {
         $spreadsheet = new Spreadsheet();
         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
 
-        $submissions = $em->getRepository(Submission::class)->submissionByThemeCall($call);
-        dd($submissions);
+        $submissions = $em->getRepository(ThematicArea::class)->submissionByThemeCall($call);
+        // dd($submissions);
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'No.');
         $sheet->setCellValue('B1', 'Thematic area.');
@@ -259,22 +260,35 @@ class ExportController extends AbstractController {
         $sheet->setCellValue('E1', 'PI\'s Institute');
         $sheet->setTitle("Researchs by Thematic areas ");
         $counter = 2;
-        foreach ($submissions as $phoneNumber) {
+        // dd($submissions );
+        $allsubs = array( $submissions); 
+
+    $firstKey = array_key_first($submissions); 
+
+var_dump($firstKey);
+// dd($firstKey);
+        foreach ($allsubs  as $phoneNumber  ) {
             $sheet->setCellValue('A' . $counter, $counter);
-            $sheet->setCellValue('B' . $counter, $phoneNumber->getName());
+            // $sheet->setCellValue('B' . $counter, $phoneNumber->getName());
             // $sheet->setCellValue('D' . $counter, $phoneNumber->getAuthor());
             $counter2 = 2;
+            // foreach ($phoneNumber->getThematicArea() as $mis){
+dd($phoneNumber);
+            // } 
+
+        // $firstKey = array_key_first($array);
             ########################
             // $sheet->setCellValue('C' . $counter, $phoneNumber->getAuthor()->getUserInfo());
-
-            foreach ($phoneNumber->getTemeSubmissions($call) as $CoAuthors) {
+// echo $phoneNumber->getName().'<br>';
+            foreach ($phoneNumber->getSubmissions(['callForProposal'=>$call]) as $CoAuthors) {
                 // foreach ($em->getRepository(ThematicArea::class)->submissionByCall($call )->getSubmissions() as $CoAuthors) {
                 $sheet->setCellValue('C' . $counter, $CoAuthors->getTitle());
                 $sheet->setCellValue('D' . $counter, $CoAuthors->getAuthor());
                 $sheet->setCellValue('E' . $counter, $CoAuthors->getAuthor()->getUserInfo()->getCollege());
                 //  $counter++;
                 $counter2++;
-
+// echo $CoAuthors->getTitle().'<br>';
+// echo $CoAuthors->getAuthor().'<br>'; 
                 $counter++;
                 $counter2++;
             }
@@ -282,6 +296,7 @@ class ExportController extends AbstractController {
 ############################
             // $counter++;
         }
+        dd($submissions );
         $writer = new Xlsx($spreadsheet);
         $fileName = 'Researchers.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);

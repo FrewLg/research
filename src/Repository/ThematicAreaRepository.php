@@ -6,6 +6,9 @@ use App\Entity\CallForProposal;
 use App\Entity\College;
 use App\Entity\ThematicArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -53,16 +56,7 @@ class ThematicAreaRepository extends ServiceEntityRepository
         ;
     }
     ///
-    public function getThematicAreaSubmissions(CallForProposal $call   )
-    {
-        return $this->createQueryBuilder('t')
-
-        ->andWhere("t.college = :college")
-        ->leftJoin("App:CallForProposal",  "c.id=call")
-         ->setParameter('call', $call)
-         ->getQuery()->getResult();
-    }
-
+  
     public function submissionByCall($value)
     {
        return $this->createQueryBuilder('a')
@@ -79,25 +73,42 @@ class ThematicAreaRepository extends ServiceEntityRepository
             ;
         }
 
-        public function submissionByThemeCall($value) 
+        public function dsubmissionByThemeCall($value) 
         {
-           return $this->createQueryBuilder('a')
-                    ->innerJoin('a.callForProposal', 'd')
-                    ->innerJoin('a.submissions', 's')
-                    ->innerJoin('d.thematicArea', 't') 
-                    ->andWhere('d.id = :e') 
-                    ->andWhere('s.callForProposal = :call') 
-                    ->setParameter('e', $value)
-                    ->setParameter('call', $value)
-                     ->orderBy('a.id', 'ASC') 
-                // ->groupBy('t.id')
-
-                    ->getQuery()
-                    
-                    ->getArrayResult()
-                ;
-            }
+            $qb= $this->createQueryBuilder('c');
+            // ->select("count(s.id)");
+            $userpublication = $qb
+            // ->select('t.name as name , s.title as title ,  u.username')
+             ->innerJoin('c.submissions', 's')
+            ->innerJoin('s.callForProposal','sc') 
+             ->andWhere('sc.id  =:id') 
+             ->setParameter('id', $value)
+              ->getQuery()->getResult();
     
+            return   $userpublication 
+            ;
+        } 
+    
+            public function submissionByThemeCall( $value) 
+        {
+            //  $entityManager = $this->getDoctrine()->getManager();
+            // $qb= $this->createQueryBuilder('c');
+            $query = $this->getEntityManager()
+            ->createQuery(
+              'SELECT t.name, a.first_name, c.id, s.title 
+               FROM App:ThematicArea t
+               JOIN t.submissions s
+               JOIN s.callForProposal c
+               JOIN s.author u
+               JOIN u.userInfo a
+               WHERE c.id =:val')
+            ->setParameter('val', $value);
+            // ->setParameter('cstatus', 'completed');
+            $recepients = $query->getScalarResult();
+            return   $recepients;
+        }  
+
+
     /*
     public function findOneBySomeField($value): ?ThematicArea
     {

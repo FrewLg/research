@@ -82,5 +82,31 @@ class CallForProposalRepository extends ServiceEntityRepository
         return $qb
             ->orderBy("c.id", "DESC")
             ->getQuery();
-    }
+ 
+        }
+
+        public function submissionByThemeCall($value)
+        {
+            $qb= $this->createQueryBuilder('c');
+            // ->select("count(s.id)");
+            $userpublication = $qb
+            // ->select('t.name as name , s.title as title ,  u.username')
+            ->innerJoin('c.thematicArea', 't')
+            ->innerJoin('c.submissions', 's')
+            ->leftJoin('s.callForProposal','sc')
+
+            ->andWhere('c.id = :call')
+            ->andWhere('sc.id     =:id')
+             
+            ->setParameter('id', $value)
+            ->setParameter('call', $value)
+            // ->groupBy('t.id')
+            ->getQuery()->getResult();
+    
+            return   $userpublication 
+            ;
+        }  
+
+      
+    
 }

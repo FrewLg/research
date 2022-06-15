@@ -241,24 +241,27 @@ class SubmissionRepository extends ServiceEntityRepository
         }
   
             
-    public function submissionByThemeCall($value)
-    {
-        $qb= $this->createQueryBuilder('s');
-        // ->select("count(s.id)");
-        $userpublication = $qb
-        ->select('t.name as name , s.title as title ,  u.username')
-        // ->from('App\Entity\Submission' ,'t')
-        ->innerJoin('s.callForProposal', 'c')
-        ->innerJoin('s.author', 'u')
-        ->innerJoin('s.thematic_area', 't')
-        ->andWhere('c.id = :call')
-        ->setParameter('call', $value)
-        // ->groupBy('t.id')
-        ->getQuery()->getScalarResult();
+        public function submissionByThemeCall($value)
+        {
+            $qb= $this->createQueryBuilder('c');
+            // ->select("count(s.id)");
+            $userpublication = $qb
+            // ->select('t.name as name , s.title as title ,  u.username')
+            ->innerJoin('c.thematicArea', 't')
+            ->innerJoin('c.submissions', 's')
+            ->leftJoin('s.callForProposal','sc')
 
-        return   $userpublication 
-        ;
-    }  
+            ->andWhere('c.id = :call')
+            ->andWhere('sc.id     =:id')
+             
+            ->setParameter('id', $value)
+            ->setParameter('call', $value)
+            // ->groupBy('t.id')
+            ->getQuery()->getResult();
+    
+            return   $userpublication 
+            ;
+        } 
 
 
     // public function findBySStatus(): ?Submission
