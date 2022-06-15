@@ -25,7 +25,7 @@
 
 											{{submissions|length}}
 										</span>
-										Response</p>
+										Subs</p>
 								</div>
 								<div class="col-auto align-self-center">
 									<div class="report-main-icon bg-light-alt">
@@ -164,7 +164,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="card shadow ">
+			{# <div class="card shadow ">
 				<div class="card-header">
 					<div class="row align-items-center">
 						<div class="col">
@@ -185,9 +185,9 @@
 
 					</div>
 				</div>
-			</div>
+			</div> #}
 
-			<div class="card shadow ">
+			{# <div class="card shadow ">
 				<div class="card-header">
 					<div class="col ">
 						<h4 class="card-title">Proposals destribution by thematic areas
@@ -202,12 +202,11 @@
 				<div class="card-body">
 					<div class="" style="position: relative;">
 						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
-						<canvas id="bar-chart" width="400" height="200"></canvas>
-
+					<canvas id="bubble-chart" width="800" height="500"></canvas>
 
 					</div>
 				</div>
-			</div>
+			</div> #}
 			<div class="card shadow ">
 				<div class="card-header">
 					<div class="col ">
@@ -250,8 +249,27 @@
 					</div>
 				</div>
 			</div>
+			{# <div class="card shadow ">
+				<div class="card-header">
+					<div class="col ">
+						<h4 class="card-title">Submissions
+							<button id="btn-subs" class="btn btn-soft-success btn-sm">
+								<i class="fa fa-download material-icons  "></i>
+							</button>
+						</h4>
+					</div>
 
-			<div class="row">
+				</div>
+ 				<div class="card-body">
+					<div class="" style="position: relative;">
+						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
+				<canvas id="bubble-chart" width="800" height="600"></canvas>
+
+					</div>
+				</div>
+			</div> #}
+
+			{# <div class="row">
 				<div class="col col-6">
 					<div class="card shadow ">
 						<div class="card-header">
@@ -305,7 +323,7 @@
 
 					</div>
 				</div>
-			</div>
+			</div> #}
 
 		</div>
 		<!--end col-->
@@ -500,38 +518,27 @@
 
 		<!--end card-->
 	</div>
- {% for call in allcalls %}
-    labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
-	    datasets: [{ 
-        data: [86,114,106,106,107,111,133,221,783,2478],
-        label: "{{call.researchType}}",
-        borderColor: "#{{call.id}}e95c",
-        fill: false
-      },
-	  {% endfor  %}
+ 
+      
+
 	<!--end col-->
 </div>
 <script src="{{ asset('plugins/chartjs/chart.min.js')}}"></script>
-{# <script src="{{ asset('assets/pages/jquery.chartjs.init.js')}}"></script> #}
- 
+ {#  
 <script type="text/javascript">
-{# const labels = Utils.months({count: 10}); #}
- const linechart = new Chart(document.getElementById("line-chart"), {
+  const linechart = new Chart(document.getElementById("line-chart"), {
   type: 'line',
   data: {
-    labels: [{% for call in all_calls %} {{call.PostDate|date('m')}}, {% endfor  %} ],
+    labels: [{% for call in all_calls %} {{call.PostDate|date('ymds')}}, {% endfor  %} ],
 	    datasets: [
-			 {% for call in all_calls %}
-
+			 {% for call in all_calls %} 
 			{ 
-        data: [{% for call in all_calls %} {{call.submissions|length}}, {% endfor  %}],
-        label: "{{ call.researchType}}",
-        borderColor: "#c4585{{call.id}}",
+        data: [{% for call in all_calls %}{{call.submissions|filter(call =>  call.id == call.id ) |length}}, {% endfor  %}],
+ 		label: [{% for theanswer in call.thematicArea %}'{{ (theanswer.name|raw |length > 25 ? theanswer.name |raw |slice(0,  25) ~ '..' : theanswer.name |raw ) }}',{% endfor %}],
+        borderColor: "#3e95c{{call.id}}",
         fill: false
-      }, 
-	  
-	  {% endfor  %}
-	   
+      },  
+	  {% endfor  %} 
     ]
   },
   options: {
@@ -540,10 +547,8 @@
       text: 'Proposal submisisons in years'
     }
   }
-});
-
-
-</script>
+}); 
+</script> #}
 <script type="text/javascript">
 
 	const myBarChart = new Chart(document.getElementById("bar-chart"), {
@@ -598,7 +603,7 @@ text: 'Proposals  destribution by thematic areas'
 
 
 const myDonChart = new Chart(document.getElementById("doughnut-chart1"), {
-type: 'doughnut',
+type: 'polarArea',
 data: {
 labels: [{% for theanswer in bythemes %}'{{ (theanswer.name|raw |length > 25 ? theanswer.name |raw |slice(0,  25) ~ '..' : theanswer.name |raw ) }}',{% endfor %}],
 datasets: [
@@ -639,7 +644,7 @@ text: "Responses "
 });
 
 const myDon2Chart = new Chart(document.getElementById("doughnut-chart2"), {
-type: 'doughnut',
+type: 'polarArea',
 data: {
 labels: [{% for theanswer in desision %}{% if  theanswer.decision == 1 %}'Declined'
 {% elseif  theanswer.decision==2 %}
@@ -673,6 +678,8 @@ text: "Review Decision "
 }
 }
 });
+
+ 
 
 
 const myChart = new Chart(document.getElementById("doughnut-chart3"), {
@@ -860,4 +867,71 @@ a.href = myDonChart.toBase64Image();
 a.download = 'call response-s.png';
 a.click();
 }
-</script>{% endblock %}{% block javascript %}{% endblock %}
+</script>
+<script type="text/javascript">
+ const mybubble = new Chart(document.getElementById("bubble-chart"), {
+    type: 'bubble',
+    data: {
+      labels: "Africa",
+      datasets: [
+        {
+          label: ["China"],
+          backgroundColor: "rgba(255,221,50,0.2)",
+          borderColor: "rgba(255,221,50,1)",
+          data: [{
+            x: 21269017,
+            y: 5.245,
+            r: 15
+          }]
+        }, {
+          label: ["Denmark"],
+          backgroundColor: "rgba(60,186,159,0.2)",
+          borderColor: "rgba(60,186,159,1)",
+          data: [{
+            x: 258702,
+            y: 7.526,
+            r: 10
+          }]
+        }, {
+          label: ["Germany"],
+          backgroundColor: "rgba(0,0,0,0.2)",
+          borderColor: "#000",
+          data: [{
+            x: 3979083,
+            y: 6.994,
+            r: 15
+          }]
+        }, {
+          label: ["Japan"],
+          backgroundColor: "rgba(193,46,12,0.2)",
+          borderColor: "rgba(193,46,12,1)",
+          data: [{
+            x: 4931877,
+            y: 5.921,
+            r: 15
+          }]
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Submissions'
+      }, scales: {
+        yAxes: [{ 
+          scaleLabel: {
+            display: true,
+            labelString: "Happiness"
+          }
+        }],
+        xAxes: [{ 
+          scaleLabel: {
+            display: true,
+            labelString: "GDP (PPP)"
+          }
+        }]
+      }
+    }
+}); 
+</script>
+{% endblock %}{% block javascript %}{% endblock %}

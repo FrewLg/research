@@ -147,12 +147,9 @@
 						<div class="col">
 							<h4 class="card-title">Proposals destribution by thematic areas
 								<button id="btn-theme" class="btn btn-soft-success btn-sm">
-									<i class="fa fa-download material-icons  "></i>
+									<i class="fa fa-download material-icons  "></i></button>
 								</h4>
-							</div>
-							<!--end col-->
-						{# ds #}
-							<!--end col-->
+							</div> 
 						</div>
 					</div>
 					<!--end card-header-->
@@ -167,6 +164,7 @@
 				</div>
 
 				<div class="row">
+
 					<div class="col col-6">
 						<div class="card shadow ">
 							<div class="card-header">
@@ -174,24 +172,23 @@
 									<div class="col">
 										<h4 class="card-title">Review decisions distribution
 											<button id="btn-revdec-bar" class="btn btn-soft-success btn-sm">
-												<i class="fa fa-download material-icons  "></i>
+												<i class="fa fa-download material-icons  "></i></button>
 											</h4>
-										</div>
-										<!--end col-->
-									{# ds #}
-										<!--end col-->
+										</div> 
 									</div>
 								</div>
-								<!--end card-header-->
-								<div class="card-body">
+ 								<div class="card-body">
+						{% if desision %}
 
 									<canvas id="bar-chart2" width="100%" height="50%"></canvas>
+{% else %}
+Review process is not started in this call
+{% endif %}
 
 
 								</div>
 							</div>
 						</div>
-
 						<div class="col col-6">
 
 							<div class="card shadow ">
@@ -302,6 +299,7 @@
 								</div>
 
 							</div>
+						{% if desision %}
 
 							<div class="card shadow ">
 								<div class="card-header">
@@ -316,10 +314,8 @@
 										</h4>
 
 									</div>
-									<!--end row-->
-								</div>
-								<!--end card-header-->
-								<div class="card-body">
+ 								</div>
+ 								<div class="card-body">
 
 									<canvas id="doughnut-chart2" width="100" height="100"></canvas>
 
@@ -328,7 +324,7 @@
 
 							</div>
 
-
+{% endif  %}
 							<div class="card shadow ">
 								<div class="card-header">
 									<div class="row align-items-center">
@@ -380,7 +376,7 @@
 								</div>
 								<!--end card-body-->
 							</div>
-
+{% if allext+all >0 %}
 							<div class="card shadow ">
 								<div class="card-header">
 									<div class="row align-items-center">
@@ -392,10 +388,8 @@
 											</h4>
 										</div>
 									</div>
-									<!--end row-->
-								</div>
-								<!--end card-header-->
-								<div class="card-body">
+ 								</div>
+ 								<div class="card-body">
 
 									<div class="table-responsive mt-2">
 
@@ -406,7 +400,7 @@
 								</div>
 								<!--end card-body-->
 							</div>
-
+{% endif %}
 							<!--end card-->
 						</div>
 
@@ -470,7 +464,7 @@ text: 'Proposals  destribution by thematic areas'
 
 
 const myDonChart = new Chart(document.getElementById("doughnut-chart1"), {
-type: 'doughnut',
+type: 'polarArea',
 data: {
 labels: [{% for theanswer in bythemes %}'{{ (theanswer.name|raw |length > 25 ? theanswer.name |raw |slice(0,  25) ~ '..' : theanswer.name |raw ) }}',{% endfor %}],
 datasets: [
@@ -553,7 +547,8 @@ text: "Review Decision "
 }
 }
 });
-
+</script>
+<script type='text/javascript'>
 
 const myChart = new Chart(document.getElementById("doughnut-chart3"), {
 type: 'doughnut',
@@ -668,6 +663,8 @@ text: " Reviewer distribution "
 }
 });
 
+</script>
+<script type='text/javascript'>
 // Get the chart's base64 image string
 var image = myBarChart.toBase64Image();
 console.log(image);
