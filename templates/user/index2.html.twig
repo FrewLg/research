@@ -27,20 +27,20 @@
 
 	<div class="card  m-0">
 
- 			<div class="card-header">
+		<div class="card-header">
 
-				<h4>Users ({{users.totalItemCount}})</h4>
-				<form class="form-inline card-title" method="get">
-					<div class="input-group ">
-						<input class="form-control" autocomplete="off" value="{{app.request.query.get('search')}}" name="search" type="search" placeholder="Search" aria-label="Search">
-						<div class="input-group-append">
-							<button class=" input-group-text btn btn-navbar  " type="submit">
-								<i class="fas fa-search"></i>
-							</button>
-						</div>
+			<h4>Users ({{users.totalItemCount}})</h4>
+			<form class="form-inline card-title" method="get">
+				<div class="input-group ">
+					<input class="form-control" autocomplete="off" value="{{app.request.query.get('search')}}" name="search" type="search" placeholder="Search" aria-label="Search">
+					<div class="input-group-append">
+						<button class=" input-group-text btn btn-navbar  " type="submit">
+							<i class="fas fa-search"></i>
+						</button>
 					</div>
-				</form> 
-			</div> 
+				</div>
+			</form>
+		</div>
 		<div class="card-body m-0">
 			<div class="row m-0">
 
@@ -107,14 +107,14 @@
 									<td>{{ user.lastLoginAgo }}</td>
 									<td>
 										{# <a href="{{ path('user_show', {'id': user.id}) }}" class="btn btn-info btn-sm" title="show">
-																													<i class="fa fa-eye"></i>
-																				</a> #}
+																																							<i class="fa fa-eye"></i>
+																														</a> #}
 										<a href="{{ path('researcher', {'id': user.id}) }}" class="btn btn-primary  btn-sm" title="Profile">
 											<i class="fa fa-user"></i>
 										</a>
 										{# <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-warning btn-sm" title="edit">
-																																							<i class="fa fa-pen"></i>
-																													</a> #}
+																																																	<i class="fa fa-pen"></i>
+																																							</a> #}
 									</td>
 								</tr>
 							{% else %}

@@ -19,13 +19,17 @@ class ChangePasswordFormType extends AbstractType
 
             ->add('password', PasswordType::class, [
                 'label'=>"Old password",
-                'attr' => ['autocomplete' => 'new-password'], 
+                'attr' => ['autocomplete' => 'new-password',
+            'class'=>'form-control',
+            ], 
                 'required' => true,  
             ]) 
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
                 'options' => ['attr' => ['class' => 'password-field',
+            'class'=>'form-control',
+
                 'autocomplete' => 'new-password'
                 ]]   ,
            

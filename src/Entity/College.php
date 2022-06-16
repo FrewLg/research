@@ -29,6 +29,10 @@ class College
      * @ORM\OneToMany(targetEntity=CollegeCoordinator::class, mappedBy="college")
      */
     private $collegeCoordinators;
+    /**
+     * @ORM\OneToMany(targetEntity=UserInfo::class, mappedBy="college")
+     */
+    private $registeredUsers;
 
     /**
      * @ORM\OneToMany(targetEntity=Department::class, mappedBy="college")
@@ -123,6 +127,7 @@ class College
     public function __construct()
     {
         $this->collegeCoordinators = new ArrayCollection();
+        $this->registeredUsers = new ArrayCollection();
         $this->departments = new ArrayCollection();
         $this->callForProposals = new ArrayCollection();
         $this->applications = new ArrayCollection();
@@ -160,6 +165,13 @@ class College
    return $this->name;
     }
     
+    /**
+     * @return Collection|UserInfo[]
+     */
+    public function getRegisteredUsers(): Collection
+    {
+        return $this->registeredUsers;
+    }
     /**
      * @return Collection|CollegeCoordinator[]
      */

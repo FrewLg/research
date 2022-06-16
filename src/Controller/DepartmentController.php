@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\College;
 use App\Entity\Department;
 use App\Form\DepartmentType;
 use App\Repository\DepartmentRepository;
@@ -18,8 +19,12 @@ class DepartmentController extends AbstractController
     {
     $this->denyAccessUnlessGranted('vw_dept');
 
+    $entityManager = $this->getDoctrine()->getManager();
+    $college = $entityManager->getRepository(College::class)->findAll();
+
         return $this->render('department/index.html.twig', [
-            'departments' => $departmentRepository->findBy(['college'=>$this->getUser()->getUserInfo()->getCollege()]),
+            'alldepartments' => $departmentRepository->findBy(['college'=>$this->getUser()->getUserInfo()->getCollege()]),
+            'departments' => $college,
         ]);
     }
 

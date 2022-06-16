@@ -73,7 +73,7 @@ class ThematicAreaRepository extends ServiceEntityRepository
             ;
         }
 
-        public function dsubmissionByThemeCall($value) 
+        public function submissionByThemeCall($value) 
         {
             $qb= $this->createQueryBuilder('c');
             // ->select("count(s.id)");
@@ -81,32 +81,38 @@ class ThematicAreaRepository extends ServiceEntityRepository
             // ->select('t.name as name , s.title as title ,  u.username')
              ->innerJoin('c.submissions', 's')
             ->innerJoin('s.callForProposal','sc') 
-             ->andWhere('sc.id  =:id') 
-             ->setParameter('id', $value)
+            //  ->andWhere('sc.id  =:id') 
+            ->leftJoin("App:callForProposal", "j", "with", "sc.id=j.callForProposal")
+            ->innerJoin('j.submissions', 'js')
+             ->andWhere('js.id  in  (:callvalue)') 
+            //  ->setParameter('id', $value)
+             ->setParameter('callvalue', $value)
               ->getQuery()->getResult();
     
             return   $userpublication 
             ;
         } 
     
-            public function submissionByThemeCall( $value) 
-        {
-            //  $entityManager = $this->getDoctrine()->getManager();
-            // $qb= $this->createQueryBuilder('c');
-            $query = $this->getEntityManager()
-            ->createQuery(
-              'SELECT t.name, a.first_name, c.id, s.title 
-               FROM App:ThematicArea t
-               JOIN t.submissions s
-               JOIN s.callForProposal c
-               JOIN s.author u
-               JOIN u.userInfo a
-               WHERE c.id =:val')
-            ->setParameter('val', $value);
-            // ->setParameter('cstatus', 'completed');
-            $recepients = $query->getScalarResult();
-            return   $recepients;
-        }  
+        //     public function ssubmississsonByThemeCall( $value) 
+        // {
+           
+        //     $query = $this->getEntityManager()
+        //     ->createQuery(
+        //       'SELECT t.name, c.id, s.title , a.first_name,  a.last_name
+        //        FROM App:CallFo t
+        //        JOIN t.submissions s
+        //        JOIN s.callForProposal c
+        //        JOIN s.author u
+        //        JOIN u.userInfo a
+        //        WHERE c.id =:val  
+        //        , s.callForProposal=: valt
+        //        ' )
+        //     ->setParameter('val', $value)
+        //     ->setParameter('valt', $value)
+        //     ;
+        //      $res = $query->getResult();
+        //     return   $res;
+        // }  
 
 
     /*

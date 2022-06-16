@@ -260,23 +260,41 @@ class ExportController extends AbstractController {
         $sheet->setCellValue('E1', 'PI\'s Institute');
         $sheet->setTitle("Researchs by Thematic areas ");
         $counter = 2;
-        // dd($submissions );
-        $allsubs = array( $submissions); 
+//         dd($submiss ions );
+//         $allsubs = array( $submissions); 
 
-    $firstKey = array_key_first($submissions); 
+//     $firstKey = array_keys($submissions); 
+    
 
-var_dump($firstKey);
-// dd($firstKey);
-        foreach ($allsubs  as $phoneNumber  ) {
+//     #################################
+//     foreach ($submissions as $row) {
+//         $theEmails[] = $row['email'] . ' ';
+//         $theNames[] = $row['username'] . ' ';
+//         $theFirstNames[] = $row['first_name'] . ' ';
+//     }
+
+//      $length = count($submissions);
+//     for ($i = 0; $i < $length; $i++) {
+//          $theFirstName = $theFirstNames[$i];
+     
+
+//     }
+//     #################################
+//     $a=array("a"=>"red","b"=>"green","c"=>"blue");
+//     array_walk($a, "myfunction");
+// // var_dump($firstKey);
+// foreach ($submissions as $mis=>$cal){
+//     dd($mis);
+//                 } 
+// // dd($firstKey);
+        foreach ($submissions  as $phoneNumber  ) {
             $sheet->setCellValue('A' . $counter, $counter);
-            // $sheet->setCellValue('B' . $counter, $phoneNumber->getName());
+            $sheet->setCellValue('B' . $counter, $phoneNumber->getName());
             // $sheet->setCellValue('D' . $counter, $phoneNumber->getAuthor());
             $counter2 = 2;
-            // foreach ($phoneNumber->getThematicArea() as $mis){
-dd($phoneNumber);
-            // } 
-
-        // $firstKey = array_key_first($array);
+            $title[]=$phoneNumber;
+         
+ 
             ########################
             // $sheet->setCellValue('C' . $counter, $phoneNumber->getAuthor()->getUserInfo());
 // echo $phoneNumber->getName().'<br>';
@@ -296,15 +314,19 @@ dd($phoneNumber);
 ############################
             // $counter++;
         }
-        dd($submissions );
+        // dd($submissions );
         $writer = new Xlsx($spreadsheet);
-        $fileName = 'Researchers.xlsx';
+        $fileName = 'All submissions by theme of this call.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
         $writer->save($temp_file);
         return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
 
     }
 
+    function myfunction($value,$key)
+{
+echo "The key $key has the value $value<br>";
+} 
     /**
      * @Route("/{id}/rev-result", name="review_result", methods={"GET","POST"})
      */
