@@ -36,18 +36,15 @@
 								<div class="tab-pane active" id="tab-1">
 									<br>
 									<div class="card">
-										<div class="card-body">
 											<div class="card-header">
 												<h4 class='text-'>Internal reviewer from system</h4>
 
 											</div>
+										<div class="card-body">
+
 											<br>
-											{{ form_start(form) }}
-											{{ form_widget(form) }}
-											<button type="submit" class="btn btn-outline-primary btn-sm">
-												Assign Reviewer
-											</button>
-											{{ form_end(form) }}
+									{{ include('review_assignment/_form.html.twig') }}
+										
 										</div>
 									</div>
 								</div>
@@ -55,16 +52,16 @@
 
 									<br>
 									<div class="card">
-										<div class="card-body">
 											<div class="card-header">
 												<h4 class='text-'>External reviewer from outside the system</h4>
 
 											</div>
+										<div class="card-body">
 
 											<br>
 											{{ form_start(externalreviewerform) }}
 											{{ form_widget(externalreviewerform) }}
-											<button type="submit" class="btn btn-outline-primary btn-sm">
+											<button type="submit" class="btn btn-soft-primary btn-sm">
 												Assign external reviewer
 											</button>
 											{{ form_end(externalreviewerform) }}
@@ -280,10 +277,17 @@
 																{{ review_assignment.duedate ? review_assignment.duedate|date('Y-m-d') : '' }}
 																<br>
 																<br>
-																<a class="badge bg-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
-																	File To be Reviewed    PDF
+																{% if review_assignment.FileTobeReviewedeclined %}
+																<a class="text-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
+																	File To be Reviewed     
 																	<i class="fa fa-download"></i>
 																</a>
+																
+																{% else %}
+						<a href="{{ asset('/uploads/submission/'~ submission.proposal ) }}" class="text-primary">
+Original proposal file																	<i class="fa fa-download"></i>
+																</a>
+																{% endif %}
 
 																<br>
 																<br>
@@ -380,7 +384,8 @@
 			</table>
 		{% endblock %}
 		{% block javascript  %}
-			<script>
+		<script type="text/javascript">
+ 
 				$(document).ready(function () {
 
 $('#review_assignment_reviewer').select2({
@@ -431,5 +436,11 @@ function formatRepoSelection(repo) {
 return repo.name;
 }
 });
+			</script>
+			<script>
+				$(function () {
+$(".select2").select2();
+
+})
 			</script>
 		{% endblock %}

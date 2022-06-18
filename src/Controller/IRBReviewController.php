@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+
 // use Lexik\Bundle\TranslationBundle\Util\Csrf\CsrfCheckerTrait;
 
 /**
@@ -75,8 +76,7 @@ class IRBReviewController extends AbstractController {
         FROM App:Review s
         JOIN s.submission b
         JOIN s.reviewAssignment ass
-        WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed
-')
+        WHERE   s.reviewed_by=:reviewer AND ass.inactive_assignment is NULL AND ass.closed=:closed')
             ->setParameter('closed', 1)
             ->setParameter('reviewer', $this_is_me)
         ;
@@ -235,7 +235,7 @@ class IRBReviewController extends AbstractController {
         if ($measareviewer == $author) {
             ////if you are the author then you can't review it///////
             $this->addFlash(
-                'warining',
+                'warning',
                 'You can not see the submission you made in this page!'
             );
             return $this->redirectToRoute('myreviews');
@@ -244,11 +244,19 @@ class IRBReviewController extends AbstractController {
         if ($reviewAssignment->getReassigned() == 1) {
             ////if you are the author then you can't review it///////
             $this->addFlash(
-                'warining',
+                'warning',
                 'You have been re-assigned!'
             );
             return $this->redirectToRoute('rereviewsubmission', array('id' => $reviewAssignment->getId()));
         }
+        // if ($reviewAssignment->getAcceptedAt() !== '' ||  $reviewAssignment->getRejectedAt() == '' ) {
+        //     ////if you are the author then you can't review it///////
+        //     $this->addFlash(
+        //         'warning',
+        //         'You have been re-assigned!'
+        //     );
+        //     return $this->redirectToRoute('rereviewsubmission', array('id' => $reviewAssignment->getId()));
+        // }
         $review = new Review();
         $review->setReviewAssignment($reviewAssignment);
         $review->setSubmission($reviewAssignment->getSubmission());
@@ -311,12 +319,14 @@ class IRBReviewController extends AbstractController {
         $editorialDecisionform->handleRequest($request);
 
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $reviewAssignment->getSubmission(), 'reviewed_by' => $measareviewer]);
+        $guideline_for_reviewers = $entityManager->getRepository(GuidelineForReviewer::class)->findBy(['college' => $reviewAssignment->getSubmission()->getCallForProposal()->getCollege()]);
 
         return $this->render('submission/review_byreviewer.html.twig', [
             'review_assignment' => $reviewAssignment,
             'review_assignments' => $reviews,
             'submission' => $submissions,
             'editorialDecisions' => $editorialDecisions,
+            'guideline' => $guideline_for_reviewers,
             'editorialDecisionform' => $editorialDecisionform->createView(),
             'form' => $form->createView(),
             'evaluationForms' => $evaluationFormRepository->findBy(['parent' => null]),
@@ -348,26 +358,13 @@ class IRBReviewController extends AbstractController {
 
         }
         #######################
-        foreach ($submissionOfreviewer as $muke) {
-            $dd = $muke->getReviewer()->getId();
-            echo $dd; #=  $muke->getReviewer()->getId();
-
-            $lala = $dd . 'compare' . $me;
-            /////////
-            $me = $this->getUser()->getId();
-            $thereviewerone = $reviewAssignment->getReviewer()->getId();
-            if ($dd == $me) {
-
-                return $this->redirectToRoute('myreviews');
-                $this->addFlash(
-                    'danger',
-                    'Sorry you' . $dd . '//' . $me . ' never been assigned to this submision!'
-
-                );
-
-            }
-
-            /////
+        if ($reviewAssignment->getReassigned() !== 1) {
+            ////if you are the author then you can't review it///////
+            $this->addFlash(
+                'warning',
+                'You have never been re-assigned to this submission!'
+            );
+            return $this->redirectToRoute('myassigned');
         }
         $measareviewer = $this->getUser();
         $author = $submissions->getAuthor();
@@ -376,7 +373,7 @@ class IRBReviewController extends AbstractController {
         if ($measareviewer == $author) {
             ////if you are the author then you can't review it///////
             $this->addFlash(
-                'warining',
+                'warning',
                 'You can not see the submission you made in this page!'
             );
             return $this->redirectToRoute('myreviews');

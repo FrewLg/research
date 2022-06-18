@@ -36,7 +36,6 @@
 									</li>
 
 
-									 
 									{% if submission.terminalreport is  not  empty %}
 										<li>
 											<a class="nav-link" href="#terminal-report" data-bs-toggle="tab">Publication</a>
@@ -214,8 +213,9 @@
 																		</td>
 																		<td class="border-0 font-14"></td>
 																		<td class="border-0 font-14">
-																			<b>  
-{{ total|format_currency('ETB', {fraction_digit: 2}) }}																				</b>
+																			<b>
+																				{{ total|format_currency('ETB', {fraction_digit: 2}) }}
+																			</b>
 																		</td>
 																	</tr>
 																</tbody>
@@ -288,53 +288,52 @@
 														<div class="accordion-body">
 
 
-															<h4 class='text-'>Research team  
-															
-															<a href="#" class="avatar-box thumb-xxs align-self-center">
-										<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
-											{{  submission.coAuthors|length +1}}
-										</span>
-									</a>
+															<h4 class='text-'>Research team
 
-															 </h4>
+																<a href="#" class="avatar-box thumb-xxs align-self-center">
+																	<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+																		{{  submission.coAuthors|length +1}}
+																	</span>
+																</a>
+
+															</h4>
 
 
 															<div class="row">
 
-<div class="col-lg-4">
+																<div class="col-lg-4">
 
-																		<div class="card">
+																	<div class="card">
 
-																			<div class="card-body text-center">
+																		<div class="card-body text-center">
 
 
-																				{% if submission.author.userInfo.image    %}
-																					<img src="{{ asset('files/profile_pictures/'~ submission.author.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
-																				{% else %}
-																					<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
-																				{% endif %}
+																			{% if submission.author.userInfo.image    %}
+																				<img src="{{ asset('files/profile_pictures/'~ submission.author.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+																			{% else %}
+																				<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+																			{% endif %}
 
-																				<h5 class="fw-bold mt-3 mb-1">{{ submission.author.userInfo}}
-																					<sapn class="text-muted mb-0">({{submission.author.userInfo.educationLevel}})</span>
-																				</h5>
-																				<p class="text-muted mb-0">  {{ submission.author.userInfo.college}}</p>
-																				<p class="text-muted mb-0">{{ submission.author.userInfo.department }}</p>
-																				<p class="text-muted mb-0">{{ submission.author.userInfo.academicRank }}</p>
-																				<div class="mb-3">
-																					<a href="apps-tasks.html#" class="me-3 text-success">
+																			<h5 class="fw-bold mt-3 mb-1">{{ submission.author.userInfo}}
+																				<sapn class="text-muted mb-0">({{submission.author.userInfo.educationLevel}})</span>
+																			</h5>
+																			<p class="text-muted mb-0">
+																				{{ submission.author.userInfo.college}}</p>
+																			<p class="text-muted mb-0">{{ submission.author.userInfo.department }}</p>
+																			<p class="text-muted mb-0">{{ submission.author.userInfo.academicRank }}</p>
+																			<div class="mb-3">
+																				<a href="apps-tasks.html#" class="me-3 text-success">
 																					Principal Investigtor</a>
-																					 
-																				</div>
-
-																				<a href='{{path('researcher',{'id':submission.author.id})}}' class="btn btn-sm btn-soft-primary">About researcher</a>
 
 																			</div>
+
+																			<a href='{{path('researcher',{'id':submission.author.id})}}' class="btn btn-sm btn-soft-primary">About researcher</a>
+
 																		</div>
 																	</div>
+																</div>
 
 
-
-																 
 																{% for co_author in  submission.coAuthors %}
 																	<div class="col-lg-4">
 
@@ -358,7 +357,7 @@
 																				<div class="mb-3">
 																					<a href="apps-tasks.html#" class="me-3 text-warning">
 																						{{ co_author.role }}</a>
-																				 
+
 																				</div>
 
 																				<a href='{{path('researcher',{'id':co_author.researcher.id})}}' class="btn btn-sm btn-soft-primary">About researcher</a>
@@ -397,7 +396,7 @@
 												Responses   and revisions
 											</a>
 										</h3>
-{% set  form_off="" %}
+										{% set  form_off="" %}
 
 										{% for review in reviews %}
 
@@ -405,7 +404,7 @@
 											<div class="card team-card">
 												<div class="card-body">
 													{% if review.fromDirector %}
-{% set form_off=1%}
+														{% set form_off=1%}
 														<div class="ribbon1 rib1-secondary">
 															<span class="text-white text-center rib1-secondary">Director</span>
 														</div>
@@ -445,17 +444,14 @@
 															<i class="fa fa-circle text-success"></i>
 														</div>
 														<div class="media-body ms-3 align-self-center">
-															<h4 class="team-leader m-0">{{review.ReviewedBy.userInfo}}
+															<h4 class="team-leader m-0">
+																<a href="{{path('researcher',{'id':review.ReviewedBy.id})}}">{{review.ReviewedBy.userInfo}}</a>
 																{% if review.fromDirector %}
-
-
 																	<button type="button" class="btn btn-soft-primary btn-icon-circle btn-icon-circle-sm mr-2">
 																		<i class="mdi mdi-bell font-16"></i>
 																		<span class="badge badge-dot online"></span>
 																	</button>
 																{% endif %}
-
-
 															</h4>
 															<p class="text-muted font-12 mb-0">
 
@@ -504,14 +500,15 @@
 
 													{% endif %}
 
-													<hr class="hr-dashed my-4">
+													<hr
+													class="hr-dashed my-4">
 
-{# <div class="btn-group" role="group" aria-label="Basic example">
-                                                    <button type="button" class="btn btn-outline-secondary">Left</button>
-                                                    <button type="button" class="btn btn-outline-secondary">Middle</button>
-                                                    <button type="button" class="btn btn-outline-secondary">Right</button>
-                                                </div> #}
-												<br>
+													{# <div class="btn-group" role="group" aria-label="Basic example">
+																																																																	                                                    <button type="button" class="btn btn-outline-secondary">Left</button>
+																																																																	                                                    <button type="button" class="btn btn-outline-secondary">Middle</button>
+																																																																	                                                    <button type="button" class="btn btn-outline-secondary">Right</button>
+																																																																	                                                </div> #}
+													<br>
 													<ul class="list-group list-group-horizontal-md">
 														<li class="list-group-item">
 															{% if review.fromDirector %}
@@ -571,8 +568,8 @@
 									{% endfor %}
 
 
-													<hr class="hr-dashed my-4">
-								 
+									<hr class="hr-dashed my-4">
+
 
 									<div class="card">
 
@@ -580,17 +577,18 @@
 											<h5 class="text-secondary">Director decision</h5>
 										</div>
 										<div class="card-body">
- {% if submission.awardgranted==1 %}
-<h4 class='text-success'>Grant Awarded</h4>
+											{% if submission.awardgranted==1 %}
+												<h4 class='text-success'>Grant Awarded</h4>
 
-{% elseif  form_off==1  %}
-<h4 class='text-success'>Decision made </h4>
-{% else %}
-											{{ form_start(adminvevisionform) }}
-											{{ form_widget(adminvevisionform) }}
-											<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
-											{{ form_end(adminvevisionform) }}
-{% endif %}
+											{% elseif  form_off==1  %}
+												<h4 class='text-success'>Decision made
+												</h4>
+											{% else %}
+												{{ form_start(adminvevisionform) }}
+												{{ form_widget(adminvevisionform) }}
+												<button class="btn btn-primary">{{ button_label|default('Submit Review') }}</button>
+												{{ form_end(adminvevisionform) }}
+											{% endif %}
 										</div>
 									</div>
 
@@ -614,7 +612,7 @@
 				{% if submission.awardgranted %}
 					<div class="ribbon2 rib2-success">
 						<span class="ribbon4-band ribbon4-band-primary text-white text-center">
- 							<i class="fas fa-badge-check"></i>
+							<i class="fas fa-badge-check"></i>
 						</span>
 					</div>
 				{% endif %}
@@ -641,17 +639,18 @@
 					</div>
 					<div class="media-body ms-3 align-self-center">
 						<h4 class="team-leader m-0">
-						<a href='{{path('researcher',{'id':submission.author.id})}}'>
-							
+							<a href='{{path('researcher',{'id':submission.author.id})}}'>
+
 								{{submission.author.userInfo}}
-								</a>
-								</h4>
-						<p class="text-muted font-12 mb-0">  Principal Investigator</p>
-						
+							</a>
+						</h4>
+						<p class="text-muted font-12 mb-0">
+							Principal Investigator</p>
+
 					</div>
 				</div>
 				<h4 class="m-0 mt-4 font-14 font-weight-semibold">
-{{ include('submission/includes/researchtype.html.twig') }}
+					{{ include('submission/includes/researchtype.html.twig') }}
 
 				</h4>
 				<p class="text-muted mb-0 font-14 font-weight-semibold">
@@ -689,7 +688,7 @@
 										</a>
 
 
- 									{% else %}
+									{% else %}
 										<a class="user-avatar user-avatar-group" href="##{{submission.id}}">
 											<img src="{{ asset('/img/defaultuser.png') }}" alt="user" class="rounded-circle thumb-xxs">
 										</a>
@@ -715,24 +714,72 @@
 							PDF
 							<i class="fa fa-download"></i>
 						</a>
-						
+
 						<hr class="hr-dashed my-4">
 						{{ include('submission/includes/progress.html.twig') }}
 
 
 					</div>
 				</div>
+				{% if submission.awardgranted==1 %}
+
+					<div class="card">
+						<div class="card-header ">
+							<h4 class="font-18 m-0 fw-bold">Reporting Schedule</h4>
+
+						</div>
+						<div class="card-body ">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Phase(<span class="badge d-inline bg-soft-info">
+												{{submission.researchReportSetting?submission.researchReportSetting.isAltered?"Updated":"Original"}}</span>)</th>
+										<th>Submission Date</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for submissionSetting in submission.researchReportSubmissionSettings %}
+										<tr>
+											<td>{{submissionSetting.phase}}{{loop.last?"(Terminal report)":""}}</td>
+											<td>{{submissionSetting.submissionDate|date('F d, Y')}}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+{% if app.request.get('_route')=="submission_show" and  submission.researchReportSetting and is_granted('approve_re_re')  %}
+
+
+					<form>
+						<input type="hidden" name="action-on-setting" value="true"/>
+						{% if submission.researchReportSetting.status==3 or submission.researchReportSetting.status==1 %}
+							<input type="hidden" name="report-action" value="2"/>
+
+							<input class="btn btn-bd-download btn-info" name="allow-edit" type="submit" value="Allow to edit"/>
+						{% elseif submission.researchReportSetting.status==2  %}
+							<input type="hidden" name="report-action" value="3"/>
+							<input class="btn btn-bd-download btn-info" name="close" type="submit" value="close edit"/>
+						{% elseif submission.researchReportSetting.status==0 or submission.researchReportSetting.status==3   %}
+							<input type="hidden" name="report-action" value="1"/>
+							<input class="btn btn-bd-download btn-info" name="approve" type="submit" value="Approve"/>
+						{% endif %}
+					</form>
+				{% endif %}
+						</div>
+					</div>
+				{% endif  %}
+
 				<div class="card">
 					<div class="card-header ">
 						<h4 class="font-18 m-0 fw-bold">Attachments</h4>
 
 					</div>
 					<div class="card-body ">
-						<a href="{{ asset('/uploads/submission/'~ submission.proposal ) }}" class="btn btn-info btn-xs float-right"> Proposal
-								<i class="fa fa-download material-icons warning"></i>
-							</a>
-<br>
-					
+						<a href="{{ asset('/uploads/submission/'~ submission.proposal ) }}" class="btn btn-info btn-xs float-right">
+							Proposal
+							<i class="fa fa-download material-icons warning"></i>
+						</a>
+						<br>
+
 
 						{% for submissionattachment in submission.submissionAttachements %}
 							<a href="{{ asset('/uploads/submission/'~ submissionattachment.file ) }}" class="btn btn-info btn-xs float-right">
@@ -744,38 +791,76 @@
 						{% endfor %}
 						<hr class="hr-dashed my-4">
 
-						<a class="btn btn-block btn-info btn-xs "
-						 href="{{ path('short_list_findone', {'id': submission.id }) }}">
-							Check if the researcher name is in proposal  
-							 
+						<a class="btn btn-block btn-info btn-xs " href="{{ path('short_list_findone', {'id': submission.id }) }}">
+							Check if the researcher name is in proposal
+
 						</a>
 
 					</div>
 				</div>
 				<div class="card">
 					<div class="card-header ">
-						<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4>
+						<h4 class="font-18 m-0 fw-bold">Co-PI confirmation</h4>
+
+						{% set count = 0 %}
+						{% for  confirmation in submission.coAuthors('confirmed') %}
+							{% set count = count + 1 %}
+
+							{% if  confirmation.confirmed()|length==0  %}
+
+								<a href="#" class="avatar-box thumb-xxs align-self-center">
+
+									<span class='avatar-title bg-soft-danger rounded-circle font-8 font-weight-normal'>
+										{{count}}
+										{% if count==0 %}
+
+											{% elseif count<=1 %}
+												<sup>st</sup>
+											{% elseif count<=2%}
+												<sup>nd</sup>
+											{% elseif count<=3%}
+												<sup>rd</sup>
+											{% elseif count>=4%}
+												<sup>th</sup>
+										{% endif %}
+									</span>
+								</a>
+
+							{% endif %}
+
+
+						{% endfor %}
 
 					</div>
 
 					<div class="card-body ">
+						<div class="row ">
+							<div class="col-lg-12">
+								<ul class="list-group  m-0">
+									{% for member in submission.coAuthors %}
+
+										<li class="list-group-item">
+
+											<h6>
+												{% if member.confirmed=='1' %}
+													<i class="la la-check text-success me-2"></i>
+												{% elseif member.confirmed==''    %}
+													<i class="la la-check text-danger   me-2"></i>
+												{% else  %}
+													<i class="la la-check text-danger me-2"></i>
+												{% endif %}
 
 
-						{% for member in submission.coAuthors %}
-							{{loop.index}}{# {{member.researcher}} #}
-							<a href='{{path('researcher',{'id':member.researcher.id})}}'>
-								{{ member.researcher.userInfo }}</a>
-							{% if member.confirmed=='1' %}
-								<i class="fa fa-check text-success"></i>
-							{% elseif member.confirmed==''    %}
-								<i class="fa fa-times-circle text-danger"></i>
-
-
-								{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
-							{% else  %}
-								<i class="fa fa-close text-danger"></i>
-							{% endif %}<br>{% else %}No Co-PI has been involved
-						{% endfor %}
+												<a href='{{path('researcher',{'id':member.researcher.id})}}'>
+													{{loop.index}}.
+													{{ member.researcher.userInfo }}</a>
+											</h6>
+										</li>
+										{% else %}No Co-PI has been involved
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="card">
@@ -810,22 +895,21 @@
 							<div class="card">
 								<div class="card-body ">
 
-								
 
-														{% if review_assignment.reviewer.isReviewer  %}
-															
-															<div class="ribbon1 rib1-primary">
-															<span class="text-white text-center rib1-primary">+
-																		{{review_assignment.reviewer.reviewAssignments|length}}</span>
-														</div>
-														
-														 
-														{% else %}
-														<div class="ribbon1 rib1-success">
-															<span class="text-white text-center rib1-success">+
-																		{{review_assignment.reviewer.reviewAssignments|length}}</span>
-														</div>
-														{% endif %}
+									{% if review_assignment.reviewer.isReviewer  %}
+
+										<div class="ribbon1 rib1-primary">
+											<span class="text-white text-center rib1-primary">+
+												{{review_assignment.reviewer.reviewAssignments|length}}</span>
+										</div>
+
+
+									{% else %}
+										<div class="ribbon1 rib1-success">
+											<span class="text-white text-center rib1-success">+
+												{{review_assignment.reviewer.reviewAssignments|length}}</span>
+										</div>
+									{% endif %}
 
 
 									<div class="media align-items-center">
@@ -841,7 +925,7 @@
 											<h4 class="team-leader m-0">
 
 												<a href="{{ path('researcher', {'id': review_assignment.reviewer.id}) }}" class='font-16 m-0
-																																																																																																																																							  mb-1 align-right'>{{ review_assignment.reviewer }}
+																																																																																																																																																																																																								  mb-1 align-right'>{{ review_assignment.reviewer }}
 
 												</a>
 											</h4>
@@ -920,10 +1004,10 @@
 											{% endif   %}
 
 											{% for review in review_assignment.reviews %}
-			<hr class="hr-dashed my-4">
+												<hr class="hr-dashed my-4">
 
-<h5>
-													Decision:
+												<h5>
+													<span class='text-muted'>Decision:</sapn>
 
 													{% if   review.remark==1 %}
 														<span class="text-danger">
@@ -954,8 +1038,7 @@
 												{% endif   %}
 
 											{% endfor %}
-													<hr class="hr-dashed my-2">
-										 
+											<hr class="hr-dashed my-2">
 
 
 										</span>
@@ -974,10 +1057,10 @@
 														<input type="hidden" name="_method" value="DELETE">
 														<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review_assignment.id) }}">
 
-														 
-															 <a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="btn btn-sm btn-soft-purple">
-																	 Invitations
-																</a>  
+
+														<a href="{{path('his_assignment',{'id':review_assignment.reviewer.id})}}" class="btn btn-sm btn-soft-purple">
+															Invitations
+														</a>
 														<a href="{{ path('unassign', {'id': review_assignment.id}) }}" class="btn btn-sm btn-soft-warning btn-sm" onclick="return confirm('Are you sure you want to delete  {{review_assignment.reviewer }} from reviewers list?');">
 															Unassign</a>
 
@@ -1005,9 +1088,9 @@
 					</div>
 				</div>
 			{% endblock %}
-{% block script %}
-	<script>
-			// Set the date we're counting down to
+			{% block script %}
+				<script>
+					// Set the date we're counting down to
 var countDownDate = new Date($('#demo').attr('data-value')).getTime();
 
 // Update the count down every 1 second
@@ -1033,6 +1116,6 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 }
 }, 1000);
 
-$('[data-toggle="tooltip"]').tooltip(); 
-		</script>
-	{% endblock %}
+$('[data-toggle="tooltip"]').tooltip();
+				</script>
+			{% endblock %}

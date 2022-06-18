@@ -110,8 +110,8 @@ class ReviewAssignmentController extends AbstractController {
             if ($file3 == '') {
 
                 $this->addFlash(
-                    'danger',
-                    'Review file is not uploaded !'
+                    'warning',
+                    'Review file is not uploaded! Hence the original proposal file was selected !'
                 );
             } else {
                 $file3 = $form->get('file_tobe_reviewed')->getData();

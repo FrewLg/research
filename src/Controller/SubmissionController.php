@@ -1165,12 +1165,10 @@ public function call_winners(Request $request, CallForProposal $callForProposal,
  */
 public function mymembershipdetails(CoAuthor $membership): Response {
 
-    $entityManager = $this->getDoctrine()->getManager();
-    $member = $entityManager->getRepository(CoAuthor::class)->findBy(['id' => $membership]);
+    $entityManager = $this->getDoctrine()->getManager(); 
+    $submission = $membership->getSubmission(); 
 
-    $submission = $membership->getSubmission();
-
-    if (!$member) {
+    if (  $this->getUser()  !==$membership->getResearcher()) { 
         $this->addFlash("danger", "Sorry the you are not allowed for this service!");
         return $this->redirectToRoute('membership');
     }

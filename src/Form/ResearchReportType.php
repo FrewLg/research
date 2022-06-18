@@ -33,6 +33,11 @@ class ResearchReportType extends AbstractType
                 "help" => "Upload Financial clearance",
                
                 "mapped" => false,
+                "attr" => [
+                    "accept" => "application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                    text/plain, application/pdf, image/*",
+                    "class" => "form-control",
+                ]
 
             ])
 
