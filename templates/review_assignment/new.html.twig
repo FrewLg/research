@@ -6,7 +6,7 @@
 {% endblock %}
 {% block body %}
 
-	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+	{# <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/> #}
 	<div class='row'>
 		<div class="col-lg-4">
 			<section class="panel" id="formside_permission">
@@ -36,51 +36,36 @@
 								<div class="tab-pane active" id="tab-1">
 									<br>
 									<div class="card">
-											<div class="card-header">
-												<h4 class='text-'>Internal reviewer from system</h4>
-
-											</div>
+										<div class="card-header">
+											<h4 class='text-'>Internal reviewer from system</h4>
+										</div>
 										<div class="card-body">
-
 											<br>
-									{{ include('review_assignment/_form.html.twig') }}
-										
+											{# {{ include('review_assignment/ext_form.html.twig') }} #}
+											{{ include('review_assignment/_form.html.twig') }}
 										</div>
 									</div>
 								</div>
 								<div class="tab-pane" id="tab-2">
-
 									<br>
 									<div class="card">
-											<div class="card-header">
-												<h4 class='text-'>External reviewer from outside the system</h4>
-
-											</div>
-										<div class="card-body">
-
+										<div class="card-header">
+											<h4 class='text-'>External reviewer from outside the system</h4>
+										</div>
+										<div
+											class="card-body">
+											{{ include('review_assignment/ext_form.html.twig') }}
 											<br>
-											{{ form_start(externalreviewerform) }}
-											{{ form_widget(externalreviewerform) }}
-											<button type="submit" class="btn btn-soft-primary btn-sm">
-												Assign external reviewer
-											</button>
-											{{ form_end(externalreviewerform) }}
-
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-
 					</div>
-
 				</section>
 				<br>
-
-
 			{% endblock side_body %}
 		</div>
-
 		<div class="col-lg-8">
 			<h4 class="text-d">
 				Assigned reviewers
@@ -141,27 +126,25 @@
 								{# <span class="badge  bg-success ">active</span> #}
 
 								{# {% if review_assignment.status == 1 %}
-										<span class="badge bg-info" title="Invitation not sent">Selected</span>
-									{% elseif  review_assignment.status == 2 %}
-										<span class="badge bg-primary">Invitation Sent</span>
-									{% elseif  review_assignment.status == 3 %}
-										<span class="badge bg-primary">Reviewing</span>
-								
-									{% endif %} #}
+																																		<span class="badge bg-info" title="Invitation not sent">Selected</span>
+																																	{% elseif  review_assignment.status == 2 %}
+																																		<span class="badge bg-primary">Invitation Sent</span>
+																																	{% elseif  review_assignment.status == 3 %}
+																																		<span class="badge bg-primary">Reviewing</span>
+																																
+																																	{% endif %} #}
 
 
 								{# {% if review_assignment.IsRejected == 1 %}<span class="badge bg-info" title="Invitation not sent"> Rejected</span>
-								{% elseif  review_assignment.Closed == 1 %}
-								<span class="badge bg-warning">Replied revision</span>
-								{% elseif  review_assignment.InactiveAssignment == 1 %}
-								<span class="badge bg-danger">Inactive</span>
-								{% elseif  review_assignment.Declined == 1 %}
-								<span class="badge bg-danger">Declined</span>
-								{% else %}
-								<span class="badge bg-warning">Pending</span>
-								
-								
-								{% endif %} #}
+																																{% elseif  review_assignment.Closed == 1 %}
+																																<span class="badge bg-warning">Replied revision</span>
+																																{% elseif  review_assignment.InactiveAssignment == 1 %}
+																																<span class="badge bg-danger">Inactive</span>
+																																{% elseif  review_assignment.Declined == 1 %}
+																																<span class="badge bg-danger">Declined</span>
+																																{% else %}
+																																<span class="badge bg-warning">Pending</span> 
+																																{% endif %} #}
 
 
 									{% if review_assignment.acceptedAt %}
@@ -278,15 +261,16 @@
 																<br>
 																<br>
 																{% if review_assignment.FileTobeReviewedeclined %}
-																<a class="text-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
-																	File To be Reviewed     
-																	<i class="fa fa-download"></i>
-																</a>
-																
+																	<a class="text-primary" href="{{ asset('/files/proposals/review_files/'~ review_assignment.FileTobeReviewedeclined ) }}">
+																		File To be Reviewed
+																		<i class="fa fa-download"></i>
+																	</a>
+
 																{% else %}
-						<a href="{{ asset('/uploads/submission/'~ submission.proposal ) }}" class="text-primary">
-Original proposal file																	<i class="fa fa-download"></i>
-																</a>
+																	<a href="{{ asset('/uploads/submission/'~ submission.proposal ) }}" class="text-primary">
+																		Original proposal file
+																		<i class="fa fa-download"></i>
+																	</a>
 																{% endif %}
 
 																<br>
@@ -382,65 +366,74 @@ Original proposal file																	<i class="fa fa-download"></i>
 					{% endfor %}
 				</tbody>
 			</table>
+
+
 		{% endblock %}
-		{% block javascript  %}
-		<script type="text/javascript">
- 
-				$(document).ready(function () {
+		{% block script  %}
 
-$('#review_assignment_reviewer').select2({
-ajax: {
-url: "{{ path('user_ajax') }}",
-dataType: 'json',
-delay: 250,
-data: function (params) {
-return {
-q: params.term, // search term
-page: params.page
-};
-},
-processResults: function (data, params) {
+											{{ include('review_assignment/js.html.twig') }}
 
-params.page = params.page || 1;
+					<script type="text/javascript">
+		
+						{# $(document).ready(function () {
+		
+		$('#c').select2({
+		ajax: {
+		url: "{{ path('user_ajax') }}",
+		dataType: 'json',
+		delay: 250,
+		data: function (params) {
+		return {
+		q: params.term, // search term
+		page: params.page
+		};
+		},
+		processResults: function (data, params) {
+		
+		params.page = params.page || 1;
+		
+		return {
+		results: data.items,
+		pagination: {
+		more: (params.page * 30) < data.total_count
+		}
+		};
+		},
+		cache: true
+		},
+		placeholder: 'Search for a Reviewer',
+		minimumInputLength: 1,
+		templateResult: formatRepo,
+		templateSelection: formatRepoSelection
+		});
+		
+		function formatRepo(repo) {
+		if (repo.loading) {
+		return repo.name;
+		}
+		
+		var $container = $("<div class='select2-result-user clearfix'>" + "<div class='select2-result-user__meta'>" + "<div class='select2-result-user__title'></div>" + "<div class='select2-result-user__description'></div>" + "<div class='select2-result-user__statistics'>" + "<div class='select2-result-user__email'><i class='fa fa-envelope'></i> </div>" + "</div>" + "</div>" + "</div>");
+		
+		$container.find(".select2-result-user__title").text(repo.name);
+		$container.find(".select2-result-user__email").append(repo.email);
+		
+		
+		return $container;
+		}
+		
+		function formatRepoSelection(repo) {
+		return repo.name;
+		}
+		}); #}
+    {# $("#review_assignment_reviewer").select2({
+    placeholder: "Select a State",
+    allowClear: true
+}); #}
+{# $('#review_assignment_reviewer').html('').select2({data: [{id: '', text: ''}]}); #}
+{# $("#review_assignment_reviewer").select2("val", ""); #}
+					</script>
+					  
 
-return {
-results: data.items,
-pagination: {
-more: (params.page * 30) < data.total_count
-}
-};
-},
-cache: true
-},
-placeholder: 'Search for a Reviewer',
-minimumInputLength: 1,
-templateResult: formatRepo,
-templateSelection: formatRepoSelection
-});
 
-function formatRepo(repo) {
-if (repo.loading) {
-return repo.name;
-}
-
-var $container = $("<div class='select2-result-user clearfix'>" + "<div class='select2-result-user__meta'>" + "<div class='select2-result-user__title'></div>" + "<div class='select2-result-user__description'></div>" + "<div class='select2-result-user__statistics'>" + "<div class='select2-result-user__email'><i class='fa fa-envelope'></i> </div>" + "</div>" + "</div>" + "</div>");
-
-$container.find(".select2-result-user__title").text(repo.name);
-$container.find(".select2-result-user__email").append(repo.email);
-
-
-return $container;
-}
-
-function formatRepoSelection(repo) {
-return repo.name;
-}
-});
-			</script>
-			<script>
-				$(function () {
-$(".select2").select2();
-
-})
-			</script>
-		{% endblock %}
+	 
+{% endblock %}

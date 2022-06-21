@@ -17,35 +17,36 @@
 
 {% block body %}
 
-	<div class="row">
-		<div class="col-lg-6">
-			<ul class="list-inline">
-				<li class="list-inline-item">
-					<h5 class="mt-0">Here the list of all  call for proposal.
-						<span class="badge badge-pink">6</span>
-					</h5>
-				</li>
-			</ul>
-		</div>
-		<!--end col-->
+	{#
+		  <div class="row">
+				<div class="col-lg-6">
+					<ul class="list-inline">
+						<li class="list-inline-item">
+							<h5 class="mt-0">Here the list of all  call for proposal.
+								<span class="badge badge-pink">6</span>
+							</h5>
+						</li>
+					</ul>
+				</div>
+			 	<div class="col-lg-6 text-end">
+					<div class="text-end">
+						<ul class="list-inline">
+		
+							<li class="list-inline-item">
+								<button type="button" class="btn btn-soft-primary btn-sm">
+									<i class="fas fa-filter"></i>
+								</button>
+							</li>
+							<li class="list-inline-item">
+								<a href="{{ path('call_for_proposal_new') }}" class="btn btn-soft-primary btn-sm">Add New call for proposal</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+		  </div> 
+		#}
 
-		<div class="col-lg-6 text-end">
-			<div class="text-end">
-				<ul class="list-inline">
-
-					<li class="list-inline-item">
-						<button type="button" class="btn btn-soft-primary btn-sm">
-							<i class="fas fa-filter"></i>
-						</button>
-					</li>
-					<li class="list-inline-item">
-						<a href="{{ path('call_for_proposal_new') }}" class="btn btn-soft-primary btn-sm">Add New call for proposal</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<!--end col-->
-	</div>
+	<rr></rr>
 
 	<div class="row">
 		<div class="col-lg-12">
@@ -109,25 +110,34 @@
 												</a>
 												{% if is_granted('mng_rprts') and call_for_proposal.researchReportPhase %}
 
-													<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}"  title='Reports' class='btn btn-soft-secondary btn-sm'>
-													<i class='fas fa-chart-line '></i>	Reports 
+													<a href="{{ path('call_research_reports', {'id': call_for_proposal.id }) }}" title='Reports' class='btn btn-soft-secondary btn-sm'>
+														<i class='fas fa-chart-line '></i>
+														Reports
 													</a>
 												{% endif %}
 												{% if is_granted('modify_call_pr') %}
 
-													<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" title='Edit call' class="btn btn-sm btn-soft-primary"><i class='fas fa-pen '></i></a>
-													<a href="{{ path('allawarded', {'id': call_for_proposal.id}) }}" class='btn btn-soft-primary btn-sm' title='Winners'>  <i class='fas fa-certificate '></i> </a>
+													<a href="{{ path('call__edit', {'id': call_for_proposal.id}) }}" title='Edit call' class="btn btn-sm btn-soft-primary">
+														<i class='fas fa-pen '></i>
+													</a>
+													<a href="{{ path('allawarded', {'id': call_for_proposal.id}) }}" class='btn btn-soft-primary btn-sm' title='Winners'>
+														<i class='fas fa-certificate '></i>
+													</a>
 												{% endif %}
 
 												<a href="{{ path('callresponses', {'id': call_for_proposal.id }) }}" title='Call response' class='btn btn-soft-info btn-sm'>
-												
-												                                                                                        <i class='fas fa-paper-plane '></i> ({{call_for_proposal.submissions|length}})</a>
-													<a href="{{ path('call_dashboard', {'id': call_for_proposal.id}) }}" class='btn btn-soft-primary btn-sm' title='Call Dashbord'><i class='fas fa-chart-bar '></i> </a>
 
-<a href="{{ path('theme_by_coll', {'id': call_for_proposal.id }) }}" class='btn btn-soft-primary btn-xs btn-block' title='Show submissions by theme'>
-													<i class='fas fa-chart-pie '></i> All by theme
+													<i class='fas fa-paper-plane '></i>
+													({{call_for_proposal.submissions|length}})</a>
+												<a href="{{ path('call_dashboard', {'id': call_for_proposal.id}) }}" class='btn btn-soft-primary btn-sm' title='Call Dashbord'>
+													<i class='fas fa-chart-bar '></i>
+												</a>
 
-													<span  class="avatar-box thumb-xxs align-self-center">
+												<a href="{{ path('theme_by_coll', {'id': call_for_proposal.id }) }}" class='btn btn-soft-primary btn-xs btn-block' title='Show submissions by theme'>
+													<i class='fas fa-chart-pie '></i>
+													All by theme
+
+													<span class="avatar-box thumb-xxs align-self-center">
 														<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
 															{{call_for_proposal.submissions|length}}
 														</span>

@@ -112,6 +112,10 @@ class ReviewAssignment
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $closed;
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $reviewfile;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -363,6 +367,17 @@ class ReviewAssignment
     public function setClosed(?bool $closed): self
     {
         $this->closed = $closed;
+
+        return $this;
+    }
+    public function getReviewfile(): ?bool
+    {
+        return $this->reviewfile;
+    }
+
+    public function setReviewfile(?bool $reviewfile): self
+    {
+        $this->reviewfile = $reviewfile;
 
         return $this;
     }

@@ -14,7 +14,7 @@
 		<ul class="nav-second-level" aria-expanded="false">
 			{% if is_granted("vw_irb_dbrd") %}
 				<li class="nav-item">
-					<a class="nav-link">
+					<a class="nav-link" href="{{ path('application_index') }}">
 						<i class="ti-control-record"></i>Dashboard</a>
 				</li>
 
@@ -68,6 +68,13 @@ is_granted('mng_irb_rsub') or is_granted('mng_irb_guid_atc')
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('board_member_index') }}">
 						<i class="ti-control-record"></i>Board Members</a>
+				</li>
+
+			{% endif %}
+			{% if is_granted("vw_brd_mmbr")  or is_granted("ROLE_CHAIR")  %}
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('clearances') }}">
+						<i class="ti-control-record"></i>Clearances Issued</a>
 				</li>
 
 			{% endif %}

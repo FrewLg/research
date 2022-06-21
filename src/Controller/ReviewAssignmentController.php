@@ -106,18 +106,38 @@ class ReviewAssignmentController extends AbstractController {
             $entityManager = $this->getDoctrine()->getManager();
 
             $file3 = $form->get('file_tobe_reviewed')->getData();
+            $reviewfile = $form->get('reviewfile')->getData();
 
-            if ($file3 == '') {
+            if ($file3 == '' && $reviewfile == 1) {
+                //if new and not upoaded
 
                 $this->addFlash(
                     'warning',
                     'Review file is not uploaded! Hence the original proposal file was selected !'
                 );
+
+                //    0461
+                //    0463102464
+                return $this->redirectToRoute('review_assignment_new', array('id' => $submission->getId()));
+
+            } elseif ($reviewfile == 0) {
+                //if original and not upoaded
+
+                $this->addFlash(
+                    'warning',
+                    'Review file is not uploaded! Please choose whether to select an original or new file to be reviewed !'
+                );
+
+                $reviewAssignment->setFileTobeReviewed(NULL);
+                $reviewAssignment->setReviewfile(0);
+
             } else {
                 $file3 = $form->get('file_tobe_reviewed')->getData();
                 $fileName3 = md5(uniqid()) . '.' . $file3->guessExtension();
                 $file3->move($this->getParameter('review_files'), $fileName3);
                 $reviewAssignment->setFileTobeReviewed($fileName3);
+                $reviewAssignment->setReviewfile(1);
+
             }
 
             ##########################
@@ -204,12 +224,41 @@ class ReviewAssignmentController extends AbstractController {
 
             $file3external = $externalreviewerform->get('file_tobe_reviewed')->getData();
 
-            if ($file3external == '') {
+            // if ($file3external == '') {
+            //     $this->addFlash(
+            //         'danger',
+            //         'Review file is not uploaded !'
+            //     );
+            // } 
+            
+            $reviewfile = $form->get('reviewfile')->getData();
+
+            if ($file3external == '' && $reviewfile == 1) {
+                //if new and not upoaded
+
                 $this->addFlash(
-                    'danger',
-                    'Review file is not uploaded !'
+                    'warning',
+                    'Review file is not uploaded! Please choose whether to select an original or new file to be reviewed  !'
                 );
-            } else {
+
+                //    0461
+                //    0463102464
+                return $this->redirectToRoute('review_assignment_new', array('id' => $submission->getId()));
+
+            } 
+
+            elseif ($reviewfile == 0) {
+                //if original and not upoaded
+
+                $this->addFlash(
+                    'warning',
+                    'Review file is not uploaded! Hence the original proposal file was selected !'
+                ); 
+                $reviewAssignment->setFileTobeReviewed(NULL);
+                $reviewAssignment->setReviewfile(0); 
+
+            } 
+            else {
                 $file3external = $externalreviewerform->get('file_tobe_reviewed')->getData();
                 $fileName3ext = md5(uniqid()) . '.' . $file3external->guessExtension();
                 $file3external->move($this->getParameter('review_files'), $fileName3ext);

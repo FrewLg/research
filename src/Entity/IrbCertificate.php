@@ -20,7 +20,7 @@ class IrbCertificate
 
   
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $approvedAt;
 
@@ -45,6 +45,12 @@ class IrbCertificate
      */
     private $renewed;
 
+     /**
+     * @ORM\ManyToOne(targetEntity=\App\Entity\User::class, inversedBy="certs")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $approvedBy;
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -55,7 +61,17 @@ class IrbCertificate
         return $this->id;
     }
 
-   
+    public function getApprovedBy() 
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?\App\Entity\User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
+
+        return $this;
+    }
  
 
     public function getApprovedAt(): ?\DateTimeInterface

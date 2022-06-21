@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Entity\IrbCertificate as IrbCertificate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,35 +63,29 @@ class User implements UserInterface
      */
     private $submissions; 
   
- /**
+    /**
      * @ORM\ManyToOne(targetEntity=Review::class, inversedBy="reviewed_by")
      */
     private $reviews;
    
-
+    /**
+     * @ORM\ManyToOne(targetEntity=IrbCertificate::class, inversedBy="approvedBy")
+     */
+    private $certs; 
     /**
      * @ORM\OneToMany(targetEntity=ReviewAssignment::class, mappedBy="reviewer")
      */
-    private $reviewAssignments;
-
-    
-
+    private $reviewAssignments; 
       /**
      * @ORM\OneToMany(targetEntity=App\Entity\IRB\IRBReviewAssignment::class, mappedBy="irbreviewer")
      */
     private $iRBReviewAssignments;
-
  
-
-    
    /**
      * @ORM\ManyToMany(targetEntity=UserGroup::class, inversedBy="users")
      */
-    private $userGroup;
-
-    
-     
-         /**
+    private $userGroup; 
+      /**
      * @ORM\ManyToMany(targetEntity=Permission::class, inversedBy="users_permissions")
      *
      * @var \Doctrine\Common\Collections\Collection
@@ -695,6 +690,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($review->getReviewedBy() === $this) {
                 $review->setReviewedBy(null);
+            }
+        }
+
+        return $this;
+    }
+     /**
+     * @return Collection<int,  IrbCertificate>
+     */
+    public function getIrbCertificates(): Collection
+    {
+        return $this->certs;
+    }
+
+
+    public function addIrbCertificate(IrbCertificate $cert): self
+    {
+        if (!$this->certs->contains($cert)) {
+            $this->certs[] = $cert;
+            $cert->setApprovedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIrbCertificate(?IrbCertificate $cert): self
+    {
+        if ($this->certs->removeElement($cert)) {
+            // set the owning side to null (unless already changed)
+            if ($cert->getApprovedBy() === $this) {
+                $cert->setApprovedBy(null);
             }
         }
 

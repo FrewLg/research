@@ -37,30 +37,56 @@
 		</div>
 
 	{% else %}
+
+		{# <form method="post" action="{{ path('irb_validate2', {'certificateCode': irb.id}) }}"   >
+												    <input type="hidden" name="_token" value="{{ csrf_token('export' ~ irb.id) }}">
+																	<button class="mt-2 btn-lg btn btn-success" name="export" type="submit">Export</button>
+												</form>
+												  #}
+
+
 		<div class="container aos-init aos-animate" data-aos="fade-up">
 
 			<div class="section-title">
-				<p class="float-end">code :{{ irb.certificateCode }} </p>
 				<h2>IRB Ethical Clearance</h2>
-     
-        <p>
-        The IRB of '"Institute of Health"' has reviewed research project titled 	"<u><b>{{ irb.irbApplication.title }}</b></u>".
 
-        
-        Thus, this is to notify that this research protocol has presented to the IRB meets the ethical and Scientific standards outlined in national and international guidelines. 
-        Hence, we are approve this  research protocol is ethically cleared.
-        </p>
 			</div>
+			<p class="float-end">Reference code :<u>
+					<b>{{ irb.certificateCode }}</b>
+				</u>
+			</p>
+			<br>
+			<br>
+			<p>
+				The IRB of  Institute of Health   has reviewed research project
+				<u>
+					<b>"{{ irb.irbApplication.title }}".</b>
+				</u>
 
+
+				Thus, this is to notify that this research protocol has presented to the IRB meets the ethical and Scientific standards outlined in national and international guidelines. 
+												Hence, we are approve this  research protocol is ethically cleared.
+
+			</p>
+
+			<br>
+			{# Hence, we are pleased to inform you that your research protocol is ethically cleared under the following strict conditions:
+																							<ol>
+																								<li>Any significant deviation from the methodological details indicated in the approved protocol must be communicated to the IRB before it has been implemented.</li>
+																								<li>Approval shall be only for a period of twelve months. The principal investigator is required to submit an application for the renewal of the ethical approval.</li>
+																								<li>The Committee must be notified, in writing, of any alteration to the project including unforeseen events/circumstances that might affect the acceptability of the approved protocol.</li>
+																								<li>The Principal researcher is required to immediately notify the committee in the event of any adverse effects on participants or of any unforeseen events that might affect continued ethical acceptability or amendment to the original consent form.</li>
+																								<li>The inability of the Principal Researcher to continue in that role, or any other change in research personnel involved in the project; should be communicated.</li>
+																							</ol> #}
 			<div class="row content">
 				<div class="col-lg-6">
-				
-          
+
+
 					<p>
 						<b>Project Type:</b>
 						{{ irb.irbApplication.projectType }}
 					</p>
-          	<p>
+					<p>
 						<b>Project PI:</b>
 						{{ irb.irbApplication.pi ? irb.irbApplication.pi  : irb.irbApplication.submittedBy  }}
 
@@ -77,12 +103,21 @@
 
 				</div>
 				<div class="col-lg-6 pt-4 pt-lg-0">
-        		<p>
+					<p>
 						<b>Clearance Valid until</b>:
 						{{ irb.validUntil | date('Y-m-d') }}
 					</p>
-        
-        </div>
+					<br>
+					{% if irb.approvedBy %}
+					{{irb.approvedBy}}
+					<br>
+													<img src="{{ asset('files/signatures/'~irb.approvedBy.userInfo.signature ) }}" alt="" width=100 ;height=100>
+						
+					{% else %}
+						Not Approved
+					{% endif %} 
+
+				</div>
 
 			</div>
 

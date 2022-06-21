@@ -20,42 +20,42 @@
 		<link href="{{ asset('assets/css/metisMenu.min.css')}}" rel="stylesheet" type="text/css"/>
 		<link href="{{ asset('plugins/daterangepicker/daterangepicker.css')}}" rel="stylesheet" type="text/css"/>
 		<link href="{{ asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css"/>
-			<link rel='shortcut icon' type='image/x-icon' href='{{asset("julogo.png")}}'/>
+		<link rel='shortcut icon' type='image/x-icon' href='{{asset("julogo.png")}}'/>
 
-    
-		<link
-		rel="stylesheet" href="{{ asset('assets/tagsinput.css')}}"/>
-		{# <link rel="stylesheet" href="{{ asset('plugins/select2/select2.min.css')}}"/> #}
-		{# <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/> {% block styles %}{% endblock %} #}
 
-		</head>
+		<link rel="stylesheet" href="{{ asset('assets/tagsinput.css')}}"/>
+		<link rel="stylesheet" href="{{ asset('plugins/select2/select2.min.css')}}"/>
+		{# <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>  #}
 
-		<body>
-			<!-- Left Sidenav -->
-			{% include "includes/sidenav.html.twig" %}
-			<div class="page-wrapper">
-				{% include "includes/topbar.html.twig" %}
-				<div class="page-content">
-					<div
-						class="container-fluid">
-						<!-- Page-Title -->
-						{% include "includes/pagetitle.html.twig" %}
-						<div class="col-auto align-self-center"></div>
+		{% block styles %}{% endblock %}
 
-						{% block body %}{% endblock %}
-						
-						<br>
+	</head>
+
+	<body>
+		<!-- Left Sidenav -->
+		{% include "includes/sidenav.html.twig" %}
+		<div class="page-wrapper">
+			{% include "includes/topbar.html.twig" %}
+			<div class="page-content">
+				<div
+					class="container-fluid">
+					<!-- Page-Title -->
+					{% include "includes/pagetitle.html.twig" %}
+					<div class="col-auto align-self-center"></div>
+
+					{% block body %}{% endblock %}
+
+					<br>
+				</div>
+				<!-- container -->
+				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+					<div class="offcanvas-header">
+						<h5 id="offcanvasRightLabel" class="m-0">Help</h5>
+						<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 					</div>
-					<!-- container -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-							<div class="offcanvas-header">
-								<h5 id="offcanvasRightLabel" class="m-0">Help</h5>
-								<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-							</div>
-							<div class="offcanvas-body">
-							{% block help_right %}{% endblock %}
-							</div>
+					<div class="offcanvas-body"> {% block help_right %}{% endblock %}
 						</div>
+					</div>
 					<footer class="footer text-center text-sm-start">
 						&copy;
 						<script>
@@ -78,12 +78,12 @@
 			<script src="{{ asset('assets/js/bootstrap.bundle.min.js')}}"></script>
 			<script src="{{ asset('assets/js/metismenu.min.js')}}"></script>
 			<script src="{{ asset('assets/js/waves.js')}}"></script>
-			<script src="{{ asset('assets/js/feather.min.js')}}"></script>
 			<script src="{{ asset('assets/js/simplebar.min.js')}}"></script>
 			<script src="{{ asset('assets/js/moment.js')}}"></script>
 			<script src="{{ asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
 
-
+			{# <script src="{{ asset('assets/js/feather.min.js')}}"></script>
+									<script src="{{ asset('assets/js/app.js')}}"></script> #}
 			<script src="{{ asset('plugins/jvectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
 			<script src="{{ asset('plugins/jvectormap/jquery-jvectormap-us-aea-en.js')}}"></script>
 			<script src="{{ asset('assets/tagsinput.js')}}"></script>
@@ -94,14 +94,15 @@
 			{% block script %}{% endblock %}
 
 
+			<script src="{{ asset('assets/js/feather.min.js')}}"></script>
 			<script src="{{ asset('assets/js/app.js')}}"></script>
 
-			<script>
-				$(function () {
+			{# <script>
+				  $(function () {
 $(".select2").select2();
 
-})
-			</script>
+}) 
+			</script> #}
 
 		</body>
 

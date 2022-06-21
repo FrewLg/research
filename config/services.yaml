@@ -17,6 +17,7 @@ parameters:
     users_publications: '%kernel.project_dir%/public/files/users_publications'
     site_setting: '%kernel.project_dir%/public/files/site_setting'
     collaborators_cv: '%kernel.project_dir%/public/files/collaborators_cv'
+    signatures: '%kernel.project_dir%/public/files/signatures'
     grant_winners_award: '%kernel.project_dir%/public/files/grant_winners_award' 
     datasets: '%kernel.project_dir%/public/files/proposals/datasets'
     research_report: '%kernel.project_dir%/public/files/uploads'

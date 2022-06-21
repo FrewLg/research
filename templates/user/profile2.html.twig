@@ -592,8 +592,31 @@
 
 												 
 											</div>
-											</div>
+											<div class="row">
+											
+												 	{% if user.userInfo.signature != NULL  %}
+													 <div class="col-1">
+												 
 
+													<img src="{{ asset('files/signatures/'~app.user.userInfo.signature ) }}" alt="" class="thumb-lg rounded-circle  circle-border">
+
+
+												 
+											
+											   </div>
+											     <div class="col-11">
+												{% else %} 
+											     <div class="col-12">
+												{% endif %} 
+
+												<div class="label">
+													Upload to update your signature</div>
+												{{ form_widget(submissionform.signature  ) }}
+
+											 
+											</div>
+											</div>
+</div>
 											<hr>
 											<div class="col-12">
 												<br>
@@ -698,15 +721,15 @@
 	<script src="{{ asset('plugins/select2/select2.min.js')}}"></script>
 	 
 
-	<script>  jQuery(document).ready(function () {
+	<script type='text/javascript'>  
+	 jQuery(document).ready(function () {
 
 $(document).on('click', '.remove-collection-widget', function (e) {
 $(this).closest('.row').fadeOut().remove();
 } 
 );
 $(document).on('click', '.add-another-collection-widget', function (e) {
-{# $(".select2").select2(); #}
-
+ 
 var list = jQuery(jQuery(this).attr('data-list-selector'));
 
 var counter = list.data('widget-counter') || list.children().length;

@@ -79,6 +79,12 @@ class UserInfo
      */
     private $cv;
  
+      /**
+    * @ORM\Column(type="string", length=250, nullable=true)
+    
+     */
+    private $signature;
+ 
 
     /**
      * @ORM\Column(type="datetime", length=255, nullable=true)
@@ -238,6 +244,17 @@ class UserInfo
     public function setCV(string $cv): self
     {
         $this->cv = $cv;
+
+        return $this;
+    }
+    public function getSignature(): string
+    {
+        return (string) $this->signature;
+    }
+
+    public function setSignature(string $signature): self
+    {
+        $this->signature = $signature;
 
         return $this;
     }

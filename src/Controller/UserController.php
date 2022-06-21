@@ -582,6 +582,16 @@ $udep = $entityManager->getRepository(Department::class)->findOneBy(array('name'
                 $userInfo->setCV($cvfile);
                
             } 
+             $signature = $form->get('signature')->getData();
+ 
+            if ($signature == NULL) {
+                  $signature = '';
+            } else {
+                 $signaturefile = 'Signature-'. md5(uniqid()) . '.' . $signature->guessExtension();
+                $signature->move($this->getParameter('signatures'), $signaturefile);
+                $userInfo->setSignature($signaturefile);
+               
+            } 
 /////////CV
 
             $entityManager->persist($publishedResearch);

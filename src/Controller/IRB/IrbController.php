@@ -28,7 +28,8 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Entity\InstitutionalIrbreviewersBoard;
- use App\Helper\ReviewHelper;
+use App\Entity\IrbCertificate;
+use App\Helper\ReviewHelper;
 use App\Repository\EvaluationFormRepository;
 use App\Utils\Constants;
 use DateTime;
@@ -106,6 +107,52 @@ $entityManager = $this->getDoctrine()->getManager();
             'all'=>$all,
             'myreviews' => $myassigneds,
         ]);
+    }
+    /**
+     * @Route("/clearances", name="clearances", methods={"GET"})
+     */
+    public function clearances(Request $request, PaginatorInterface $paginator): Response {
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $me = $this->getUser()->getId();
+        $this_is_me = $this->getUser();
+        $myassigned = $entityManager->getRepository('App\Entity\IrbCertificate'::class)->findAll();
+        ////// if no throw exception
+        $myassigneds = $paginator->paginate(
+            // Doctrine Query, not results
+            $myassigned,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            10
+        ); 
+
+        return $this->render('application/certs.html.twig', [
+            
+            'certs' => $myassigneds,
+        ]);
+    }
+    /**
+     * @Route("/approve{id}", name="approve", methods={"GET"})
+     */
+    public function approve( IrbCertificate $cert): Response {
+        
+        $entityManager = $this->getDoctrine()->getManager(); 
+        $cert->setApprovedAt(new \DateTime());
+        $cert->setApprovedBy($this->getUser());
+        // 
+        $entityManager->persist($cert);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'success',
+            ' Certificate approved!'
+
+        );
+
+        return $this->redirectToRoute('clearances');
+         
+        
     }
 
      

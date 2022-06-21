@@ -271,12 +271,25 @@ class IRBReviewAssignmentController extends AbstractController {
 
             }
             $review->setFromDirector(1);
+            if ( $review->getRemark() == 3) {
+            
             #######################Certificategeneration#################
             $cert = new IrbCertificate();
             $cert->setIrbApplication($reviewAssignment->getApplication());
-            $cert->setCertificateCode('sass');
-            $cert->setApprovedAt(new \DateTime());
-            $cert->setValidUntil(new \DateTime());
+            $year= date('y'); 
+            #####################
+            $prefix = $reviewAssignment->getApplication()->getCollege()->getPrefix();
+            $id = $reviewAssignment->getApplication()->getId(); 
+            $randnum = rand(100, 10000);
+            $certcode = $prefix .'-EC'. "-" . $randnum . "-" . $id ."-". $year;
+            $today= new \DateTime();
+            $validuntil= date_modify($today, '+12 month');
+            #####################
+            // dd($certcode);
+            $cert->setCertificateCode($certcode);
+            // $cert->setApprovedBy($this->getUser());
+            // $cert->setApprovedAt(new \DateTime());
+            $cert->setValidUntil($validuntil );
             #######################Certificategeneration#################
             // $cert->setIrbRequest($reviewAssignment->getApplication());
             #######################Certificategeneration#################
@@ -284,6 +297,7 @@ class IRBReviewAssignmentController extends AbstractController {
             // $reviewAssignment->setClosed(1);
 
             $entityManager->persist($cert);
+            }
             $entityManager->persist($review);
             $entityManager->flush();
             $this->addFlash(
