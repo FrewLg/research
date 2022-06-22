@@ -18,21 +18,21 @@
 		</a>
 		<!--end media-->
 	{# <div class="chat-features">
-					<div class="d-none d-sm-inline-block">
-						<a href="#">
-							<i class="fas fa-phone"></i>
-						</a>
-						<a href="#">
-							<i class="fas fa-video"></i>
-						</a>
-						<a href="#">
-							<i class="fas fa-trash-alt"></i>
-						</a>
-						<a href="#">
-							<i class="fas fa-ellipsis-v"></i>
-						</a>
-					</div>
-				</div> #}
+						<div class="d-none d-sm-inline-block">
+							<a href="#">
+								<i class="fas fa-phone"></i>
+							</a>
+							<a href="#">
+								<i class="fas fa-video"></i>
+							</a>
+							<a href="#">
+								<i class="fas fa-trash-alt"></i>
+							</a>
+							<a href="#">
+								<i class="fas fa-ellipsis-v"></i>
+							</a>
+						</div>
+					</div> #}
 		<!-- end chat-features -->
 	</div>
 	<!-- end chat-header -->
@@ -65,16 +65,23 @@
 												<div class="chat-msg">
 													<p>{{ discussions.description}}
 
-														 
+
 														{% if discussions.attachment %}
-														<br>
+															<br>
 															<a class='text-primary' href="{{ asset('/files/uploads/'~discussions.attachment)}}">
 																{{discussions.attachment|slice(0,35)}}
 																<i class="fas fa-paperclip"></i>
 															</a>
 														{% endif  %}
 														<br>
+														{% if discussions.sendMail %}
+
 														<span class='text-muted '>
+															<small class='text-muted text-success'>Mailed</small>
+														</span>
+														{% endif  %}
+
+														<span class='text-muted text-success'>
 															<small>{{discussions.createdAt | date('M d h:i a')}}</small>
 														</span>
 													</p>
@@ -91,15 +98,22 @@
 											<div class="media-body reverse">
 												<div class="chat-msg">
 													<p>{{ discussions.description}}
-														
+
 														{% if discussions.attachment %}
-														<br>
+															<br>
 															<a class='text-primary' href="{{ asset('/files/uploads/'~discussions.attachment)}}">
 																{{discussions.attachment|slice(0,  20, 35)}}
 																<i class="fas fa-paperclip"></i>
 															</a>
 														{% endif  %}
 														<br>
+														{% if discussions.sendMail %}
+
+														<span class='text-muted text-success'>
+															<small class='text-success'>Mailed</small>
+														</span>
+														{% endif  %}
+
 														<span class='text-muted '>
 															<small>{{discussions.createdAt | date('M d h:i a')}}</small>
 														</span>
@@ -164,9 +178,9 @@
 					{{ form_widget(appfeedbfrom.description) }}
 
 
-				 Attachment
-						<i class="fas fa-paperclip"></i>
-					 
+					Attachment
+					<i class="fas fa-paperclip"></i>
+
 
 					<input type="checkbox" class='form-check-input' onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck">
 
@@ -182,18 +196,15 @@
 
 
 			<!-- col-8 -->
-			<div class="col-sm-12 col-md-3 text-right">
-				{# <div class="d-sm-inline-block chat-features"> #}
-					<button class="btn btn-soft-primary form-group">{{ button_label|default('Send feedback') }} <i class="fas fa-paper-plane"></i> </button>
+			<div
+				class="col-sm-12 col-md-3 text-right">
+						{{ form_widget(appfeedbfrom.sendMail ,{'attr': {'class': 'form-check-input'}}) }}
 
-					{# <a href="#" >
-																										<i class="fas fa-camera"></i>
-																									</a>
-																				                    
-																									<a href="#">
-																										<i class="fas fa-microphone"></i>
-																									</a> #}
-				{# </div> #}
+<br>
+ 				<button class="btn btn-soft-primary form-group">{{ button_label|default('Send feedback') }}
+					<i class="fas fa-paper-plane"></i>
+				</button>
+ 
 			</div>
 			{# </form>	 #}
 			{{ form_end(appfeedbfrom) }}
@@ -208,11 +219,15 @@
 <script type="text/javascript">
 
 	function yesnoCheck() {
-if (document.getElementById('yesCheck').checked) {
+if ( document.getElementById('yesCheck').checked) {
 document.getElementById('ifYes').style.display = 'block';
-} else 
+$('#application_feedback_attachement').attr('required', 'required');
+
+} else
 document.getElementById('ifYes').style.display = 'none';
 
+$('#application_feedback_attachement').removeAttr('required');
+$('#ifYes').removeAttr('required');
 
 
 }

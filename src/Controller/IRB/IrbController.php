@@ -53,7 +53,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
  */
 class IrbController extends AbstractController
 {
-    use CsrfCheckerTrait;
+    use CsrfCheckerTrait;   
   
 
     /**

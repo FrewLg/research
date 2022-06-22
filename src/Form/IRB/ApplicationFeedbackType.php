@@ -31,7 +31,15 @@ class ApplicationFeedbackType extends AbstractType
                 ],
                     'required' => false,
                     ])
-            // ->add('sendMail')
+            ->add('sendMail' , null , [
+                'label' =>'Send feedback with mail', 
+                  'attr'=>[
+                    'class' => 'fas fa-paperclip  m-0   ',
+                             'required' => false,
+            
+            ],
+                'required' => false,
+                ])
             // ->add('allowWrite')
         ;
     }

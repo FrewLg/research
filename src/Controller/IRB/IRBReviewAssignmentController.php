@@ -285,7 +285,7 @@ class IRBReviewAssignmentController extends AbstractController {
             $today= new \DateTime();
             $validuntil= date_modify($today, '+12 month');
             #####################
-            // dd($certcode);
+             
             $cert->setCertificateCode($certcode);
             // $cert->setApprovedBy($this->getUser());
             // $cert->setApprovedAt(new \DateTime());
@@ -378,7 +378,7 @@ class IRBReviewAssignmentController extends AbstractController {
      *
      **/
     public function sedncomment(IRBReviewAssignment $reviewAssignment, MailerInterface $mailer): Response {
-        $this->denyAccessUnlessGranted('assn_clg_cntr');
+        $this->denyAccessUnlessGranted('ROLE_CAHIR');
         $entityManager = $this->getDoctrine()->getManager();
         // dd($reviewAssignment );
 

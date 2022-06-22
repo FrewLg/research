@@ -38,12 +38,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Knp\Component\Pager\PaginatorInterface;
-use PhpOffice\PhpSpreadsheet\Calculation\LookupRef\Address;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/irb/application')]
@@ -190,7 +190,7 @@ class ApplicationController extends AbstractController
     }
 
     #[Route('/{id}', name: 'application_show')]
-    public function show(Application $application,Request $request,EntityManagerInterface $entityManager, ApplicationFeedbackRepository $appferepo): Response
+    public function show(Application $application,Request $request,EntityManagerInterface $entityManager, ApplicationFeedbackRepository $appferepo, MailerInterface $mailer): Response
     {
 
         if ($request->request->get('renewal')) {
@@ -274,7 +274,47 @@ if ($feedbackForm->isSubmitted() && $feedbackForm->isValid()) {
             $applicationFeedback->setAttachment($file_name);
         
     }
+#############SEnd email if checked#################
 
+if($applicationFeedback->getSendMail() || $feedbackForm->get('sendMail')->getData()==1){
+
+    $this->addFlash("success","Feedback sent also sent via email successfully");
+     $att = $feedbackForm->get('attachement')->getData();
+if($att){
+    $withattachement='with attachement';
+}
+else{
+    $withattachement='';
+
+}
+    $subject = "Response given to your Application";
+    $body = "Your IRB application recently given a feedback".$withattachement." via our portal. Please take a look details of the feedback below.<br>".$applicationFeedback->getDescription();
+    $title = $applicationFeedback->getApplication()->getTitle();
+    $theFirstName = $applicationFeedback->getApplication()->getSubmittedBy()->getUserInfo()->getFirstName();
+    $app_url = "irb/application/".$applicationFeedback->getApplication()->getId();
+    $theEmail = $applicationFeedback->getApplication()->getSubmittedBy()->getEmail();
+    $email = (new TemplatedEmail())
+        ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+        ->to(new Address($applicationFeedback->getApplication()->getSubmittedBy()->getEmail(), $applicationFeedback->getApplication()->getSubmittedBy()->getUserInfo()))
+        // ->cc(new Address($alternative_email[$i], $theFirstNames[$i]))
+        ->subject($subject)
+        ->htmlTemplate('emails/irb_reviewer_response.html.twig')
+        ->context([
+            'subject' => $subject,
+            'suffix' => $applicationFeedback->getApplication()->getSubmittedBy()->getUserInfo()->getSuffix(),
+            'body' => $body,
+            'title' => $title,
+            'submission_url' => $app_url,
+            'name' => $theFirstName,
+            'Authoremail' => $theEmail,
+        ]);
+        // dd($reviewAssignment->getApplication());
+    $mailer->send($email);
+
+ 
+}
+
+#############SEnd email if checked#################
     ######Attachment###
     $applicationFeedback-> setCreatedAt(new \DateTime());
     $applicationFeedback-> setFeedbackFrom($this->getUser());

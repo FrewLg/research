@@ -111,7 +111,11 @@
 											:</b>
 										{{ application.location }}</h6>
 
-
+{# <a href="{{ path('review_application', {'id': application.iRBReviewAssignments|filter(apllicatio=application.id)}) }} " class='text-primary'>
+																	{{ application.title }}
+																</a> #}
+																{# {{application.iRBReviewAssignments|filter(application=>application.id)}} #}
+																{{application.iRBReviewAssignments|length }}
 									{% if review and app.user == application.submittedBy and review.remark==3 %}
 										{% if application.hasToRenew %}
 
