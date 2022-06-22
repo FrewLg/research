@@ -378,7 +378,7 @@ class IRBReviewAssignmentController extends AbstractController {
      *
      **/
     public function sedncomment(IRBReviewAssignment $reviewAssignment, MailerInterface $mailer): Response {
-        $this->denyAccessUnlessGranted('ROLE_CAHIR');
+        $this->denyAccessUnlessGranted('ROLE_CHAIR');
         $entityManager = $this->getDoctrine()->getManager();
         // dd($reviewAssignment );
 
