@@ -111,11 +111,22 @@
 											:</b>
 										{{ application.location }}</h6>
 
-{# <a href="{{ path('review_application', {'id': application.iRBReviewAssignments|filter(apllicatio=application.id)}) }} " class='text-primary'>
-																	{{ application.title }}
-																</a> #}
-																{# {{application.iRBReviewAssignments|filter(application=>application.id)}} #}
-																{{application.iRBReviewAssignments|length }}
+
+									{# <div class="card mt-4">
+										<div class="card-header">
+											<h4>Final IRB Editorial Decision</h4>
+										</div>
+
+										<div class="card-body">
+											Decision
+										</div>
+									</div> #}
+
+
+									{# <a href="{{ path('review_application', {'id': application.iRBReviewAssignments|filter(apllicatio=application.id)}) }} " class='text-primary'>
+																																																																																									{{ application.title }}
+																																																																																								</a> #}
+									{# {{application.iRBReviewAssignments|filter(application=>application.id)}} #}
 									{% if review and app.user == application.submittedBy and review.remark==3 %}
 										{% if application.hasToRenew %}
 
@@ -411,7 +422,7 @@
 																{% include "application/tabs/checklist_responseallowed.html.twig" %}
 
 
- </div>
+															</div>
 															<!--end /tableresponsive-->
 														</div>
 														<!--end card-body-->
@@ -492,10 +503,10 @@
 
 						{% endif %}
 
-						 
-									{{ include('application_feedback/chatbox.html.twig') }}
 
- 
+						{{ include('application_feedback/chatbox.html.twig') }}
+
+
 					</div>
 					<!--end card-body-->
 

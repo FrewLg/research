@@ -12,17 +12,24 @@
 			{% if is_granted("vw_app_sb_rp") %}
 
 				<li class="nav-item">
+					<a class="nav-link" href="{{ path('orgdashboard') }}">
+						<i class="ti-control-record"></i>Organizational  Report</a>
+				</li>
+
+			{% endif %}
+			{% if is_granted("vw_app_sb_rp") %}
+
+				<li class="nav-item">
 					<a class="nav-link" href="{{ path('irb_report') }}">
-						<i class="ti-control-record"></i>Application submission Report</a>
+						<i class="ti-control-record"></i>IRB Report</a>
 				</li>
 
 			{% endif %}
 			{% if is_granted("vw_gn_ds") %}
-
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('publications_report') }}">
+					<a class="nav-link" href="">
 						<i class="ti-control-record"></i>
-						Gender distibution
+						Tranining and conference report
 					</a>
 				</li>
 			{% endif %}

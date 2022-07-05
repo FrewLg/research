@@ -1,72 +1,71 @@
 {% extends 'homelayout.html.twig' %}
 
- 
-{% block title %}Register
-{% endblock %}
-{% block body %}
-{{ app_description |raw}}
+{% block title %}
+	Register
 
- {% endblock  %}
- 
-    {% block pagetitle %}Register{% endblock %}
+
+{% endblock %}
+{% block body %} {{ app_description |raw }}
+	<script src="https://www.google.com/recaptcha/api.js?render=<siteKey>"></script>
+
+{% endblock %}
+
+{% block pagetitle %}
+	Register
+
+{% endblock %}
 
 {% block aside %}
 
- <h4>Create account </h4>
-For non-JU staff only
-<hr>
-	{% for flashError in app.flashes('verify_email_error') %}
-		<div class="alert alert-danger" role="alert">{{ flashError }}</div>
-	{% endfor %}
+	<h4>
+		Create account
 
-	
-{{ form_start(registrationForm) }}
-						
-							{{ form_row(registrationForm.username, {
+	</h4>
+	For non-JU staff only
+
+
+	<hr>
+	{% for flashError in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert"> {{ flashError }}
+		</div>
+	{% endfor %} {{ form_start(registrationForm) }} {{ form_row(registrationForm.username, {
             label: 'Username'
         }) }}
-		
-			<div class="form-group">
-                            
-								{{form_row(registrationForm.email,{"attr":{"class":"form-control"}})}}
-							</div>
 
-							{{ form_row(registrationForm.password, {
+	<div class="form-group"> {{ form_row(registrationForm.email,{"attr":{"class":"form-control" }}
+		) }}
+
+
+	</div> {{ form_row(registrationForm.password, {
             label: 'Password'
-        }) }}
-							{{ form_row(registrationForm.agreeTerms) }}
+        }) }} {{ form_row(registrationForm.agreeTerms) }}
 
-							<button type="submit" class="btn btn-info btn-block">Register</button>
-							{{ form_end(registrationForm) }}
-<hr>
- Already have a UAS  account? <br><a href='{{ path('app_login')}}' class="btn btn-success btn-block" > Login  </a>
+	{# {% spaceless %}
+	                    <img src="{{ captcha_code }}" title="captcha" width="{{ captcha_width }}" height="{{ captcha_height }}" /> {{ form_widget(form) }}
+	                {% endspaceless %} #} {{ form_widget(registrationForm.captcha) }}
 
-</div>
+	<input type="hidden" id="form_captcha" name="form[captcha]"/>
+	<script>
+		var recaptchaCallback_form_captcha = function () {
+grecaptcha.execute('<YOUR-RECAPTCHA-KEY>', {action: 'landing'}).then(function (token) {
+document.getElementById('form_captcha').value = token;
+});
+};
+	</script>
+	<script src="https://www.google.com/recaptcha/api.js?render=<YOUR-RECAPTCHA-KEY>&onload=recaptchaCallback_form_captcha" async defer></script>
 
+	{# <img src="{{ captcha_code }}" title="captcha" width="111" height="222" /> #}
+	<button type="submit" class="btn btn-info btn-block">
+		Register
 
-		 
-	 
-	 
+	</button> {{ form_end(registrationForm) }}
+	<hr>
+	Already have a UAS  account?
 
- 
-{% endblock %}
-{% block scripts %}
-<script>
-    
-{% if  is_external  %}
-    $('#pills-home').addClass("active show");
-    $('#pills-home-tab').addClass("active");
-      $('#pills-profile').removeClass("active show");
-    $('#pills-profile-tab').removeClass("active");
-{% else %}
+	<br>
+	<a href='{{ path('app_login') }}' class="btn btn-success btn-block">
+		Login
 
-    $('#pills-home').removeClass("active show");
-    $('#pills-home-tab').removeClass("active");
-    $('#pills-profile').addClass("active show");
-    $('#pills-profile-tab').addClass("active");
-    
-{% endif %}
-</script>
-    
-{% endblock %}
- 
+	</a>
+
+</div>{% endblock %}

@@ -373,6 +373,7 @@ class IRBReviewAssignmentController extends AbstractController {
 
         return $this->redirectToRoute('irb_review_assignment_new', array('id' => $submission->getId()));
     }
+
     /**
      * @Route("/{id}/sendcomment", name="send_comment", methods={"POST"})
      *
@@ -381,13 +382,10 @@ class IRBReviewAssignmentController extends AbstractController {
         $this->denyAccessUnlessGranted('ROLE_CHAIR');
         $entityManager = $this->getDoctrine()->getManager();
         // dd($reviewAssignment );
-
         #########
         $reviewAssignment->setAllowToView(1);
-
         $entityManager->persist($reviewAssignment);
         $entityManager->flush();
-
         $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'REVIEW_RESULT_SENT']);
         $subject = $messages->getSubject();
         $body = $messages->getBody();

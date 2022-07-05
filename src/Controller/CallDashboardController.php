@@ -171,8 +171,42 @@ WHERE c.id=:call
                 '
         )
         ->setParameter('call', $call);
-
         $remark2 = $query4->getScalarResult();
+       
+        #######################
+        $res = $entityManager->createQuery(
+            "SELECT  DISTINCT   count(u.id)  as copis , cl.name as college,  cl.id
+            FROM App:CoAuthor u
+            JOIN u.submission s 
+            JOIN s.callForProposal c
+            JOIN u.researcher i 
+            JOIN  i.userInfo n 
+            JOIN  n.college cl 
+            WHERE c.id=:call  
+            GROUP BY cl.id
+            ORDER BY cl.id
+
+               "
+        ) 
+        ->setParameter('call', $call);
+        $copisdist = $res->getScalarResult();
+       
+        // dd($coa);
+              ####Grant by call according to call ###################
+              $awarded = $entityManager->createQuery(
+                'SELECT  u.name as theme,  count(s.id)  as proposals 
+                        FROM App:ThematicArea u
+                        JOIN u.submissions s 
+                        JOIN s.callForProposal c 
+                        WHERE c.id=:call and  s.awardgranted=:awarded
+                        GROUP BY u.id
+                    '
+            )
+            ->setParameter('awarded', 1)
+            ->setParameter('call', $call);
+    
+            $awardedresult = $awarded->getArrayResult();
+// dd($awardedresult);
 
         return $this->render('dashboard/call-dashboard.html.twig', [
             'formFilter' => $formFilter->createView(),
@@ -182,7 +216,9 @@ WHERE c.id=:call
             'submissions' => $submissions,
             'copis' => $copis,
             'desision' => $remark,
+            'copisdist' => $copisdist,
             'gender_distribution' => $remark2,
+            'awardedresult' => $awardedresult,
             'all' => $all,
             'allowedCall' => $call,
             'allext' => $allext,

@@ -47,8 +47,8 @@ class RegistrationController extends AbstractController
         $user = new User();
         $user2 = new User();
 
-        // dd($request);
         $uas_form = $this->createForm(FetchUASFormType::class, $user2);
+        // dd($uas_form);
 
         $form = $this->createForm(RegistrationFormType::class, $user);
         $uas_form->handleRequest($request);

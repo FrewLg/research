@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Unique;
+use Gregwar\CaptchaBundle\Type\CaptchaType;
+
  
 class FetchUASFormType extends AbstractType
 {
@@ -64,6 +66,8 @@ class FetchUASFormType extends AbstractType
                     ]),
                 ],
             ])
+// ->add('captcha', CaptchaType::class)
+
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

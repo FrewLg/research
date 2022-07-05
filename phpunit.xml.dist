@@ -43,6 +43,12 @@
         <!-- ###+ symfony/mailer ### -->
         <!-- MAILER_DSN=smtp://localhost -->
         <!-- ###- symfony/mailer ### -->
+
+        <!-- ###+ karser/karser-recaptcha3-bundle ### -->
+        <!-- Get your API key and secret from https://g.co/recaptcha/v3 -->
+        <env name="RECAPTCHA3_KEY" value="my_site_key"/>
+        <env name="RECAPTCHA3_SECRET" value="my_secret"/>
+        <!-- ###- karser/karser-recaptcha3-bundle ### -->
     </php>
 
     <testsuites>

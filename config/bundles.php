@@ -25,5 +25,6 @@ return [
     Craue\FormFlowBundle\CraueFormFlowBundle::class => ['all' => true],
     Lexik\Bundle\TranslationBundle\LexikTranslationBundle::class => ['all' => true],
     Knp\Bundle\TimeBundle\KnpTimeBundle::class => ['all' => true],
-   
+    Gregwar\CaptchaBundle\GregwarCaptchaBundle::class => ['all' => true],
+    Karser\Recaptcha3Bundle\KarserRecaptcha3Bundle::class => ['all' => true],
 ];

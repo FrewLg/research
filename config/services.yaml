@@ -92,3 +92,7 @@ services:
 lexik_translation:
     fallback_locale: [en]
     managed_locales: [en, am, or] 
+gregwar_captcha:
+    width: 200
+    height: 50
+    length: 6

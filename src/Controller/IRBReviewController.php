@@ -70,7 +70,7 @@ class IRBReviewController extends AbstractController {
         $entityManager = $this->getDoctrine()->getManager();
 #######################
 
-        #######################
+            #######################
         $query3 = $entityManager->createQuery(
             'SELECT    b.id , ass.invitation_sent_at as InvitationSentAt,     ass.Declined as Declined,  b.title , s.createdAt  , ass.duedate  as dueDate
         FROM App:Review s
@@ -308,7 +308,6 @@ class IRBReviewController extends AbstractController {
 
         $editorialDecision = new EditorialDecision();
         $editorialDecisionform = $this->createFormBuilder($editorialDecision)
-
             ->add('feedback', TextareaType::class, array(
                 'attr' => array(
                     'placeholder' => 'Feedback  for the author',
@@ -317,10 +316,8 @@ class IRBReviewController extends AbstractController {
                 )))
             ->getForm();
         $editorialDecisionform->handleRequest($request);
-
         $reviews = $entityManager->getRepository(Review::class)->findBy(['submission' => $reviewAssignment->getSubmission(), 'reviewed_by' => $measareviewer]);
         $guideline_for_reviewers = $entityManager->getRepository(GuidelineForReviewer::class)->findBy(['college' => $reviewAssignment->getSubmission()->getCallForProposal()->getCollege()]);
-
         return $this->render('submission/review_byreviewer.html.twig', [
             'review_assignment' => $reviewAssignment,
             'review_assignments' => $reviews,
@@ -338,11 +335,9 @@ class IRBReviewController extends AbstractController {
      */
     public function rerevise(Request $request, ReviewAssignment $reviewAssignment, EvaluationFormRepository $evaluationFormRepository): Response {
         ////Ultimate reviewers page
-
         $entityManager = $this->getDoctrine()->getManager();
         $me = $this->getUser()->getId();
         // $id=  $review->getReviewAssignment()->getId();
-
         $submissionOfreviewer = $entityManager->getRepository(ReviewAssignment::class)->find($reviewAssignment);
         $metoo = $this->getUser();
         $me_as_a_reviewer = $submissionOfreviewer->getReviewer()->getId();
@@ -350,12 +345,10 @@ class IRBReviewController extends AbstractController {
         $editorialDecisions = $entityManager->getRepository(EditorialDecision::class)->find($submissions);
         #dd($me_as_a_reviewer.$me);
         $iamareviewers = $entityManager->getRepository(ReviewAssignment::class)->findBy(['submission' => $submissions, 'reviewer' => $metoo]);
-
         // $myassigned =  $entityManager->getRepository(ReviewAssignment::class)->findBy($reviewAssignment);
         #######################
         if ($reviewAssignment->getClosed() == 1) {
             return $this->redirectToRoute('myassigned');
-
         }
         #######################
         if ($reviewAssignment->getReassigned() !== 1) {
