@@ -210,6 +210,25 @@
 			<div class="card shadow ">
 				<div class="card-header">
 					<div class="col ">
+						<h4 class="card-title">IRB Applications
+							<button id="btn-theme" class="btn btn-soft-success btn-sm">
+								<i class="fa fa-download material-icons  "></i>
+							</button>
+						</h4>
+					</div>
+
+				</div>
+				<!--end card-header-->
+				<div class="card-body">
+					<div class="" style="position: relative;">
+						<div id="ana_dash_1" class="apex-charts" style="min-height: 335px;"></div>
+<canvas id="irb-bar-chart" width="800" height="450"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="card shadow ">
+				<div class="card-header">
+					<div class="col ">
 						<h4 class="card-title">Review decisions distribution
 							<button id="btn-revdec-bar" class="btn btn-soft-success btn-sm">
 								<i class="fa fa-download material-icons  "></i>
@@ -550,6 +569,52 @@
 }); 
 </script> #}
 <script type="text/javascript">
+ 
+
+
+	const irbappsbar = new Chart(document.getElementById("irb-bar-chart"), {
+type: 'bar',
+
+data: {
+labels: [{% for irbapp in irbapps %}' {{ irbapp.ptype}}',{% endfor %}],
+datasets: [
+{
+
+
+backgroundColor: [
+ 
+"#3e95cd",
+"#8dadf7",
+"#3cba9f",
+"#ccbad6",
+"#3e95cd",
+"#c99551",
+"#3cba9f",
+"#e8c3b9", 
+],
+data: [{% for irbapp in irbapps %}'{{ irbapp.applications }}',{% endfor %}]
+}
+]
+},
+options: {
+scales: {
+yAxes: [
+{
+ticks: {
+beginAtZero: true
+}
+}
+]
+},
+legend: {
+display: false
+},
+title: {
+display: true,
+text: 'Ethical clearance application requests in ({% set count =0 %}{% for theanswer in irbapps %}{% set count= count+ theanswer.applications  %}{% endfor %} out of {{count}})'
+}
+}
+});
 
 	const myBarChart = new Chart(document.getElementById("bar-chart"), {
 type: 'bar',

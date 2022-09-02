@@ -3,6 +3,7 @@
 namespace App\Repository\IRB;
 
 use App\Entity\IRB\Application;
+use DoctrineExtensions\Query\Mysql\DateFormat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -92,6 +93,16 @@ class ApplicationRepository extends ServiceEntityRepository
     $dates[]=(new \DateTime($date[1]))->format('Y-m-d H:i:s');
 
     return $dates;
+   }
+   public function getDashboardData()
+   {
+
+    // DateFormat::cla
+      $qb = $this
+      ->createQueryBuilder('e')
+      ->select('DATE_FORMAT(e.createdAt, \'%Y-%m\'), sum(e.id) apps')
+      ->groupBy('DATE_FORMAT(e.createdAt, \'%Y-%m\')');
+    return $qb->getQuery()->getResult();
    }
 
    

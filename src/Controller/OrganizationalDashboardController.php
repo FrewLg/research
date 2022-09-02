@@ -100,9 +100,9 @@ class OrganizationalDashboardController extends AbstractController {
                 '
         );
         $remark2 = $query4->getScalarResult();
-#################publication
+ #################publication
  #######################
- $res = $entityManager->createQuery(
+    $res = $entityManager->createQuery(
     "SELECT  DISTINCT   count(u.id)  as copis , cl.name as college,  cl.id
     FROM App:CoAuthor u
     JOIN u.submission s 
@@ -110,15 +110,11 @@ class OrganizationalDashboardController extends AbstractController {
     JOIN u.researcher i 
     JOIN  i.userInfo n 
     JOIN  n.college cl 
-     GROUP BY cl.id
+    GROUP BY cl.id
     ORDER BY cl.id
-     "
-) 
-;
-$copisdist = $res->getScalarResult();
-
-#################publication
-
+     ");
+    $copisdist = $res->getScalarResult();
+    #################publication
         return $this->render('dashboard/org-dashboard.html.twig', [
             'formFilter' => $formFilter->createView(),
             'submissions' => $Allsubmissions,

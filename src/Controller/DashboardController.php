@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CallForProposal;
 use App\Entity\CoAuthor;
+use App\Entity\IRB\Application;
 use App\Entity\Submission;
 use App\Entity\ThematicArea;
 use App\Filter\Type\SubmissionFilterType;
@@ -88,8 +89,7 @@ class DashboardController extends AbstractController {
         $this->denyAccessUnlessGranted('view_dashboard');
          $formFilter = $this->createForm(SubmissionFilterType::class);
         $formFilter->handleRequest($request);
-         $Allsubmissions = $submissionRepository->getSubmissions();
-
+ 
         $entityManager = $this->getDoctrine()->getManager();
         
 
@@ -153,20 +153,33 @@ class DashboardController extends AbstractController {
                     FROM App:User u
                     JOIN u.submissions s
                     JOIN u.userInfo i
-
-                      GROUP BY i.gender
-                '
+                    GROUP BY i.gender '
         );
         $remark2 = $query4->getScalarResult();
+#################publication
+ #######################
+ $res = $entityManager->createQuery(
+    "SELECT DISTINCT count(u.id) as applications , u.createdAt as syear , p.name as ptype
+    FROM App\Entity\IRB\Application u 
+    JOIN  u.projectType p 
+    JOIN  u.college cl 
+    WHERE cl.id=:call  
+    GROUP BY ptype"
+) 
+->setParameter('call', $this->getUser()->getUserInfo()->getCollege() );
+$irbapps = $res->getArrayResult();
+// dd($irbapps);
+// dd($entityManager->getRepository(Application::class)->getDashboardData());
+#################publication
 
         return $this->render('dashboard/dashboard.html.twig', [
             'formFilter' => $formFilter->createView(),
-            'submissions' => $Allsubmissions,
-            'bythemes' => $submissionbytheme,
+             'bythemes' => $submissionbytheme,
             'allcalls' => $allcallsp,
             'all_calls' => $allcalls,
             'submissions' => $submissions,
             'copis' => $copis,
+            'irbapps' => $irbapps,
             'desision' => $remark,
             'gender_distribution' => $remark2,
             'all' => $all,
