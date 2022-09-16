@@ -12,7 +12,7 @@
 {% block container_title %}Submission details
 {% endblock %}
 {% block body %}
-{% set research_reports = submission.researchReports %}
+{% set research_reports   = submission.researchReportSubmissionSettings|length %}
 
 
 	<div class="row">
@@ -30,7 +30,10 @@
 							<div class="panel-options">
 								<ul class="nav nav-pills nav-justified">
 									<li>
-										<a class="nav-link " href="#tab-1" data-bs-toggle="tab">Metadata</a>
+										<a class="nav-link  {% if research_reports %}
+
+{% else %} active
+{% endif %} " href="#tab-1" data-bs-toggle="tab">Metadata</a>
 									</li>
 									<li>
 										<a class="nav-link" href="#Revision" data-bs-toggle="tab">Revision</a>
@@ -41,7 +44,11 @@
 									{% if submission.awardgranted  %}
 
 									<li>
-										<a class="nav-link active" href="#progress-report" data-bs-toggle="tab">Progress report</a>
+										<a class="nav-link 
+										 {% if research_reports %}
+active
+{% else %}
+{% endif %}" href="#progress-report" data-bs-toggle="tab">Progress report</a>
 									</li>  
 									{% endif %}
 
@@ -65,7 +72,7 @@
 							<div class="tab-pane 
 							 {% if research_reports %}
  
-{% else %} active
+{% else %}active
 {% endif %}
 
 							" id="tab-1">

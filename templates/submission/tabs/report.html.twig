@@ -1,9 +1,10 @@
 {% set phase = submission.callForProposal.researchReportPhase %}
 {% set research_reports = submission.researchReports %}
+			{% set schedule_count  = submission.researchReportSubmissionSettings|length %}
 
 <div class="tab-pane
 
-{% if research_reports %}
+{% if schedule_count %}
 active
 {% else %}
 {% endif %}
