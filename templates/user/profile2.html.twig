@@ -320,14 +320,9 @@
 												</div>
 												<!--end modal-header-->
 												<div class="modal-body ">
-
-
-													{{ form_start(publicationform) }}
-
+ {{ form_start(publicationform) }} 
 <script>
-
-		
-		window.onload = function() {
+ window.onload = function() {
         document.getElementById('publication_article_document').style.display = 'none';
  
     }
@@ -620,7 +615,7 @@
 											<hr>
 											<div class="col-12">
 												<br>
-												<h4>If previously granted Mega project from the institute (at list in past 4 years)</h4>
+												{# <h4>If previously granted Mega project from the institute (at list in past 4 years)</h4> #}
 												<br>
 											</div>
 											<script type="text/javascript">
@@ -635,10 +630,12 @@
 
 													}
 											</script>
-											Yes
+										
+										
+											{# Yes
 											<input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck" required='required'>
 											No
-											<input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck" required='required'><br>
+											<input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck" required='required'><br> #}
 											<div id="ifYes" style="display:none">
 												If yes, add and insert titles below:<hr>
 									<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#objective-fields-list">
