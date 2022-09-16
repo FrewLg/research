@@ -12,6 +12,8 @@
 {% block container_title %}Submission details
 {% endblock %}
 {% block body %}
+{% set research_reports = submission.researchReports %}
+
 
 	<div class="row">
 		<div class="col-lg-9">
@@ -60,7 +62,13 @@
 					</div> 
 					<div class="panel-body"> 
 						<div class="tab-content">
-							<div class="tab-pane " id="tab-1">
+							<div class="tab-pane 
+							 {% if research_reports %}
+ 
+{% else %} active
+{% endif %}
+
+							" id="tab-1">
 								<div class="row">
 									<div class="col-md-12">
 
