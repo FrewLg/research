@@ -28,6 +28,19 @@ class SubmissionType extends AbstractType
             ->add('title', TextType::class, ['attr' => []])
             ->add('step', HiddenType::class)
             ->add('sub_title')
+            ->add('shortTitle')
+            ->add('college'  , EntityType::class, array(
+                'placeholder' => '---Select college to apply   ---',
+
+                'class' => 'App\Entity\College',
+                'attr' => array(
+                    'empty' => 'College',
+                    'required' => true,
+                    'class' => 'select2 chosen-select form-control',
+                ),
+                 
+
+            ))
             ->add(
                 'abstract',
                 TextareaType::class,
@@ -76,8 +89,7 @@ class SubmissionType extends AbstractType
                         'class' => 'form-control',
                     ],
                 ]
-            )
-
+            ) 
             ->add('reference',   CKEditorType::class, [
                 'attr' => [
                     'placeholder' => 'References',
@@ -168,6 +180,24 @@ class SubmissionType extends AbstractType
                     ->join("t.callForProposal","c")->andWhere("c.id = :call")->setParameter("call",$submission->getCallForProposal()->getId())
      // ->andWhere("u.id = :themeatic")->setParameter("themeatic",$submission->getCallForProposal()->getThematicArea())
                        ;
+                }
+
+            ))
+            ->add('fundingScheme', EntityType::class, array(
+                'placeholder' => '---Select funding scheme    ---',
+
+                'class' => 'App\Entity\FundingScheme',
+                'attr' => array(
+                    'empty' => 'Funding Scheme',
+                    'required' => true,
+                    'class' => 'select2 chosen-select form-control',
+                ),
+                'query_builder' => function (EntityRepository $entityRepository)use ($submission) {
+                   
+                    return $entityRepository->createQueryBuilder('f')
+                    ->join("f.callForProposals","c")->andWhere("c.id = :call")
+                    ->setParameter("call",$submission->getCallForProposal()->getId())
+                        ;
                 }
 
             ))

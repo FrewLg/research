@@ -302,12 +302,35 @@
 									</label>
 
 									{{ form_widget(submissionform.title,{'attr':{'class':'form-control'}}) }}
+<br>
+									<label class="form-label mt-3 mb-1">Short Title<span class='text-danger'>*</span>
+									</label>
 
+
+									{{ form_widget(submissionform.shortTitle,{'attr':{'class':'form-control'}}) }}
+<br>
+	
+	<label for="txtLastNameBilling" class="form-label mt-3 mb-1">Subtitle</label>
+ {{ form_widget(submissionform.sub_title,{'attr':{'class':'form-control'}}) }}
+<br>
+
+	<label for="txtLastNameBilling" class="form-label mt-3 mb-1">College<span class='text-danger'>*</span></label>
+
+
+									{{ form_widget(submissionform.college,{'attr':{'class':'form-control'}}) }}
+<br>
+
+	<label for="txtLastNameBilling" class="form-label mt-3 mb-1">Funding Scheme<span class='text-danger'>*</span></label>
+
+
+									{{ form_widget(submissionform.fundingScheme,{'attr':{'class':'form-control'}}) }}
+<br>
 
 									<label class="form-label mt-3 mb-1">General objective<span class='text-danger'>*</span>
 									</label>
 									<br>
 									{{ form_widget(submissionform.GeneralObjective,{'attr':{'class':'form-control'}}) }}
+<br>
 
 									<label class="form-label mt-3 mb-1">Specific Objectives
 										<small>Minimum of 3</small>
@@ -331,10 +354,7 @@
 									{#     specific objective #}
 
 
-									<label for="txtLastNameBilling" class="form-label mt-3 mb-1">Subtitle</label>
-
-									{{ form_widget(submissionform.sub_title,{'attr':{'class':'form-control'}}) }}
-
+								
 <br>
 									{# <div class="form-group row col-12"> #}
 									<label for="txtLastNameBilling" class="form-label mt-3 mb-1"> Executive Summary / Abstract</label>

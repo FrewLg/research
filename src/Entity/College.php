@@ -74,6 +74,11 @@ class College
     private $thematicAreas;
 
     /**
+     * @ORM\OneToMany(targetEntity=Submission::class, mappedBy="college")
+     */
+    private $submissions;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $prefix;
@@ -132,6 +137,7 @@ class College
         $this->callForProposals = new ArrayCollection();
         $this->applications = new ArrayCollection();
         $this->thematicAreas = new ArrayCollection();
+        $this->submissions = new ArrayCollection();
         // $this->guidelineForReviewers = new ArrayCollection();
          $this->guidelines = new ArrayCollection();
         $this->callForTrainings = new ArrayCollection();
@@ -371,6 +377,35 @@ class College
 
         return $this;
     }
+    /**
+     * @return Collection|Submission[]
+     */
+    public function getSubmissions(): Collection
+    {
+        return $this->thematicAreas;
+    }
+
+    public function addSubmission(Submission $submission): self
+    {
+        if (!$this->submissions->contains($submission)) {
+            $this->submissions[] = $submission;
+            $submission->setCollege($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubmission(Submission $submission): self
+    {
+        if ($this->submissions->removeElement($submission)) {
+            // set the owning side to null (unless already changed)
+            if ($submission->getCollege() === $this) {
+                $submission->setCollege(null);
+            }
+        }
+
+        return $this;
+    }
 
     public function getPrefix(): ?string
     {
@@ -384,10 +419,7 @@ class College
         return $this;
     }
 
-
-
-
-
+ 
 
     public function getGuidelineForReviewer(): ?GuidelineForReviewer
     {

@@ -170,16 +170,18 @@ class CallForProposal
      */
     private $thematicArea;
 
-   
-
+    /**
+     * @ORM\ManyToMany(targetEntity=FundingScheme::class, inversedBy="callForProposals")
+     */
+    private $fundingScheme;
  
-
     public function __construct()
     {
         $this->submissions = new ArrayCollection();
         // $this->college = new ArrayCollection();
         $this->templateAndForms = new ArrayCollection();
         $this->thematicArea = new ArrayCollection();
+        $this->fundingScheme = new ArrayCollection();
       
     }
 
@@ -585,6 +587,30 @@ class CallForProposal
     public function removeThematicArea(ThematicArea $thematicArea): self
     {
         $this->thematicArea->removeElement($thematicArea);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FundingScheme>
+     */
+    public function getFundingScheme(): Collection
+    {
+        return $this->fundingScheme;
+    }
+
+    public function addFundingScheme(FundingScheme $fundingScheme): self
+    {
+        if (!$this->fundingScheme->contains($fundingScheme)) {
+            $this->fundingScheme[] = $fundingScheme;
+        }
+
+        return $this;
+    }
+
+    public function removeFundingScheme(FundingScheme $fundingScheme): self
+    {
+        $this->fundingScheme->removeElement($fundingScheme);
 
         return $this;
     }

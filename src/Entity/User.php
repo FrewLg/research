@@ -59,7 +59,7 @@ class User implements UserInterface
     private $proposals;
 
     /**
-     * @ORM\OneToMany(targetEntity=Submission::class, mappedBy="author")
+     * @ORM\OneToMany(targetEntity=App\Entity\Submission::class, mappedBy="author")
      */
     private $submissions; 
   

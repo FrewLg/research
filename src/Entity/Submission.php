@@ -78,11 +78,19 @@ class Submission
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $uidentifier;
-
     /**
      * @ORM\ManyToOne(targetEntity=ThematicArea::class, inversedBy="submissions")
      */
     private $thematic_area;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=College::class, inversedBy="submissions")
+     */
+    private $college;
+    /**
+     * @ORM\ManyToOne(targetEntity=FundingScheme::class, inversedBy="submissions")
+     */
+    private $fundingScheme;
 
     /**
      * @ORM\OneToMany(targetEntity=ReviewAssignment::class, mappedBy="submission" , orphanRemoval=true,cascade={"persist"})
@@ -143,10 +151,7 @@ class Submission
      */
     private $editorialDecisions;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $copyedit;
+    
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -265,6 +270,12 @@ class Submission
      * @ORM\OneToMany(targetEntity=Discussion::class, mappedBy="submission")
      */
     private $discussions;
+
+    
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $shortTitle;
 
     public function __construct()
     {
@@ -451,6 +462,18 @@ class Submission
     public function setThematicArea(?ThematicArea $thematic_area): self
     {
         $this->thematic_area = $thematic_area;
+
+        return $this;
+    }
+    public function getCollege(): ?College
+    {
+        return $this->college;
+    }
+
+
+    public function setCollege(?College $college): self
+    {
+        $this->college = $college;
 
         return $this;
     }
@@ -1041,6 +1064,30 @@ class Submission
                 $discussion->setSubmission(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFundingScheme(): ?FundingScheme
+    {
+        return $this->fundingScheme;
+    }
+
+    public function setFundingScheme(?FundingScheme $fundingScheme): self
+    {
+        $this->fundingScheme = $fundingScheme;
+
+        return $this;
+    }
+
+    public function getShortTitle(): ?string
+    {
+        return $this->shortTitle;
+    }
+
+    public function setShortTitle(?string $shortTitle): self
+    {
+        $this->shortTitle = $shortTitle;
 
         return $this;
     }

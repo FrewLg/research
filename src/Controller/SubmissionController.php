@@ -303,7 +303,7 @@ public function metadata(Request $request, CallForProposal $callForProposal, Use
         return $this->redirectToRoute('researchworks');
     }
 
-    ##########################
+    ########################## 
 
     $p_i_college = $this->getUser()->getUserInfo()->getCollege();
 
@@ -357,7 +357,7 @@ public function metadata(Request $request, CallForProposal $callForProposal, Use
 #####################Check if  proposalfile is there"#################
 
         #   foreach ($submission->getSubmissionAttachements() as $key => $author) {
-#
+    #   
         #               // $file = $form->get('file')->getData();
         #              $files = $author->getFile('file');
 #
@@ -414,8 +414,7 @@ public function metadata(Request $request, CallForProposal $callForProposal, Use
                 $theEmail = $theEmails[$i];
                 $email = (new TemplatedEmail())
                     ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
-                    //    ->to($theEmails)
-                    ->to(new Address($theEmails[$i], $theFirstNames[$i]))
+                     ->to(new Address($theEmails[$i], $theFirstNames[$i]))
                     ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
                     ->subject($subject)
                     ->htmlTemplate('emails/co-authorship-invitation.html.twig')

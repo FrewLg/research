@@ -92,10 +92,11 @@ class CallForProposalController extends AbstractController {
             $the_id = $call_id . '-' . $heading;
             $identifier = md5(uniqid($the_id));
             $callForProposal->setUidentifier($identifier);
-            if ($form->get('is_call_from_center')->getData() == 0) {
+            // if ($form->get('is_call_from_center')->getData() == 0) {
  
-                $callForProposal->setCollege($this->getUser()->getUserInfo()->getCollege());
-                 }
+            //     $callForProposal->setCollege($this->getUser()->getUserInfo()->getCollege());
+            //      }
+                 
 
             $attachement = $form->get('attachement')->getData();
             if (!$attachement) {
