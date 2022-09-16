@@ -1,7 +1,15 @@
 {% set phase = submission.callForProposal.researchReportPhase %}
 {% set research_reports = submission.researchReports %}
 
-<div class="tab-pane active" id="progress-report">
+<div class="tab-pane
+
+{% if research_reports %}
+active
+{% else %}
+{% endif %}
+ 
+ 
+ " id="progress-report">
 
 	<div class="row m-1">
 		<div class="col-12">
