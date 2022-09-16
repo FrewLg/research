@@ -82,6 +82,23 @@
 				</small>
 				<h6 style="font-family:arial; text-align:justify;"> 
 				<p class='text-default'>{{ call_for_proposal.subject|raw }}</h6></p>
+
+				{% if  call_for_proposal.fundingScheme %}
+					Funding Schemes:
+					<ul class>
+						
+							{% for fundingscheme in call_for_proposal.fundingScheme %}
+								
+						<li>
+								{{fundingscheme.name}}
+					</li>
+ {% endfor %}
+					</ul>
+
+						{% else %}
+							
+						{% endif %}
+						
 				<h5 class='text-primary'>Thematic areas:</h5>
 	 <h6 style="font-family:arial; text-align:justify;" >
 						<ol >
@@ -125,11 +142,10 @@
 
 							</ul>
 								<h5 class='text-primary'>
-						<br>Principal contact addresses :</h6>
+						<br>Principal contact addresses:</h6>
 							{% if call_for_proposal.college %}
 								<small>
-									<br>
-
+									<br> 
 									{{ call_for_proposal.college.principalContact|raw }}
 								</small>
 								<h5 class='text-center text-success'>

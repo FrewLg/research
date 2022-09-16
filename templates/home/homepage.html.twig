@@ -82,7 +82,9 @@
 						{{ call_for_proposal.subject|striptags|slice(0, 170)|raw }}
 					</p>
 				</div>
+				
 {% if  call_for_proposal.fundingScheme %}
+					Funding Schemes:
 					<ul class>
 						
 							{% for fundingscheme in call_for_proposal.fundingScheme %}
