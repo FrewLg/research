@@ -79,10 +79,7 @@ class CallForProposalType extends AbstractType {
 
                 ],
             ])
-            ->add('deadline', DateType::class, array(
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-            ))
+            ->add('deadline',  null,['widget' => 'single_text',])
 
             ->add('funding_source', TextType::class, [
                 'attr' => ['class' => 'form-control col col-md-12 col-sm-12 col-lg-9 '],

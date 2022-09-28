@@ -125,6 +125,11 @@ class College
      */
     private $collegeThematicAreas;
 
+    /**
+     * @ORM\OneToMany(targetEntity=\App\Entity\CRP\CollaborativeResearchProject::class, mappedBy="ResponsiblePrimaryInstitute")
+     */
+    private $collaborativeResearchProjects;
+
 
  
    
@@ -145,6 +150,7 @@ class College
         $this->irbReviewAtachements = new ArrayCollection();
         $this->callCategories = new ArrayCollection();
         $this->collegeThematicAreas = new ArrayCollection();
+        $this->collaborativeResearchProjects = new ArrayCollection();
       }
  
 
@@ -625,6 +631,36 @@ class College
             // set the owning side to null (unless already changed)
             if ($collegeThematicArea->getCollege() === $this) {
                 $collegeThematicArea->setCollege(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CollaborativeResearchProject>
+     */
+    public function getCollaborativeResearchProjects(): Collection
+    {
+        return $this->collaborativeResearchProjects;
+    }
+
+    public function addCollaborativeResearchProject(\App\Entity\CRP\CollaborativeResearchProject $collaborativeResearchProject): self
+    {
+        if (!$this->collaborativeResearchProjects->contains($collaborativeResearchProject)) {
+            $this->collaborativeResearchProjects[] = $collaborativeResearchProject;
+            $collaborativeResearchProject->setResponsiblePrimaryInstitute($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCollaborativeResearchProject(\App\Entity\CRP\CollaborativeResearchProject $collaborativeResearchProject): self
+    {
+        if ($this->collaborativeResearchProjects->removeElement($collaborativeResearchProject)) {
+            // set the owning side to null (unless already changed)
+            if ($collaborativeResearchProject->getResponsiblePrimaryInstitute() === $this) {
+                $collaborativeResearchProject->setResponsiblePrimaryInstitute(null);
             }
         }
 

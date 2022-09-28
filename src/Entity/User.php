@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\CRP\CoInvestigator;
+use App\Entity\CRP\CollaborativeResearchProject;
 use App\Repository\UserRepository;
 use App\Entity\IrbCertificate as IrbCertificate;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -185,6 +187,21 @@ class User implements UserInterface
      */
     private $applicationFeedback;
 
+    /**
+     * @ORM\OneToMany(targetEntity=\App\Entity\CRP\CollaborativeResearchProject::class, mappedBy="PrincipalInvestigator", orphanRemoval=true)
+     */
+    private $collaborativeResearchProjects;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CollaborativeResearchProject::class, mappedBy="CoPrincipalInvestigator")
+     */
+    private $collaborativeResearchProjectsAsCoPI;
+
+    /**
+     * @ORM\OneToOne(targetEntity=CoInvestigator::class, mappedBy="memberName", cascade={"persist", "remove"})
+     */
+    private $coInvestigator;
+
 
      
     public function __construct()
@@ -213,6 +230,8 @@ class User implements UserInterface
         $this->chats = new ArrayCollection();
         $this->chatsTos = new ArrayCollection();
         $this->applicationFeedback = new ArrayCollection();
+        $this->collaborativeResearchProjects = new ArrayCollection();
+        $this->collaborativeResearchProjectsAsCoPI = new ArrayCollection();
      }
   
 
@@ -1063,6 +1082,88 @@ class User implements UserInterface
                 $applicationFeedback->setFeedbackFrom(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CollaborativeResearchProject>
+     */
+    public function getCollaborativeResearchProjects(): Collection
+    {
+        return $this->collaborativeResearchProjects;
+    }
+
+    public function addCollaborativeResearchProject(\App\Entity\CRP\CollaborativeResearchProject $collaborativeResearchProject): self
+    {
+        if (!$this->collaborativeResearchProjects->contains($collaborativeResearchProject)) {
+            $this->collaborativeResearchProjects[] = $collaborativeResearchProject;
+            $collaborativeResearchProject->setPrincipalInvestigator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCollaborativeResearchProject(\App\Entity\CRP\CollaborativeResearchProject $collaborativeResearchProject): self
+    {
+        if ($this->collaborativeResearchProjects->removeElement($collaborativeResearchProject)) {
+            // set the owning side to null (unless already changed)
+            if ($collaborativeResearchProject->getPrincipalInvestigator() === $this) {
+                $collaborativeResearchProject->setPrincipalInvestigator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CollaborativeResearchProject>
+     */
+    public function getCollaborativeResearchProjectsAsCoPI(): Collection
+    {
+        return $this->collaborativeResearchProjectsAsCoPI;
+    }
+
+    public function addCollaborativeResearchProjectsAsCoPI(CollaborativeResearchProject $collaborativeResearchProjectsAsCoPI): self
+    {
+        if (!$this->collaborativeResearchProjectsAsCoPI->contains($collaborativeResearchProjectsAsCoPI)) {
+            $this->collaborativeResearchProjectsAsCoPI[] = $collaborativeResearchProjectsAsCoPI;
+            $collaborativeResearchProjectsAsCoPI->setCoPrincipalInvestigator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCollaborativeResearchProjectsAsCoPI(CollaborativeResearchProject $collaborativeResearchProjectsAsCoPI): self
+    {
+        if ($this->collaborativeResearchProjectsAsCoPI->removeElement($collaborativeResearchProjectsAsCoPI)) {
+            // set the owning side to null (unless already changed)
+            if ($collaborativeResearchProjectsAsCoPI->getCoPrincipalInvestigator() === $this) {
+                $collaborativeResearchProjectsAsCoPI->setCoPrincipalInvestigator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCoInvestigator(): ?CoInvestigator
+    {
+        return $this->coInvestigator;
+    }
+
+    public function setCoInvestigator(?CoInvestigator $coInvestigator): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($coInvestigator === null && $this->coInvestigator !== null) {
+            $this->coInvestigator->setMemberName(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($coInvestigator !== null && $coInvestigator->getMemberName() !== $this) {
+            $coInvestigator->setMemberName($this);
+        }
+
+        $this->coInvestigator = $coInvestigator;
 
         return $this;
     }

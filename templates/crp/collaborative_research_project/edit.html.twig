@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit CollaborativeResearchProject{% endblock %}
+
+{% block body %}
+    <h1>Edit CollaborativeResearchProject</h1>
+
+    {{ include('crp/collaborative_research_project/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_c_r_p_collaborative_research_project_index') }}">back to list</a>
+
+    {{ include('crp/collaborative_research_project/_delete_form.html.twig') }}
+{% endblock %}

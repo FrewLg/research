@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ funding_organization.name }}{% endblock %}
+
+{% block body %}
+    <h1>{{ funding_organization.name }}</h1>
+
+    <table class="table">
+        <tbody>
+ 
+            
+            <tr>
+                
+                <td> 
+
+{{funding_organization.detailsAboutOrg}}
+                {% if  funding_organization.logo %}
+
+									<img src="{{ asset('files/profile_pictures/'~funding_organization.logo  ) }}" title='{{ funding_organization.name }}'alt="{{ funding_organization.name }}" class="thumb-lg rounded-circle  circle-border">
+								{% else %}
+									<img src="{{ asset('/img/defaultuser.png') }}" class="thumb-lg rounded-circle circle-border  " alt="profile">
+	{{  funding_organization.collaborativeResearchProjects|length }}		
+	{{  funding_organization.piOrg|length }}		
+    					{% endif %}
+</td>
+            </tr>
+             
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_c_r_p_funding_organization_index') }}">back to list</a>
+
+    <a href="{{ path('app_c_r_p_funding_organization_edit', {'id': funding_organization.id}) }}">edit</a>
+ 
+{% endblock %}

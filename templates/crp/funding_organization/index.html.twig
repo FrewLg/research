@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FundingOrganization index{% endblock %}
+
+{% block body %}
+    <h1>FundingOrganization index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Logo</th>
+                <th>CreatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for funding_organization in funding_organizations %}
+            <tr>
+                <td>{{ funding_organization.id }}</td>
+                <td>{{ funding_organization.name }}</td>
+                <td>{{ funding_organization.logo }}</td>
+                <td>{{ funding_organization.createdAt ? funding_organization.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_c_r_p_funding_organization_show', {'id': funding_organization.id}) }}">show</a>
+                    <a href="{{ path('app_c_r_p_funding_organization_edit', {'id': funding_organization.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_c_r_p_funding_organization_new') }}">Create new</a>
+{% endblock %}

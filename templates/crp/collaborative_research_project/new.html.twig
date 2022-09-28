@@ -1,28 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User Group
-{% endblock %}
-{% block maintitle %}
-User Group Users
-{% endblock %}
-{% block breadcrumb %}
-	<li class="breadcrumb-item ">
-		<a href="{{path('user_group_index')}}">User Group</a>
-	</li>
-	<li class="breadcrumb-item active">User list</li>
-{% endblock %}
-{% block styles %}
+{% block title %}New CollaborativeResearchProject{% endblock %}
 
-	<link rel="stylesheet" href="{{asset('bootstrap4-duallistbox/bootstrap-duallistbox.min.css')}}">
-{% endblock %}
 {% block body %}
 
 
-	<div class="card ">
+<div class="card ">
 
 		<div class="card-header">
 			<h3 class="card-title">
-				{{ user_group.name }}
+      Collaborative Research Project 
 			</h3>
 
 			<div class="card-tools">
@@ -31,19 +18,21 @@ User Group Users
 			</div>
 			<!-- /.card-tools -->
 		</div>
-					<form method="POST">
+
 
 		<!-- /.card-header -->
 		<div class="card-body">
 
+    {{ include('crp/collaborative_research_project/_form.html.twig') }}
+					<form method="POST">
 
 			<div class="row">
 				<div class="col-12">
 
 						<div class="form-group">
-							<input hidden value="{{ user_group.id}}" name="usergroupuser">
+							{# <input hidden value="{{ user_group.id}}" name="usergroupuser"> #}
 							<select class="duallistbox" multiple="multiple" name="user[]">
-								{% for user in user_group.users %}
+								{# {% for user in user_group.users %}
 								{% if user.userInfo %}
 									
 									<option selected value="{{user.id}}" >{{ user.userInfo }}
@@ -60,7 +49,7 @@ User Group Users
 										{{ user.userInfo.id }}</option>
 								{% endif %}
 								
-								{% endfor %}
+								{% endfor %} #}
 
 
 							</select>
@@ -82,17 +71,17 @@ User Group Users
 			</div>
 		</div>
 		</form>
-	</div>
-	<!-- /.card -->
 
-{% endblock %}
+ {% endblock %}
+
+
 {% block script %}
 
 	<script src="{{asset('bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
 	<script>
 		$(function () {
 $('.duallistbox').bootstrapDualListbox({
-	nonSelectedListLabel: 'User List',
+	nonSelectedListLabel: 'Members list List',
   selectedListLabel: 'Users In The Group',
   preserveSelectionOnMove: 'moved',
   moveOnSelect: false,

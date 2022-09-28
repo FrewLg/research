@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CollaborativeResearchProject{% endblock %}
+
+{% block body %}
+    <h1>CollaborativeResearchProject</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ collaborative_research_project.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ collaborative_research_project.title }}</td>
+            </tr>
+            <tr>
+                <th>ShortDescription</th>
+                <td>{{ collaborative_research_project.shortDescription }}</td>
+            </tr>
+            <tr>
+                <th>Deliverables</th>
+                <td>{{ collaborative_research_project.Deliverables }}</td>
+            </tr>
+            <tr>
+                <th>YearOfCemmencement</th>
+                <td>{{ collaborative_research_project.YearOfCemmencement ? collaborative_research_project.YearOfCemmencement|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndDate</th>
+                <td>{{ collaborative_research_project.EndDate ? collaborative_research_project.EndDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>FundingOpportunityName</th>
+                <td>{{ collaborative_research_project.FundingOpportunityName }}</td>
+            </tr>
+            <tr>
+                <th>AmountOfGrant</th>
+                <td>{{ collaborative_research_project.AmountOfGrant }}</td>
+            </tr>
+            <tr>
+                <th>ThematicArea</th>
+                <td>{{ collaborative_research_project.ThematicArea }}</td>
+            </tr>
+            <tr>
+                <th>OtherInsitutes</th>
+                <td>{{ collaborative_research_project.OtherInsitutes }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_c_r_p_collaborative_research_project_index') }}">back to list</a>
+
+    <a href="{{ path('app_c_r_p_collaborative_research_project_edit', {'id': collaborative_research_project.id}) }}">edit</a>
+
+    {{ include('crp/collaborative_research_project/_delete_form.html.twig') }}
+{% endblock %}

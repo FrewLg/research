@@ -39,6 +39,16 @@ class FundingScheme
      */
     private $submissions;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $acronym;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $acronymColor;
+
     public function __construct()
     {
         $this->callForProposals = new ArrayCollection();
@@ -131,6 +141,30 @@ class FundingScheme
                 $submission->setFundfundingScheme(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAcronym(): ?string
+    {
+        return $this->acronym;
+    }
+
+    public function setAcronym(?string $acronym): self
+    {
+        $this->acronym = $acronym;
+
+        return $this;
+    }
+
+    public function getAcronymColor(): ?string
+    {
+        return $this->acronymColor;
+    }
+
+    public function setAcronymColor(?string $acronymColor): self
+    {
+        $this->acronymColor = $acronymColor;
 
         return $this;
     }

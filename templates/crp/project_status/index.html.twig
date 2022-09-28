@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ProjectStatus index{% endblock %}
+
+{% block body %}
+    <h1>ProjectStatus index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>statusColor </th>
+
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for project_status in project_statuses %}
+            <tr>
+                <td>{{ project_status.id }}</td>
+                <td>{{ project_status.status }}</td>
+                <td>{{ project_status.description }}</td>
+                <td>{{ project_status.statusColor  }}</td>
+
+                <td>
+                    <a href="{{ path('app_c_r_p_project_status_show', {'id': project_status.id}) }}">show</a>
+                    <a href="{{ path('app_c_r_p_project_status_edit', {'id': project_status.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_c_r_p_project_status_new') }}">Create new</a>
+{% endblock %}
