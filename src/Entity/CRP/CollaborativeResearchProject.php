@@ -115,7 +115,7 @@ class CollaborativeResearchProject
     private $principalInvestigatingOrganization;
 
     /**
-     * @ORM\OneToMany(targetEntity=Deliverables::class, mappedBy="collaborativeResearchProject", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Deliverables::class, cascade={"persist", "remove"}, mappedBy="collaborativeResearchProject", orphanRemoval=true)
      */
     private $deliverables;
 
