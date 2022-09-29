@@ -33,11 +33,7 @@ class CollaborativeResearchProject
      */
     private $shortDescription;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $Deliverables;
-
+   
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -102,25 +98,34 @@ class CollaborativeResearchProject
      */
     private $CoPrincipalInvestigator;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=CoInvestigator::class, inversedBy="collaborativeResearchProjects")
-     */
-    private $CoInvestigators;
-
+   
     /**
      * @ORM\ManyToMany(targetEntity=FundingOrganization::class, inversedBy="collaborativeResearchProjects")
      */
     private $fundingOrganization;
+   
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="coInvestigators")
+     */
+    private $coInvestigators;
 
     /**
      * @ORM\ManyToOne(targetEntity=FundingOrganization::class, inversedBy="piOrg")
      */
     private $principalInvestigatingOrganization;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Deliverables::class, mappedBy="collaborativeResearchProject", orphanRemoval=true)
+     */
+    private $deliverables;
+
+    
+
     public function __construct()
     {
-        $this->CoInvestigators = new ArrayCollection();
+        $this->coInvestigators = new ArrayCollection();
         $this->fundingOrganization = new ArrayCollection();
+        $this->deliverables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -132,6 +137,14 @@ class CollaborativeResearchProject
     {
         return $this->title;
     }
+
+    function __toString()
+    {
+  
+          return "".$this->title;
+    }
+  
+    
 
     public function setTitle(?string $title): self
     {
@@ -152,17 +165,7 @@ class CollaborativeResearchProject
         return $this;
     }
 
-    public function getDeliverables(): ?string
-    {
-        return $this->Deliverables;
-    }
-
-    public function setDeliverables(?string $Deliverables): self
-    {
-        $this->Deliverables = $Deliverables;
-
-        return $this;
-    }
+  
 
     public function getYearOfCemmencement(): ?\DateTimeInterface
     {
@@ -309,25 +312,25 @@ class CollaborativeResearchProject
     }
 
     /**
-     * @return Collection<int, CoInvestigator>
+     * @return Collection<int, coInvestigator>
      */
-    public function getCoInvestigators(): Collection
+    public function getcoInvestigators(): Collection
     {
-        return $this->CoInvestigators;
+        return $this->coInvestigators;
     }
 
-    public function addCoInvestigator(CoInvestigator $coInvestigator): self
+    public function addcoInvestigator(User $coInvestigator): self
     {
-        if (!$this->CoInvestigators->contains($coInvestigator)) {
-            $this->CoInvestigators[] = $coInvestigator;
+        if (!$this->coInvestigators->contains($coInvestigator)) {
+            $this->coInvestigators[] = $coInvestigator;
         }
 
         return $this;
     }
 
-    public function removeCoInvestigator(CoInvestigator $coInvestigator): self
+    public function removecoInvestigator(User $coInvestigator): self
     {
-        $this->CoInvestigators->removeElement($coInvestigator);
+        $this->coInvestigators->removeElement($coInvestigator);
 
         return $this;
     }
@@ -367,4 +370,35 @@ class CollaborativeResearchProject
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Deliverables>
+     */
+    public function getDeliverables(): Collection
+    {
+        return $this->deliverables;
+    }
+
+    public function addDeliverable(Deliverables $deliverable): self
+    {
+        if (!$this->deliverables->contains($deliverable)) {
+            $this->deliverables[] = $deliverable;
+            $deliverable->setCollaborativeResearchProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeliverable(Deliverables $deliverable): self
+    {
+        if ($this->deliverables->removeElement($deliverable)) {
+            // set the owning side to null (unless already changed)
+            if ($deliverable->getCollaborativeResearchProject() === $this) {
+                $deliverable->setCollaborativeResearchProject(null);
+            }
+        }
+
+        return $this;
+    }
+ 
 }

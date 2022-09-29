@@ -1,4 +1,207 @@
+{% macro displayObjective(objective) %}
+	 
+<div class="row grey">
+
+	<div class="col-md-4">
+		<div class="form-group select-wizard">
+			<label class="bmd-label-floating">Task name</label>
+			{{form_widget(objective.name)}}
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="form-group select-wizard">
+			<label class="bmd-label-floating">Start date</label>
+			{{form_widget(objective.startDate)}}
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="form-group select-wizard">
+			<label class="bmd-label-floating">endDate</label>
+			{{form_widget(objective.endDate)}}
+		</div>
+	</div>
+	 
+	<div class="col-md-1">
+		<div class="form-group">
+
+			<button type="button" class=" btn btn-danger btn-sm close  remove-collection-widget mt-4   bgc-h-danger-l2 radius-round ">
+				<span aria-hidden="true">×</span>
+			</button>
+		</div>
+	</div>
+	</div>
+{% endmacro %}
+
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {# {{ form_widget(form.title,{'class':'form-control'}) }} #}
+
+<div class="row">
+
+
+												<div class="col-md-6">
+													<div class="form-c">
+														<div class="label">
+															Title</div>
+														{{ form_widget(form.title  ) }}
+													</div>
+												</div>
+
+
+												<div class="col-md-6">
+													<div class="form-s">
+														<div class="label">
+															ThematicArea</div>
+														{{ form_widget(form.ThematicArea  ) }}
+													</div>
+												</div>
+												 
+												<div class="col-md-6">
+													<div class="form-group">
+														ProjectType
+
+														{{ form_widget(form.ProjectType  ) }}
+													</div>
+												</div>
+											</div>
+<div class="row"> 
+
+
+												<div class="col-md-6">
+													<div class="form-c">
+														<div class="label">
+															FundingOpportunityName</div>
+														{{ form_widget(form.FundingOpportunityName  ) }}
+													</div>
+												</div>
+
+
+												<div class="col-md-6">
+													<div class="form-s">
+														<div class="label">
+															PrincipalInvestigator</div>
+														{{ form_widget(form.PrincipalInvestigator  ) }}
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+
+														ResponsiblePrimaryInstitute
+														{{ form_widget(form.ResponsiblePrimaryInstitute  ) }}
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														YearOfCemmencement
+
+														{{ form_widget(form.YearOfCemmencement  ) }}
+													</div>
+												</div>
+											</div>
+<div class="row">
+
+
+												<div class="col-md-6">
+													<div class="form-c">
+														<div class="label">
+															AmountOfGrant</div>
+														{{ form_widget(form.AmountOfGrant  ) }}
+													</div>
+												</div>
+<div class="col-md-6">
+													<div class="form-group">
+
+														Currency
+														{{ form_widget(form.Currency  ) }}
+													</div>
+												</div>
+
+												<div class="col-md-6">
+													<div class="form-s">
+														<div class="label">
+															shortDescription</div>
+														{{ form_widget(form.shortDescription  ) }}
+													</div>
+												</div>
+												 
+												<div class="col-md-6">
+													<div class="form-group">
+														EndDate
+
+														{{ form_widget(form.EndDate  ) }}
+													</div>
+												</div>
+											</div>
+											<div class="row">
+
+
+												<div class="col-md-6">
+													<div class="form-c">
+														<div class="label">
+															OtherInsitutes</div>
+														{{ form_widget(form.OtherInsitutes  ) }}
+													</div>
+												</div>
+
+
+												<div class="col-md-6">
+													<div class="form-s">
+														<div class="label">
+															CoPrincipalInvestigator</div>
+														{{ form_widget(form.CoPrincipalInvestigator  ) }}
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+
+														coInvestigator
+														{{ form_widget(form.coInvestigators  ) }}
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														principalInvestigatingOrganization
+
+														{{ form_widget(form.principalInvestigatingOrganization  ) }}
+													</div>
+												</div>
+												</div>
+												
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														fundingOrganization
+
+														{{ form_widget(form.fundingOrganization  ) }}
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														ProjectStatus
+
+														{{ form_widget(form.ProjectStatus  ) }}
+													</div>
+												</div>
+												</div>
+												
+											<div class="row">
+												<div class="col-md-12">
+											 <h4 > Deliverables</h4>
+
+    												<button type="button" class="btn btn-soft-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#objective-fields-list">
+													<span aria-hidden="true">+</span>
+													Add Tasks
+													</button>
+ 
+								<ul id="objective-fields-list" class="m-t-5" data-prototype="{{_self.displayObjective(form.deliverables.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ form.deliverables|length }}">
+										{% for research in form.deliverables %}
+											<div class="row ">
+												{{ _self.displayObjective(research) }}
+											</div>
+										{% endfor %}
+									</ul>
+												</div>
+
+ </div>
+    <button class="btn btn-soft-success btn-lg">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+

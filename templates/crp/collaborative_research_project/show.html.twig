@@ -1,58 +1,170 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CollaborativeResearchProject{% endblock %}
+{% block title %}{{ collaborative_research_project.title }}{% endblock %}
 
 {% block body %}
-    <h1>CollaborativeResearchProject</h1>
+  
+  <div class="card mt-3">
+                                    <div class="card-body">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ collaborative_research_project.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ collaborative_research_project.title }}</td>
-            </tr>
-            <tr>
-                <th>ShortDescription</th>
-                <td>{{ collaborative_research_project.shortDescription }}</td>
-            </tr>
-            <tr>
-                <th>Deliverables</th>
-                <td>{{ collaborative_research_project.Deliverables }}</td>
-            </tr>
-            <tr>
-                <th>YearOfCemmencement</th>
-                <td>{{ collaborative_research_project.YearOfCemmencement ? collaborative_research_project.YearOfCemmencement|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>EndDate</th>
-                <td>{{ collaborative_research_project.EndDate ? collaborative_research_project.EndDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>FundingOpportunityName</th>
-                <td>{{ collaborative_research_project.FundingOpportunityName }}</td>
-            </tr>
-            <tr>
-                <th>AmountOfGrant</th>
-                <td>{{ collaborative_research_project.AmountOfGrant }}</td>
-            </tr>
-            <tr>
-                <th>ThematicArea</th>
-                <td>{{ collaborative_research_project.ThematicArea }}</td>
-            </tr>
-            <tr>
-                <th>OtherInsitutes</th>
-                <td>{{ collaborative_research_project.OtherInsitutes }}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="ribbon1 rib1-primary">
+                                        <span class="text-white text-center rib1-primary">{{ collaborative_research_project.FundingOpportunityName}}</span>                                        
+                                    </div>
 
-    <a href="{{ path('app_c_r_p_collaborative_research_project_index') }}">back to list</a>
+                                        <div class="media mb-4">
+                                            
+                                           	{% if   collaborative_research_project.PrincipalInvestigator.userInfo.image %}
 
-    <a href="{{ path('app_c_r_p_collaborative_research_project_edit', {'id': collaborative_research_project.id}) }}">edit</a>
+									<img src="{{ asset('files/profile_pictures/'~collaborative_research_project.PrincipalInvestigator.userInfo.image ) }}" alt=""
+                                     class="thumb-lg rounded-circle  circle-border">
+								{% else %}
+									<img src="{{ asset('/img/defaultuser.png') }}" class="thumb-lg rounded-circle circle-border  " alt="profile">
+								{% endif %}
 
-    {{ include('crp/collaborative_research_project/_delete_form.html.twig') }}
-{% endblock %}
+                                            <div class="media-body align-self-center">
+                                                <h5 class="font-14 m-0">{{ collaborative_research_project.PrincipalInvestigator }}</h5>
+                                                <small class="text-muted">{{ collaborative_research_project.PrincipalInvestigator.email}}</small>
+                                            </div>
+                                        </div>
+
+                                        <h4 class="mt-0 font-15">{{ collaborative_research_project.title}}</h4>
+ThematicArea:{{ collaborative_research_project.ThematicArea }}
+                                        <p>Short Description:{{ collaborative_research_project.shortDescription}}</p>
+                                        <p>
+
+                                      
+                                        <hr class="hr-dashed">
+                                        <div class="mt-4 d-flex justify-content-between">
+							<div class="img-group">
+                             {% for member in collaborative_research_project.coInvestigators %}
+
+
+									{% if member.userInfo and member.userInfo.image %}
+
+										<a class="user-avatar user-avatar-group" href="##{{collaborative_research_project.id}}">
+											<img src="{{ asset('files/profile_pictures/'~member.userInfo.image ) }}" title="{{member.userInfo}}" alt="user" class="rounded-circle thumb-xxs">
+										</a>
+
+
+									{% else %}
+										<a class="user-avatar user-avatar-group" href="##{{collaborative_research_project.id}}">
+											<img src="{{ asset('/img/defaultuser.png') }}" alt="user" title="{{member.userInfo}}"  class="rounded-circle thumb-xxs">
+										</a>
+									{% endif %}
+
+									{% else %}No Co-PI has been involved
+								{% endfor %}
+
+
+								<a href="#" class="avatar-box thumb-xxs align-self-center">
+									<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+										+{{ collaborative_research_project.coInvestigators|length   }}
+									</span>
+								</a>
+
+							</div>
+
+						</div>
+                                        <p>
+                                         {{ collaborative_research_project.shortDescription }}</p>
+             <h4>Year Of Cemmencement: </h4>  {{ collaborative_research_project.YearOfCemmencement ? collaborative_research_project.YearOfCemmencement|date('Y-m-d H:i:s') : '' }}
+
+                              <h4>End Date:</h4>
+                {{ collaborative_research_project.EndDate ? collaborative_research_project.EndDate|date('Y-m-d H:i:s') : '' }}
+
+                                        <hr class="hr-dashed">
+Amount Of Grant:{{collaborative_research_project.AmountOfGrant}} {{collaborative_research_project.currency}}
+<p> 
+<div class="card">     <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Major Activity/Deliverables</h4>                      
+                                        </div><!--end col-->
+                                         
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->                                              
+                                <div class="card-body"> 
+                                    <div class="analytic-dash-activity" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
+                                        <div class="activity">
+{% for row in collaborative_research_project.deliverables %}
+                                          
+                                            <div class="activity-info">
+                                                <div class="icon-info-activity">
+                                                    <i class="las la-user-clock bg-soft-primary"></i>
+                                                </div>
+                                                <div class="activity-info-text">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <p class="text-muted mb-0 font-13 w-75"> 
+                                                              <a href="index.html"> {{row.name}}</a> Comment
+                                                        </p>
+                                                        <small class="text-muted">{{row.EndDate|date('d-m-y')}}</small>
+                                                      <div class="pricingTable1 text-center">
+                                                 {% if row.status==1 %}
+                                                    
+                                                 <ul class="list-unstyled pricing-content-2">
+                                                  <li>Done</li> 
+                                                 </ul>
+                                                 {% else %}
+
+                                                 <ul class="list-unstyled pricing-content-2">
+                                                  <li>Waiting
+                                                  <form method="post" action="{{ path('toggle_status', {'id': row.id}) }} ">
+    <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ row.id) }}">
+    <button class="btn">ChangeStatus</button>
+</form>
+
+
+                                                  </li> 
+                                                 </ul>
+                                                 {% endif %}
+
+                                                    </div>    
+                                                    </div>    
+                                                </div>
+                                            </div>   
+{% endfor %}
+
+                                                                                                                                                                                 
+                                        </div><!--end activity-->
+                                    </div>
+                                    </div></div></div><div class="simplebar-placeholder" style="width: auto; height: 405px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 293px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div><!--end analytics-dash-activity-->
+                                </div>  <!--end card-body-->                                     
+                            </div>
+
+                                         <div class="row">
+                                            <h4>Collaborating Institutes:              
+                    {{ collaborative_research_project.OtherInsitutes }}</h4>
+                    <h4>Collaborating Institutes:              </h4>
+               
+                    {% for fo in collaborative_research_project.fundingOrganization %}
+                                           <div class="col-auto">
+                                                <div class="card"> 
+                  
+                {% if  fo.logo %}
+
+									<img src="{{ asset('files/profile_pictures/'~fo.logo  ) }}" title='{{ fo.name }}'alt="{{ fo.name }}" class="thumb-lg rounded-circle circle-border  ">
+								{% else %}
+									<img src="{{ asset('/img/defaultuser.png') }}" class="thumb-lg rounded-circle circle-border  " alt="profile">
+	 	
+    					{% endif %}
+
+                                                     <div class="py-2 text-center">
+                                                        <a href="{{ path('app_c_r_p_funding_organization_show', {'id': fo.id}) }}" class="text-muted">{{fo.acronym}} </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    {% endfor %}
+
+                                        </div>
+
+                                     </div>
+                                </div>
+
+     
+           
+
+    {# <a href="{{ path('app_c_r_p_collaborative_research_project_index') }}">back to list</a> #}
+
+    {# <a href="{{ path('app_c_r_p_collaborative_research_project_edit', {'id': collaborative_research_project.id}) }}">edit</a> #}
+
+ {% endblock %}

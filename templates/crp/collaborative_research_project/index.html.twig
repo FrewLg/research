@@ -27,14 +27,16 @@
 				</div>
 				<div class="card-body">
 					
-					<table class="table table-bordered table-striped">
-        <thead>
+					<table class="table table-hover mb-0 table-bordered table-striped">
+        <thead class="thead-light">
             <tr>
                 <th>#</th>
                 <th>Title</th>
-                <th>Short Description</th> 
-                <th>Amount Of Grant</th> 
+                {# <th>Short Description</th>  #}
+                <th nowrap='nowrap'>Principal Investigator</th> 
+
                 <th>Funding Organization</th> 
+                <th>Amount Of Grant</th> 
                 <th>Project Type</th> 
                 <th>Project Status</th> 
                 <th>Actions</th>
@@ -45,7 +47,22 @@
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ collaborative_research_project.title }}</td>
-                <td>{{ collaborative_research_project.shortDescription }}</td> 
+                {# <td>{{ collaborative_research_project.shortDescription }}</td>  #}
+                <td>
+                {% if collaborative_research_project.PrincipalInvestigator.userInfo.image %}
+
+										<a class="user-avatar user-avatar-group" href="##{{collaborative_research_project.id}}">
+											<img src="{{ asset('files/profile_pictures/'~collaborative_research_project.PrincipalInvestigator.userInfo.image ) }}" title="{{collaborative_research_project.PrincipalInvestigator}}" alt="user" class="thumb-sm rounded me-2">
+										</a>
+
+
+									{% else %}
+										<a class="user-avatar user-avatar-group" href="##{{collaborative_research_project.id}}">
+											<img src="{{ asset('/img/defaultuser.png') }}" alt="user" title="{{collaborative_research_project.PrincipalInvestigator.userInfo}}"  class="thumb-sm rounded me-2">
+										</a>
+									{% endif %}
+
+                 {{ collaborative_research_project.PrincipalInvestigator }}</td> 
                 <td> {% if   collaborative_research_project.fundingOrganization %}
                     {% for fo in collaborative_research_project.fundingOrganization %}
                         
@@ -64,8 +81,7 @@
 												<small>{{collaborative_research_project.ProjectStatus.status}}</small>
 												</span>
                 </td>
-                <td>{{ collaborative_research_project.OtherInsitutes }}</td>
-                <td>
+                 <td nowrap='nowrap'>
                     <a href="{{ path('app_c_r_p_collaborative_research_project_show', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-info">show</a>
                     <a href="{{ path('app_c_r_p_collaborative_research_project_edit', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-warning">edit</a>
                 </td>

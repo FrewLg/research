@@ -69,7 +69,21 @@ class FundingOrganizationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $fundingOrganizationRepository->add($fundingOrganization);
+          
+            $file3 = $form->get('logo')->getData();
+
+            if ($file3 == NULL) {
+                
+             }
+            if ($file3) {
+            $file3 = $form->get('logo')->getData();
+
+                $fundeddocDocsfileName3 = 'CompanyLogo-'.  md5(uniqid()) . '.' . $file3->guessExtension();;
+                $file3->move($this->getParameter('profile_pictures'), $fundeddocDocsfileName3);
+                $fundingOrganization->setLogo($fundeddocDocsfileName3);
+               
+            }
+              $fundingOrganizationRepository->add($fundingOrganization);
             return $this->redirectToRoute('app_c_r_p_funding_organization_index', [], Response::HTTP_SEE_OTHER);
         }
 

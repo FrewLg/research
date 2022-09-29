@@ -2,6 +2,8 @@
 
 {% block title %}New CollaborativeResearchProject{% endblock %}
 
+
+
 {% block body %}
 
 
@@ -24,13 +26,14 @@
 		<div class="card-body">
 
     {{ include('crp/collaborative_research_project/_form.html.twig') }}
-					<form method="POST">
+{#			
+		<form method="POST">
 
 			<div class="row">
 				<div class="col-12">
 
 						<div class="form-group">
-							{# <input hidden value="{{ user_group.id}}" name="usergroupuser"> #}
+							<input hidden value="{{ user_group.id}}" name="usergroupuser">
 							<select class="duallistbox" multiple="multiple" name="user[]">
 								{# {% for user in user_group.users %}
 								{% if user.userInfo %}
@@ -49,7 +52,7 @@
 										{{ user.userInfo.id }}</option>
 								{% endif %}
 								
-								{% endfor %} #}
+								{% endfor %} 
 
 
 							</select>
@@ -60,6 +63,7 @@
 				<!-- /.col -->
 			</div>
 			<!-- /.row -->
+			dsad
 		</div>
 		<!-- /.card-body -->
 		<div class="card-footer float-right">
@@ -71,6 +75,8 @@
 			</div>
 		</div>
 		</form>
+#}
+		</div>
 
  {% endblock %}
 
@@ -93,4 +99,41 @@ $('.duallistbox').bootstrapDualListbox({
   }); 
 })
 	</script>
+ 
+	<script src="{{ asset('plugins/jquery.validate.min.js')}}">
+
+	<script src="{{ asset('plugins/select2/select2.min.js')}}"></script>
+	 
+
+	<script type='text/javascript'>  
+	  jQuery(document).ready(function () {
+
+$(document).on('click', '.remove-collection-widget', function (e) {
+$(this).closest('.row').fadeOut().remove();
+} 
+);
+$(document).on('click', '.add-another-collection-widget', function (e) {
+ 
+var list = jQuery(jQuery(this).attr('data-list-selector'));
+
+var counter = list.data('widget-counter') || list.children().length;
+var newWidget = list.attr('data-prototype');
+newWidget = newWidget.replace(/__name__/g, counter);
+counter++;
+list.data('widget-counter', counter);
+var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+newElem.appendTo(list);
+$(".select").select2("destroy").select2();
+});
+});
+{# var form = $("#form-horizontal"); #}
+
+ 	</script>
+	<script>
+		$(function () {
+$(".select2").select2();
+
+})
+	</script>
+ 
 {% endblock %}

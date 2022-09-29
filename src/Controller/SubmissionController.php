@@ -327,19 +327,20 @@ public function metadata(Request $request, CallForProposal $callForProposal, Use
     ########################## End Check submission exists #######################
 
     $entityManager = $this->getDoctrine()->getManager();
-    $new = false;
+    // $new = false;
 
     //dd($request->request);
-    $submission = $entityManager->getRepository(Submission::class)->findOneBy(['author' => $this->getUser(), 'callForProposal' => $callForProposal]);
-    if (!$submission) {
-        $new = true;
         $submission = new Submission();
-    } else {
-        if ($submission->getStep() == 10) {
-            $this->addFlash('warning', "You have a  submission with this call. Edit your submission instead.");
-            // return $this->redirectToRoute('myreviews');
-        }
-    }
+
+    // $submission = $entityManager->getRepository(Submission::class)->findOneBy(['author' => $this->getUser(), 'callForProposal' => $callForProposal]);
+    // if (!$submission) {
+    //     $new = true;
+    //     $submission = new Submission();
+    // } else {
+    //     if ($submission->getStep() == 10) {
+    //         $this->addFlash('warning', "You have a  submission with this call. Edit your submission instead.");
+     //     }
+    // }
     $submission->setCallForProposal($callForProposal);
     $submission->setUidentifier(md5(uniqid()));
 

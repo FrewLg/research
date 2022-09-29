@@ -3,8 +3,10 @@
 namespace App\Controller\CRP;
 
 use App\Entity\CRP\CollaborativeResearchProject;
+use App\Entity\CRP\Deliverables;
 use App\Form\CRP\CollaborativeResearchProjectType;
 use App\Repository\CRP\CollaborativeResearchProjectRepository;
+use App\Repository\CRP\DeliverablesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,4 +75,20 @@ class CollaborativeResearchProjectController extends AbstractController
 
         return $this->redirectToRoute('app_c_r_p_collaborative_research_project_index', [], Response::HTTP_SEE_OTHER);
     }
+      /**
+     * @Route("/{id}/done", name="toggle_status", methods={"POST"})
+     */
+    public function done(Request $request, Deliverables $task, DeliverablesRepository $collaborativeResearchProjectRepository): Response
+    {
+        if ($this->isCsrfTokenValid('toggle'.$task->getId(), $request->request->get('_token'))) {
+        $task->setStatus(1); 
+        $collaborativeResearchProjectRepository->add($task);
+
+        }
+
+        return $this->redirectToRoute('app_c_r_p_collaborative_research_project_show', ['id'=>$task->getCollaborativeResearchProject()->getId()]);
+    }
+ 
+
+
 }

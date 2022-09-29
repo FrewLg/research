@@ -192,16 +192,16 @@ class User implements UserInterface
      */
     private $collaborativeResearchProjects;
 
-    /**
-     * @ORM\OneToMany(targetEntity=CollaborativeResearchProject::class, mappedBy="CoPrincipalInvestigator")
-     */
-    private $collaborativeResearchProjectsAsCoPI;
+  
 
     /**
-     * @ORM\OneToOne(targetEntity=CoInvestigator::class, mappedBy="memberName", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity=CollaborativeResearchProject::class, mappedBy="coInvestigators")
      */
-    private $coInvestigator;
+    private $collaborativeResearchCoAuthorships;
 
+    
+
+   
 
      
     public function __construct()
@@ -231,8 +231,8 @@ class User implements UserInterface
         $this->chatsTos = new ArrayCollection();
         $this->applicationFeedback = new ArrayCollection();
         $this->collaborativeResearchProjects = new ArrayCollection();
-        $this->collaborativeResearchProjectsAsCoPI = new ArrayCollection();
-     }
+        $this->collaborativeResearchCoAuthorships = new ArrayCollection();
+       }
   
 
       /**
@@ -1119,55 +1119,31 @@ class User implements UserInterface
     /**
      * @return Collection<int, CollaborativeResearchProject>
      */
-    public function getCollaborativeResearchProjectsAsCoPI(): Collection
+    public function getCollaborativeResearchCoAuthorships(): Collection
     {
-        return $this->collaborativeResearchProjectsAsCoPI;
+        return $this->collaborativeResearchCoAuthorships;
     }
 
-    public function addCollaborativeResearchProjectsAsCoPI(CollaborativeResearchProject $collaborativeResearchProjectsAsCoPI): self
+    public function addCollaborativeResearchCoAuthorship(CollaborativeResearchProject $collaborativeResearchCoAuthorship): self
     {
-        if (!$this->collaborativeResearchProjectsAsCoPI->contains($collaborativeResearchProjectsAsCoPI)) {
-            $this->collaborativeResearchProjectsAsCoPI[] = $collaborativeResearchProjectsAsCoPI;
-            $collaborativeResearchProjectsAsCoPI->setCoPrincipalInvestigator($this);
+        if (!$this->collaborativeResearchCoAuthorships->contains($collaborativeResearchCoAuthorship)) {
+            $this->collaborativeResearchCoAuthorships[] = $collaborativeResearchCoAuthorship;
+            $collaborativeResearchCoAuthorship->addCoInvestigator($this);
         }
 
         return $this;
     }
 
-    public function removeCollaborativeResearchProjectsAsCoPI(CollaborativeResearchProject $collaborativeResearchProjectsAsCoPI): self
+    public function removeCollaborativeResearchCoAuthorship(CollaborativeResearchProject $collaborativeResearchCoAuthorship): self
     {
-        if ($this->collaborativeResearchProjectsAsCoPI->removeElement($collaborativeResearchProjectsAsCoPI)) {
-            // set the owning side to null (unless already changed)
-            if ($collaborativeResearchProjectsAsCoPI->getCoPrincipalInvestigator() === $this) {
-                $collaborativeResearchProjectsAsCoPI->setCoPrincipalInvestigator(null);
-            }
+        if ($this->collaborativeResearchCoAuthorships->removeElement($collaborativeResearchCoAuthorship)) {
+            $collaborativeResearchCoAuthorship->removeCoInvestigator($this);
         }
 
         return $this;
     }
 
-    public function getCoInvestigator(): ?CoInvestigator
-    {
-        return $this->coInvestigator;
-    }
-
-    public function setCoInvestigator(?CoInvestigator $coInvestigator): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($coInvestigator === null && $this->coInvestigator !== null) {
-            $this->coInvestigator->setMemberName(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($coInvestigator !== null && $coInvestigator->getMemberName() !== $this) {
-            $coInvestigator->setMemberName($this);
-        }
-
-        $this->coInvestigator = $coInvestigator;
-
-        return $this;
-    }
-
+    
  
 
      

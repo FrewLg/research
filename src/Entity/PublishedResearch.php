@@ -63,18 +63,13 @@ class  PublishedResearch
      * @ORM\OneToOne(targetEntity=Submission::class, inversedBy="publishedResearch", cascade={"persist", "remove"})
      */
     private $submission; 
-
-     
-
     /**
      * @ORM\ManyToOne(targetEntity=UserInfo::class, inversedBy="researches"  , cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
      * 
      */
     private $userInfo;
-
-
-     
+    
       /**
      * 
      * @Vich\UploadableField(mapping="imageFile", fileNameProperty="imageFile")
