@@ -7,6 +7,9 @@ use App\Entity\CRP\CoInvestigator;
 use App\Entity\CRP\CollaborativeResearchProject;
 use App\Entity\CRP\FundingOrganization;
 use App\Entity\CRP\ProjectStatus;
+
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use App\Entity\CRP\ProjectType;
 use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -33,7 +36,7 @@ class CollaborativeResearchProjectType extends AbstractType
                 'format' => 'yyyy-MM-dd',
             ))
             ->add('FundingOpportunityName')
-            ->add('AmountOfGrant')
+            ->add('AmountOfGrant' ,NumberType::class,["attr"=>["min"=>"1"],'required'=>true])
             ->add('Currency')
             ->add('ThematicArea')
             ->add('OtherInsitutes')
@@ -88,7 +91,18 @@ class CollaborativeResearchProjectType extends AbstractType
                     'class' => 'select2 chosen-select form-control',
                 ),
             ))
-            ->add('CoPrincipalInvestigator')
+            ->add('CoPrincipalInvestigator'
+
+            , null, array(
+
+                'placeholder' => '---Select Users  ---',
+                "class" => User::class,
+                'attr' => array(
+                    'empty' => 'Thematic Area',
+
+                    'class' => 'select2 chosen-select form-control',
+                ),
+            ))
             ->add('fundingOrganization' , null, array(
 
                 'placeholder' => '---Select funding organization  ---',

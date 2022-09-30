@@ -119,6 +119,11 @@ class CollaborativeResearchProject
      */
     private $deliverables;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ProjectProgress::class, inversedBy="project")
+     */
+    private $projectProgress;
+
     
 
     public function __construct()
@@ -397,6 +402,18 @@ class CollaborativeResearchProject
                 $deliverable->setCollaborativeResearchProject(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProjectProgress(): ?ProjectProgress
+    {
+        return $this->projectProgress;
+    }
+
+    public function setProjectProgress(?ProjectProgress $projectProgress): self
+    {
+        $this->projectProgress = $projectProgress;
 
         return $this;
     }

@@ -27,9 +27,6 @@ class Submission
      */
     private $id;
 
-
-
-
     /**
      * @ORM\Column(type="text", nullable=true)
      */
@@ -41,11 +38,9 @@ class Submission
     private $author;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=455, nullable=true)
      */
     private $sub_title;
-
-
 
     /**
      * @ORM\ManyToOne(targetEntity=CallForProposal::class, inversedBy="submissions")
@@ -59,7 +54,7 @@ class Submission
     protected $coAuthors;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=455, nullable=true)
      */
     private $title;
 
@@ -67,10 +62,8 @@ class Submission
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $sent_at;
-
     /**
      * @ORM\Column(type="text",   nullable=true)
-     
      */
     private $research_outcome;
 

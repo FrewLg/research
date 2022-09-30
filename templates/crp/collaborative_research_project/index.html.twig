@@ -45,8 +45,12 @@
         <tbody>
         {% for collaborative_research_project in collaborative_research_projects %}
             <tr>
+
                 <td>{{ loop.index }}</td>
-                <td>{{ collaborative_research_project.title }}</td>
+                <td>
+            <a class='text-soft-primary' href="{{ path('app_c_r_p_collaborative_research_project_show', {'id': collaborative_research_project.id}) }}">
+                
+                {{ collaborative_research_project.title }}</a></td>
                 {# <td>{{ collaborative_research_project.shortDescription }}</td>  #}
                 <td>
                 {% if collaborative_research_project.PrincipalInvestigator.userInfo.image %}
@@ -82,10 +86,14 @@
 												</span>
                 </td>
                  <td nowrap='nowrap'>
-                    <a href="{{ path('app_c_r_p_collaborative_research_project_show', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-info">show</a>
-                    <a href="{{ path('app_c_r_p_collaborative_research_project_edit', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-warning">edit</a>
+                    {# <a href="{{ path('app_c_r_p_collaborative_research_project_show', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-info">show</a>
+                    <a href="{{ path('app_c_r_p_collaborative_research_project_edit', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-warning">edit</a> #}
+                 
+						{{ include('collaborative_research_project/includes/progress.html.twig') }}
+
                 </td>
             </tr>
+            
         {% else %}
             <tr>
                 <td colspan="11">no records found</td>

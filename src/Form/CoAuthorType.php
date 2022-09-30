@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\CoAuthor;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,19 +19,33 @@ class CoAuthorType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('researcher' , EntityType::class, array(
-                'required'=>false,
-                                      'placeholder' => '-- Select researcher --',
-                         'class' => 'App\Entity\User',
-                         'attr' => array(
-                             'empty' => 'Select User ',
-                             'required' => true,
-                             'class' => 'form-control select2 chosen-select ',
-                         )
-                     ))
+            ->add('researcher' 
+            , null, array(
+
+                'placeholder' => '---Select Users  ---',
+                "class" => User::class,
+                'attr' => array(
+                    'empty' => 'Thematic Area',
+
+                    'class' => 'select2 chosen-select form-control',
+                ),
+            ))
+            // , EntityType::class, array(
+            //     'required'=>false,
+            //                           'placeholder' => '-- Select researcher --',
+            //              'class' => 'App\Entity\User',
+            //              'attr' => array(
+            //                  'empty' => 'Select User ',
+            //                  'required' => true,
+            //                  'class' => 'form-control select2 chosen-select ',
+            //              )
+            //          ))
+
            ->add('department'
         //    ,null,['attr'=>['class'=>'form-control select2']])
             
+      
+
            , EntityType::class, array(
             'required'=>false,
                                   'placeholder' => '-- Select Department --',

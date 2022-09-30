@@ -104,16 +104,17 @@
 													<div class="form-c">
 														<div class="label">
 															AmountOfGrant</div>
-														{{ form_widget(form.AmountOfGrant  ) }}
-													</div>
-												</div>
-<div class="col-md-6">
-													<div class="form-group">
 
-														Currency
-														{{ form_widget(form.Currency  ) }}
+															<div class="input-group mb-3">
+
+{{ form_widget(form.AmountOfGrant  ) }}
+                                        <span class="input-group-text" id="basic-addon2">{{ form_widget(form.Currency  ) }}</span>
+                                    </div>
+
+														
 													</div>
 												</div>
+ 
 
 												<div class="col-md-6">
 													<div class="form-s">
@@ -185,12 +186,19 @@
 												
 											<div class="row">
 												<div class="col-md-12">
-											 <h4 > Deliverables</h4>
+											 
+																		<div class="row">
+																		<div class="card">
+																		<div class="card-header">
+																		<h4 class="card-title" > Deliverables</h4>
 
     												<button type="button" class="btn btn-soft-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#objective-fields-list">
 													<span aria-hidden="true">+</span>
 													Add Tasks
 													</button>
+												</div>
+																		<div class="card-body">
+
  
 								<ul id="objective-fields-list" class="m-t-5" data-prototype="{{_self.displayObjective(form.deliverables.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ form.deliverables|length }}">
 										{% for research in form.deliverables %}
@@ -199,6 +207,9 @@
 											</div>
 										{% endfor %}
 									</ul>
+												</div>
+												</div>
+												</div>
 												</div>
 
  </div>
