@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/crp/copi')]
+#[Route('/crp/setting/copi')]
 class CoInvestigatorController extends AbstractController
 {
     #[Route('/', name: 'app_c_r_p_co_investigator_index', methods: ['GET'])]

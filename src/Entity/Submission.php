@@ -1007,7 +1007,7 @@ class Submission
         return $this->proposal;
     }
 
-    public function setProposal(string $proposal): self
+    public function setProposal(?string $proposal): self
     {
         $this->proposal = $proposal;
 

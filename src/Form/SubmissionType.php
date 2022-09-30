@@ -112,7 +112,9 @@ class SubmissionType extends AbstractType
                 'allow_delete' => false,
                 'required'=>false,
                 'label'=>"Proposal Attachement",
-                // 'allow_download' => true,
+                'allow_delete' => true,
+                'data_class' => null,
+                'empty_data' => '',
                'download_label' => false,
                'row_attr'=>[],
                "attr"=>[

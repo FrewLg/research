@@ -124,6 +124,11 @@ class CollaborativeResearchProject
      */
     private $projectProgress;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ProjectAttachment::class, mappedBy="project", orphanRemoval=true)
+     */
+    private $projectAttachments;
+
     
 
     public function __construct()
@@ -131,6 +136,7 @@ class CollaborativeResearchProject
         $this->coInvestigators = new ArrayCollection();
         $this->fundingOrganization = new ArrayCollection();
         $this->deliverables = new ArrayCollection();
+        $this->projectAttachments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -414,6 +420,36 @@ class CollaborativeResearchProject
     public function setProjectProgress(?ProjectProgress $projectProgress): self
     {
         $this->projectProgress = $projectProgress;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProjectAttachment>
+     */
+    public function getProjectAttachments(): Collection
+    {
+        return $this->projectAttachments;
+    }
+
+    public function addProjectAttachment(ProjectAttachment $projectAttachment): self
+    {
+        if (!$this->projectAttachments->contains($projectAttachment)) {
+            $this->projectAttachments[] = $projectAttachment;
+            $projectAttachment->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectAttachment(ProjectAttachment $projectAttachment): self
+    {
+        if ($this->projectAttachments->removeElement($projectAttachment)) {
+            // set the owning side to null (unless already changed)
+            if ($projectAttachment->getProject() === $this) {
+                $projectAttachment->setProject(null);
+            }
+        }
 
         return $this;
     }

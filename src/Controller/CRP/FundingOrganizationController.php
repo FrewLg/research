@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/crp/funding-organization')]
+#[Route('/crp/setting/funding-organization')]
 class FundingOrganizationController extends AbstractController
 {
     #[Route('/', name: 'app_c_r_p_funding_organization_index', methods: ['GET'])]

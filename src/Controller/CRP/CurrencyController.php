@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/crpp/currency')]
+#[Route('/crp/setting/currency')]
 class CurrencyController extends AbstractController
 {
     #[Route('/', name: 'app_c_r_p_currency_index', methods: ['GET'])]

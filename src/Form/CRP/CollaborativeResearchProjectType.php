@@ -40,6 +40,7 @@ class CollaborativeResearchProjectType extends AbstractType
             ->add('Currency')
             ->add('ThematicArea')
             ->add('OtherInsitutes')
+            ->add('projectProgress')
             ->add('ResponsiblePrimaryInstitute'
             , null, array(
 

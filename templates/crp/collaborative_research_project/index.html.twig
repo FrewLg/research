@@ -39,7 +39,7 @@
                 <th>Amount Of Grant</th> 
                 <th>Project Type</th> 
                 <th>Project Status</th> 
-                <th>Actions</th>
+                <th>Progress</th>
             </tr>
         </thead>
         <tbody>
@@ -88,9 +88,7 @@
                  <td nowrap='nowrap'>
                     {# <a href="{{ path('app_c_r_p_collaborative_research_project_show', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-info">show</a>
                     <a href="{{ path('app_c_r_p_collaborative_research_project_edit', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-warning">edit</a> #}
-                 
-						{{ include('collaborative_research_project/includes/progress.html.twig') }}
-
+    		{{ include('crp/collaborative_research_project/includes/progress.html.twig') }}
                 </td>
             </tr>
             

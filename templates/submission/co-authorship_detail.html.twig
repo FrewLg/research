@@ -681,6 +681,8 @@ $("#showEditRequestContent").html("Problem");
 			</div>
 		</div>
 	</div>
+	{% if cosubmission.submission.callForProposal.coPoConfirmation ==1 %}
+		
 	<div class="card">
 		<div class="card-body ">
 			<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
@@ -690,8 +692,7 @@ $("#showEditRequestContent").html("Problem");
 					<i class="fa fa-check text-success"></i>
 				{% elseif member.confirmed==''    %}
 					<i class="fa fa-times-circle text-danger"></i>
-					{# {% elseif member.confirmed=='0'    %}  <i class="fa fa-close text-danger"></i>      #}
-				{% else  %}
+ 				{% else  %}
 					<i class="fa fa-close text-danger"></i>
 				{% endif %}<br>{% else %}No Co-PI has been involved
 			{% endfor %}
@@ -713,4 +714,6 @@ $("#showEditRequestContent").html("Problem");
 			</div>
 		</div>
 	</div>
+	{% endif %}
+
 </div>{% endblock %}

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/crp/project-status')]
+#[Route('/crp/setting/project-status')]
 class ProjectStatusController extends AbstractController
 {
     #[Route('/', name: 'app_c_r_p_project_status_index', methods: ['GET'])]

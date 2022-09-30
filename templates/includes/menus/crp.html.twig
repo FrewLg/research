@@ -68,6 +68,16 @@
 						</li>
 
 					{% endif %}
+					{% if is_granted('mng_irb_app_typ') %}
+
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_c_r_p_project_progress_index') }}">
+								<i class="ti-control-record"></i>
+								{% trans %}Project Progress{% endtrans %}
+							</a>
+						</li>
+
+					{% endif %}
 					{% if is_granted('mng_irb_atch_typ') %}
 
 						<li class="nav-item">

@@ -76,6 +76,7 @@
 
 
 												</p>
+	{% if collaboration.submission.callForProposal.coPoConfirmation ==1 %}
 
 												{% if collaboration.confirmed ==0 or collaboration.confirmed =='' %}
 													<a href="{{ path('accept_involvemet', {'id': collaboration.id, 'sub': collaboration.submission.id}) }}" class="btn btn-soft-primary btn-sm">Confirm Research Membership</a>
@@ -85,19 +86,24 @@
 													<a href="" class="btn btn-soft-dark btn-sm">Confirmed</a>
 
 												{% endif %}
+												{% endif %}
 
 												{# <a href="#" class="btn btn-soft-primary btn-sm">Appproval</a> #}
 
 												{# <a class="btn btn-sm  btn-primary" data-bs-toggle="collapse" href="#expand{{ collaboration.submission.id }}" role="button" aria-expanded="false" aria-controls="expand{{ collaboration.submission.id }}">
-																																																																																																															<i class="fa fa-chevron-right"></i>
-																																																																																																														</a> #}
-											</p>
+							<i class="fa fa-chevron-right"></i>
+						</a> #}
+</p>
 											<div class="collapse" id="expand{{ collaboration.submission.id }}">
 												<div class="card card-body">
+	{% if collaboration.submission.callForProposal.coPoConfirmation ==1 %}
 
 													{% if collaboration.confirmed ==0 or collaboration.confirmed =='' %}Not confirmed
 													{% elseif collaboration.confirmed ==1%}
-														Confirmed{%endif%}
+														Confirmed
+														
+														{%endif%}
+														{%endif%}
 
 														<div>
 															<a class="btn btn-xs btn-primary" href="{{ path('accept_involvemet', {'id': collaboration.id, 'sub': collaboration.submission.id}) }}">

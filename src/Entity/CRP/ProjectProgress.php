@@ -60,7 +60,10 @@ class ProjectProgress
 
         return $this;
     }
-
+    public function __toString(): string
+    {
+        return  $this->name;
+    }
     public function getProgress(): ?string
     {
         return $this->progress;

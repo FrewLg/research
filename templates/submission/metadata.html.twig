@@ -743,17 +743,28 @@
 																	<!--end col-->
 																	<div class="col-auto">
 																		<span class="text-muted">
-																			<i class="far fa-clock me-1"></i>
+																			<i class="fas fa-user me-1"></i>
 																			{{ loop.index }}</span>
 																	</div>
 																	<!--end col-->
 																</div>
 																<!--end row-->
 																<p>
-																	{{ author.email}}
+
+{% if author.researcher.userInfo.image   %}
+																							<img src="{{ asset('files/profile_pictures/'~ author.researcher.userInfo.image ) }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+																						{% else %}
+																							<img src="{{ asset('/img/defaultuser.png') }}" class="d-block mx-auto rounded-circle thumb-md" alt="profile">
+																						{% endif %}
+
+
+																	<h4 >{{ author.researcher.userInfo}}</h4>
 																</p>
 																<p>
-																	{{ author.department}}
+																Department:	{{ author.researcher.userInfo.department}}
+																</p>
+																<p>
+																Role:	{{ author.role}}
 																</p>
 
 															</div>

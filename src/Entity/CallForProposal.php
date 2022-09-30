@@ -174,6 +174,11 @@ class CallForProposal
      * @ORM\ManyToMany(targetEntity=FundingScheme::class, inversedBy="callForProposals")
      */
     private $fundingScheme;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $coPoConfirmation;
  
     public function __construct()
     {
@@ -611,6 +616,18 @@ class CallForProposal
     public function removeFundingScheme(FundingScheme $fundingScheme): self
     {
         $this->fundingScheme->removeElement($fundingScheme);
+
+        return $this;
+    }
+
+    public function getCoPoConfirmation(): ?string
+    {
+        return $this->coPoConfirmation;
+    }
+
+    public function setCoPoConfirmation(?string $coPoConfirmation): self
+    {
+        $this->coPoConfirmation = $coPoConfirmation;
 
         return $this;
     }

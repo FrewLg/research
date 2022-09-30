@@ -681,10 +681,15 @@ active
 						</div>
 <br>
 {% if submission.complete ==''%} <h4 class='text-danger'> Your Submission is Incomplete Hence </h4>
-<a href='{{path('submission_firststepold',{'uidentifier':submission.callForProposal.uidentifier})}}' class="btn btn-soft-danger btnblock"> Edit here </a>
+<a href='{{path('editsubmission',{'id':submission.id})}}' class="btn btn-soft-danger btnblock"> Edit here </a>
 
 {% endif %}
-<a href='{{path('submission_firststepold',{'uidentifier':submission.callForProposal.uidentifier})}}' class="btn btn-soft-danger btnblock"> Modify here </a>
+{# <a href='{{path('submission_firststepold',{'uidentifier':submission.callForProposal.uidentifier})}}' class="btn btn-soft-danger btnblock"> Modify here </a> #}
+
+<form method="post" action="{{path('editsubmission',{'id':submission.id})}}"
+ onsubmit="return confirm('Are you sure you want to edit this submission?');">
+    <button  class="btn btn-xs btn-danger" >Modify your submission here</button>
+</form>
 
 						<hr class="hr-dashed my-4">
 													{{ include('submission/includes/progress.html.twig') }}
@@ -726,6 +731,8 @@ active
 						</div>
 					</div>
 				</div>
+	{% if  submission.callForProposal.coPoConfirmation ==1 %}
+				
 				<div class="card">
 					<div class="card-body ">
 						<h4 class="font-18 m-0 fw-bold">Co-PI confirmation:</h4><br>
@@ -742,6 +749,8 @@ active
 						{% endfor %}
 					</div>
 				</div>
+							{% endif %}
+
 			</div>
 		</div>
 	{% endblock %}

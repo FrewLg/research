@@ -305,14 +305,14 @@ public function metadata(Request $request, CallForProposal $callForProposal, Use
 
     ########################## 
 
-    $p_i_college = $this->getUser()->getUserInfo()->getCollege();
+    // $p_i_college = $this->getUser()->getUserInfo()->getCollege();
 
-    if (!$p_i_college == $callForProposal->getCollege() and $callForProposal->getAllowPiFromOtherUniversity() == '') {
+    // if (!$p_i_college == $callForProposal->getCollege() and $callForProposal->getAllowPiFromOtherUniversity() == '') {
 
-        $this->addFlash("danger", "You are not allowed make a submission from" . $p_i_college . " !");
+    //     $this->addFlash("danger", "You are not allowed make a submission from" . $p_i_college . " !");
 
-        return $this->redirectToRoute('researchworks');
-    }
+    //     return $this->redirectToRoute('researchworks');
+    // }
     ########################## Check submission exists #######################
 
     $entityManager = $this->getDoctrine()->getManager();
@@ -479,6 +479,124 @@ public function metadata(Request $request, CallForProposal $callForProposal, Use
         'call' => $callForProposal,
     ]);
 }
+/**
+ * @Route("/editsubmission/{id}", name="editsubmission", methods={"GET","POST"})
+ */
+public function editsubmission(Request $request, Submission $submission,  MailerInterface $mailer): Response {
+
+    #######################
+    $em = $this->getDoctrine()->getManager();
+
+    $callForProposal=$submission->getCallForProposal();
+    $deadline = $callForProposal->getDeadline();
+    $today = new \DateTime('');
+    if ($deadline <= $today) {
+
+        $this->addFlash("danger", "Sorry! Call has expired!  Thank you!");
+        return $this->redirectToRoute('myreviews');
+    } 
+    $entityManager = $this->getDoctrine()->getManager();
+    $submission = $entityManager->getRepository('App:Submission')->findOneBy(['author' => $this->getUser(), 'callForProposal' => $callForProposal]);
+    $entityManager = $this->getDoctrine()->getManager();  
+    $submission->setCallForProposal($callForProposal);
+    $submission->setUidentifier(md5(uniqid()));
+    $form = $this->createForm(SubmissionType::class, $submission);
+    $form->handleRequest($request);
+    $submission->setStatus(1);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $submission->setAuthor($this->getUser());
+            if ($submission->getStep() == 10) {
+            $submission->setSentAt(new \DateTime());
+            $submission->setComplete("completed");
+            $entityManager->flush();
+            $this->addFlash('success', "submission complete");
+            $invitation_url = 'submission/my-membership';
+            #####################################
+            ///////////// Let us email  co-pis    to  remind
+            $messages = $entityManager->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_CO_PI_INVITATION']);
+            $subject = $messages->getSubject();
+            $body = $messages->getBody();
+            $em = $this->getDoctrine()->getManager();
+            $query = $entityManager->createQuery(
+                'SELECT u.email ,  u.username
+                    FROM App:CoAuthor s
+                    JOIN s.researcher u
+                    WHERE s.submission = :submission'
+            )
+                ->setParameter('submission', $submission);
+            $recepients = $query->getResult();
+            $em = $this->getDoctrine()->getManager();
+            $qb = $em->createQueryBuilder();
+            $messages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'SUBMISSION_CO_PI_INVITATION']);
+            $subject = $messages->getSubject();
+            $body = $messages->getBody();
+            foreach ($recepients as $row) {
+                $theEmails[] = $row['email'] . ' ';
+                $theNames[] = $row['username'] . ' ';
+                $theFirstNames[] = $row['username'] . ' ';
+            }
+            ////////////
+            $length = count($recepients);
+            for ($i = 0; $i < $length; $i++) {
+                ///////////////
+                $theFirstName = $theFirstNames[$i];
+                if ($theFirstName == '') {
+                    $theFirstName = $theNames[$i];
+                    // dd($theFirstName);
+                }
+                $theEmail = $theEmails[$i];
+                $email = (new TemplatedEmail())
+                    ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+                     ->to(new Address($theEmails[$i], $theFirstNames[$i]))
+                    ->bcc(new Address($theEmails[$i], $theFirstNames[$i]))
+                    ->subject($subject)
+                    ->htmlTemplate('emails/co-authorship-invitation.html.twig')
+                    ->context([
+                        'subject' => $subject,
+                        'body' => $body,
+                        'title' => $submission->getTitle(),
+                        'submission_url' => $invitation_url,
+                        'name' => $theFirstName,
+                        'Authoremail' => $theEmail,
+                    ]);
+                $mailer->send($email);
+            }
+            ##########
+            $applicantmessages = $em->getRepository('App:EmailMessage')->findOneBy(['email_key' => 'EMAIL_KEY_SUBMISSION_ACKNOWLEDGEMENT']);
+            $applicantsubject = $applicantmessages->getSubject();
+            $applicantbody = $applicantmessages->getBody();
+
+            $submission_url = 'submission/' . $submission->getId() . '/status';
+            $applicant = $submission->getAuthor()->getEmail();
+            $applicantname = $submission->getAuthor()->getUserInfo()->getFirstName();
+            $emailtwo = (new TemplatedEmail())
+                ->from(new Address('research@ju.edu.et', $this->getParameter('app_name')))
+                ->to($applicant)
+                ->subject($applicantsubject)
+                ->htmlTemplate('emails/application_ack.html.twig')
+                ->context([
+                    'subject' => $applicantsubject,
+                    'body' => $applicantbody,
+                    'title' => $submission->getTitle(),
+                    'submission_url' => $submission_url,
+                    'name' => $applicantname,
+                    'Authoremail' => $applicant,
+                ]);
+           $mailer->send($emailtwo);
+           return $this->redirectToRoute('submission_status', array('id' => $submission->getId()));
+            // return $this->redirectToRoute('myreviews');
+        }
+        $entityManager->flush();
+        ##############################
+        return $this->redirectToRoute('submission_firststepold', ["uidentifier" => $callForProposal->getUidentifier()]);
+    }
+    return $this->render('submission/metadata.html.twig', [
+        'submissionform' => $form->createView(),
+        'submission' => $submission,
+        'call' => $callForProposal,
+    ]);
+}
+
 /**
  * @Route("/{uid}/research-sumary", name="research_sumary", methods={"GET"})
  */

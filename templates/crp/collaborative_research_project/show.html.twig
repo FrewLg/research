@@ -30,6 +30,8 @@
                                         </div>
 
                                         <h4 class="mt-0 font-15">{{ collaborative_research_project.title}}</h4>
+    		{{ include('crp/collaborative_research_project/includes/progress.html.twig') }}
+
 ThematicArea:{{ collaborative_research_project.ThematicArea }}
                                         <p>Short Description:{{ collaborative_research_project.shortDescription}}</p>
                                         <p>
