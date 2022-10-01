@@ -1,5 +1,4 @@
-{% if is_granted("vw_gntd_rsrch") or is_granted("vw_all_pub") %}
-
+ 
 
 	<li>
 		<a href="javascript: void(0);">
@@ -22,12 +21,12 @@
 				</li>
 			{% endif  %}
 
-			{% if is_granted("vw_all_pub") %}
+			{% if is_granted("ROLE_USER") %}
 
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_c_r_p_collaborative_research_project_index') }}">
+					<a class="nav-link" href="{{ path('my_colla_projs') }}">
 						<i class="ti-control-record"></i>
-						New
+						My projects
 					</a>
 				</li>
 			{% endif %}
@@ -105,5 +104,4 @@
 
 
 		</ul>
-	</li>
-{% endif %}
+	</li> 

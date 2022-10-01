@@ -91,6 +91,7 @@
 {% endmacro %}
 
 {% macro displayAttachement(attachement) %}
+	
 	<div class="col-md-2">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">Type</label>
@@ -126,6 +127,9 @@
 {% endmacro %}
 
 {% macro displayAttachement2(attachement) %}
+	
+	<div class="row">
+	{# <div class="card-body"> #}
 	<div class="col-md-2">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">Type</label>
@@ -136,18 +140,18 @@
 		<div class="d-none">{{form_widget(attachement)}}</div>
 	</div>
 
-	{# <div class="col-md-4">
+	<div class="col-md-4">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">Attachement</label>
-			<a class="form-control btn btn-outline-primary" href="{{ asset('uploads/submission/' ~ attachement.vars.value.file) }}">Download</a>
+			<a class="form-control btn btn-xs btn-outline-primary" href="{{ asset('uploads/submission/' ~ attachement.vars.value.file) }}">Download {{attachement.vars.value.name}}</a>
 
 		</div>
-	</div> #}
+	</div>
 
-{% if attachement.vars.value.file %}
+{# {% if attachement.vars.value.file %}
  =
 
-{% endif %}
+{% endif %} #}
 
 
 	<div class="col-md-1">
@@ -159,6 +163,10 @@
 			</button>
 		</div>
 	</div> 
+	 </div>
+	 </div>
+	 
+
 {% endmacro %} 
 
 {% macro displayObjective(objective) %}
@@ -195,7 +203,7 @@
 	<div class="col-md-3">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">Name of CO-PI</label>
-			{{form_widget(coAuthor.researcher)}}
+		<br>	{{form_widget(coAuthor.researcher)}}
 
 		</div>
 	</div>
@@ -203,6 +211,7 @@
 	<div class="col-md-3">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">Department</label>
+			<br>
 			{{form_widget(coAuthor.department)}}
 
 		</div>
@@ -212,7 +221,7 @@
 	<div class="col-md-2">
 		<div class="form-group select-wizard">
 			<label class="bmd-label-floating">Role</label>
-			{{form_widget(coAuthor.role)}}
+			<br>{{form_widget(coAuthor.role)}}
 
 		</div>
 	</div>
@@ -303,7 +312,8 @@
 
 									{{ form_widget(submissionform.title,{'attr':{'class':'form-control'}}) }}
 <br>
-									<label class="form-label mt-3 mb-1">Short Title<span class='text-danger'>*</span>
+									<label class="form-label mt-3 mb-1">Short Title
+									{# <span class='text-danger'>*</span> #}
 									</label>
 
 
@@ -333,7 +343,7 @@
 <br>
 
 									<label class="form-label mt-3 mb-1">Specific Objectives
-										<small>Minimum of 3</small>
+										{# <small>Minimum of 3</small> #}
 										<span class='text-danger'>*</span>
 									</label><br>
 
@@ -358,13 +368,13 @@
 <br>
 									{# <div class="form-group row col-12"> #}
 									<label for="txtLastNameBilling" class="form-label mt-3 mb-1"> Executive Summary / Abstract</label>
-	<span class='text-danger'>*</span>
+	 
 									{{ form_widget(submissionform.abstract,{'attr':{'class':'form-control'}}) }}
 <br>
 									{# </div><!--end form-group--> #}
 
 									<label class="form-label mt-3 mb-1">Keywords</label>
-	<span class='text-danger'>*</span>
+	 
 									{{ form_widget(submissionform.keywords,{'attr':{'class':'form-control'}}) }}
 <br>
 									<label class="form-label mt-3 mb-1">Thematic area:</label>
@@ -519,25 +529,50 @@
                                     <div class="">
                                         {# <label class="input-group-text" for="inputGroupFile01">Upload</label> #}
                                              {% if submission.proposal %}
-								{{form_row(submissionform.proposalFile.children.file)}}
+			<div class="row "> 
+							<div class="col-md-4">
+			
+													
+								{# {{form_label(submissionform.proposalFile.children.file)}}  #}
+								{{form_widget(submissionform.proposalFile.children.file)}} 
+												<br>
+													
+														</div> 
+							<div class="col-md-6">
+			<a href="{{ asset('uploads/submission/' ~ submission.proposal ) }}" class="btn btn-xs btn-outline-primary">Download Coept note</a>
+														
+														</div> 
 
-								{# {{form_widget(submissionform.proposalFile.children.file)}} #}
-							{% else %}
+ 							{% else %}
 								{{form_widget(submissionform.proposalFile,{"attr":{"required":true}})}}
 								
 							{% endif %}
                                       </div>
-<button type="button" class="btn btn-primary add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#attachement-fields-list">
+			<br>
+
+<button type="button" class="btn btn-primary m-2 add-another-collection-widget btn btn-sm btn-bd-primary float-right " data-list-selector="#attachement-fields-list">
 									<span aria-hidden="true">+</span>
 								Add additional Attachement 
 								</button>
+					<div class="row "> 
+							{# <div class="col-md-4"> #}
+			
 								<ul id="attachement-fields-list" class="m-t-5" data-prototype="{{_self.displayAttachement(submissionform.submissionAttachements.vars.prototype)|e }}" data-widget-tags="{{ '<div class="row "></div>'|e }}" data-widget-counter="{{ submissionform.submissionAttachements|length }}">
+										<div class="col-md-12 ">
+									
 									{% for attachement in submissionform.submissionAttachements %}
-										<div class="row ">
+										<div class="card ">
+										<div class="card-body ">
+
 											{{ _self.displayAttachement2(attachement) }}
 										</div>
+										</div>
 									{% endfor %}
+										</div>
+
 								</ul>
+                            {# </div> #}
+                            </div>
                             </div>
 
 							</div>
@@ -574,10 +609,44 @@
 										<h5 class="font-20 fw-bold d-block mt-2">Title:</h5>
 										<h5 class="font-20 fw-bold d-block mt-3 mb-4 ml-2"> {{ submission.title }}</h5>
 
-	<span class="font-15 bg-light py-2 px-3 rounded">
-											<b>Subtitle:</b>
-											{{ submission.subtitle ? submission.subtitle : "no subtitle"  }}</span>
-										
+<h3 class="font-20 fw-bold d-block mt-2">Short title:</h3>
+
+	<span class="font-20   d-block mt-2">
+ 											{{ submission.shortTitle ? submission.shortTitle : "no short title"  }}</span>
+ 
+<h3 class="font-20 fw-bold d-block mt-2">Subtitle:</h3>
+
+	<span class="font-20   d-block mt-2">
+ 											{{ submission.subtitle ? submission.subtitle : "no subtitle"  }}</span>
+ 
+<h3 class="font-20 fw-bold d-block mt-2">Executive summary/ Abstract:</h3>
+										<p class="font-15 mt-4">
+											{{ submission.abstract ? submission.abstract |raw: "no executive summary" }}
+ </p> 
+<h3 class="font-20 fw-bold d-block mt-2">Submission keywords</h3>
+
+<div class="card-body pt-0">
+ 		 
+ 
+									{% for row in submission.keywords |split(',') %}
+										<span class="badge bg-soft-dark px-3 py-2 fw-semibold">{{row}}</span>
+
+									{% else %}
+										<span class="badge bg-soft-dark px-3 py-2 fw-semibold">No keywords</span>
+
+									{% endfor %}
+
+
+								</div>
+
+<h3 class="font-20 fw-bold d-block mt-2">Funding Scheme:</h3>
+										<p class="font-15 mt-4">
+										<span class="badge bg-soft-{{submission.fundingScheme.acronymColor}}">	{{ submission.fundingScheme ? submission.fundingScheme |raw: "no funding Scheme" }}</span>
+ </p> 
+<h3 class="font-20 fw-bold d-block mt-2">College:</h3>
+										<p class="font-15 mt-4">
+											{{ submission.college ? submission.college |raw: "no college" }}
+ </p> 
 
 										<h5 class="font-20 fw-bold d-block mt-2">General objective:</h5>
 										<p>
@@ -598,33 +667,10 @@
 										</ul>
 
 
-									<h3>Executive summary/ Abstract:</h3>
-										<p class="font-15 mt-4">
-											{{ submission.abstract ? submission.abstract |raw: "no executive summary" }}
-
-										</p>
-
-							
-
-
+									
 									</div>
 								</div>
-								<div class="card-body pt-0">
-									<div class="row mb-3">
-										<div class="col">
-											<p class="text-dark fw-semibold mb-0">Submission keywords</p>
-										</div>
-									</div>
-									{% for row in submission.keywords |split(',') %}
-										<span class="badge bg-soft-dark px-3 py-2 fw-semibold">{{row}}</span>
-
-									{% else %}
-										<span class="badge bg-soft-dark px-3 py-2 fw-semibold">No keywords</span>
-
-									{% endfor %}
-
-
-								</div>
+								
 							</div>
 
 
@@ -649,6 +695,16 @@
 											{{ submission.BackgroundAndRationale ? submission.BackgroundAndRationale |raw: "no   Background And Rationale" }}
 
 										</p>
+
+										<h3 class="font-20 fw-bold d-block mt-2">Research outcome:</h3>
+										<p class="font-15 mt-4">
+											{{ submission.researchOutcome ? submission.researchOutcome |raw: "no research outcome" }}
+ </p> 
+										<h3 class="font-20 fw-bold d-block mt-2">References:</h3>
+										<p class="font-15 mt-4">
+											{{ submission.reference ? submission.reference |raw: "no references" }}
+ </p> 
+
 										</div>
 										<!--end row-->
 									</div>

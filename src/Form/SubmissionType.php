@@ -45,7 +45,7 @@ class SubmissionType extends AbstractType
                 'abstract',
                 TextareaType::class,
                 [
-                    'required' => true,
+                    'required' => false,
                     'attr' => [
                         'class' => 'form-control',
                     ],

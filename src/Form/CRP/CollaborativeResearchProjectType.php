@@ -69,7 +69,9 @@ class CollaborativeResearchProjectType extends AbstractType
                 'attr' => array(
                     'empty' => 'Select Users',
 
-                    'class' => 'select2 chosen-select form-control',
+                    'class' => 'select2 js-example-responsive chosen-select ',
+                    'multiple'=>false,
+                    // 'style'=>array('width'=>'75',),
                 ),
             ))
             ->add('ProjectType' , null, array(

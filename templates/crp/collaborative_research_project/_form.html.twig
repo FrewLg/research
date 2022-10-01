@@ -16,7 +16,7 @@
 	</div>
 	<div class="col-md-2">
 		<div class="form-group select-wizard">
-			<label class="bmd-label-floating">endDate</label>
+			<label class="bmd-label-floating">End Date</label>
 			{{form_widget(objective.endDate)}}
 		</div>
 	</div>
@@ -38,36 +38,29 @@
 <div class="row">
 
 
-												<div class="col-md-6">
-													<div class="form-c">
-														<div class="label">
-															Title</div>
-														{{ form_widget(form.title  ) }}
-													</div>
+												<div class="col-md-12">
+													<div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon3">Title</span>
+{{ form_widget(form.title  ) }}                                    </div>
+
+													 
 												</div>
-<div class="col-md-6">
-													<div class="form-s">
-														<div class="label">
-															shortDescription</div>
+<div class="col-md-12">
+												
+												<div class="input-group">
+                                        <span class="input-group-text">Short Description</span>
 														{{ form_widget(form.shortDescription  ) }}
-													</div>
-												</div>
-
-												<div class="col-md-6">
-													<div class="form-s">
-														<div class="label">
-															ThematicArea</div>
-														{{ form_widget(form.ThematicArea  ) }}
-													</div>
-												</div>
+                                    </div>
+                                    </div>
+										 	
+											<br>	<div class="col-md-6">
+													   <div class="input-group">
+                                           {{ form_widget(form.ProjectType  ) }}
+                                            <button class="btn btn-secondary" type="button">Project Type</button>
+                                        </div> 
+										</div>
+												
 												 
-												<div class="col-md-6">
-													<div class="form-group">
-														ProjectType
-
-														{{ form_widget(form.ProjectType  ) }}
-													</div>
-												</div>
 											</div>
 <div class="row"> 
 
@@ -75,33 +68,48 @@
 												<div class="col-md-6">
 													<div class="form-c">
 														<div class="label">
-															FundingOpportunityName</div>
+															Funding Opportunity Name</div>
 														{{ form_widget(form.FundingOpportunityName  ) }}
 													</div>
 												</div>
 
+ 
+												<div class="col-md-6">
+													   <div class="input-group">
+                                           {{ form_widget(form.PrincipalInvestigator  ) }}
+                                            <button class="btn btn-secondary" type="button">Principal Investigator</button>
+                                        </div> 
+										</div>
 
-												<div class="col-md-6">
-													<div class="form-s">
-														<div class="label">
-															PrincipalInvestigator</div>
-														{{ form_widget(form.PrincipalInvestigator  ) }}
-													</div>
-												</div>
-												<div class="col-md-6">
 													<div class="form-group">
+												<div class="col-md-6">
 
-														ResponsiblePrimaryInstitute
+														Responsible Primary Institute
 														{{ form_widget(form.ResponsiblePrimaryInstitute  ) }}
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="form-group">
-														YearOfCemmencement
+														Year Of Cemmencement
 
 														{{ form_widget(form.YearOfCemmencement  ) }}
 													</div>
 												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														End Date
+
+														{{ form_widget(form.EndDate  ) }}
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														Project Progress
+
+														{{ form_widget(form.projectProgress  ) }}
+													</div>
+												</div>
+												
 											</div>
 <div class="row">
 
@@ -109,7 +117,7 @@
 												<div class="col-md-6">
 													<div class="form-c">
 														<div class="label">
-															AmountOfGrant</div>
+															Amount Of Grant</div>
 
 															<div class="input-group mb-3">
 
@@ -121,16 +129,16 @@
 													</div>
 												</div>
  
-
-												
-												 
-												<div class="col-md-6">
-													<div class="form-group">
-														EndDate
-
-														{{ form_widget(form.EndDate  ) }}
+<div class="col-md-6">
+													<div class="form-s">
+														<div class="label">
+															Thematic Area</div>
+														{{ form_widget(form.ThematicArea  ) }}
 													</div>
 												</div>
+												
+												 
+												
 											</div>
 											<div class="row">
 
@@ -138,7 +146,7 @@
 												<div class="col-md-6">
 													<div class="form-c">
 														<div class="label">
-															OtherInsitutes</div>
+															Other Insitutes</div>
 														{{ form_widget(form.OtherInsitutes  ) }}
 													</div>
 												</div>
@@ -147,20 +155,20 @@
 												<div class="col-md-6">
 													<div class="form-s">
 														<div class="label">
-															CoPrincipalInvestigator</div>
+															Co-Principal Investigator</div>
 														{{ form_widget(form.CoPrincipalInvestigator  ) }}
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="form-group">
 
-														coInvestigator
+														CoInvestigator
 														{{ form_widget(form.coInvestigators  ) }}
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="form-group">
-														principalInvestigatingOrganization
+														Principal Investigating Organization
 
 														{{ form_widget(form.principalInvestigatingOrganization  ) }}
 													</div>
@@ -170,14 +178,15 @@
 											<div class="row">
 												<div class="col-md-6">
 													<div class="form-group">
-														fundingOrganization
+													
+														Funding Organization
 
 														{{ form_widget(form.fundingOrganization  ) }}
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="form-group">
-														ProjectStatus
+														Project Status
 
 														{{ form_widget(form.ProjectStatus  ) }}
 													</div>
@@ -215,4 +224,3 @@
  </div>
     <button class="btn btn-soft-success btn-lg">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
-

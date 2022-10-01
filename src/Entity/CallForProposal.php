@@ -176,7 +176,7 @@ class CallForProposal
     private $fundingScheme;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean" , nullable=true)
      */
     private $coPoConfirmation;
  
@@ -620,20 +620,16 @@ class CallForProposal
         return $this;
     }
 
-    public function getCoPoConfirmation(): ?string
+    public function getCoPoConfirmation(): ?bool
     {
         return $this->coPoConfirmation;
     }
 
-    public function setCoPoConfirmation(?string $coPoConfirmation): self
+    public function setCoPoConfirmation(?bool $coPoConfirmation): self
     {
         $this->coPoConfirmation = $coPoConfirmation;
 
         return $this;
     }
-
-     
-     
-     
- 
+  
 }

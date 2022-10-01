@@ -127,6 +127,7 @@
 													+{{ submission.coAuthors|length   }}
 												</span>
 											</a>
+	{% if  submission.callForProposal.coPoConfirmation ==1 %}
 
 											{% set count = 0 %}
 											{% for  confirmation in submission.coAuthors('confirmed') %}
@@ -157,6 +158,7 @@
 
 											{% endfor %}
 
+												{% endif %}
 
 										</td>
 

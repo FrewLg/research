@@ -83,6 +83,21 @@
 
 {% block script %}
 
+<script type='text/javascript'>  
+$(".js-example-disabled").select2();
+$(".js-example-disabled-multi").select2();
+
+$(".js-programmatic-enable").on("click", function () {
+  $(".js-example-disabled").prop("disabled", false);
+  $(".js-example-disabled-multi").prop("disabled", false);
+});
+
+$(".js-programmatic-disable").on("click", function () {
+  $(".js-example-disabled").prop("disabled", true);
+  $(".js-example-disabled-multi").prop("disabled", true);
+});
+</script>
+
 	<script src="{{asset('bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
 	<script>
 		$(function () {
@@ -136,4 +151,7 @@ $(".select2").select2();
 })
 	</script>
  
+
+	
+
 {% endblock %}

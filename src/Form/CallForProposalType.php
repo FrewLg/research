@@ -50,17 +50,18 @@ class CallForProposalType extends AbstractType {
                 ],
             ])
 
-            ->add('thematicArea', null, array(
+            ->add('thematicArea' , null, array(
 
-                'placeholder' => '---Select Thematic Area  ---',
+                'placeholder' => '---Select funding organization  ---',
                 "class" => ThematicArea::class,
                 'attr' => array(
-                    'empty' => 'Thematic Area',
+                    'empty' => 'FundingOrganization',
 
                     'class' => 'select2 chosen-select form-control',
                 ),
             ))
 
+            ->add('coPoConfirmation')
             ->add('fundingScheme', null, array(
 
                 'placeholder' => '---Select funding scheme  ---',

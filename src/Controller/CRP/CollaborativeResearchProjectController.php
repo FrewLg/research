@@ -22,6 +22,13 @@ class CollaborativeResearchProjectController extends AbstractController
             'collaborative_research_projects' => $collaborativeResearchProjectRepository->findAll(),
         ]);
     }
+    #[Route('/my-projects', name: 'my_colla_projs', methods: ['GET'])]
+    public function myprojects(CollaborativeResearchProjectRepository $collaborativeResearchProjectRepository): Response
+    {
+        return $this->render('crp/collaborative_research_project/my-projects.html.twig', [
+            'collaborative_research_projects' => $collaborativeResearchProjectRepository->findBy(['PrincipalInvestigator'=>$this->getUser()]),
+        ]);
+    }
 
     #[Route('/new', name: 'app_c_r_p_collaborative_research_project_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CollaborativeResearchProjectRepository $collaborativeResearchProjectRepository): Response

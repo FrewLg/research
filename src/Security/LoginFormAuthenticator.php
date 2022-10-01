@@ -94,13 +94,18 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
 
     $this->user = $user;
-    // if (!$user) { 
-    //     throw new CustomUserMessageAuthenticationException('Invalid Credentials.');
-    //     // throw new CustomUserMessageAuthenticationException('Username could not be found.');
-    // } else {
+ 
 
-    //     $this->is_ldap_user = true;
-    // }
+    #####################DEv mode######################
+  //   if (!$user) { 
+  //     throw new CustomUserMessageAuthenticationException('Invalid Credentials.');
+  //     // throw new CustomUserMessageAuthenticationException('Username could not be found.');
+  // } else {
+
+  //     $this->is_ldap_user = true;
+  // }
+  #####################DEv mode######################
+
 
     return $user;
   }

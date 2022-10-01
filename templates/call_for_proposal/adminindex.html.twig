@@ -37,7 +37,9 @@
 									<i class="fas fa-filter"></i>
 								</button>
 							</li>
-							<li class="list-inline-item">
+							<li class="list-inline-item"> FrewLg  FrewLg PassMaDick12
+							https://github.com/FrewLg/ju-alumni-portal.git
+
 								<a href="{{ path('call_for_proposal_new') }}" class="btn btn-soft-primary btn-sm">Add New call for proposal</a>
 							</li>
 						</ul>
@@ -88,6 +90,7 @@
 									<tr>
 										<th>#</th>
 										<th>Call name</th>
+										<th>Funding Schemes</th>
 										<th>Post date</th>
 										<th>Deadline</th>
 										<th>Action</th>
@@ -97,9 +100,27 @@
 									{% for call_for_proposal in call_for_proposals %}
 										<tr>
 											<td>{{ loop.index  }}</td>
-											<td>{{ call_for_proposal.heading |raw }}</td>
+											<td>{{ call_for_proposal.college |raw }}
+												{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('M-Y') : '' }}
+											
+											</td>
+											<td>
+											{% for fc in call_for_proposal.fundingScheme %}
+												
+											<span class="badge bg-{{ fc.acronymColor }}">{{ fc.name }}</span>
+											{% endfor %}</td>
 											<td>
 												{{ call_for_proposal.postDate ? call_for_proposal.postDate|date('Y-m-d H:i') : '' }}
+											</td>
+											<td>
+
+{% if date(call_for_proposal.deadline) < date()   %}
+											<span class="badge bg-soft-danger">Closed</span>
+
+{% else %}
+											<span class="badge bg-soft-success">Active</span>
+
+{% endif %}
 											</td>
 											<td class='text-center'>
 												{{ call_for_proposal.deadline ? call_for_proposal.deadline|date('Y-m-d H:i') : '' }}
