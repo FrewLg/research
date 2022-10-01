@@ -803,8 +803,7 @@
 				<div class="card">
 					<div class="card-header ">
 						<h4 class="font-18 m-0 fw-bold">Co-PI confirmation</h4>
-
-						{% set count = 0 %}
+ 				{% set count = 0 %}
 						{% for  confirmation in submission.coAuthors('confirmed') %}
 							{% set count = count + 1 %}
 
