@@ -38,12 +38,18 @@
 <div class="row">
 
 
-												<div class="col-md-12">
+<div class="card">
+<div class="card-header">
+			<h4 class="card-title" > Project Overview</h4>
+		</div>
+
+<div class="card-body">
+
+<div class="row">
+<div class="col-md-12">
 													<div class="input-group mb-3">
                                         <span class="input-group-text" id="basic-addon3">Title</span>
-{{ form_widget(form.title  ) }}                                    </div>
-
-													 
+{{ form_widget(form.title  ) }}                                    </div> 
 												</div>
 <div class="col-md-12">
 												
@@ -52,28 +58,9 @@
 														{{ form_widget(form.shortDescription  ) }}
                                     </div>
                                     </div>
-										 	
-											<br>	<div class="col-md-6">
-													   <div class="input-group">
-                                           {{ form_widget(form.ProjectType  ) }}
-                                            <button class="btn btn-secondary" type="button">Project Type</button>
-                                        </div> 
-										</div>
-												
-												 
-											</div>
-<div class="row"> 
+                                    </div>
 
-
-												<div class="col-md-6">
-													<div class="form-c">
-														<div class="label">
-															Funding Opportunity Name</div>
-														{{ form_widget(form.FundingOpportunityName  ) }}
-													</div>
-												</div>
-
- 
+												<div class="row">
 												<div class="col-md-6">
 													   <div class="input-group">
                                            {{ form_widget(form.PrincipalInvestigator  ) }}
@@ -81,13 +68,52 @@
                                         </div> 
 										</div>
 
-													<div class="form-group">
 												<div class="col-md-6">
+													<div class="form-group">
 
-														Responsible Primary Institute
-														{{ form_widget(form.ResponsiblePrimaryInstitute  ) }}
+														CoInvestigator
+														{{ form_widget(form.coInvestigators  ) }}
 													</div>
 												</div>
+												</div>
+
+
+									<div class="row">
+									<div class="col-md-6">
+													<div class="form-s">
+														<div class="label">
+															Thematic Area</div>
+														{{ form_widget(form.ThematicArea  ) }}
+													</div>
+												</div>
+<div class="col-md-6">
+													<div class="form-s">
+														<div class="label"> Co-Principal Investigator</div>
+														{{ form_widget(form.CoPrincipalInvestigator  ) }}
+													</div>
+												</div>
+												</div>
+									{# ################ #}
+		</div>
+		</div>
+
+ 
+											 <div class="card">
+<div class="card-header">
+			<h4 class="card-title" > Grant details</h4>
+		</div>
+
+<div class="card-body"> 
+<div class="row">
+
+<div class="col-md-6">
+													<div class="form-group">
+														Project Status
+
+														{{ form_widget(form.ProjectStatus  ) }}
+													</div>
+												</div>
+
 												<div class="col-md-6">
 													<div class="form-group">
 														Year Of Cemmencement
@@ -102,18 +128,14 @@
 														{{ form_widget(form.EndDate  ) }}
 													</div>
 												</div>
-												<div class="col-md-6">
+
+<div class="col-md-6">
 													<div class="form-group">
 														Project Progress
 
 														{{ form_widget(form.projectProgress  ) }}
 													</div>
 												</div>
-												
-											</div>
-<div class="row">
-
-
 												<div class="col-md-6">
 													<div class="form-c">
 														<div class="label">
@@ -128,54 +150,14 @@
 														
 													</div>
 												</div>
- 
-<div class="col-md-6">
-													<div class="form-s">
-														<div class="label">
-															Thematic Area</div>
-														{{ form_widget(form.ThematicArea  ) }}
-													</div>
-												</div>
-												
-												 
-												
-											</div>
-											<div class="row">
+ 	<div class="col-md-6">
+								 <div class="input-group">
+                                           {{ form_widget(form.ProjectType  ) }}
+                                            <button class="btn btn-secondary" type="button">Project Type</button>
+                                        </div> 
+									 </div>
+											 
 
-
-												<div class="col-md-6">
-													<div class="form-c">
-														<div class="label">
-															Other Insitutes</div>
-														{{ form_widget(form.OtherInsitutes  ) }}
-													</div>
-												</div>
-
-
-												<div class="col-md-6">
-													<div class="form-s">
-														<div class="label">
-															Co-Principal Investigator</div>
-														{{ form_widget(form.CoPrincipalInvestigator  ) }}
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-
-														CoInvestigator
-														{{ form_widget(form.coInvestigators  ) }}
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														Principal Investigating Organization
-
-														{{ form_widget(form.principalInvestigatingOrganization  ) }}
-													</div>
-												</div>
-												</div>
-												
-											<div class="row">
 												<div class="col-md-6">
 													<div class="form-group">
 													
@@ -184,12 +166,61 @@
 														{{ form_widget(form.fundingOrganization  ) }}
 													</div>
 												</div>
+												  <div class="col-md-6">
+													<div class="form-c">
+														<div class="label">
+															Funding Opportunity Name</div>
+														{{ form_widget(form.FundingOpportunityName  ) }}
+													</div>
+
+												
+												</div>
+												
+											</div>
+											<div class="row">
+
+
+												
+
+
+												
+												</div>
+												</div>
+												</div>
+												 <div class="card">
+<div class="card-header">
+			<h4 class="card-title" > Collaboration details</h4>
+		</div>
+
+<div class="card-body"> 
+<div class="row">
+												
 												<div class="col-md-6">
 													<div class="form-group">
-														Project Status
+														Principal Investigating Organization
 
-														{{ form_widget(form.ProjectStatus  ) }}
+														{{ form_widget(form.principalInvestigatingOrganization  ) }}
 													</div>
+												</div>
+												 
+												<div class="col-md-6">
+												<div class="form-group">
+
+														Responsible Primary Institute
+														{{ form_widget(form.ResponsiblePrimaryInstitute  ) }}
+													</div>
+												</div>
+<div class="col-md-6">
+													<div class="form-c form-group">
+														<div class="label">
+															Other Insitutes</div>
+														{{ form_widget(form.OtherInsitutes  ) }}
+													</div>
+												</div>
+												
+										
+												
+												</div>
 												</div>
 												</div>
 												
@@ -220,7 +251,9 @@
 												</div>
 												</div>
 												</div>
+												</div>
 
  </div>
     <button class="btn btn-soft-success btn-lg">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+</div>
