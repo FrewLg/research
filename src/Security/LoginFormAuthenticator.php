@@ -97,13 +97,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
  
 
     #####################DEv mode######################
-    if (!$user) { 
-      throw new CustomUserMessageAuthenticationException('Invalid Credentials.');
-      // throw new CustomUserMessageAuthenticationException('Username could not be found.');
-  } else {
+  //   if (!$user) { 
+  //     throw new CustomUserMessageAuthenticationException('Invalid Credentials.');
+  //     // throw new CustomUserMessageAuthenticationException('Username could not be found.');
+  // } else {
 
-      $this->is_ldap_user = true;
-  }
+  //     $this->is_ldap_user = true;
+  // }
   #####################DEv mode######################
 
 
