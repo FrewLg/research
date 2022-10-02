@@ -7,9 +7,9 @@
   <div class="card mt-3">
                                     <div class="card-body">
  {# <a href="{{ path('app_c_r_p_collaborative_research_project_show', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-info">show</a> #}
-                    <a href="{{ path('app_c_r_p_collaborative_research_project_edit', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-warning">edit</a>
                
 				{% if is_granted("view_crp_projectDetails_as_admin") %}
+                    <a href="{{ path('app_c_r_p_collaborative_research_project_edit', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-warning">edit</a>
 
                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModalLarge">
                                                         Attachment
@@ -103,8 +103,8 @@ Attachments
 								{% endif %}
 
                                             <div class="media-body align-self-center">
-                                                <h5 class="font-14 m-0">{{ collaborative_research_project.PrincipalInvestigator }}</h5>
-                                                <small class="text-muted">{{ collaborative_research_project.PrincipalInvestigator.email}}</small>
+                                                <h5 class="font-14 m-0">{{ collaborative_research_project.title }}</h5>
+                                                <small class="text-muted">{{ collaborative_research_project.PrincipalInvestigator}}</small>
                                             </div>
                                         </div>
 
@@ -230,7 +230,7 @@ Amount Of Grant:{{collaborative_research_project.AmountOfGrant}} {{collaborative
                                                 <div class="activity-info-text">
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <p class="text-muted mb-0 font-13 w-75"> 
-                                                              <a href="index.html"> {{row.name}}</a> Comment
+                                                              <a href="#"> {{row.name}}</a>  
                                                         </p>
                                                         <small class="text-muted">{{row.EndDate|date('d-m-y')}}</small>
                                                       <div class="pricingTable1 text-center">
@@ -267,6 +267,26 @@ Amount Of Grant:{{collaborative_research_project.AmountOfGrant}} {{collaborative
                             </div>
 
                                          <div class="row">
+                                         <div class="card">
+                                         <div class="card-header">
+Attachements</div>
+                                         <div class="card-body">
+
+  {% for row in collaborative_research_project.projectAttachments %}
+										<li class="list-group-item">
+                                                           {% if row.file  %}
+                                                            
+<a href="{{ asset('/uploads/submission/'~ row.file ) }}" class="btn btn-info btn-xs float-right">
+							Download {{row.attachmentType.name}} 
+							<i class="fa fa-download material-icons warning"></i>
+						</a>
+                                                           
+                                                           {% else %}
+                                                           {% endif %}
+                                                            </li>
+                                                         {% endfor %}
+</div>
+</div>
                                             <h4>Collaborating Institutes:              
                     {{ collaborative_research_project.OtherInsitutes }}</h4>
                     <h4>Collaborating Institutes:              </h4>

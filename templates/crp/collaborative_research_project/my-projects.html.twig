@@ -53,7 +53,7 @@
 
 														<th>#</th>
 														<th>Title</th>
-                <th>Funding Organization</th> 
+                <th>Funding Organization</th>
 
 
 														<th>Year Of Cemmencement</th>
@@ -70,18 +70,22 @@
 												{% for collaborative_research_project in collaborative_research_projects %}
 													<tr>
 														<td>{{ loop.index }}</td>
-														<td>{{ collaborative_research_project.title }}</td>
+														<td>
+
+            <a class='text-soft-primary' href="{{ path('app_c_r_p_collaborative_research_project_show', {'id': collaborative_research_project.id}) }}">
+
+                {{ collaborative_research_project.title }}</a></td>
 														<td>
 														  {% if   collaborative_research_project.fundingOrganization %}
                     {% for fo in collaborative_research_project.fundingOrganization %}
-                        
+
                         <span title='{{fo.name}}' class="badge bg-soft-{{fo.acronymColor}} bg-xs">
 						<small>{{fo.acronym}}</small>
 												</span>
                     {% endfor %}
-                {% endif %}   
-                 
-                                                 
+                {% endif %}
+
+
 												</td>
 
 														<td>
@@ -97,32 +101,32 @@
 														       <td nowrap='nowrap'>
 
     		{{ include('crp/collaborative_research_project/includes/progress.html.twig') }}
-															 
+
 														</td>
 															             <td nowrap='nowrap'>
 
   <span title='{{collaborative_research_project.ProjectStatus}}' class="badge bg-soft-{{collaborative_research_project.ProjectStatus.statusColor}} bg-xs">
 												<small>{{collaborative_research_project.ProjectStatus.status}}</small>
-												</span>															 
+												</span>
 														</td>
-														                
+
 														<td>
 
                     <a href="{{ path('app_c_r_p_collaborative_research_project_show', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-warning"><i class='fas fa-eye'
 					></i></a>
-															 
+
 														</td>
 													</tr>
 												{% else %}
 													No records found  under this section
-												{% endfor %} 
+												{% endfor %}
 											</tbody>
 										</table>
 									</div>
 									<!--end /tableresponsive-->
 								</div>
 								<!--end card-body-->
-							</div> 
+							</div>
 							<!--end card-body-->
 						</div>
 					</div>
