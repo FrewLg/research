@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\CRP;
 
 use App\Entity\CallForProposal;
 use App\Entity\CoAuthor;
+use App\Entity\IRB\Application;
 use App\Entity\Submission;
 use App\Entity\ThematicArea;
 use App\Filter\Type\SubmissionFilterType;
@@ -17,21 +18,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/visualization")
+/** 
+ * @Route("/crp/dashboard")
  */
 
-class OrganizationalDashboardController extends AbstractController {
- 
+class CRPDashboardController extends AbstractController {
+
+    
     /**
-     * @Route("/", name="orgdashboard", methods={"GET","POST"})
+     * @Route("/", name="crpdashboard", methods={"GET","POST"})
      */
     public function index(Request $request, SubmissionRepository $submissionRepository, PaginatorInterface $paginator, FilterBuilderUpdaterInterface $query_builder_updater): Response {
         $this->denyAccessUnlessGranted('view_dashboard');
          $formFilter = $this->createForm(SubmissionFilterType::class);
         $formFilter->handleRequest($request);
-         $Allsubmissions = $submissionRepository->getSubmissions();
-
+ 
         $entityManager = $this->getDoctrine()->getManager();
         
 
@@ -95,40 +96,38 @@ class OrganizationalDashboardController extends AbstractController {
                     FROM App:User u
                     JOIN u.submissions s
                     JOIN u.userInfo i
-
-                      GROUP BY i.gender
-                '
+                    GROUP BY i.gender '
         );
         $remark2 = $query4->getScalarResult();
- #################publication
- ####################### $argon2id$v=19$m=65536,t=4,p=1$/04iIEjvQ0NaK7rI/WYM2w$2qFl9Wj2egStOVKHb2vGTuv1+HDnj6S0rd0Hx8RjjH4
-    $res = $entityManager->createQuery(
-    "SELECT  DISTINCT   count(u.id)  as copis , cl.name as college,  cl.id
-    FROM App:CoAuthor u
-    JOIN u.submission s 
-    JOIN s.callForProposal c
-    JOIN u.researcher i 
-    JOIN  i.userInfo n 
-    JOIN  n.college cl 
-    GROUP BY cl.id
-    ORDER BY cl.id
-     ");
-    $copisdist = $res->getScalarResult();
-    #################publication
-        return $this->render('dashboard/org-dashboard.html.twig', [
+#################publication
+ #######################
+ $res = $entityManager->createQuery(
+    "SELECT DISTINCT count(u.id) as applications , u.createdAt as syear , p.name as ptype
+    FROM App\Entity\IRB\Application u 
+    JOIN  u.projectType p 
+    JOIN  u.college cl 
+    WHERE cl.id=:call  
+    GROUP BY ptype"
+) 
+->setParameter('call', $this->getUser()->getUserInfo()->getCollege() );
+$irbapps = $res->getArrayResult();
+// dd($irbapps);
+// dd($entityManager->getRepository(Application::class)->getDashboardData());
+#################publication
+
+        return $this->render('dashboard/crp_dashboard.html.twig', [
             'formFilter' => $formFilter->createView(),
-            'submissions' => $Allsubmissions,
-            'bythemes' => $submissionbytheme,
+             'bythemes' => $submissionbytheme,
             'allcalls' => $allcallsp,
             'all_calls' => $allcalls,
             'submissions' => $submissions,
             'copis' => $copis,
-            'copisdist' => $copisdist,
+            'irbapps' => $irbapps,
             'desision' => $remark,
             'gender_distribution' => $remark2,
             'all' => $all,
             'allext' => $allext,
         ]);
     }
-    
+     
 }

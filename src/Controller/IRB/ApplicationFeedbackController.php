@@ -25,10 +25,10 @@ class ApplicationFeedbackController extends AbstractController
      public function new(Request $request, ApplicationFeedbackRepository $applicationFeedbackRepository ,Application $application): Response
     {
         $applicationFeedback = new ApplicationFeedback();
-        $form = $this->createForm(ApplicationFeedbackType::class, $applicationFeedback);
-        $form->handleRequest($request);
+        $feedbackForm = $this->createForm(ApplicationFeedbackType::class, $applicationFeedback);
+        $feedbackForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($feedbackForm->isSubmitted() && $feedbackForm->isValid()) {
             $applicationFeedback-> setApplication($application);
             $applicationFeedback-> setCreatedAt(new \DateTime());
             $applicationFeedback-> setFeedbackFrom($this->getUser());
@@ -37,7 +37,7 @@ class ApplicationFeedbackController extends AbstractController
 
         return $this->render('application_feedback/new.html.twig', [
             'application_feedback' => $applicationFeedback,
-            'form' => $form->createView(),
+            'form' => $feedbackForm->createView(),
         ]);
     }
 

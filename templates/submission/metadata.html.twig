@@ -641,7 +641,10 @@
 
 <h3 class="font-20 fw-bold d-block mt-2">Funding Scheme:</h3>
 										<p class="font-15 mt-4">
-										<span class="badge bg-soft-{{submission.fundingScheme.acronymColor}}">	{{ submission.fundingScheme ? submission.fundingScheme |raw: "no funding Scheme" }}</span>
+										{% if submission.fundingScheme %}
+<span class="badge bg-soft-{{submission.fundingScheme.acronymColor}}">	{{ submission.fundingScheme ? submission.fundingScheme |raw: "no funding Scheme" }}</span>
+
+										{% endif %}
  </p> 
 <h3 class="font-20 fw-bold d-block mt-2">College:</h3>
 										<p class="font-15 mt-4">
@@ -1092,11 +1095,13 @@ element.after(error);
 rules: {
 "submission[title]": {
 required: true,
-minlength: 5
+minlength: 25, 
+
 },
 "#submission_agree_to_the_terms_0": {
 required: true
 }
+, 
 
 },
 messages: {
@@ -1118,7 +1123,7 @@ $(this).steps('previous');
 }
 };
 $("#form-horizontal").steps("setStep", {{ submission.step }});
-var $input = $('<button class="btn btn-success" type="submit">Save</button>');
+{# var $input = $('<button class="btn btn-success" type="submit">Save</button>'); #}
 
 $input.appendTo($('ul[aria-label=Pagination]'));
 	</script>

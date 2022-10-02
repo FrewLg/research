@@ -9,6 +9,85 @@
  {# <a href="{{ path('app_c_r_p_collaborative_research_project_show', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-info">show</a> #}
                     <a href="{{ path('app_c_r_p_collaborative_research_project_edit', {'id': collaborative_research_project.id}) }}" class="btn btn-xs btn-soft-warning">edit</a>
                
+				{% if is_granted("view_crp_projectDetails_as_admin") %}
+
+               <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModalLarge">
+                                                        Attachment
+                                                        </button>
+
+<div class="modal fade bd-example-modal-lg" id="exampleModalLarge" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title m-0" id="myLargeModalLabel">Attachment 
+                                                    
+                                                         
+                                                         <a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+                                                         {{ collaborative_research_project.projectAttachments|length }}
+										</span>
+									</a>
+                                    </h6>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div><!--end modal-header-->
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-5 text-center">
+
+                                                        <div class="card">
+                                                        <div class="card-header">
+Attachments             
+               <a href="#" class="avatar-box thumb-xxs align-self-center">
+										<span class="avatar-title bg-soft-info rounded-circle font-13 font-weight-normal">
+                                                         {{ collaborative_research_project.projectAttachments|length }}
+										</span>
+									</a>
+                                                                               </div><!--end col-->                                                            
+
+                                                        <div class="card-body">
+                                                            								<ul class="list-group  m-0">
+
+                                                        
+                                                         {% for row in collaborative_research_project.projectAttachments %}
+										<li class="list-group-item">
+                                                            {{row.file}}
+                                                           <span class="badge bg-soft-success"> {{row.attachmentType.name}} </span>
+                                                            </li>
+                                                         {% endfor %}
+                                                            </ul>
+                                                            {# <img src="assets/images/widgets/flame-5.png" alt="" class="img-fluid"> #}
+                                                        </div><!--end col-->
+                                                        </div><!--end col-->
+                                                        </div><!--end col-->
+                                                        
+                                                        <div class="col-lg-7 align-self-center">
+                                                        <div class="card">
+                                                        <div class="card-header">
+                                                     Upload   </div><!--end col-->                                                            
+
+                                                        <div class="card-body">
+                                                                 {# {{ include('crp/collaborative_research_project/_form.html.twig') }} #}
+    
+    {{ form_start(attachmentform) }}
+    {{ form_widget(attachmentform) }}
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(attachmentform) }}
+
+                                                        </div><!--end col-->                                                            
+                                                        </div><!--end col-->                                                            
+                                                        </div><!--end col-->                                                            
+                                                    </div><!--end row-->
+                                                    
+                                                </div><!--end modal-body-->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-soft-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                                </div><!--end modal-footer-->
+                                            </div><!--end modal-content-->
+                                        </div><!--end modal-dialog-->
+                                    </div><!--end modal-->
+    
+								{% endif %}
+
 <div class="ribbon1 rib1-primary">
                                         <span class="text-white text-center rib1-primary">{{ collaborative_research_project.FundingOpportunityName}}</span>                                        
                                     </div>

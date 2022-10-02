@@ -4,9 +4,12 @@ namespace App\Controller\CRP;
 
 use App\Entity\CRP\CollaborativeResearchProject;
 use App\Entity\CRP\Deliverables;
+use App\Entity\CRP\ProjectAttachment;
 use App\Form\CRP\CollaborativeResearchProjectType;
+use App\Form\CRP\ProjectAttachmentType;
 use App\Repository\CRP\CollaborativeResearchProjectRepository;
 use App\Repository\CRP\DeliverablesRepository;
+use App\Repository\CRP\ProjectAttachmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,11 +51,41 @@ class CollaborativeResearchProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_c_r_p_collaborative_research_project_show', methods: ['GET'])]
-    public function show(CollaborativeResearchProject $collaborativeResearchProject): Response
+    #[Route('/{id}/details', name: 'app_c_r_p_collaborative_research_project_show', methods: ['GET','POST'])]
+    public function show(Request $request   ,  CollaborativeResearchProject $collaborativeResearchProject): Response
     {
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $projectAttachment = new ProjectAttachment();
+        $form = $this->createForm(ProjectAttachmentType::class, $projectAttachment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $projectAttachment->setProject($collaborativeResearchProject);
+            // dd($collaborativeResearchProject);
+            $file3 = $form->get('file')->getData();
+            if ($file3 == '' ) {
+            }
+            else {
+                $file3 = $form->get('file')->getData();
+                $fileName3 = md5(uniqid()) . '.' . $file3->guessExtension();
+                $file3->move($this->getParameter('upload_destination'), $fileName3);
+                $projectAttachment->setFile($fileName3);
+ 
+            }
+            // $projectAttachmentRepository->add($projectAttachment);
+            $entityManager->persist($projectAttachment);
+            $entityManager->flush();
+        return $this->redirectToRoute('app_c_r_p_collaborative_research_project_show', ['id'=>$collaborativeResearchProject->getId()]);
+
+         }
+
+
         return $this->render('crp/collaborative_research_project/show.html.twig', [
             'collaborative_research_project' => $collaborativeResearchProject,
+            'attachmentform' => $form->createView(),
+
         ]);
     }
 

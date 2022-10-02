@@ -26,7 +26,7 @@ class ProjectAttachmentType
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
-
+ 
   
     public function getId(): ?int
     {
@@ -57,5 +57,8 @@ class ProjectAttachmentType
         return $this;
     }
 
-   
+    public function __toString(): string
+    {
+        return  $this->name;
+    }
 }

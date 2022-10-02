@@ -378,7 +378,7 @@ class IRBReviewAssignmentController extends AbstractController {
      * @Route("/{id}/sendcomment", name="send_comment", methods={"POST"})
      *
      **/
-    public function sedncomment(IRBReviewAssignment $reviewAssignment, MailerInterface $mailer): Response {
+    public function sendcomment(IRBReviewAssignment $reviewAssignment, MailerInterface $mailer): Response {
         $this->denyAccessUnlessGranted('ROLE_CHAIR');
         $entityManager = $this->getDoctrine()->getManager();
         // dd($reviewAssignment );
@@ -413,7 +413,7 @@ class IRBReviewAssignmentController extends AbstractController {
 
         #########
         $entityManager->flush();
-        $this->addFlash("success", "Reviewer comment sent successfully ! Thank you!");
+        $this->addFlash("success", "Reviewer comment sent successfully! Thank you!");
         return $this->redirectToRoute('application_show', ["id" => $reviewAssignment->getApplication()->getId()], Response::HTTP_SEE_OTHER);
 
     }

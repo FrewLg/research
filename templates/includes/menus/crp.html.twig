@@ -9,6 +9,14 @@
 		<ul class="nav-second-level" aria-expanded="false">
 			{% if is_granted("vw_gntd_rsrch") %}
 				<li class="nav-item">
+					<a class="nav-link" href="{{ path('crpdashboard') }}">
+						<i class="ti-control-record"></i>
+						CRP Dashboard
+					</a>
+				</li>
+			{% endif  %}
+			{% if is_granted("vw_gntd_rsrch") %}
+				<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_c_r_p_collaborative_research_project_index') }}">
 						<i class="ti-control-record"></i>
 						External Granted Researches

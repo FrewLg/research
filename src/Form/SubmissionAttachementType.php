@@ -3,11 +3,13 @@
 namespace App\Form;
 
 use App\Entity\SubmissionAttachement;
+use App\Entity\AttachementType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichFileType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class SubmissionAttachementType extends AbstractType
 {
@@ -21,7 +23,21 @@ class SubmissionAttachementType extends AbstractType
            //     'download_uri' => '...',
                'download_label' => 'Download file',
             ])
-            ->add('name')
+            ->add('name'
+            , null, array(
+
+                'placeholder' => '---Select attachement type  ---',
+                "class" => AttachementType::class,
+                'attr' => array(
+                    'empty' => 'Select  ',
+
+                    'class' => 'select2 js-example-responsive chosen-select ',
+                    'multiple'=>false,
+                    'required'=>true,
+                    // 'style'=>array('width'=>'75',),
+                ),
+            ))
+            
         ;
     }
 

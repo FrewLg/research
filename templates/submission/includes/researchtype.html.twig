@@ -1,4 +1,4 @@
-{% if submission.CallForProposal.ResearchType ==1%}
+{# {% if submission.CallForProposal.ResearchType ==1%}
 
     MEGA 
 {% elseif submission.CallForProposal.ResearchType ==2%}
@@ -19,4 +19,11 @@
 
 
 {% endif %}
-Research Project 
+Research Project  #}
+{% if submission.fundingScheme %}
+											
+												<span title='{{submission.fundingScheme.description}}' class="badge bg-soft-{{submission.fundingScheme.acronymColor}} bg-xs">
+												<small>{{submission.fundingScheme.acronym}}</small>
+												</span>
+
+										{% endif %}

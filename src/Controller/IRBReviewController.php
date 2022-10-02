@@ -31,7 +31,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/subm-review")
  */
 class IRBReviewController extends AbstractController {
-    use CsrfCheckerTrait;
+    use CsrfCheckerTrait; 
 
     /**
      * @Route("/myassigned", name="myassigned", methods={"GET"})

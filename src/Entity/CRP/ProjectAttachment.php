@@ -22,7 +22,7 @@ class ProjectAttachment
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private $file;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -45,11 +45,19 @@ class ProjectAttachment
      */
     private $project;
 
+    
+  
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ProjectAttachmentType::class, inversedBy="projectAttachments")
+     */
+    private $attachmentType;
+
   
 
     public function __construct()
     {
-        $this->projectAttachmentTypes = new ArrayCollection();
+         $this->attachementType = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -57,14 +65,14 @@ class ProjectAttachment
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getFile(): ?string
     {
-        return $this->name;
+        return $this->file;
     }
 
-    public function setName(?string $name): self
+    public function setFile(?string $file): self
     {
-        $this->name = $name;
+        $this->file = $file;
 
         return $this;
     }
@@ -113,6 +121,20 @@ class ProjectAttachment
     public function setProject(?CollaborativeResearchProject $project): self
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    
+
+    public function getAttachmentType(): ?ProjectAttachmentType
+    {
+        return $this->attachmentType;
+    }
+
+    public function setAttachmentType(?ProjectAttachmentType $attachmentType): self
+    {
+        $this->attachmentType = $attachmentType;
 
         return $this;
     }
